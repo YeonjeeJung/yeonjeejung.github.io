@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Zero-shot Learning on Semantic Class Prototype Graph</title>
+  <meta name="description" content="이 논문은 Zero-Shot Learning(ZSL)에서의 새로운 distance metric을 제안하는 논문이다.">
+  
+  <meta name="author" content="YeonjeeJung">
+  <meta name="copyright" content="&copy; YeonjeeJung 2019">
+  
+
+  <!-- External libraries -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/monokai-sublime.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css">
+
+  <!-- Favicon and other icons (made with http://www.favicon-generator.org/) -->
+  <link rel="shortcut icon" href="/assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" sizes="57x57" href="/assets/icons/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/assets/icons/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/assets/icons/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/assets/icons/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/assets/icons/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/assets/icons/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/assets/icons/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/assets/icons/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/assets/icons/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+  <link rel="manifest" href="/assets/icons/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/assets/icons/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  
+
+  
+  <!-- Twitter: card tags -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Zero-shot Learning on Semantic Class Prototype Graph">
+  <meta name="twitter:description" content="이 논문은 Zero-Shot Learning(ZSL)에서의 새로운 distance metric을 제안하는 논문이다.">
+  <meta name="twitter:image" content="http://localhost:4000/assets/logo.png">
+  <meta name="twitter:url" content="http://localhost:4000">
+  
+
+  
+
+  <!-- Site styles -->
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/thesis/2019/06/29/ZSL.html">
+  <link rel="alternate" type="application/rss+xml" title="YeonjeeJung's Blog" href="http://localhost:4000/feed.xml" />
+</head>
+
+
+  <body>
+
+    <header class="navigation" role="banner">
+  <div class="navigation-wrapper">
+    <a href="/" class="logo">
+      
+      <img src="/assets/logo.png" alt="YeonjeeJung's Blog">
+      
+    </a>
+    <a href="javascript:void(0)" class="navigation-menu-button" id="js-mobile-menu">
+      <i class="fa fa-bars"></i>
+    </a>
+    <nav role="navigation">
+      <ul id="js-navigation-menu" class="navigation-menu show">
+        <li class="nav-link"><a href="/About">About</a>
+        <li class="nav-link"><a href="/Thesis">Thesis</a>
+        <li class="nav-link"><a href="/Lecture">Lecture</a>
+          <ul>
+            <a href="/ComputerVision">Computer Vision</a>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+    <div class="page-content">
+        <div class="post">
+
+<div class="post-header-container " >
+  <div class="scrim ">
+    <header class="post-header">
+      <h1 class="title">Zero-shot Learning on Semantic Class Prototype Graph</h1>
+      <p class="info">by <strong>Yeonjee Jung</strong></p>
+    </header>
+  </div>
+</div>
+
+<div class="wrapper">
+
+ <span class="page-divider">
+  <span class="one"></span>
+  <span class="two"></span>
+</span>
+ 
+
+<section class="post-meta">
+  <div class="post-date">June 29, 2019</div>
+  <div class="post-categories">
+  in 
+    
+    <a href="/category/Thesis">Thesis</a>
+    
+  
+  </div>
+</section>
+
+<article class="post-content">
+  <hr />
+<p>이 논문은 Zero-Shot Learning(ZSL)에서의 새로운 distance metric을 제안하는 논문이다.</p>
+
+<h2 id="zero-shot-learningzsl">Zero-Shot Learning(ZSL)</h2>
+<p>ZSL에서는 seen class와 unseen class, 그리고 image feature가 semantic embedding space에 사영된다. 새로운 input은 seen class중 한 class에 해당하고, 어떤 image feature를 가지고 있다고 하자. 그 사영된 공간에서 seen class와 image feature가 결합된 벡터가 unseen class와 가까우면, unseen class에 대한 학습 없이도 해당 class로 분류가 가능하다. 마치 어린아이가 ‘말’을 알고 ‘줄무늬’를 알면 ‘얼룩말’을 한번도 본적이 없더라도 판별해낼 수 있는 것과 같다.</p>
+
+<h2 id="semantic-embedding-space">Semantic Embedding Space</h2>
+<p>Seen class와 unseen class는 고차원 공간상에서 연관을 갖고있다. 이를 Semantic embedding space라고 부른다.</p>
+<h4 id="semantic-embedding-se">Semantic Embedding (SE)</h4>
+<p>거의 대부분의 ZSL은 SE를 사용한다. SE에서는 seen class에 대해서만 mapping을 학습한다. 이 mapping함수는 나중에 unseen class image가 space로 mapping될때도 사용된다.</p>
+<h4 id="semantic-relatedness-sr">Semantic Relatedness (SR)</h4>
+<p>거의 사용되지는 않지만 SR이라고 불리는 것도 있다. 먼저 seen class에 대해서 n-way classifier 를 학습하는데, 이 classifier는 unseen과 seen의 visual 유사도를 계산하는데 쓰인다. 그 후 semantic 유사도와 visual 유사도를 계산하는데, 이 두 유사도 벡터가 가까우면 unseen class로 예측한다.</p>
+
+<h2 id="euclideancosine-distance-쓰면-생기는-문제점">Euclidean/Cosine Distance 쓰면 생기는 문제점</h2>
+<p>기존 ZSL에서는 거리 계산 척도로 euclidean distance나 cosine distance를 사용했는데, 고차원 공간에서는 이런 척도가 hubness나 domain shift등의 문제를 야기할 수 있다.</p>
+<ul>
+  <li>Hubness : 많은 벡터들에 동시에 가까운 중심 벡터가 있을 수 있다. 보통 high dimension에서 발생한다. unseen 클래스 수가 적어서 ZSL에서도 발생 가능성이 있다.</li>
+  <li>Domain shift :
+    <ul>
+      <li>(SE에서) visual feature embedding이 seen 클래스로부터 학습되어서, 사영된 unseen class point가 seen class 쪽으로 bias될 수 있다. 따라서 hub의 출현이 쉽다.</li>
+      <li>(SR에서) visual-semantic domain shift.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="semantic-manifold-distance">Semantic Manifold Distance</h2>
+<p>일반적으로 semantic embedding space에서 label들은 semantic manifold 구조를 갖고 있는데, 이 manifold 구조를 더 잘 설명하는 distance이다. 여기에는 hubness와 domain shift 문제가 없다.</p>
+
+<hr />
+<p>여기까지가 서론이고, 이후 논문의 제안에 대한 내용이 있으나 제대로 이해를 못함…</p>
+
+</article>
+
+
+
+<section class="tags">
+  <strong>Tags:</strong> <a href="/tag/ZeroShotLearning">ZeroShotLearning</a>
+</section>
+
+
+
+<section class="rss">
+  <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+</section>
+
+<!-- <section class="share">
+  <span>Share: </span>
+  
+    
+    
+    
+    
+    
+    
+    
+    
+  
+</section> -->
+
+
+
+
+<section class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'true';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+
+</div>
+</div>
+
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h3 class="footer-heading">YeonjeeJung's Blog</h3>
+
+    <div class="site-navigation">
+
+      <p><strong>Site Map</strong></p>
+      <ul class="pages">
+        
+        
+          <li class="nav-link"><a href="/ComputerVision/">Computer Vision</a>
+        
+        
+        
+          <li class="nav-link"><a href="/Lecture/">Lecture</a>
+        
+        
+        
+          <li class="nav-link"><a href="/Thesis/">Thesis</a>
+        
+        
+        
+          <li class="nav-link"><a href="/about/">About</a>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          <li class="nav-link"><a href="/tag/zeroshotlearning/">ZeroShotLearning</a>
+        
+        
+        
+          <li class="nav-link"><a href="/tag/semanticsegmentation/">SemanticSegmentation</a>
+        
+        
+        
+          <li class="nav-link"><a href="/tag/videosuperresolution/">VideoSuperResolution</a>
+        
+        
+        
+          <li class="nav-link"><a href="/tag/multiviewstereo/">MultiViewStereo</a>
+        
+        
+        
+          <li class="nav-link"><a href="/tag/computervision/">ComputerVision</a>
+        
+        
+        
+          <li class="nav-link"><a href="/category/thesis/">Thesis</a>
+        
+        
+        
+          <li class="nav-link"><a href="/category/lecture/">Lecture</a>
+        
+        
+        
+          <li class="nav-link"><a href="/category/computervision/">ComputerVision</a>
+        
+        
+        
+        
+        
+        
+      </ul>
+    </div>
+
+    <div class="site-contact">
+
+      <p><strong>Contact</strong></p>
+      <ul class="social-media-list">
+        <li>
+          <a href="mailto:gotnwlsl@gmail.com">
+            <i class="fa fa-envelope-o"></i>
+            <span class="username">gotnwlsl@gmail.com</span>
+          </a>
+        </li>
+
+        
+          
+          <li>
+            <a href="https://github.com/YeonjeeJung" title="Fork me on GitHub">
+              <i class="fa fa-github"></i>
+              <span class="username">YeonjeeJung</span>
+            </a>
+          </li>
+          
+        
+
+      </ul>
+    </div>
+
+    <div class="site-signature">
+      <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+      <p class="text"></p>
+    </div>
+
+  </div>
+
+</footer>
+
+<!-- Scripts -->
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/js/lightbox.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  // Default syntax highlighting
+  hljs.initHighlightingOnLoad();
+
+  // Header
+  var menuToggle = $('#js-mobile-menu').unbind();
+  $('#js-navigation-menu').removeClass("show");
+  menuToggle.on('click', function(e) {
+    e.preventDefault();
+    $('#js-navigation-menu').slideToggle(function(){
+      if($('#js-navigation-menu').is(':hidden')) {
+        $('#js-navigation-menu').removeAttr('style');
+      }
+    });
+  });
+});
+
+</script>
+
+
+
+
+
+
+  </body>
+
+</html>
