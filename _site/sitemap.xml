@@ -24,10 +24,10 @@
 <loc>http://localhost:4000/ComputerVision</loc>
 </url>
 <url>
-<loc>http://localhost:4000/Lecture/</loc>
+<loc>http://localhost:4000/Lecture</loc>
 </url>
 <url>
-<loc>http://localhost:4000/Thesis/</loc>
+<loc>http://localhost:4000/Thesis</loc>
 </url>
 <url>
 <loc>http://localhost:4000/about</loc>
