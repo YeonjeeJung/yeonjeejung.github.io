@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>CV Lecture 2 - Image Formation and Camera</title>
+  <meta name="description" content="Pinhole Camera Model">
+  
+  <meta name="author" content="YeonjeeJung">
+  <meta name="copyright" content="&copy; YeonjeeJung 2019">
+  
+
+  <!-- External libraries -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/monokai-sublime.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css">
+
+  <!-- Favicon and other icons (made with http://www.favicon-generator.org/) -->
+  <link rel="shortcut icon" href="/assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" sizes="57x57" href="/assets/icons/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/assets/icons/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/assets/icons/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/assets/icons/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/assets/icons/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/assets/icons/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/assets/icons/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/assets/icons/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/assets/icons/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+  <link rel="manifest" href="/assets/icons/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/assets/icons/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  
+
+  
+  <!-- Twitter: card tags -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="CV Lecture 2 - Image Formation and Camera">
+  <meta name="twitter:description" content="Pinhole Camera Model">
+  <meta name="twitter:image" content="http://localhost:4000/assets/logo.png">
+  <meta name="twitter:url" content="http://localhost:4000">
+  
+
+  
+
+  <!-- Site styles -->
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/lecture/computervision/2019/07/06/Lecture2.html">
+  <link rel="alternate" type="application/rss+xml" title="YeonjeeJung's Blog" href="http://localhost:4000/feed.xml" />
+</head>
+
+  
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$'] ],
+    processEscapes: true,
+  }
+});
+MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+  
+  <body>
+
+    <header class="navigation" role="banner">
+  <div class="navigation-wrapper">
+    <a href="/" class="logo">
+      
+      <img src="/assets/logo.png" alt="YeonjeeJung's Blog">
+      
+    </a>
+    <a href="javascript:void(0)" class="navigation-menu-button" id="js-mobile-menu">
+      <i class="fa fa-bars"></i>
+    </a>
+    <nav role="navigation">
+      <ul id="js-navigation-menu" class="navigation-menu show">
+        <li class="nav-link"><a href="/about">About</a>
+        <li class="nav-link"><a href="/category/thesis">Thesis</a>
+        <li class="nav-link"><a href="/category/lecture">Lecture</a>
+          <ul>
+            <a href="/category/computervision">Computer Vision</a>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+    <div class="page-content">
+        <div class="post">
+
+<div class="post-header-container " >
+  <div class="scrim ">
+    <header class="post-header">
+      <h1 class="title">CV Lecture 2 - Image Formation and Camera</h1>
+      <p class="info">by <strong>Yeonjee Jung</strong></p>
+    </header>
+  </div>
+</div>
+
+<div class="wrapper">
+
+ <span class="page-divider">
+  <span class="one"></span>
+  <span class="two"></span>
+</span>
+ 
+
+<section class="post-meta">
+  <div class="post-date">July 6, 2019</div>
+  <div class="post-categories">
+  in 
+    
+    <a href="/category/lecture">Lecture</a>, 
+    
+  
+    
+    <a href="/category/computervision">ComputerVision</a>
+    
+  
+  </div>
+</section>
+
+<article class="post-content">
+  <h2 id="pinhole-camera-model">Pinhole Camera Model</h2>
+
+<h4 id="pinhole-camera">Pinhole Camera</h4>
+<p>어떤 물체에서 반사된 빛을 필름에 바로 닿게 하면 물체의 여러 점에서 반사된 빛이 필름의 한 점에 모이게 되어 물체의 모양이 제대로 나올 수 없고 블러된 이미지가 나온다.</p>
+
+<p>Pinhole은 바늘구멍이다. 물체와 필름 사이에 작은 구멍이 뚫린 장애물을 놓고 반사된 빛이 필름에 닿게 하면 그 바늘구멍을 통과한 빛만이 필름에 닿게 된다. 이는 블러를 줄이게 된다. 이 바늘구멍이 카메라의 조리개 역할을 한다.</p>
+
+<p>하지만 바늘구멍에 통과된 이미지는 위아래, 좌우가 바뀌게 된다.</p>
+
+<h4 id="focal-length">Focal Length</h4>
+<p>필름과 핀홀 사이의 거리를 Focal Length라고 한다. 이 Focal Length가 2배가 되면 필름에 사영된 이미지의 크기도 2배가 되고, 빛의 양은 $1 \over 4$이 된다.</p>
+
+<h4 id="aperture-size">Aperture Size</h4>
+<p>조리개의 크기가 크면 빛이 많이 들어와서 더 블러된 이미지가 생성되고, 조리개가 작으면 빛이 적게 들어와서 더 확실한 이미지가 생성된다. 그러나 조리개의 크기가 적당 크기 이하로 더 작아지면 Diffraction limit으로 인해 오히려 더 블러된 이미지가 생성된다.</p>
+
+<p>빛은 파동의 성질을 갖고 있기 때문에 구멍이 작아지면 더 많이 회절하게 되어 더 블러된 이미지가 생성된다. 이런 한계를 Diffraction limit이라고 한다.</p>
+
+<p><strong><em>이를 극복하기 위해서는 point-spread function(PSF)를 deconvolution 하면 된다??</em></strong></p>
+
+<h4 id="vanishing-points-and-lines">Vanishing Points and Lines</h4>
+<p>카메라로 사진을 찍으면 3D 대상이 2D 이미지로 사영되는 것이기 때문에 길이와 각도 정보를 잃게 된다. 하지만 직선은 보존된다.</p>
+
+<p>모든 직선(이미지에 평행한 직선 제외)은 각자의 소실점을 갖고 있다. 한 직선은 그에 대응하는 소실점으로 수렴한다. 마찬가지로 한 평면은 그에 대응하는 소실선으로 수렴한다.</p>
+
+<h4 id="perspective-distortion">Perspective Distortion</h4>
+<p>흔히 건물같이 거대한 대상을 촬영할 때 문제가 되는 현상이다. 건물을 아래에서 올려다보는 각도로 찍으면 아래부분은 더 확대되어 보이고, 윗부분은 작게 보인다. 건물과 평행한 각도로 찍으면 건물의 아랫부분밖에 보이지 않는다.</p>
+
+<p>이 왜곡에 대한 대안점은 렌즈를 건물에 평행한 각도에서 위로 높여 찍는 것이다. 렌즈를 건물 높이에 따라 움직일 수 있는 view camera라는 것이 있다.</p>
+
+<p>세로에서 일어나는 것고 같이, 가로에서도 같은 현상이 일어난다. 렌즈의 중심에서보다 렌즈의 외곽에 있는 대상에서 왜곡이 많이 일어나 대상이 크게 퍼져 보인다.</p>
+
+<h2 id="modeling-projection">Modeling Projection</h2>
+<p>$(x, y, z)$에서 반사된 점이 $y$축과의 거리가 $f$인 PP를 지나 $(0, 0, 0)$의 조리개에 들어간다고 하자. 이 때 PP에 사영된 $(x, y, z)$의 빛은 $(-f \frac{x}{z}, -f\frac{y}{z}, -f)$를 지난다. 우리는 2D 이미지를 얻을 것이므로 z축은 무시되고, 따라서 $(x, y, z)$는 PP의 $(-f \frac{x}{z}, -f\frac{y}{z})$으로 사영된다.</p>
+
+<p>이것은 $z$로 나누어지기 때문에 비선형적이므로, 하나의 차원을 더 늘려주는 트릭을 사용하므로써 선형으로 만들 수 있다. $(x, y)$를 $(x, y, 1)$로 표현하는 것이다. 이를 homogeneous coordinates라고 한다. 반대도 마찬가지로, homogeneous coordinates에서 $(x, y, \omega)$로 표현된 좌표는 2차원에서 $(\frac{x}{\omega}, \frac{y}{\omega})$로 표현될 수 있다.</p>
+
+<h4 id="perspective-projection">Perspective Projection</h4>
+<p>사영은 homogeneous coordinates를 사용해서 행렬곱을 하는 것이다. 아까의 예를 들어 보면, $(x, y, z)$의 점을 COP로부터 $f$만큼 떨어져 있는 PP에 사영할 때</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\left[\begin{matrix}
+1 & 0 & 0 & 0\\
+0 & 1 & 0 & 0\\
+0 & 0 &-\frac{1}{f} & 0
+\end{matrix} \right]
+\left[\begin{matrix} x \\ y \\ z \\ 1 \end{matrix}\right]=
+\left[\begin{matrix}x \\ y \\ -\frac{z}{f}\end{matrix}\right] %]]></script>
+
+<p>이 되고, 이는 homogeneous coordinates이기 때문에 2차원으로 바꾸면</p>
+
+<script type="math/tex; mode=display">(-f\frac{x}{z}, -f\frac{y}{z})</script>
+
+<p>가 된다. 마지막 차원의 수가 1이 되도록 나눠야 하기 때문에 곱해지는 행렬에 다른 수가 곱해져도 결과는 같다.</p>
+
+<h4 id="orthographic-projection">Orthographic Projection</h4>
+<p>원근 사영의 특이 케이스로, 실제 모양 그대로를 깊이 정보만 없앤 채 PP에 사영시킨다. 곱셈식은 다음과 같고, 이는 실제 정보의 $(x, y, z)$ 정보에서 $(x, y)$만 가지고 오는 것과 같다.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\left[\begin{matrix}
+1 & 0 & 0 & 0\\
+0 & 1 & 0 & 0\\
+0 & 0 & 0 & 1
+\end{matrix} \right]
+\left[\begin{matrix} x \\ y \\ z \\ 1 \end{matrix}\right]=
+\left[\begin{matrix} x \\ y \\ 1 \end{matrix}\right] %]]></script>
+
+<p>telecentric lens로 orthogonal projection한 영상을 얻을 수 있다. 이 렌즈는 일반 렌즈와 달리 거리에 따라 상의 크기가 달라지지 않으며, 치수를 측정해야 하는 산업용 카메라에 쓰인다. orthogonal projection의 여러 변이들 중에는 확대되어보이게 해주는 weak perspective, 모양을 변형시키는 Affine projection 등이 있다.</p>
+
+<h4 id="camera-parameters">Camera Parameters</h4>
+<p>카메라의 extrinsic 파라미터들에는 translation T와 rotation R이 있고, intrinsic 파라미터에는 focal length $f$가 있다.</p>
+
+<p>projection equation에서 $X$에 곱해지는 행렬 $\Pi$는 intrinsic matrix와 projection matrix, extrinsic matrix의 곱으로 이루어진다.</p>
+
+<hr />
+<h2 id="terms">Terms</h2>
+<p>aperture : 조리개<br />
+pencil of rays : 광선속<br />
+diffraction limit : 회절 한계<br />
+camera obscura : 암실<br />
+point-spread function : 점분산함수<br />
+COP : Centor Of Projection<br />
+PP : Projection Plane<br />
+perspective : 원근</p>
+
+</article>
+
+
+
+
+
+<section class="rss">
+  <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+</section>
+
+<!-- <section class="share">
+  <span>Share: </span>
+  
+    
+    
+    
+    
+    
+    
+    
+    
+  
+</section> -->
+
+
+
+
+<section class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'true';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+
+</div>
+</div>
+
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h3 class="footer-heading">YeonjeeJung's Blog</h3>
+
+    <div class="site-navigation">
+
+      <p><strong>Site Map</strong></p>
+      <ul class="pages">
+
+        <li class="nav-link"><a href="/about">About</a>
+        <li class="nav-link"><a href="/category/thesis">Thesis</a>
+        <li class="nav-link"><a href="/category/lecture">Lecture</a>
+
+      </ul>
+    </div>
+
+    <div class="site-contact">
+
+      <p><strong>Contact</strong></p>
+      <ul class="social-media-list">
+        <li>
+          <a href="mailto:gotnwlsl@gmail.com">
+            <i class="fa fa-envelope-o"></i>
+            <span class="username">gotnwlsl@gmail.com</span>
+          </a>
+        </li>
+
+        
+          
+          <li>
+            <a href="https://github.com/YeonjeeJung" title="Fork me on GitHub">
+              <i class="fa fa-github"></i>
+              <span class="username">YeonjeeJung</span>
+            </a>
+          </li>
+          
+        
+
+      </ul>
+    </div>
+
+    <div class="site-signature">
+      <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+      <p class="text"></p>
+    </div>
+
+  </div>
+
+</footer>
+
+<!-- Scripts -->
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/js/lightbox.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  // Default syntax highlighting
+  hljs.initHighlightingOnLoad();
+
+  // Header
+  var menuToggle = $('#js-mobile-menu').unbind();
+  $('#js-navigation-menu').removeClass("show");
+  menuToggle.on('click', function(e) {
+    e.preventDefault();
+    $('#js-navigation-menu').slideToggle(function(){
+      if($('#js-navigation-menu').is(':hidden')) {
+        $('#js-navigation-menu').removeAttr('style');
+      }
+    });
+  });
+});
+
+</script>
+
+
+
+
+
+
+  </body>
+
+</html>
