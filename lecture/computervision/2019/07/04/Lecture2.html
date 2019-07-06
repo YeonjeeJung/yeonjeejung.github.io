@@ -184,8 +184,9 @@ MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
 <p>이것은 $z$로 나누어지기 때문에 비선형적이므로, 하나의 차원을 더 늘려주는 트릭을 사용하므로써 선형으로 만들 수 있다. $(x, y)$를 $(x, y, 1)$로 표현하는 것이다. 이를 homogeneous coordinates라고 한다. 반대도 마찬가지로, homogeneous coordinates에서 $(x, y, \omega)$로 표현된 좌표는 2차원에서 $(\frac{x}{\omega}, \frac{y}{\omega})$로 표현될 수 있다.</p>
 
 <h4 id="perspective-projection">Perspective Projection</h4>
-<p>사영은 homogeneous coordinates를 사용해서 행렬곱을 하는 것이다. 아까의 예를 들어 보면, $(x, y, z)$의 점을 COP로부터 $f$만큼 떨어져 있는 PP에 사영할 때
-<script type="math/tex">% <![CDATA[
+<p>사영은 homogeneous coordinates를 사용해서 행렬곱을 하는 것이다. 아까의 예를 들어 보면, $(x, y, z)$의 점을 COP로부터 $f$만큼 떨어져 있는 PP에 사영할 때</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
 \left[\begin{matrix}
 1 & 0 & 0 & 0\\
 0 & 1 & 0 & 0\\
@@ -193,9 +194,12 @@ MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
 \end{matrix} \right]
 \left[\begin{matrix} x \\ y \\ z \\ 1 \end{matrix}\right]=
 \left[\begin{matrix}x \\ y \\ -\frac{z}{f}\end{matrix}\right] %]]></script>
-이 되고, 이는 homogeneous coordinates이기 때문에 2차원으로 바꾸면
-<script type="math/tex">(-f\frac{x}{z}, -f\frac{y}{z})</script>
-가 된다. 마지막 차원의 수가 1이 되도록 나눠야 하기 때문에 곱해지는 행렬에 다른 수가 곱해져도 결과는 같다.</p>
+
+<p>이 되고, 이는 homogeneous coordinates이기 때문에 2차원으로 바꾸면</p>
+
+<script type="math/tex; mode=display">(-f\frac{x}{z}, -f\frac{y}{z})</script>
+
+<p>가 된다. 마지막 차원의 수가 1이 되도록 나눠야 하기 때문에 곱해지는 행렬에 다른 수가 곱해져도 결과는 같다.</p>
 
 <h4 id="orthographic-projection">Orthographic Projection</h4>
 
