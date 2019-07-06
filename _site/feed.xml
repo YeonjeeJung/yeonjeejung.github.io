@@ -5,9 +5,50 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 07 Jul 2019 01:41:51 +0900</pubDate>
-    <lastBuildDate>Sun, 07 Jul 2019 01:41:51 +0900</lastBuildDate>
+    <pubDate>Sun, 07 Jul 2019 01:50:36 +0900</pubDate>
+    <lastBuildDate>Sun, 07 Jul 2019 01:50:36 +0900</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
+    
+      <item>
+        <title>CV Lecture 3 - Epipolar Geometry</title>
+        <description>&lt;h2 id=&quot;single-view-geometry&quot;&gt;Single-View Geometry&lt;/h2&gt;
+
+&lt;h4 id=&quot;principal-point-offset&quot;&gt;Principal Point Offset&lt;/h4&gt;
+
+&lt;h4 id=&quot;camera-rotation-and-translation&quot;&gt;Camera Rotation and Translation&lt;/h4&gt;
+
+&lt;h4 id=&quot;radial-distortion&quot;&gt;Radial Distortion&lt;/h4&gt;
+
+&lt;h4 id=&quot;camera-calibration&quot;&gt;Camera calibration&lt;/h4&gt;
+
+&lt;h2 id=&quot;epipolar-geometry&quot;&gt;Epipolar Geometry&lt;/h2&gt;
+
+&lt;h4 id=&quot;triangulation--linear-approach&quot;&gt;Triangulation : Linear approach&lt;/h4&gt;
+
+&lt;h4 id=&quot;triangulation--nonlinear-approach&quot;&gt;Triangulation : Nonlinear approach&lt;/h4&gt;
+
+&lt;h4 id=&quot;epipolar-geometry-1&quot;&gt;Epipolar Geometry&lt;/h4&gt;
+
+&lt;h4 id=&quot;epipolar-constraint--calibrated-case&quot;&gt;Epipolar Constraint : Calibrated case&lt;/h4&gt;
+
+&lt;h4 id=&quot;epipolar-constraint--uncalibrated-case&quot;&gt;Epipolar Constraint : Uncalibrated case&lt;/h4&gt;
+
+&lt;h4 id=&quot;the-eight-point-algorithm&quot;&gt;The eight-point algorithm&lt;/h4&gt;
+
+&lt;hr /&gt;
+&lt;h2 id=&quot;terms&quot;&gt;Terms&lt;/h2&gt;
+&lt;p&gt;calibration : 눈금&lt;/p&gt;
+</description>
+        <pubDate>Sun, 07 Jul 2019 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/lecture/computervision/2019/07/07/Lecture3.html</link>
+        <guid isPermaLink="true">http://localhost:4000/lecture/computervision/2019/07/07/Lecture3.html</guid>
+        
+        
+        <category>Lecture</category>
+        
+        <category>ComputerVision</category>
+        
+      </item>
     
       <item>
         <title>CV Lecture 2 - Image Formation and Camera</title>
@@ -95,9 +136,9 @@ COP : Centor Of Projection&lt;br /&gt;
 PP : Projection Plane&lt;br /&gt;
 perspective : 원근&lt;/p&gt;
 </description>
-        <pubDate>Thu, 04 Jul 2019 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/lecture/computervision/2019/07/04/Lecture2.html</link>
-        <guid isPermaLink="true">http://localhost:4000/lecture/computervision/2019/07/04/Lecture2.html</guid>
+        <pubDate>Sat, 06 Jul 2019 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/lecture/computervision/2019/07/06/Lecture2.html</link>
+        <guid isPermaLink="true">http://localhost:4000/lecture/computervision/2019/07/06/Lecture2.html</guid>
         
         
         <category>Lecture</category>
