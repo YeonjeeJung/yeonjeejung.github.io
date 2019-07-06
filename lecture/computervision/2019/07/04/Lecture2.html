@@ -202,8 +202,23 @@ MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
 <p>가 된다. 마지막 차원의 수가 1이 되도록 나눠야 하기 때문에 곱해지는 행렬에 다른 수가 곱해져도 결과는 같다.</p>
 
 <h4 id="orthographic-projection">Orthographic Projection</h4>
+<p>원근 사영의 특이 케이스로, 실제 모양 그대로를 깊이 정보만 없앤 채 PP에 사영시킨다. 곱셈식은 다음과 같고, 이는 실제 정보의 $(x, y, z)$ 정보에서 $(x, y)$만 가지고 오는 것과 같다.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\left[\begin{matrix}
+1 & 0 & 0 & 0\\
+0 & 1 & 0 & 0\\
+0 & 0 & 0 & 1
+\end{matrix} \right]
+\left[\begin{matrix} x \\ y \\ z \\ 1 \end{matrix}\right]=
+\left[\begin{matrix} x \\ y \\ 1 \end{matrix}\right] %]]></script>
+
+<p>telecentric lens로 orthogonal projection한 영상을 얻을 수 있다. 이 렌즈는 일반 렌즈와 달리 거리에 따라 상의 크기가 달라지지 않으며, 치수를 측정해야 하는 산업용 카메라에 쓰인다. orthogonal projection의 여러 변이들 중에는 확대되어보이게 해주는 weak perspective, 모양을 변형시키는 Affine projection 등이 있다.</p>
 
 <h4 id="camera-parameters">Camera Parameters</h4>
+<p>카메라의 extrinsic 파라미터들에는 translation T와 rotation R이 있고, intrinsic 파라미터에는 focal length $f$가 있다.</p>
+
+<p>projection equation에서 $X$에 곱해지는 행렬 $\Pi$는 intrinsic matrix와 projection matrix, extrinsic matrix의 곱으로 이루어진다.</p>
 
 <hr />
 <h2 id="terms">Terms</h2>
