@@ -5,19 +5,39 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 05 Jul 2019 02:59:55 +0900</pubDate>
-    <lastBuildDate>Fri, 05 Jul 2019 02:59:55 +0900</lastBuildDate>
+    <pubDate>Sat, 06 Jul 2019 15:44:17 +0900</pubDate>
+    <lastBuildDate>Sat, 06 Jul 2019 15:44:17 +0900</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
         <title>CV Lecture 2 - Image Formation and Camera</title>
-        <description>&lt;p&gt;제발 돼라&lt;/p&gt;
+        <description>&lt;h2 id=&quot;pinhole-camera-model&quot;&gt;Pinhole Camera Model&lt;/h2&gt;
+
+&lt;h4 id=&quot;pinhole-camera&quot;&gt;Pinhole Camera&lt;/h4&gt;
+
+&lt;h4 id=&quot;focal-length&quot;&gt;Focal Length&lt;/h4&gt;
+
+&lt;h4 id=&quot;diffraction-limit&quot;&gt;Diffraction Limit&lt;/h4&gt;
+
+&lt;h4 id=&quot;projective-geometry&quot;&gt;Projective Geometry&lt;/h4&gt;
+
+&lt;h4 id=&quot;vanishing-point--lines&quot;&gt;Vanishing Point / Lines&lt;/h4&gt;
+
+&lt;h4 id=&quot;perspective-distortion&quot;&gt;Perspective Distortion&lt;/h4&gt;
+
+&lt;h2 id=&quot;modeling-projection&quot;&gt;Modeling Projection&lt;/h2&gt;
+
+&lt;h4 id=&quot;modeling-projection-1&quot;&gt;Modeling Projection&lt;/h4&gt;
+
+&lt;h4 id=&quot;perspective-projection&quot;&gt;Perspective Projection&lt;/h4&gt;
+
+&lt;h4 id=&quot;orthographic-projection&quot;&gt;Orthographic Projection&lt;/h4&gt;
+
+&lt;h4 id=&quot;camera-parameters&quot;&gt;Camera Parameters&lt;/h4&gt;
 </description>
         <pubDate>Thu, 04 Jul 2019 00:00:00 +0900</pubDate>
         <link>http://localhost:4000/lecture/computervision/2019/07/04/Lecture2.html</link>
         <guid isPermaLink="true">http://localhost:4000/lecture/computervision/2019/07/04/Lecture2.html</guid>
-        
-        <category>ComputerVision</category>
         
         
         <category>Lecture</category>
