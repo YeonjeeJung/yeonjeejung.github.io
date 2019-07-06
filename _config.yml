@@ -199,3 +199,10 @@ protocols:
 
 category_dir: category/
 tag_dir: tag/
+
+# Conversion
+markdown: kramdown
+highlighter: rouge
+lsi: false
+excerpt_separator: "\n\n"
+incremental: false

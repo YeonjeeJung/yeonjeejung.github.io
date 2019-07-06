@@ -5,8 +5,8 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 06 Jul 2019 17:52:30 +0900</pubDate>
-    <lastBuildDate>Sat, 06 Jul 2019 17:52:30 +0900</lastBuildDate>
+    <pubDate>Sat, 06 Jul 2019 18:19:37 +0900</pubDate>
+    <lastBuildDate>Sat, 06 Jul 2019 18:19:37 +0900</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
@@ -36,11 +36,16 @@
 &lt;p&gt;모든 직선(이미지에 평행한 직선 제외)은 각자의 소실점을 갖고 있다. 한 직선은 그에 대응하는 소실점으로 수렴한다. 마찬가지로 한 평면은 그에 대응하는 소실선으로 수렴한다.&lt;/p&gt;
 
 &lt;h4 id=&quot;perspective-distortion&quot;&gt;Perspective Distortion&lt;/h4&gt;
-&lt;p&gt;흔히 건물같이 거대한 대상을 촬영할 때 문제가 되는 현상이다.&lt;/p&gt;
+&lt;p&gt;흔히 건물같이 거대한 대상을 촬영할 때 문제가 되는 현상이다. 건물을 아래에서 올려다보는 각도로 찍으면 아래부분은 더 확대되어 보이고, 윗부분은 작게 보인다. 건물과 평행한 각도로 찍으면 건물의 아랫부분밖에 보이지 않는다.&lt;/p&gt;
+
+&lt;p&gt;이 왜곡에 대한 대안점은 렌즈를 건물에 평행한 각도에서 위로 높여 찍는 것이다. 렌즈를 건물 높이에 따라 움직일 수 있는 view camera라는 것이 있다.&lt;/p&gt;
+
+&lt;p&gt;세로에서 일어나는 것고 같이, 가로에서도 같은 현상이 일어난다. 렌즈의 중심에서보다 렌즈의 외곽에 있는 대상에서 왜곡이 많이 일어나 대상이 크게 퍼져 보인다.&lt;/p&gt;
 
 &lt;h2 id=&quot;modeling-projection&quot;&gt;Modeling Projection&lt;/h2&gt;
+&lt;p&gt;$(x, y, z)$에서 반사된 점이 $y$축과의 거리가 $f$인 PP를 지나 $(0, 0, 0)$의 조리개에 들어간다고 하자. 이 때 PP에 사영된 $(x, y, z)$의 빛은 $(-f \frac{x}{z}, -f\frac{y}{z}, -f)$를 지난다. 우리는 2D 이미지를 얻을 것이므로 z축은 무시되고, 따라서 $(x, y, z)$는 PP의 $(-f \frac{x}{z}, -f\frac{y}{z})$으로 사영된다.&lt;/p&gt;
 
-&lt;h4 id=&quot;modeling-projection-1&quot;&gt;Modeling Projection&lt;/h4&gt;
+&lt;p&gt;이것은&lt;/p&gt;
 
 &lt;h4 id=&quot;perspective-projection&quot;&gt;Perspective Projection&lt;/h4&gt;
 
@@ -50,11 +55,14 @@
 
 &lt;hr /&gt;
 &lt;h2 id=&quot;terms&quot;&gt;Terms&lt;/h2&gt;
-&lt;p&gt;aperture : 조리개
-pencil of rays : 광선속
-diffraction limit : 회절 한계
-camera obscura : 암실
-point-spread function : 점분산함수&lt;/p&gt;
+&lt;p&gt;aperture : 조리개&lt;br /&gt;
+pencil of rays : 광선속&lt;br /&gt;
+diffraction limit : 회절 한계&lt;br /&gt;
+camera obscura : 암실&lt;br /&gt;
+point-spread function : 점분산함수&lt;br /&gt;
+COP : Centor Of Projection&lt;br /&gt;
+PP : Projection Plane&lt;br /&gt;
+perspective : 원근&lt;/p&gt;
 </description>
         <pubDate>Thu, 04 Jul 2019 00:00:00 +0900</pubDate>
         <link>http://localhost:4000/lecture/computervision/2019/07/04/Lecture2.html</link>
