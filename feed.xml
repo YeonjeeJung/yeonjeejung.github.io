@@ -5,8 +5,8 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 06 Jul 2019 17:38:26 +0900</pubDate>
-    <lastBuildDate>Sat, 06 Jul 2019 17:38:26 +0900</lastBuildDate>
+    <pubDate>Sat, 06 Jul 2019 17:52:30 +0900</pubDate>
+    <lastBuildDate>Sat, 06 Jul 2019 17:52:30 +0900</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
@@ -27,16 +27,16 @@
 &lt;p&gt;조리개의 크기가 크면 빛이 많이 들어와서 더 블러된 이미지가 생성되고, 조리개가 작으면 빛이 적게 들어와서 더 확실한 이미지가 생성된다. 그러나 조리개의 크기가 적당 크기 이하로 더 작아지면 Diffraction limit으로 인해 오히려 더 블러된 이미지가 생성된다.&lt;/p&gt;
 
 &lt;p&gt;빛은 파동의 성질을 갖고 있기 때문에 구멍이 작아지면 더 많이 회절하게 되어 더 블러된 이미지가 생성된다. 이런 한계를 Diffraction limit이라고 한다.&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;이를 극복하기 위해서는 point-spread function(PSF)를 deconvolution 하면 된다??&lt;/p&gt;
-&lt;/blockquote&gt;
 
-&lt;h4 id=&quot;vanishing-point--lines&quot;&gt;Vanishing Point / Lines&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;이를 극복하기 위해서는 point-spread function(PSF)를 deconvolution 하면 된다??&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;vanishing-points-and-lines&quot;&gt;Vanishing Points and Lines&lt;/h4&gt;
 &lt;p&gt;카메라로 사진을 찍으면 3D 대상이 2D 이미지로 사영되는 것이기 때문에 길이와 각도 정보를 잃게 된다. 하지만 직선은 보존된다.&lt;/p&gt;
 
-&lt;p&gt;모든 직선(이미지에 평행한 직선 제외)은 각자의 소실점을 갖고 있다. 한 직선은 그에 대응하는 소실점으로 수렴한다.&lt;/p&gt;
+&lt;p&gt;모든 직선(이미지에 평행한 직선 제외)은 각자의 소실점을 갖고 있다. 한 직선은 그에 대응하는 소실점으로 수렴한다. 마찬가지로 한 평면은 그에 대응하는 소실선으로 수렴한다.&lt;/p&gt;
 
 &lt;h4 id=&quot;perspective-distortion&quot;&gt;Perspective Distortion&lt;/h4&gt;
+&lt;p&gt;흔히 건물같이 거대한 대상을 촬영할 때 문제가 되는 현상이다.&lt;/p&gt;
 
 &lt;h2 id=&quot;modeling-projection&quot;&gt;Modeling Projection&lt;/h2&gt;
 
