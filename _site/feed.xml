@@ -5,15 +5,56 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 07 Jul 2019 01:50:36 +0900</pubDate>
-    <lastBuildDate>Sun, 07 Jul 2019 01:50:36 +0900</lastBuildDate>
+    <pubDate>Sun, 07 Jul 2019 15:28:48 +0900</pubDate>
+    <lastBuildDate>Sun, 07 Jul 2019 15:28:48 +0900</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
         <title>CV Lecture 3 - Epipolar Geometry</title>
         <description>&lt;h2 id=&quot;single-view-geometry&quot;&gt;Single-View Geometry&lt;/h2&gt;
+&lt;p&gt;일단 우리의 목표는 한 3D 구조를 재건하는 것이다. 그러나 하나의 이미지는 깊이 정보를 갖고 있지 않기 때문에 정확하게 재건할 수 없다. 따라서 우리는 multi-view geometry가 필요하다.&lt;/p&gt;
 
 &lt;h4 id=&quot;principal-point-offset&quot;&gt;Principal Point Offset&lt;/h4&gt;
+&lt;p&gt;principal axis는 카메라 중심에서부터 이미지 평면에 수직으로 들어오는 선이다. principal point란 principal axis가 이미지 평면과 만나는 점이다. 따라서 normalized coordinate system 상의 원점은 principal point이다. 그런데 image coordinate system상의 원점은 좌측 하단이다. 따라서 image coordinate system에서 얻은 좌표를 normalized coordinate system에서의 좌표로 변환해야 한다. (normalized coordinate system에서의 좌표에는 음수도 존재한다.)&lt;/p&gt;
+
+&lt;p&gt;principal point의 좌표가 $(p_x, p_y)$라고 하면 normalized coordinate system에서의 좌표는 $(x, y, z) \rightarrow (f\frac{x}{z}, f\frac{y}{z})$가 되고, 이를 image coordinate system의 좌표로 나타내면 $(f\frac{x}{z}+p_x, f\frac{y}{z}+p_y)$가 된다. 이를 하나의 식으로 나타내면&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\left[\begin{matrix} fx+zp_x \\ fy+zp_y \\ z \end{matrix}\right]=
+\left[\begin{matrix}
+f &amp; 0 &amp; p_x\\
+0 &amp; f &amp; p_y\\
+0 &amp; 0 &amp; 1
+\end{matrix} \right]
+\left[\begin{matrix}
+1 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; 1 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; 1 &amp; 0
+\end{matrix} \right]
+\left[\begin{matrix} x \\ y \\ z \\ 1 \end{matrix}\right] %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;인데, 첫번째 행렬은 intrinsic 행렬이고, 두번째 행렬은 projection 행렬이다. 이 때 이 intrinsic 행렬을 calibration 행렬이라고 하고, $K$로 표기한다. projection 행렬은 $[I|0]$로 표현될 수 있다. 따라서 이 때 곱해지는 행렬 $\Pi$는 $K[I|0]$가 된다.&lt;/p&gt;
+
+&lt;p&gt;실제 이미지에서는 이렇게 바뀐 좌표를 pixel coordinate로 바꿔야 한다. 가로에는 $1$미터 안에 $m_x$개의 픽셀, 세로에는 $1$미터 안에 $m_y$개의 픽셀이 있다고 하자. 원래의 $K$행렬은 각 좌표를 미터 단위로 변환시켜주는데, 이 앞에 $1$미터 안에 들어있는 픽셀수를 곱해주면 픽셀 단위로 좌표를 변환시킬 수 있다. 따라서 pixel coordinate로 변환시킨 새로운 $K$는&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+K=\left[\begin{matrix}
+m_x &amp; 0 &amp; 0 \\
+0 &amp; m_y &amp; 0 \\
+0 &amp; 0 &amp; 1\\
+\end{matrix}\right]
+\left[\begin{matrix}
+f &amp; 0 &amp; p_x \\
+0 &amp; f &amp; p_y \\
+0 &amp; 0 &amp; 1
+\end{matrix}\right]=
+\left[\begin{matrix}
+\alpha_x &amp; 0 &amp; \beta_x \\
+0 &amp; \alpha_y &amp; \beta_y \\
+0 &amp; 0 &amp; 1
+\end{matrix}\right] %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;가 된다.&lt;/p&gt;
 
 &lt;h4 id=&quot;camera-rotation-and-translation&quot;&gt;Camera Rotation and Translation&lt;/h4&gt;
 
