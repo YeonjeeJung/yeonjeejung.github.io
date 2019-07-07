@@ -171,7 +171,7 @@ f & 0 & p_x\\
 
 <p>인데, 첫번째 행렬은 intrinsic 행렬이고, 두번째 행렬은 projection 행렬이다. 이 때 이 intrinsic 행렬을 calibration 행렬이라고 하고, $K$로 표기한다. projection 행렬은 $[I|0]$로 표현될 수 있다. 따라서 이 때 곱해지는 행렬 $\Pi$는 $K[I|0]$가 된다.</p>
 
-<p>실제 이미지에서는 이렇게 바뀐 좌표를 pixel coordinate로 바꿔야 한다. 가로에는 $1$미터 안에 $m_x$개의 픽셀, 세로에는 $1$미터 안에 $m_y$개의 픽셀이 있다고 하자. 원래의 $K$행렬은 각 좌표를 미터 단위로 변환시켜주는데, 이 앞에 $1$미터 안에 들어있는 픽셀수를 곱해주면 픽셀 단위로 좌표를 변환시킬 수 있다. 따라서 pixel coordinate로 변환시킨 새로운 $K$는</p>
+<p>실제 이미지에서는 이렇게 바뀐 좌표를 pixel coordinate로 바꿔야 한다. 가로에는 $1$미터 안에 $m_x$개의 픽셀, 세로에는 $1$미터 안에 $m_y$개의 픽셀이 있다고 하자. 원래의 $K$행렬은 각 좌표를 미터 단위로 변환시켜주는데, 이 앞에 $1$미터 안에 들어있는 픽셀수를 곱해주면 픽셀 단위로 좌표를 변환시킬 수 있다. 따라서 pixel coordinate로 변환시켜줄 새로운 $K$는</p>
 
 <script type="math/tex; mode=display">% <![CDATA[
 K=\left[\begin{matrix}
@@ -193,16 +193,75 @@ f & 0 & p_x \\
 <p>가 된다.</p>
 
 <h4 id="camera-rotation-and-translation">Camera Rotation and Translation</h4>
+<p>카메라의 extrinsic 파라미터에 해당한다. 일반적으로 카메라를 땅과 평행하게 두고 촬영하지 않기 때문에 projection에 앞서 실제 좌표를 카메라 좌표로 옮기는 일도 필요하다. 여기에는 두 가지 과정이 있는데, 중심을 $(0, 0)$으로 맞추는 과정과 회전변환을 하는 과정이다. 이를 식으로 나타내면 $\tilde{X}_{cam} = R(\tilde{X}-\tilde{C})$ 가 된다. 하지만 이것은 $\tilde{X} = (x, y, z)$라고 가정했을 때의 식이고, 이는 non-homogeneous이므로, homogeneous한 식으로 바꾸면</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+X_{cam}=
+\left[\begin{matrix}
+R & -R\tilde{C}\\ 0 & 1
+\end{matrix}\right]X %]]></script>
+
+<p>라고 쓸 수 있다. (한 차원을 추가해서 그 차원을 상수 $1$로 고정, $X=\left(\begin{matrix} \tilde{X} \ 1\end{matrix}\right)$)</p>
+
+<p>최종적으로 $x = K[I|0]X_{cam} = K[R|-R\tilde{C}]X$가 되고, projection 행렬 $\Pi$는 $\Pi = K[R|-R\tilde{C}]$가 된다.</p>
 
 <h4 id="radial-distortion">Radial Distortion</h4>
+<p>intrinsic 파라미터 중 하나이다. 카메라 렌즈의 굴절에 의해 일어나는 왜곡으로써, 렌즈의 중앙과 멀어질수록 왜곡이 심하게 일어난다. 왜곡 모델은 다음과 같다.</p>
 
-<h4 id="camera-calibration">Camera calibration</h4>
+<p>먼저, $(\hat{x}, \hat{y}, \hat{z})$를 normalized coordinate로 옮긴다.</p>
+
+<script type="math/tex; mode=display">(x_n', y_n') = (\frac{\hat{x}}{\hat{z}}, \frac{\hat{y}}{\hat{z}})</script>
+
+<p>그 후 radial distortion을 적용한다.</p>
+
+<script type="math/tex; mode=display">r^2 = x_n'^2 + y_n'^2</script>
+
+<script type="math/tex; mode=display">\left(\begin{matrix}x_d' \\ y_d'\end{matrix}\right)=
+(1+k_1r^2+k_2r^4)\left(\begin{matrix}x_n' \\ y_n'\end{matrix}\right)</script>
+
+<p>마지막으로 <script type="math/tex">% <![CDATA[
+K = \left[\begin{matrix}f & 0 & p_x \\ 0 & f & p_y \\ 0 & 0 & 1\end{matrix}\right] %]]></script>을 적용한다.</p>
+
+<h4 id="camera-calibration--linear-method">Camera calibration : Linear Method</h4>
+<p>그렇다면 $\Pi$는 어떻게 찾을 수 있을까? 이미지 상의 좌표 $x$에 대해 $x=\Pi X$를 만족하고, $\Pi \in \R^{3\times4}$이므로, 12개의 변수를 가지고 있다. (하지만 마지막은 항상 1이므로, 사실은 11개의 변수를 가지고 있다.) 따라서 최소 12개의 식을 알고 있다면 이 방정식을 풀어 $\Pi$를 찾을 수 있다. 하나의 $x$는 $x, y$의 두 좌표를 가지고 있으므로, 최소 6개의 $x, X$ 쌍을 알고 있다면 $\Pi$를 알아낼 수 있다.</p>
+
+<p>$X$가 projection에 의해 $x$로 사영되므로, 둘의 방향은 같다. 따라서 $x_i \times \Pi X_i = 0$이라는 관계식을 가지고 있다. 이 식에서 linearly independent한 두 개의 식만 가지고 와서</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\left[\begin{matrix}
+0 & -X_i^T & y_iX_i^T \\
+X_i^T & 0 & -x_iX_i^T
+\end{matrix}\right]
+\left(\begin{matrix}\Pi_x \\ \Pi_y \\ \Pi_z\end{matrix}\right)=0 %]]></script>
+
+<p>의 식을 만들 수 있다.($\Pi_{x, y, z} \in \R^{4\times1}$) 6개의 점을 알고 있다면 여기에 대입하여</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\left[\begin{matrix}
+0^T & X_1^T & -y_1X_1^T \\
+X_1^T & 0^T & x_1X_1^T \\
+\cdots & \cdots & \cdots \\
+0^T & X_6^T & -y_6X_6^T \\
+X_6^T & 0^T & x_6X_6^T \\
+\end{matrix}\right]
+\left(\begin{matrix}\Pi_x \\ \Pi_y \\ \Pi_z\end{matrix}\right)=0 %]]></script>
+
+<p>을 풀면 $\Pi$를 알아낼 수 있다.</p>
+
+<p>Linear method의 장점은 수식화가 쉽고 풀기도 쉽다는 점이다. 하지만 직접적으로 카메라 파라미터를 알 수는 없으며 radial distortion도 고려하지 않는다. 또한 제한 사항도 집어넣을 수 없다는 단점이 있다. 따라서 non-Linear method가 더 선호된다.</p>
 
 <h2 id="epipolar-geometry">Epipolar Geometry</h2>
 
-<h4 id="triangulation--linear-approach">Triangulation : Linear approach</h4>
+<h4 id="triangulation">Triangulation</h4>
+<p>두개, 혹은 그 이상의 이미지를 가지고 3D상의 점을 찾는 것을 triangulation이라고 한다. $O_1$ 을 원점으로 갖는 이미지에서의 점 $x_1$, $O_2$를 원점으로 갖는 이미지에서의 점 $x_2$를 각각의 원점과 이은 선은 실제 점 $x$에서 교차해야 한다. 하지만 노이즈나 에러때문에 정확하게 만나지는 않는다. 따라서 두 선의 거리가 가장 가까운 두 점을 이은 선분의 중점을 $x$라고 예측한다.</p>
 
-<h4 id="triangulation--nonlinear-approach">Triangulation : Nonlinear approach</h4>
+<p>$X$를 알아내는 linear approach는 다음과 같다. $x_1$과 $x_2$는 $\Pi_iX$와 평행하기 때문에 각각 다음의 식이 성립한다.</p>
+
+<script type="math/tex; mode=display">x_i \times P_iX=0</script>
+
+<p>그리고 $x_i\times PX=[x_{i\times}]PX$를 만족하는 $[x_{i\times}]$를 찾을 수 있다. 하나의 $x_i$에 대해 $[x_{i\times}]P_xX=0<script type="math/tex">,</script>[x_{i\times}]P_yX=0$의 두 식을 알아낼 수 있고(두 개만 linearly independent하므로) 우리는 두 개의 $x_i$를 알고 있으므로 총 4개의 식을 알고 있다. 알아내야 하는 $X$의 변수가 3개이므로, 방정식을 풀어 $X$를 알아낼 수 있다.</p>
+
+<p>$X$를 알아내는 non-linear approach는 $X = argmin(d^2(x_1, P_1X)+d^2(x_2, P_2X))$를 찾아내면 된다.</p>
 
 <h4 id="epipolar-geometry-1">Epipolar Geometry</h4>
 
@@ -214,7 +273,7 @@ f & 0 & p_x \\
 
 <hr />
 <h2 id="terms">Terms</h2>
-<p>calibration : 눈금</p>
+<p>calibration : 교정, 눈금</p>
 
 </article>
 
