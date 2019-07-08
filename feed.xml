@@ -5,8 +5,8 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 08 Jul 2019 21:33:03 +0900</pubDate>
-    <lastBuildDate>Mon, 08 Jul 2019 21:33:03 +0900</lastBuildDate>
+    <pubDate>Tue, 09 Jul 2019 01:36:25 +0900</pubDate>
+    <lastBuildDate>Tue, 09 Jul 2019 01:36:25 +0900</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
@@ -30,10 +30,12 @@ E=t\times R=\left[\begin{matrix}0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; -T \\ 0 &am
 &lt;p&gt;이 된다.&lt;/p&gt;
 
 &lt;h4 id=&quot;stereo-image-rectification&quot;&gt;Stereo Image Rectification&lt;/h4&gt;
+&lt;p&gt;두 카메라가 평행하면 한 좌표를 보는 두 이미지 평면이 평행하지 않을 수 있는데, 이렇게 얻은 이미지 평면을 두 카메라를 잇는 선에 평행한 평면에 옮겨주는 것을 image rectification이라고 한다. 이것을 하고 나면 위에서 쓴 essential 행렬을 사용할 수 있다.&lt;/p&gt;
 
 &lt;h4 id=&quot;homography&quot;&gt;Homography&lt;/h4&gt;
-&lt;p&gt;하나의 대상을 서로 다른 두 관점에서 바라본 두 개의 이미지를 서로 변환할 수 있는 행렬을 homography라고 한다.
-—&lt;/p&gt;
+&lt;p&gt;하나의 대상을 서로 다른 두 관점에서 바라본 두 개의 이미지를 서로 변환할 수 있는 행렬을 homography ($H$)라고 한다.&lt;/p&gt;
+
+&lt;hr /&gt;
 &lt;h2 id=&quot;terms&quot;&gt;Terms&lt;/h2&gt;
 &lt;p&gt;rectify : 바로잡기&lt;br /&gt;
 disparity : 차이, 이격&lt;br /&gt;
