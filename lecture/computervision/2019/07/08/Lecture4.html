@@ -150,13 +150,30 @@ MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
   <h2 id="camera-calibration">Camera Calibration</h2>
 
 <h4 id="stereo-reconstruction">Stereo Reconstruction</h4>
+<p>Stereo Reconstruction은 두 장 이상의 2D 이미지를 이용해서 이를 3D상에서 재건하는 것인데, 단계는 다음과 같다.</p>
+<ol>
+  <li>카메라 변수 찾기</li>
+  <li>이미지 바로잡기</li>
+  <li>차이 계산</li>
+  <li>깊이 예측</li>
+</ol>
+
+<p>가장 간단한 케이스는 평행한 두 지점에서 찍힌 이미지를 이용해 재건하는 것이다. 이미지 $I’$가 이미지 $I$보다 $x$축으로 $T$만큼 이동했다면, $R = I$(identity)이고 $t=(T, 0, 0)$이 된다. 따라서</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+E=t\times R=\left[\begin{matrix}0 & 0 & 0 \\ 0 & 0 & -T \\ 0 & T & 0\end{matrix}\right] %]]></script>
+
+<p>이 된다.</p>
 
 <h4 id="stereo-image-rectification">Stereo Image Rectification</h4>
 
 <h4 id="homography">Homography</h4>
-
-<hr />
+<p>하나의 대상을 서로 다른 두 관점에서 바라본 두 개의 이미지를 서로 변환할 수 있는 행렬을 homography라고 한다.
+—</p>
 <h2 id="terms">Terms</h2>
+<p>rectify : 바로잡기<br />
+disparity : 차이, 이격<br />
+anaglyph : 애너글리프. 인간의 두 눈의 시차를 이용하여 3D영상을 보는 것처럼 하는 것.</p>
 
 </article>
 

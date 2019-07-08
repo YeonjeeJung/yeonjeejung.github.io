@@ -5,8 +5,8 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 08 Jul 2019 00:39:32 +0900</pubDate>
-    <lastBuildDate>Mon, 08 Jul 2019 00:39:32 +0900</lastBuildDate>
+    <pubDate>Mon, 08 Jul 2019 21:33:03 +0900</pubDate>
+    <lastBuildDate>Mon, 08 Jul 2019 21:33:03 +0900</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
@@ -14,13 +14,30 @@
         <description>&lt;h2 id=&quot;camera-calibration&quot;&gt;Camera Calibration&lt;/h2&gt;
 
 &lt;h4 id=&quot;stereo-reconstruction&quot;&gt;Stereo Reconstruction&lt;/h4&gt;
+&lt;p&gt;Stereo Reconstruction은 두 장 이상의 2D 이미지를 이용해서 이를 3D상에서 재건하는 것인데, 단계는 다음과 같다.&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;카메라 변수 찾기&lt;/li&gt;
+  &lt;li&gt;이미지 바로잡기&lt;/li&gt;
+  &lt;li&gt;차이 계산&lt;/li&gt;
+  &lt;li&gt;깊이 예측&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;가장 간단한 케이스는 평행한 두 지점에서 찍힌 이미지를 이용해 재건하는 것이다. 이미지 $I’$가 이미지 $I$보다 $x$축으로 $T$만큼 이동했다면, $R = I$(identity)이고 $t=(T, 0, 0)$이 된다. 따라서&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+E=t\times R=\left[\begin{matrix}0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; -T \\ 0 &amp; T &amp; 0\end{matrix}\right] %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;이 된다.&lt;/p&gt;
 
 &lt;h4 id=&quot;stereo-image-rectification&quot;&gt;Stereo Image Rectification&lt;/h4&gt;
 
 &lt;h4 id=&quot;homography&quot;&gt;Homography&lt;/h4&gt;
-
-&lt;hr /&gt;
+&lt;p&gt;하나의 대상을 서로 다른 두 관점에서 바라본 두 개의 이미지를 서로 변환할 수 있는 행렬을 homography라고 한다.
+—&lt;/p&gt;
 &lt;h2 id=&quot;terms&quot;&gt;Terms&lt;/h2&gt;
+&lt;p&gt;rectify : 바로잡기&lt;br /&gt;
+disparity : 차이, 이격&lt;br /&gt;
+anaglyph : 애너글리프. 인간의 두 눈의 시차를 이용하여 3D영상을 보는 것처럼 하는 것.&lt;/p&gt;
 </description>
         <pubDate>Mon, 08 Jul 2019 00:00:00 +0900</pubDate>
         <link>http://localhost:4000/lecture/computervision/2019/07/08/Lecture4.html</link>
@@ -122,7 +139,7 @@ X_i^T &amp; 0 &amp; -x_iX_i^T
 \end{matrix}\right]
 \left(\begin{matrix}\Pi_x \\ \Pi_y \\ \Pi_z\end{matrix}\right)=0 %]]&gt;&lt;/script&gt;
 
-&lt;p&gt;의 식을 만들 수 있다.($\Pi_{x, y, z} \in \R^{4\times1}$) 6개의 점을 알고 있다면 여기에 대입하여&lt;/p&gt;
+&lt;p&gt;의 식을 만들 수 있다.($\Pi_{x, y, z} \in \mathbb{R}^{4\times1}$) 6개의 점을 알고 있다면 여기에 대입하여&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \left[\begin{matrix}
