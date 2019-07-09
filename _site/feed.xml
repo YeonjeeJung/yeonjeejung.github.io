@@ -5,8 +5,8 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 09 Jul 2019 21:40:36 +0900</pubDate>
-    <lastBuildDate>Tue, 09 Jul 2019 21:40:36 +0900</lastBuildDate>
+    <pubDate>Tue, 09 Jul 2019 21:57:03 +0900</pubDate>
+    <lastBuildDate>Tue, 09 Jul 2019 21:57:03 +0900</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
@@ -51,8 +51,9 @@ E=t\times R=\left[\begin{matrix}0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; -T \\ 0 &am
 
 &lt;h4 id=&quot;2d-checkerboard-pattern&quot;&gt;2D Checkerboard Pattern&lt;/h4&gt;
 &lt;p&gt;&lt;img src=&quot;http://www.campi3d.com/External/MariExtensionPack/userGuide4R1/lib/CHeckerSimpleB.png&quot; alt=&quot;&quot; /&gt;
-&lt;a href=&quot;http://www.campi3d.com/External/MariExtensionPack/userGuide4R1/lib/CHeckerSimpleB.png&quot;&gt;Source&lt;/a&gt;
-2D 체스판을 생각해 보자. 체스판의 모든 좌표는 하나의 평면에 있다. 따라서, 모든 점의 $z$좌표는 모두 $0$이다.&lt;/p&gt;
+&lt;a href=&quot;http://www.campi3d.com/External/MariExtensionPack/userGuide4R1/lib/CHeckerSimpleB.png&quot;&gt;Source&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;2D 체스판을 생각해 보자. 체스판의 모든 좌표는 하나의 평면에 있다. 따라서, 모든 점의 $z$좌표는 모두 $0$이다.&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \left(\begin{matrix}u\\v\\1\end{matrix}\right)=K
