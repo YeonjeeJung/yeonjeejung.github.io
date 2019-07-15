@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>CV Lecture 5 - Stereo Matching</title>
-  <meta name="description" content="Stereo Matching">
+  <meta name="description" content="Stereo Matchingsource">
   
   <meta name="author" content="YeonjeeJung">
   <meta name="copyright" content="&copy; YeonjeeJung 2019">
@@ -45,7 +45,7 @@
   <!-- Twitter: card tags -->
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="CV Lecture 5 - Stereo Matching">
-  <meta name="twitter:description" content="Stereo Matching">
+  <meta name="twitter:description" content="Stereo Matchingsource">
   <meta name="twitter:image" content="http://localhost:4000/assets/logo.png">
   <meta name="twitter:url" content="http://localhost:4000">
   
@@ -54,7 +54,7 @@
 
   <!-- Site styles -->
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://localhost:4000/lecture/computervision/2019/07/10/Lecture5.html">
+  <link rel="canonical" href="http://localhost:4000/lecture/computervision/2019/07/15/Lecture5.html">
   <link rel="alternate" type="application/rss+xml" title="YeonjeeJung's Blog" href="http://localhost:4000/feed.xml" />
 </head>
 
@@ -132,7 +132,7 @@ MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
  
 
 <section class="post-meta">
-  <div class="post-date">July 10, 2019</div>
+  <div class="post-date">July 15, 2019</div>
   <div class="post-categories">
   in 
     
@@ -148,9 +148,24 @@ MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
 
 <article class="post-content">
   <h2 id="stereo-matching">Stereo Matching</h2>
+<p><img src="https://www.researchgate.net/profile/Nathaniel_Short/publication/265115132/figure/fig7/AS:305305712906251@1449801962495/Simple-geometry-for-stereo-ranging-The-usual-goal-is-to-find-the-range-Z-from-the.png" alt="" />
+<a href="https://www.researchgate.net/profile/Nathaniel_Short/publication/265115132/figure/fig7/AS:305305712906251@1449801962495/Simple-geometry-for-stereo-ranging-The-usual-goal-is-to-find-the-range-Z-from-the.png">source</a></p>
+
+<p>($f$:focal length, $p^l, p^r$:image point(left, right), $P$:world point, $Z$:depth of $P$, 그리고 length of Baseline을 $T$라고 하자. 그리고 $x_l$은 $O_l$을 기준으로 한 선으로부터 음의 방향으로 $p_l$까지의 거리, $x_r$은 $O_r$을 기준으로 한 선으로부터 양의 방향으로 $p_r$까지의 거리이다.)</p>
+
+<p>그러면 $\triangle(p_l, P, p_r)$과 $\triangle(O_l, P, O_r)$은 닮음이므로</p>
+
+<script type="math/tex; mode=display">\frac{T+x_l-x_r}{Z-f} = \frac{T}{Z}</script>
+
+<p>이 성립하므로,</p>
+
+<script type="math/tex; mode=display">Z = f\frac{T}{x_r-x_l}</script>
+
+<p>이 성립하는데, 이때 $x_r-x_l$을 disparity라고 하고, $D = x_r-x_l$이라고 한다.</p>
 
 <hr />
 <h2 id="terms">Terms</h2>
+<p>disparity : 차이, 이격도</p>
 
 </article>
 

@@ -5,20 +5,35 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 15 Jul 2019 20:57:45 +0900</pubDate>
-    <lastBuildDate>Mon, 15 Jul 2019 20:57:45 +0900</lastBuildDate>
+    <pubDate>Mon, 15 Jul 2019 21:50:55 +0900</pubDate>
+    <lastBuildDate>Mon, 15 Jul 2019 21:50:55 +0900</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
         <title>CV Lecture 5 - Stereo Matching</title>
         <description>&lt;h2 id=&quot;stereo-matching&quot;&gt;Stereo Matching&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;https://www.researchgate.net/profile/Nathaniel_Short/publication/265115132/figure/fig7/AS:305305712906251@1449801962495/Simple-geometry-for-stereo-ranging-The-usual-goal-is-to-find-the-range-Z-from-the.png&quot; alt=&quot;&quot; /&gt;
+&lt;a href=&quot;https://www.researchgate.net/profile/Nathaniel_Short/publication/265115132/figure/fig7/AS:305305712906251@1449801962495/Simple-geometry-for-stereo-ranging-The-usual-goal-is-to-find-the-range-Z-from-the.png&quot;&gt;source&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;($f$:focal length, $p^l, p^r$:image point(left, right), $P$:world point, $Z$:depth of $P$, 그리고 length of Baseline을 $T$라고 하자. 그리고 $x_l$은 $O_l$을 기준으로 한 선으로부터 음의 방향으로 $p_l$까지의 거리, $x_r$은 $O_r$을 기준으로 한 선으로부터 양의 방향으로 $p_r$까지의 거리이다.)&lt;/p&gt;
+
+&lt;p&gt;그러면 $\triangle(p_l, P, p_r)$과 $\triangle(O_l, P, O_r)$은 닮음이므로&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{T+x_l-x_r}{Z-f} = \frac{T}{Z}&lt;/script&gt;
+
+&lt;p&gt;이 성립하므로,&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;Z = f\frac{T}{x_r-x_l}&lt;/script&gt;
+
+&lt;p&gt;이 성립하는데, 이때 $x_r-x_l$을 disparity라고 하고, $D = x_r-x_l$이라고 한다.&lt;/p&gt;
 
 &lt;hr /&gt;
 &lt;h2 id=&quot;terms&quot;&gt;Terms&lt;/h2&gt;
+&lt;p&gt;disparity : 차이, 이격도&lt;/p&gt;
 </description>
-        <pubDate>Wed, 10 Jul 2019 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/lecture/computervision/2019/07/10/Lecture5.html</link>
-        <guid isPermaLink="true">http://localhost:4000/lecture/computervision/2019/07/10/Lecture5.html</guid>
+        <pubDate>Mon, 15 Jul 2019 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/lecture/computervision/2019/07/15/Lecture5.html</link>
+        <guid isPermaLink="true">http://localhost:4000/lecture/computervision/2019/07/15/Lecture5.html</guid>
         
         
         <category>Lecture</category>
@@ -55,11 +70,11 @@ E=t\times R=\left[\begin{matrix}0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; -T \\ 0 &am
 
 &lt;p&gt;이 두 시점 변환에 translation이 없으므로 rotation만이 존재하게 되고, $\Pi_r = R\Pi_l$라고 쓸 수 있다. ($\Pi_r$은 첫번째, $\Pi_l$은 두번째 각도의 projection 행렬) $\Pi_l = K[I|0]$이므로&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;x_l = K[I\|0]\left[\begin{matrix} X\\ 1 \end{matrix}\right] = KX&lt;/script&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;x_l = K[I|0]\left[\begin{matrix} X\\ 1 \end{matrix}\right] = KX&lt;/script&gt;
 
-&lt;p&gt;이고, $\Pi_r = K[R|0]$$이므로&lt;/p&gt;
+&lt;p&gt;이고, $\Pi_r = K[R|0]$이므로&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;x_r = K[R\|0]\left[\begin{matrix}X\\ 1\end{matrix}\right] = KRX&lt;/script&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;x_r = K[R|0]\left[\begin{matrix}X\\ 1\end{matrix}\right] = KRX&lt;/script&gt;
 
 &lt;p&gt;이다. 따라서, $x_r = KRK^{-1}x_l$이고, $H = KRK^{-1}$이 된다.&lt;/p&gt;
 

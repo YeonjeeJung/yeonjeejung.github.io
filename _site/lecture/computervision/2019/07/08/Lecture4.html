@@ -173,11 +173,11 @@ E=t\times R=\left[\begin{matrix}0 & 0 & 0 \\ 0 & 0 & -T \\ 0 & T & 0\end{matrix}
 
 <p>이 두 시점 변환에 translation이 없으므로 rotation만이 존재하게 되고, $\Pi_r = R\Pi_l$라고 쓸 수 있다. ($\Pi_r$은 첫번째, $\Pi_l$은 두번째 각도의 projection 행렬) $\Pi_l = K[I|0]$이므로</p>
 
-<script type="math/tex; mode=display">x_l = K[I\|0]\left[\begin{matrix} X\\ 1 \end{matrix}\right] = KX</script>
+<script type="math/tex; mode=display">x_l = K[I|0]\left[\begin{matrix} X\\ 1 \end{matrix}\right] = KX</script>
 
-<p>이고, $\Pi_r = K[R|0]$$이므로</p>
+<p>이고, $\Pi_r = K[R|0]$이므로</p>
 
-<script type="math/tex; mode=display">x_r = K[R\|0]\left[\begin{matrix}X\\ 1\end{matrix}\right] = KRX</script>
+<script type="math/tex; mode=display">x_r = K[R|0]\left[\begin{matrix}X\\ 1\end{matrix}\right] = KRX</script>
 
 <p>이다. 따라서, $x_r = KRK^{-1}x_l$이고, $H = KRK^{-1}$이 된다.</p>
 
