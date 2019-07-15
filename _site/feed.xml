@@ -5,8 +5,8 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 10 Jul 2019 18:28:23 +0900</pubDate>
-    <lastBuildDate>Wed, 10 Jul 2019 18:28:23 +0900</lastBuildDate>
+    <pubDate>Mon, 15 Jul 2019 20:57:45 +0900</pubDate>
+    <lastBuildDate>Mon, 15 Jul 2019 20:57:45 +0900</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
@@ -51,9 +51,9 @@ E=t\times R=\left[\begin{matrix}0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; -T \\ 0 &am
 &lt;p&gt;두 카메라가 평행하면 한 좌표를 보는 두 이미지 평면이 평행하지 않을 수 있는데, 이렇게 얻은 이미지 평면을 두 카메라를 잇는 선에 평행한 평면에 옮겨주는 것을 image rectification이라고 한다. 이것을 하고 나면 위에서 쓴 essential 행렬을 사용할 수 있다.&lt;/p&gt;
 
 &lt;h4 id=&quot;homography&quot;&gt;Homography&lt;/h4&gt;
-&lt;p&gt;하나의 대상을 서로 다른 두 방향에서 바라본 두 개의 이미지를 서로 변환할 수 있는 행렬을 homography ($H$)라고 한다.&lt;/p&gt;
+&lt;p&gt;하나의 평면을 같은 위치에서 다른 각도로 바라보았을 때의 이미지들을 서로 변환할 수 있는 행렬을 homography ($H$)라고 한다. (하나의 이미지는 앞을 보며 찍고, 다른 하나의 이미지는 바닥이나 옆을 보고 찍었을 때)&lt;/p&gt;
 
-&lt;p&gt;만약 두 시점 변환에 translation이 없다면, rotation만이 존재하게 되고, $\Pi_r = R\Pi_l$라고 쓸 수 있다. ($\Pi_r$은 오른쪽, $\Pi_l$은 왼쪽 시점의 projection 행렬) $\Pi_l = K[I|0]$이므로&lt;/p&gt;
+&lt;p&gt;이 두 시점 변환에 translation이 없으므로 rotation만이 존재하게 되고, $\Pi_r = R\Pi_l$라고 쓸 수 있다. ($\Pi_r$은 첫번째, $\Pi_l$은 두번째 각도의 projection 행렬) $\Pi_l = K[I|0]$이므로&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;x_l = K[I\|0]\left[\begin{matrix} X\\ 1 \end{matrix}\right] = KX&lt;/script&gt;
 
@@ -116,6 +116,8 @@ h_{31}' &amp; h_{32}' &amp; 1 \\
 \end{matrix}\right] %]]&gt;&lt;/script&gt;
 
 &lt;p&gt;$H$는 변수가 8개이므로, 8개의 식을 알면 풀 수 있다. 각 점들은 2개의 관계식을 주기 때문에, 우리는 4개의 점만 알면 $H$를 알아낼 수 있다.&lt;/p&gt;
+
+&lt;p&gt;Camera Calibration을 하는 코드를 &lt;a href=&quot;https://github.com/YeonjeeJung/ComputervisionProject&quot;&gt;코드&lt;/a&gt;의 estimateSingleCameraParameters.m 함수에서 볼 수 있다.&lt;/p&gt;
 
 &lt;hr /&gt;
 &lt;h2 id=&quot;terms&quot;&gt;Terms&lt;/h2&gt;
