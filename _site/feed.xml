@@ -5,27 +5,56 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 15 Jul 2019 21:50:55 +0900</pubDate>
-    <lastBuildDate>Mon, 15 Jul 2019 21:50:55 +0900</lastBuildDate>
+    <pubDate>Tue, 16 Jul 2019 00:21:08 +0900</pubDate>
+    <lastBuildDate>Tue, 16 Jul 2019 00:21:08 +0900</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
         <title>CV Lecture 5 - Stereo Matching</title>
         <description>&lt;h2 id=&quot;stereo-matching&quot;&gt;Stereo Matching&lt;/h2&gt;
+
+&lt;h4 id=&quot;stereo-matching-1&quot;&gt;Stereo Matching&lt;/h4&gt;
 &lt;p&gt;&lt;img src=&quot;https://www.researchgate.net/profile/Nathaniel_Short/publication/265115132/figure/fig7/AS:305305712906251@1449801962495/Simple-geometry-for-stereo-ranging-The-usual-goal-is-to-find-the-range-Z-from-the.png&quot; alt=&quot;&quot; /&gt;
 &lt;a href=&quot;https://www.researchgate.net/profile/Nathaniel_Short/publication/265115132/figure/fig7/AS:305305712906251@1449801962495/Simple-geometry-for-stereo-ranging-The-usual-goal-is-to-find-the-range-Z-from-the.png&quot;&gt;source&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;($f$:focal length, $p^l, p^r$:image point(left, right), $P$:world point, $Z$:depth of $P$, 그리고 length of Baseline을 $T$라고 하자. 그리고 $x_l$은 $O_l$을 기준으로 한 선으로부터 음의 방향으로 $p_l$까지의 거리, $x_r$은 $O_r$을 기준으로 한 선으로부터 양의 방향으로 $p_r$까지의 거리이다.)&lt;/p&gt;
+&lt;p&gt;($f$:focal length, $p^l, p^r$:image point(left, right), $P$:world point, $Z$:depth of $P$, 그리고 length of Baseline을 $t$라고 하자. 그리고 $x_l$은 $O_l$을 기준으로 한 선으로부터 음의 방향으로 $p_l$까지의 거리, $x_r$은 $O_r$을 기준으로 한 선으로부터 양의 방향으로 $p_r$까지의 거리이다.)&lt;/p&gt;
 
 &lt;p&gt;그러면 $\triangle(p_l, P, p_r)$과 $\triangle(O_l, P, O_r)$은 닮음이므로&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{T+x_l-x_r}{Z-f} = \frac{T}{Z}&lt;/script&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{t+x_l-x_r}{Z-f} = \frac{t}{Z}&lt;/script&gt;
 
 &lt;p&gt;이 성립하므로,&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;Z = f\frac{T}{x_r-x_l}&lt;/script&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;Z = f\frac{t}{x_r-x_l}&lt;/script&gt;
 
 &lt;p&gt;이 성립하는데, 이때 $x_r-x_l$을 disparity라고 하고, $D = x_r-x_l$이라고 한다.&lt;/p&gt;
+
+&lt;h4 id=&quot;essential-matrix&quot;&gt;Essential Matrix&lt;/h4&gt;
+
+&lt;p&gt;회전변환은 없으므로(두 평면이 평행하므로) rotation matrix $R = I$이고, translation matrix $T = [-d, 0, 0]^T$가 된다. 그리고 $E = [T_\times]R = \left(\begin{matrix}0 &amp;amp; 0 &amp;amp; 0 \ 0 &amp;amp; 0 &amp;amp; d \ 0 &amp;amp; -d &amp;amp; 0\end{matrix}\right)$이다. $p_l = [x, y, f], p’ = [x’, y’, f]$라고 하면 $p’^TEp=0$을 이용하여&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\left[\begin{matrix}x' &amp; y' &amp; f\end{matrix}\right]
+\left[\begin{matrix}0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; d \\ 0 &amp; -d &amp; 0\end{matrix}\right]\left[\begin{matrix}x\\y\\f\end{matrix}\right]=0 %]]&gt;&lt;/script&gt;
+&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\Leftrightarrow\left[\begin{matrix}x' &amp; y' &amp; f\end{matrix}\right]
+\left[\begin{matrix}0\\df\\-dy\end{matrix}\right]=0  \Leftrightarrow y=y' %]]&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;임을 알 수 있다. 이는 카메라가 평행이동하여 찍은 두 사진에서, 같은 점은 같은 $y$축 좌표가 같아야 함을 알려준다.&lt;/p&gt;
+
+&lt;h4 id=&quot;sum-of-square-difference-ssd&quot;&gt;Sum of Square Difference (SSD)&lt;/h4&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;SSD = \sum_i(f_{1i}-f_{2i})^2&lt;/script&gt;
+
+&lt;p&gt;왼쪽 사진에서 한 픽셀에 대하여 오른쪽 사진에는 epipolar line이 있을 것이다. 그 epipolar line 위에 있는 모든 픽셀에 대해서, 왼쪽 사진 픽셀과의 차이를 제곱해서 모두 더한다. 그 cost가 가장 작은 것이 best match이다. 그러나 이 방법은 비슷한 패턴들이 많이 나타날 때에는 best match가 많이 나타날 수도 있다.&lt;/p&gt;
+
+&lt;p&gt;따라서, ratio distance를 정의한다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;ratio \ distance = \frac{SSD(f_1, f_2)}{SSD(f_1, f_2')}&lt;/script&gt;
+
+&lt;p&gt;$f_2$는 $f_1$과의 best match이고, $f_2’$는 두 번째 best match이다. &lt;strong&gt;&lt;em&gt;근데 이게 그냥 SSD보다 왜 좋은걸까?&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;normalized-cross-correlation&quot;&gt;Normalized Cross Correlation&lt;/h4&gt;
 
 &lt;hr /&gt;
 &lt;h2 id=&quot;terms&quot;&gt;Terms&lt;/h2&gt;

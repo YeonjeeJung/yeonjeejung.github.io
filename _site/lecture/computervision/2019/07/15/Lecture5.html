@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>CV Lecture 5 - Stereo Matching</title>
-  <meta name="description" content="Stereo Matchingsource">
+  <meta name="description" content="Stereo Matching">
   
   <meta name="author" content="YeonjeeJung">
   <meta name="copyright" content="&copy; YeonjeeJung 2019">
@@ -45,7 +45,7 @@
   <!-- Twitter: card tags -->
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="CV Lecture 5 - Stereo Matching">
-  <meta name="twitter:description" content="Stereo Matchingsource">
+  <meta name="twitter:description" content="Stereo Matching">
   <meta name="twitter:image" content="http://localhost:4000/assets/logo.png">
   <meta name="twitter:url" content="http://localhost:4000">
   
@@ -148,20 +148,49 @@ MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
 
 <article class="post-content">
   <h2 id="stereo-matching">Stereo Matching</h2>
+
+<h4 id="stereo-matching-1">Stereo Matching</h4>
 <p><img src="https://www.researchgate.net/profile/Nathaniel_Short/publication/265115132/figure/fig7/AS:305305712906251@1449801962495/Simple-geometry-for-stereo-ranging-The-usual-goal-is-to-find-the-range-Z-from-the.png" alt="" />
 <a href="https://www.researchgate.net/profile/Nathaniel_Short/publication/265115132/figure/fig7/AS:305305712906251@1449801962495/Simple-geometry-for-stereo-ranging-The-usual-goal-is-to-find-the-range-Z-from-the.png">source</a></p>
 
-<p>($f$:focal length, $p^l, p^r$:image point(left, right), $P$:world point, $Z$:depth of $P$, 그리고 length of Baseline을 $T$라고 하자. 그리고 $x_l$은 $O_l$을 기준으로 한 선으로부터 음의 방향으로 $p_l$까지의 거리, $x_r$은 $O_r$을 기준으로 한 선으로부터 양의 방향으로 $p_r$까지의 거리이다.)</p>
+<p>($f$:focal length, $p^l, p^r$:image point(left, right), $P$:world point, $Z$:depth of $P$, 그리고 length of Baseline을 $t$라고 하자. 그리고 $x_l$은 $O_l$을 기준으로 한 선으로부터 음의 방향으로 $p_l$까지의 거리, $x_r$은 $O_r$을 기준으로 한 선으로부터 양의 방향으로 $p_r$까지의 거리이다.)</p>
 
 <p>그러면 $\triangle(p_l, P, p_r)$과 $\triangle(O_l, P, O_r)$은 닮음이므로</p>
 
-<script type="math/tex; mode=display">\frac{T+x_l-x_r}{Z-f} = \frac{T}{Z}</script>
+<script type="math/tex; mode=display">\frac{t+x_l-x_r}{Z-f} = \frac{t}{Z}</script>
 
 <p>이 성립하므로,</p>
 
-<script type="math/tex; mode=display">Z = f\frac{T}{x_r-x_l}</script>
+<script type="math/tex; mode=display">Z = f\frac{t}{x_r-x_l}</script>
 
 <p>이 성립하는데, 이때 $x_r-x_l$을 disparity라고 하고, $D = x_r-x_l$이라고 한다.</p>
+
+<h4 id="essential-matrix">Essential Matrix</h4>
+
+<p>회전변환은 없으므로(두 평면이 평행하므로) rotation matrix $R = I$이고, translation matrix $T = [-d, 0, 0]^T$가 된다. 그리고 $E = [T_\times]R = \left(\begin{matrix}0 &amp; 0 &amp; 0 \ 0 &amp; 0 &amp; d \ 0 &amp; -d &amp; 0\end{matrix}\right)$이다. $p_l = [x, y, f], p’ = [x’, y’, f]$라고 하면 $p’^TEp=0$을 이용하여</p>
+
+<p><script type="math/tex">% <![CDATA[
+\left[\begin{matrix}x' & y' & f\end{matrix}\right]
+\left[\begin{matrix}0 & 0 & 0 \\ 0 & 0 & d \\ 0 & -d & 0\end{matrix}\right]\left[\begin{matrix}x\\y\\f\end{matrix}\right]=0 %]]></script>
+<script type="math/tex">% <![CDATA[
+\Leftrightarrow\left[\begin{matrix}x' & y' & f\end{matrix}\right]
+\left[\begin{matrix}0\\df\\-dy\end{matrix}\right]=0  \Leftrightarrow y=y' %]]></script></p>
+
+<p>임을 알 수 있다. 이는 카메라가 평행이동하여 찍은 두 사진에서, 같은 점은 같은 $y$축 좌표가 같아야 함을 알려준다.</p>
+
+<h4 id="sum-of-square-difference-ssd">Sum of Square Difference (SSD)</h4>
+
+<script type="math/tex; mode=display">SSD = \sum_i(f_{1i}-f_{2i})^2</script>
+
+<p>왼쪽 사진에서 한 픽셀에 대하여 오른쪽 사진에는 epipolar line이 있을 것이다. 그 epipolar line 위에 있는 모든 픽셀에 대해서, 왼쪽 사진 픽셀과의 차이를 제곱해서 모두 더한다. 그 cost가 가장 작은 것이 best match이다. 그러나 이 방법은 비슷한 패턴들이 많이 나타날 때에는 best match가 많이 나타날 수도 있다.</p>
+
+<p>따라서, ratio distance를 정의한다.</p>
+
+<script type="math/tex; mode=display">ratio \ distance = \frac{SSD(f_1, f_2)}{SSD(f_1, f_2')}</script>
+
+<p>$f_2$는 $f_1$과의 best match이고, $f_2’$는 두 번째 best match이다. <strong><em>근데 이게 그냥 SSD보다 왜 좋은걸까?</em></strong></p>
+
+<h4 id="normalized-cross-correlation">Normalized Cross Correlation</h4>
 
 <hr />
 <h2 id="terms">Terms</h2>
