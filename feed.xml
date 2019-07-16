@@ -5,8 +5,8 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 16 Jul 2019 00:21:08 +0900</pubDate>
-    <lastBuildDate>Tue, 16 Jul 2019 00:21:08 +0900</lastBuildDate>
+    <pubDate>Tue, 16 Jul 2019 17:14:33 +0900</pubDate>
+    <lastBuildDate>Tue, 16 Jul 2019 17:14:33 +0900</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
@@ -17,7 +17,8 @@
 &lt;p&gt;&lt;img src=&quot;https://www.researchgate.net/profile/Nathaniel_Short/publication/265115132/figure/fig7/AS:305305712906251@1449801962495/Simple-geometry-for-stereo-ranging-The-usual-goal-is-to-find-the-range-Z-from-the.png&quot; alt=&quot;&quot; /&gt;
 &lt;a href=&quot;https://www.researchgate.net/profile/Nathaniel_Short/publication/265115132/figure/fig7/AS:305305712906251@1449801962495/Simple-geometry-for-stereo-ranging-The-usual-goal-is-to-find-the-range-Z-from-the.png&quot;&gt;source&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;($f$:focal length, $p^l, p^r$:image point(left, right), $P$:world point, $Z$:depth of $P$, 그리고 length of Baseline을 $t$라고 하자. 그리고 $x_l$은 $O_l$을 기준으로 한 선으로부터 음의 방향으로 $p_l$까지의 거리, $x_r$은 $O_r$을 기준으로 한 선으로부터 양의 방향으로 $p_r$까지의 거리이다.)&lt;/p&gt;
+&lt;p&gt;($f$:focal length, $p^l, p^r$:image point(left, right), $P$:world point, $Z$:depth of $P$)
+(length of Baseline을 $t$라고 하자. 그리고 $x_l$은 $O_l$을 기준으로 한 선으로부터 음의 방향으로 $p_l$까지의 거리, $x_r$은 $O_r$을 기준으로 한 선으로부터 양의 방향으로 $p_r$까지의 거리이다.)&lt;/p&gt;
 
 &lt;p&gt;그러면 $\triangle(p_l, P, p_r)$과 $\triangle(O_l, P, O_r)$은 닮음이므로&lt;/p&gt;
 
@@ -54,11 +55,20 @@
 
 &lt;p&gt;$f_2$는 $f_1$과의 best match이고, $f_2’$는 두 번째 best match이다. &lt;strong&gt;&lt;em&gt;근데 이게 그냥 SSD보다 왜 좋은걸까?&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
 
-&lt;h4 id=&quot;normalized-cross-correlation&quot;&gt;Normalized Cross Correlation&lt;/h4&gt;
+&lt;h4 id=&quot;normalized-cross-correlation-ncc&quot;&gt;Normalized Cross Correlation (NCC)&lt;/h4&gt;
+&lt;p&gt;SSD와 비슷한데, 점끼리의 차가 아닌 region의 차의 제곱을 계산한다. 중앙에 해당 픽셀이 있고, 그 주위 픽셀까지 정사각형으로 묶는다. 그 두 사각형이 $A$와 $B$라고 하면, 이들을 $a$, $b$라는 벡터로 만든다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;NCC = \frac{a\cdot b}{\left|a\right|\left|b\right|}, -1\le NCC \le 1&lt;/script&gt;
+
+&lt;p&gt;$A$는 고정해 놓고, $B$를 움직이면서 NCC cost를 계산한다. 이 cost가 가장 작은 점이 best match이다. 이 때, window size가 너무 작으면 노이즈까지 전부 세세하게 고려하게 되고, 너무 크면 디테일이 사라지게 되어 적당한 window size를 고르는 것이 중요하다.&lt;/p&gt;
+
+&lt;h4 id=&quot;plane-sweep-stereo&quot;&gt;Plane Sweep stereo&lt;/h4&gt;
 
 &lt;hr /&gt;
 &lt;h2 id=&quot;terms&quot;&gt;Terms&lt;/h2&gt;
-&lt;p&gt;disparity : 차이, 이격도&lt;/p&gt;
+&lt;p&gt;disparity : 차이, 이격도&lt;br /&gt;
+occlusion : 폐쇄&lt;br /&gt;
+specularity : 반사&lt;/p&gt;
 </description>
         <pubDate>Mon, 15 Jul 2019 00:00:00 +0900</pubDate>
         <link>http://localhost:4000/lecture/computervision/2019/07/15/Lecture5.html</link>

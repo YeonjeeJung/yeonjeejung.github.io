@@ -153,7 +153,8 @@ MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
 <p><img src="https://www.researchgate.net/profile/Nathaniel_Short/publication/265115132/figure/fig7/AS:305305712906251@1449801962495/Simple-geometry-for-stereo-ranging-The-usual-goal-is-to-find-the-range-Z-from-the.png" alt="" />
 <a href="https://www.researchgate.net/profile/Nathaniel_Short/publication/265115132/figure/fig7/AS:305305712906251@1449801962495/Simple-geometry-for-stereo-ranging-The-usual-goal-is-to-find-the-range-Z-from-the.png">source</a></p>
 
-<p>($f$:focal length, $p^l, p^r$:image point(left, right), $P$:world point, $Z$:depth of $P$, 그리고 length of Baseline을 $t$라고 하자. 그리고 $x_l$은 $O_l$을 기준으로 한 선으로부터 음의 방향으로 $p_l$까지의 거리, $x_r$은 $O_r$을 기준으로 한 선으로부터 양의 방향으로 $p_r$까지의 거리이다.)</p>
+<p>($f$:focal length, $p^l, p^r$:image point(left, right), $P$:world point, $Z$:depth of $P$)
+(length of Baseline을 $t$라고 하자. 그리고 $x_l$은 $O_l$을 기준으로 한 선으로부터 음의 방향으로 $p_l$까지의 거리, $x_r$은 $O_r$을 기준으로 한 선으로부터 양의 방향으로 $p_r$까지의 거리이다.)</p>
 
 <p>그러면 $\triangle(p_l, P, p_r)$과 $\triangle(O_l, P, O_r)$은 닮음이므로</p>
 
@@ -190,11 +191,20 @@ MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
 
 <p>$f_2$는 $f_1$과의 best match이고, $f_2’$는 두 번째 best match이다. <strong><em>근데 이게 그냥 SSD보다 왜 좋은걸까?</em></strong></p>
 
-<h4 id="normalized-cross-correlation">Normalized Cross Correlation</h4>
+<h4 id="normalized-cross-correlation-ncc">Normalized Cross Correlation (NCC)</h4>
+<p>SSD와 비슷한데, 점끼리의 차가 아닌 region의 차의 제곱을 계산한다. 중앙에 해당 픽셀이 있고, 그 주위 픽셀까지 정사각형으로 묶는다. 그 두 사각형이 $A$와 $B$라고 하면, 이들을 $a$, $b$라는 벡터로 만든다.</p>
+
+<script type="math/tex; mode=display">NCC = \frac{a\cdot b}{\left|a\right|\left|b\right|}, -1\le NCC \le 1</script>
+
+<p>$A$는 고정해 놓고, $B$를 움직이면서 NCC cost를 계산한다. 이 cost가 가장 작은 점이 best match이다. 이 때, window size가 너무 작으면 노이즈까지 전부 세세하게 고려하게 되고, 너무 크면 디테일이 사라지게 되어 적당한 window size를 고르는 것이 중요하다.</p>
+
+<h4 id="plane-sweep-stereo">Plane Sweep stereo</h4>
 
 <hr />
 <h2 id="terms">Terms</h2>
-<p>disparity : 차이, 이격도</p>
+<p>disparity : 차이, 이격도<br />
+occlusion : 폐쇄<br />
+specularity : 반사</p>
 
 </article>
 
