@@ -198,13 +198,34 @@ MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
 
 <p>$A$는 고정해 놓고, $B$를 움직이면서 NCC cost를 계산한다. 이 cost가 가장 작은 점이 best match이다. 이 때, window size가 너무 작으면 노이즈까지 전부 세세하게 고려하게 되고, 너무 크면 디테일이 사라지게 되어 적당한 window size를 고르는 것이 중요하다.</p>
 
-<h4 id="plane-sweep-stereo">Plane Sweep stereo</h4>
+<h4 id="stereo-matching-framework">Stereo Matching Framework</h4>
+
+<ol>
+  <li>
+    <p>모든 차이에 대해서 raw matching cost를 계산한다. ($E_0(x,y;d)=\rho(I_L(x’+d,y’)-I_R(x’,y’))$)
+이때 $\rho$는 robust function인데, input $u$가 작으면 제곱에 가까운 값을, 크면 1에 수렴하는 값을 내놓는다. ($\rho(u;\sigma) = \frac{u^2}{\sigma^2+u^2}$) <strong><em>폐쇄된 부분(occlusion)이나 튀는 값 때문에 이 함수를 쓴다?</em></strong></p>
+  </li>
+  <li>
+    <p><strong><em>cost를 공간적으로 합친다?</em></strong> ($E(x,y;d)=\sum_{(x’,y’)\in N(x,y)}E_0(x’,y’,d)$)</p>
+  </li>
+  <li>
+    <p>각각의 픽셀에 대해 winning disparity를 찾는다. ($d(x,y)=\argmin_d(x,y;d)$)</p>
+  </li>
+  <li>
+    <p>sub-pixel accuracy로 보간한다.</p>
+  </li>
+</ol>
+
+<p>Baseline은 너무 작으면 depth를 계산하는 데에 에러가 있을 수 있고, 너무 크면 같은 점 찾기가 어려워진다. 전통적인 Stereo Matching은 디테일한 표면 예측을 하고, 빠른 계산을 할 수 있다는 장점이 있다. 그러나 Baseline이 작으면 노이즈가 많을 수 있고, 질감에 따라 결과가 다르다는 점, <strong><em>가까운 폐쇄 경계를 찾을 때 어려운 단점이 있다?</em></strong></p>
+
+<h4 id="data-interpolation">Data Interpolation</h4>
 
 <hr />
 <h2 id="terms">Terms</h2>
 <p>disparity : 차이, 이격도<br />
 occlusion : 폐쇄<br />
-specularity : 반사</p>
+specularity : 반사<br />
+sweep : 쓸다</p>
 
 </article>
 
