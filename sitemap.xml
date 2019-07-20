@@ -13,10 +13,6 @@
 <lastmod>2019-07-01T00:00:00+09:00</lastmod>
 </url>
 <url>
-<loc>http://localhost:4000/thesis/2019/07/03/HairCapture.html</loc>
-<lastmod>2019-07-03T00:00:00+09:00</lastmod>
-</url>
-<url>
 <loc>http://localhost:4000/lecture/computervision/2019/07/06/Lecture2.html</loc>
 <lastmod>2019-07-06T00:00:00+09:00</lastmod>
 </url>
@@ -46,9 +42,6 @@
 </url>
 <url>
 <loc>http://localhost:4000/tag/videosuperresolution/</loc>
-</url>
-<url>
-<loc>http://localhost:4000/tag/multiviewstereo/</loc>
 </url>
 <url>
 <loc>http://localhost:4000/category/thesis/</loc>
