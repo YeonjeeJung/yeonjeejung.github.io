@@ -5,8 +5,8 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 20 Jul 2019 14:19:47 +0900</pubDate>
-    <lastBuildDate>Sat, 20 Jul 2019 14:19:47 +0900</lastBuildDate>
+    <pubDate>Sat, 20 Jul 2019 15:37:41 +0900</pubDate>
+    <lastBuildDate>Sat, 20 Jul 2019 15:37:41 +0900</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
@@ -73,14 +73,14 @@
     &lt;p&gt;&lt;strong&gt;&lt;em&gt;cost를 공간적으로 합친다?&lt;/em&gt;&lt;/strong&gt; ($E(x,y;d)=\sum_{(x’,y’)\in N(x,y)}E_0(x’,y’,d)$)&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;각각의 픽셀에 대해 winning disparity를 찾는다. ($d(x,y)=\argmin_d(x,y;d)$)&lt;/p&gt;
+    &lt;p&gt;각각의 픽셀에 대해 winning disparity를 찾는다. ($d(x,y)=argmin_d(x,y;d)$)&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;sub-pixel accuracy로 보간한다.&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;Baseline은 너무 작으면 depth를 계산하는 데에 에러가 있을 수 있고, 너무 크면 같은 점 찾기가 어려워진다. 전통적인 Stereo Matching은 디테일한 표면 예측을 하고, 빠른 계산을 할 수 있다는 장점이 있다. 그러나 Baseline이 작으면 노이즈가 많을 수 있고, 질감에 따라 결과가 다르다는 점, &lt;strong&gt;&lt;em&gt;가까운 폐쇄 경계를 찾을 때 어려운 단점이 있다?&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Baseline은 너무 작으면 depth를 계산하는 데에 에러가 있을 수 있고, 너무 크면 같은 점 찾기가 어려워진다. 전통적인 Stereo Matching은 디테일한 표면 예측을 하고, 빠른 계산을 할 수 있다는 장점이 있다. 그러나 Baseline이 작으면 노이즈가 많을 수 있고, 질감에 따라 결과가 다르다는 점, &lt;strong&gt;&lt;em&gt;가까운 폐쇄 경계를 찾을 때 어렵다는 단점이 있다?&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;data-interpolation&quot;&gt;Data Interpolation&lt;/h4&gt;
 
