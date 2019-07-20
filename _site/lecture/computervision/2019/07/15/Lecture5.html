@@ -209,14 +209,14 @@ MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
     <p><strong><em>cost를 공간적으로 합친다?</em></strong> ($E(x,y;d)=\sum_{(x’,y’)\in N(x,y)}E_0(x’,y’,d)$)</p>
   </li>
   <li>
-    <p>각각의 픽셀에 대해 winning disparity를 찾는다. ($d(x,y)=\argmin_d(x,y;d)$)</p>
+    <p>각각의 픽셀에 대해 winning disparity를 찾는다. ($d(x,y)=argmin_d(x,y;d)$)</p>
   </li>
   <li>
     <p>sub-pixel accuracy로 보간한다.</p>
   </li>
 </ol>
 
-<p>Baseline은 너무 작으면 depth를 계산하는 데에 에러가 있을 수 있고, 너무 크면 같은 점 찾기가 어려워진다. 전통적인 Stereo Matching은 디테일한 표면 예측을 하고, 빠른 계산을 할 수 있다는 장점이 있다. 그러나 Baseline이 작으면 노이즈가 많을 수 있고, 질감에 따라 결과가 다르다는 점, <strong><em>가까운 폐쇄 경계를 찾을 때 어려운 단점이 있다?</em></strong></p>
+<p>Baseline은 너무 작으면 depth를 계산하는 데에 에러가 있을 수 있고, 너무 크면 같은 점 찾기가 어려워진다. 전통적인 Stereo Matching은 디테일한 표면 예측을 하고, 빠른 계산을 할 수 있다는 장점이 있다. 그러나 Baseline이 작으면 노이즈가 많을 수 있고, 질감에 따라 결과가 다르다는 점, <strong><em>가까운 폐쇄 경계를 찾을 때 어렵다는 단점이 있다?</em></strong></p>
 
 <h4 id="data-interpolation">Data Interpolation</h4>
 
