@@ -5,8 +5,8 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 25 Jul 2019 15:32:50 +0900</pubDate>
-    <lastBuildDate>Thu, 25 Jul 2019 15:32:50 +0900</lastBuildDate>
+    <pubDate>Thu, 25 Jul 2019 20:32:50 +0900</pubDate>
+    <lastBuildDate>Thu, 25 Jul 2019 20:32:50 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -39,11 +39,139 @@ H = \left[\begin{matrix}h_{11} &amp; h_{12} &amp; h_{13}\\ h_{21} &amp; h_{22} &
 
 &lt;p&gt;이라고 쓸 수 있다. 앞에 곱해진 행렬을 $L_j$라고 하면 이 문제는 $\min_x||Lx||^2$ 문제가 된다. ($L$은 $L_j$를 세로로 늘어뜨린 행렬) 따라서 $L^TL$의 가장 작은 eigenvalue중 가장 작은 것에 대응하는 eigenvector를 찾으면 된다.&lt;/p&gt;
 
+&lt;p&gt;이 때의 $H$ 행렬은 한 이미지당 하나를 찾을 수 있으므로 이 프로젝트에서는 6개의 $H$ 행렬이 나오게 된다.&lt;/p&gt;
+
 &lt;h4 id=&quot;intrinsic-parameter&quot;&gt;Intrinsic Parameter&lt;/h4&gt;
+
+&lt;p&gt;우리는 $H$행렬을 알고 있고, &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+H = K\left[\begin{matrix}r_1 &amp; r_2 &amp; t\end{matrix}\right] %]]&gt;&lt;/script&gt;이다. 그리고 &lt;script type=&quot;math/tex&quot;&gt;r_1^Tr_1=r_2^Tr_2&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;r_1^Tr_2=0&lt;/script&gt;이라는 제약을 갖고 있으므로, 우리는 intrinsic matrix $K$를 알아낼 수 있다.&lt;/p&gt;
+
+&lt;p&gt;먼저 &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+H=\left[\begin{matrix}h_1 &amp; h_2 &amp; h_3\end{matrix}\right] %]]&gt;&lt;/script&gt;이라고 하자. $h_1=Kr_1$, $h_2=Kr_2$이기 때문에 $r_1=K^{-1}h_1$, $r_2=K^{-1}h_2$이다.&lt;/p&gt;
+
+&lt;p&gt;위 조건들을 대입해 보면&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;h_1^TK^{-T}K^{-1}h_1=h_2^TK^{-T}k^{-1}h_2&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;h_1^TK^{-T}K^{-1}h_2=0&lt;/script&gt;
+
+&lt;p&gt;라는 식을 만들어낼 수 있다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+B=K^{-T}K^{-1}=\left[\begin{matrix}B_{11} &amp; B_{12} &amp; B_{13} \\B_{21} &amp; B_{22} &amp; B_{23} \\B_{31} &amp; B_{32} &amp; B_{33}\end{matrix}\right] %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;이라고 하면,&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+B=\left[\begin{matrix}\frac{1}{\alpha^2} &amp; -\frac{\gamma}{\alpha^2\beta} &amp; \frac{v_0\gamma-u_0\beta}{\alpha^2\beta} \\ -\frac{\gamma}{\alpha^2}{\beta} &amp; -\frac{\gamma}{\alpha^2\beta}+\frac{1}{\beta^2} &amp; -\frac{\gamma(v_0\gamma-u_0\beta)}{\alpha^2\beta^2}\\ \frac{v_0\gamma-u_0\beta}{\alpha^2\beta} &amp; -\frac{\gamma(v_0\gamma-u_0\beta)}{\alpha^2\beta^2}-\frac{v_0}{\beta^2} &amp; \frac{(v_0\gamma-u_0\beta)^2}{\alpha^2\beta^2}+\frac{v_0^2}{\beta^2}+1\end{matrix}\right] %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;이다. (&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+K=\left[\begin{matrix}\alpha &amp; \gamma &amp; u_0 \\ 0 &amp; \beta &amp; v_0 \\ 0 &amp; 0 &amp; 1\end{matrix}\right] %]]&gt;&lt;/script&gt;이므로)&lt;/p&gt;
+
+&lt;p&gt;$B_{11}, B_{12}, B_{13}, B_{22}, B_{23}, B_{33}$만 알면 $K$의 변수들을 구할 수 있으므로 &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+b=\left[\begin{matrix}B_{11} &amp; B_{12} &amp; B_{13} &amp; B_{22} &amp; B_{23} &amp; B_{33}\end{matrix}\right]^T %]]&gt;&lt;/script&gt;를 구하는 것을 목표로 한다.&lt;/p&gt;
+
+&lt;p&gt;두 개의 조건을 압축해서&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\left[\begin{matrix}v_{12}^T \\ (v_{11}-v_{22})^T\end{matrix}\right]b=0&lt;/script&gt;
+
+&lt;p&gt;이라고 쓸 수 있다. (&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+v_{kl}=\left[\begin{matrix}h_{1k}h_{1l} &amp; h_{1k}h_{2l}+h_{2k}h_{1l} &amp; h_{1k}h_{3l}+h_{3k}h_{1l} &amp; h_{2k}h_{2l} &amp; h_{2k}h_{3l}+h_{3k}h_{2l} &amp; h_{3k}h_{3l} \end{matrix}\right]^T %]]&gt;&lt;/script&gt;)&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;V=\left[\begin{matrix}v_{12}^T \\ (v_{11}-v_{22})^T\end{matrix}\right]&lt;/script&gt;라고 하면 각 $V$들은 이미지당 하나씩 있으므로, 우리는 총 6개의 $V$를 가지고 $B$를 찾을 수 있다. 이 $V$들을 세로로 합쳐서 $V’$행렬을 만들고, &lt;script type=&quot;math/tex&quot;&gt;\min_b\|V'b\|^2&lt;/script&gt; 문제를 풀면 $b$를 구할 수 있다. 이 때의 해는 $V’^TV’$의 eigenvalue중 가장 작은 것에 대응하는 eigenvector를 구하면 된다.&lt;/p&gt;
+
+&lt;p&gt;이렇게 구한 b를 이용해서 각각의 변수에&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;v_0=\left(\frac{B_{12}B_{13}-B_{11}B_{23}}{B_{11}B_{22}-B_{12}^2}\right)&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\lambda=B_{33}-\frac{B_{13}^2+v_0(B_{12}B_{13}-B_{11}B_{23})}{B_{11}}&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\alpha=\sqrt{\frac{\lambda}{B_{11}}}&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\beta=\sqrt{\frac{\lambda B_{11}}{B_{11}B_{22}-B_{12}^2}}&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\gamma=-\frac{B_{12}\alpha^2\beta}{\lambda}&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;u_0=\frac{\gamma v_0}{\beta}-\frac{B_{13}\alpha^2}{\lambda}&lt;/script&gt;
+
+&lt;p&gt;를 대입하면 intrinsic matrix &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+K=\left[\begin{matrix}\alpha &amp; \gamma &amp; u_0 \\ 0 &amp; \beta &amp; v_0 \\ 0 &amp; 0 &amp; 1\end{matrix}\right] %]]&gt;&lt;/script&gt;를 구할 수 있다.&lt;/p&gt;
 
 &lt;h4 id=&quot;extrinsic-parameter&quot;&gt;Extrinsic Parameter&lt;/h4&gt;
 
+&lt;p&gt;지금까지 구한 $H$와 $K$로 extrinsic parameter들을 구할 수 있다. 먼저 정규화를 위한 상수 &lt;script type=&quot;math/tex&quot;&gt;\lambda'=\frac{\frac{1}{\|K^{-1}h_1\|}+\frac{1}{\|K^{-1}h_2\|}}{2}&lt;/script&gt;를 구한다. 그 후에는&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;r_1=\lambda' K^{-1}h_1&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;r_2=\lambda' K^{-1}h_2&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;r_3=r_1\times r_2&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;t=\lambda'K^{-1}h_3&lt;/script&gt;
+
+&lt;p&gt;을 이용해 extrinsic parameter들을 구한다.&lt;/p&gt;
+
+&lt;p&gt;여기서 구한 rotation matrix &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+R=\left[\begin{matrix}r_1 &amp; r_2 &amp; r_3\end{matrix}\right] %]]&gt;&lt;/script&gt;은 일반적으로 rotation matrix의 성질을 만족하지 않으므로, 보정을 해줘야 한다. $R=U\Sigma V^T$로 분해할 수 있는데, 여기서 $R’=UV^T$를 구하면 된다.&lt;/p&gt;
+
+&lt;h4 id=&quot;maximum-likelihood-estimation-mle&quot;&gt;Maximum Likelihood Estimation (MLE)&lt;/h4&gt;
+
+&lt;p&gt;우리가 위에서 구한 값은 그저 방정식을 푼 것이지, 물리적으로 아무 의미가 없는 숫자이다. 따라서 MLE를 통해 값을 보정해줄 필요가 있다. MLE추정은 &lt;script type=&quot;math/tex&quot;&gt;\min_{K, R_i, t_i}\sum_i\sum_j\|q_{ij}-\hat{q_{ij}}\|^2&lt;/script&gt;를 통해 할 수 있다. (사실 이 식은 $H$를 찾을 때 썼던 식이다.)&lt;/p&gt;
+
+&lt;p&gt;코드에서는 intrinsic, extrinsic 파라미터들을 벡터로 만들어 넘겨서 lsqnonlin 함수를 사용하여 최적화했다.(Matlab)&lt;/p&gt;
+
 &lt;h2 id=&quot;depth-map&quot;&gt;Depth Map&lt;/h2&gt;
+
+&lt;p&gt;Depth map을 구하기 위한 과정은 다음과 같다. (좌, 우에서 찍은 이미지가 주어진다.)&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;이미지를 흑백화시킨다.&lt;/li&gt;
+  &lt;li&gt;cost function을 정해서 cost volume을 만든다.&lt;/li&gt;
+  &lt;li&gt;cost aggregation을 한다.&lt;/li&gt;
+  &lt;li&gt;최소 cost를 갖는 인덱스를 골라 disparity map을 만든다.&lt;/li&gt;
+  &lt;li&gt;disparity map을 카메라 파라미터를 이용해 depth map으로 변환시킨다.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;preprocessing&quot;&gt;Preprocessing&lt;/h4&gt;
+
+&lt;p&gt;단순히 두 이미지를 흑백화시킨다.&lt;/p&gt;
+
+&lt;h4 id=&quot;cost-volume&quot;&gt;Cost Volume&lt;/h4&gt;
+
+&lt;p&gt;좌측 이미지를 기준으로 한다. 좌측 이미지의 모든 픽셀에 대하여 오른쪽 이미지에서는 왼쪽으로 $d$만큼 떨어진 픽셀을 고른다. (좌측 이미지에서 $(10,5)$에 대해, $d=5$라면 우측 이미지에서는 $(5,5)$를 고르는 셈.) 좌우 이미지 모두 해당 픽셀 주변의 window크기만큼의 행렬을 골라 벡터화시킨 후, cost를 계산해 cost volume에 저장한다. 이 계산을 minDisparity부터 maxDisparity까지 수행해 cost volume에 저장한다. (이 프로젝트에서 window 크기는 15로 지정하였고, minDisparity는 11, maxDisparity는 140으로 지정하였다. cost 대신에 &lt;script type=&quot;math/tex&quot;&gt;NCC=\frac{\sum_i\sum_jA_{ij}B_{ij}}{\sqrt{\sum_i\sum_jA_{ij}^2}\sqrt{\sum_i\sum_j{B_{ij}^2}}}&lt;/script&gt;를 사용하였다.)&lt;/p&gt;
+
+&lt;h4 id=&quot;cost-aggregation&quot;&gt;Cost Aggregation&lt;/h4&gt;
+
+&lt;p&gt;각 layer의 cost를 filter를 이용하여 aggregation한다. 이 프로젝트에서는 imguidedfilter 함수에 해당 이미지를 가이드로 사용해서 필터링하였다.&lt;/p&gt;
+
+&lt;h4 id=&quot;disparity-map&quot;&gt;Disparity Map&lt;/h4&gt;
+
+&lt;p&gt;각 픽셀에 대하여 가장 작은 cost를 가지는 disparity를 고른다. (이 프로젝트에서는 NCC를 사용하였으므로 값이 가장 큰 것을 고른다.)&lt;/p&gt;
+
+&lt;h4 id=&quot;depth-map-1&quot;&gt;Depth Map&lt;/h4&gt;
+
+&lt;p&gt;각 픽셀에 대하여 $Z=\frac{fT}{d}$ 공식을 적용하여 depth map을 만든다.&lt;/p&gt;
+
+&lt;h2 id=&quot;result&quot;&gt;Result&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://github.com/YeonjeeJung/ComputervisionProject1/blob/master/code/calibration.jpg?raw=true&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;위 표는 카메라 파라미터 측정에 대한 결과이다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://github.com/YeonjeeJung/ComputervisionProject1/blob/master/code/scene2.jpg?raw=true&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;위 이미지는 각각 좌, 우에서 찍은 이미지이다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://github.com/YeonjeeJung/ComputervisionProject1/blob/master/code/scne2_disparity.jpg?raw=true&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;위 이미지는 disparity map이다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://github.com/YeonjeeJung/ComputervisionProject1/blob/master/code/scene2_depth.jpg?raw=true&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;위 이미지는 depth map이다.&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;이 프로젝트에 대한 코드는 &lt;a href=&quot;https://github.com/YeonjeeJung/ComputervisionProject1&quot;&gt;링크&lt;/a&gt;에서 볼 수 있다.&lt;/p&gt;
 </description>
         <pubDate>Thu, 25 Jul 2019 00:00:00 +0900</pubDate>
         <link>http://localhost:4000/lecture/computervision/2019/07/25/Project1.html</link>
