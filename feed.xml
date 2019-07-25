@@ -5,8 +5,8 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 25 Jul 2019 14:44:46 +0900</pubDate>
-    <lastBuildDate>Thu, 25 Jul 2019 14:44:46 +0900</lastBuildDate>
+    <pubDate>Thu, 25 Jul 2019 15:06:13 +0900</pubDate>
+    <lastBuildDate>Thu, 25 Jul 2019 15:06:13 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -25,7 +25,7 @@
 H = \left[\begin{matrix}h_{11} &amp; h_{12} &amp; h_{13}\\ h_{21} &amp; h_{22} &amp; h_{23} \\ h_{31} &amp; h_{32} &amp; h_{33}\end{matrix}\right] %]]&gt;&lt;/script&gt;
 
 &lt;p&gt;으로 표현되고, $\min_H\sum_{j=1}^m\left|\left|q_j-\hat{q_j}\right|\right|^2$를 최소화하는 $H$를 찾으면 된다.
-($q_j = \left[\begin{matrix}u_j \ v_j\end{matrix}\right]$, $\hat{q_j} = \frac{1}{h_{31}X_j+h_{32}Y_j+h_{33}}\left[\begin{matrix}h_{11}X_j+h_{12}Y_j+h_3\h_{21}X_j+h_{22}Y_j+h_{23}\end{matrix}\right]$)&lt;/p&gt;
+(&lt;script type=&quot;math/tex&quot;&gt;q_j = \left[\begin{matrix}u_j \\ v_j\end{matrix}\right]&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;\hat{q_j} = \frac{1}{h_{31}X_j+h_{32}Y_j+h_{33}}\left[\begin{matrix}h_{11}X_j+h_{12}Y_j+h_{33}\\h_{21}X_j+h_{22}Y_j+h_{23}\end{matrix}\right]&lt;/script&gt;)&lt;/p&gt;
 
 &lt;p&gt;이를 정리하면,&lt;/p&gt;
 
@@ -37,17 +37,7 @@ H = \left[\begin{matrix}h_{11} &amp; h_{12} &amp; h_{13}\\ h_{21} &amp; h_{22} &
 \left[\begin{matrix}-X_j &amp; -Y_j &amp; -1 &amp; 0 &amp; 0 &amp; 0 &amp; u_jX_j &amp; u_jY_j &amp; u_j \\  0 &amp; 0 &amp; 0 &amp; -X_j &amp; -Y_j &amp; -1 &amp; v_jX_j &amp; v_jY_j &amp; v_j\end{matrix}\right]
 \left[\begin{matrix}h_{11}\\ h_{12} \\h_{13} \\h_{21} \\h_{22} \\h_{23} \\h_{31} \\h_{32} \\h_{33}\end{matrix}\right] %]]&gt;&lt;/script&gt;
 
-&lt;table&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;이라고 쓸 수 있다. 앞에 곱해진 행렬을 $L_j$라고 하면 이 문제는 $\min_x&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;Lx&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;^2$문제가 된다. ($L$은 $L_j$를 세로로 늘어뜨린 행렬) 따라서 $L^TL$의 가장 작은 eigenvalue중 가장 작은 것에 대응하는 eigenvector를 찾으면 된다.&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
+&lt;p&gt;이라고 쓸 수 있다. 앞에 곱해진 행렬을 $L_j$라고 하면 이 문제는 $\min_x||Lx||^2$ 문제가 된다. ($L$은 $L_j$를 세로로 늘어뜨린 행렬) 따라서 $L^TL$의 가장 작은 eigenvalue중 가장 작은 것에 대응하는 eigenvector를 찾으면 된다.&lt;/p&gt;
 
 &lt;h4 id=&quot;intrinsic-parameter&quot;&gt;Intrinsic Parameter&lt;/h4&gt;
 
