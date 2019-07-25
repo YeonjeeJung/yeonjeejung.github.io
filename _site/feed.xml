@@ -5,8 +5,8 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 25 Jul 2019 15:30:43 +0900</pubDate>
-    <lastBuildDate>Thu, 25 Jul 2019 15:30:43 +0900</lastBuildDate>
+    <pubDate>Thu, 25 Jul 2019 15:32:50 +0900</pubDate>
+    <lastBuildDate>Thu, 25 Jul 2019 15:32:50 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -291,8 +291,6 @@ h_{31}' &amp; h_{32}' &amp; 1 \\
 \end{matrix}\right] %]]&gt;&lt;/script&gt;
 
 &lt;p&gt;$H$는 변수가 8개이므로, 8개의 식을 알면 풀 수 있다. 각 점들은 2개의 관계식을 주기 때문에, 우리는 4개의 점만 알면 $H$를 알아낼 수 있다.&lt;/p&gt;
-
-&lt;p&gt;Camera Calibration을 하는 코드를 &lt;a href=&quot;https://github.com/YeonjeeJung/ComputervisionProject&quot;&gt;코드&lt;/a&gt;의 estimateSingleCameraParameters.m 함수에서 볼 수 있다.&lt;/p&gt;
 
 &lt;hr /&gt;
 &lt;h2 id=&quot;terms&quot;&gt;Terms&lt;/h2&gt;
