@@ -147,9 +147,9 @@ MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
 </section>
 
 <article class="post-content">
-  <h2 id="camera-calibration">Camera Calibration</h2>
+  <h1 id="camera-calibration">Camera Calibration</h1>
 
-<h4 id="stereo-reconstruction">Stereo Reconstruction</h4>
+<h3 id="stereo-reconstruction">Stereo Reconstruction</h3>
 <p>Stereo Reconstruction은 두 장 이상의 2D 이미지를 이용해서 이를 3D상에서 재건하는 것인데, 단계는 다음과 같다.</p>
 <ol>
   <li>카메라 변수 찾기</li>
@@ -165,27 +165,27 @@ E=t\times R=\left[\begin{matrix}0 & 0 & 0 \\ 0 & 0 & -T \\ 0 & T & 0\end{matrix}
 
 <p>이 된다.</p>
 
-<h4 id="stereo-image-rectification">Stereo Image Rectification</h4>
+<h3 id="stereo-image-rectification">Stereo Image Rectification</h3>
 <p>두 카메라가 평행하면 한 좌표를 보는 두 이미지 평면이 평행하지 않을 수 있는데, 이렇게 얻은 이미지 평면을 두 카메라를 잇는 선에 평행한 평면에 옮겨주는 것을 image rectification이라고 한다. 이것을 하고 나면 위에서 쓴 essential 행렬을 사용할 수 있다.</p>
 
-<h4 id="homography">Homography</h4>
-<p>하나의 평면을 같은 위치에서 다른 각도로 바라보았을 때의 이미지들을 서로 변환할 수 있는 행렬을 homography ($H$)라고 한다. (하나의 이미지는 앞을 보며 찍고, 다른 하나의 이미지는 바닥이나 옆을 보고 찍었을 때)</p>
+<h3 id="homography">Homography</h3>
+<p>3D평면에 있는 점을 image 평면으로 변환시킬 때 사용하는 행렬을 homography ($H$)라고 한다.</p>
 
-<p>이 두 시점 변환에 translation이 없으므로 rotation만이 존재하게 되고, $\Pi_r = R\Pi_l$라고 쓸 수 있다. ($\Pi_r$은 첫번째, $\Pi_l$은 두번째 각도의 projection 행렬) $\Pi_l = K[I|0]$이므로</p>
+<p>이 두 시점 변환에 translation이 없으므로 rotation만이 존재하게 되고, $P_r = RP_l$라고 쓸 수 있다. ($P_r$은 첫번째, $P_l$은 두번째 각도의 projection 행렬) $P_l = K[I\mid0]$이므로</p>
 
-<script type="math/tex; mode=display">x_l = K[I|0]\left[\begin{matrix} X\\ 1 \end{matrix}\right] = KX</script>
+<script type="math/tex; mode=display">x_l = K[I\mid0]\left[\begin{matrix} X\\ 1 \end{matrix}\right] = KX</script>
 
-<p>이고, $\Pi_r = K[R|0]$이므로</p>
+<p>이고, $P_r = K[R\mid0]$이므로</p>
 
-<script type="math/tex; mode=display">x_r = K[R|0]\left[\begin{matrix}X\\ 1\end{matrix}\right] = KRX</script>
+<script type="math/tex; mode=display">x_r = K[R\mid0]\left[\begin{matrix}X\\ 1\end{matrix}\right] = KRX</script>
 
 <p>이다. 따라서, $x_r = KRK^{-1}x_l$이고, $H = KRK^{-1}$이 된다.</p>
 
-<p>이미지의 원점이 같은 평면의 다른 각도에서 촬영되었을 때만 homography로 연관될 수 있다. (translation이 없어야 한다.) 그리고, 같은 카메라로 촬영되었을 때만 연관될 수 있다.</p>
+<p>이미지의 원점이 같은 평면의 다른 각도에서 촬영되었을 때만 homography가 서로 연관될 수 있다. (translation이 없어야 한다.) 그리고, 같은 카메라로 촬영되었을 때만 연관될 수 있다.</p>
 
 <p>만약 rotation 행렬 $R$을 모른다면, $x_r^TFx_l = 0$에서 $F$를 알아낼 때 썼던 방법을 이용해 찾을 수 있다. <strong><em>사실, $K^{-T}K^{-1}$의 가장 작은 eigenvalue에 대응하는 eigenvector를 찾으면 된다.</em></strong></p>
 
-<h4 id="2d-checkerboard-pattern">2D Checkerboard Pattern</h4>
+<h3 id="2d-checkerboard-pattern">2D Checkerboard Pattern</h3>
 <p><img src="http://www.campi3d.com/External/MariExtensionPack/userGuide4R1/lib/CHeckerSimpleB.png" alt="" />
 <a href="http://www.campi3d.com/External/MariExtensionPack/userGuide4R1/lib/CHeckerSimpleB.png">Source</a></p>
 

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>CV Lecture 6 - Multiview Geometry</title>
+  <meta name="description" content="Structure from Motion">
+  
+  <meta name="author" content="YeonjeeJung">
+  <meta name="copyright" content="&copy; YeonjeeJung 2019">
+  
+
+  <!-- External libraries -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/monokai-sublime.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css">
+
+  <!-- Favicon and other icons (made with http://www.favicon-generator.org/) -->
+  <link rel="shortcut icon" href="/assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" sizes="57x57" href="/assets/icons/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/assets/icons/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/assets/icons/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/assets/icons/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/assets/icons/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/assets/icons/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/assets/icons/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/assets/icons/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/assets/icons/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+  <link rel="manifest" href="/assets/icons/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/assets/icons/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  
+
+  
+  <!-- Twitter: card tags -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="CV Lecture 6 - Multiview Geometry">
+  <meta name="twitter:description" content="Structure from Motion">
+  <meta name="twitter:image" content="http://localhost:4000/assets/logo.png">
+  <meta name="twitter:url" content="http://localhost:4000">
+  
+
+  
+
+  <!-- Site styles -->
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/lecture/computervision/2019/07/26/Lecture6.html">
+  <link rel="alternate" type="application/rss+xml" title="YeonjeeJung's Blog" href="http://localhost:4000/feed.xml" />
+</head>
+
+  
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$'] ],
+    processEscapes: true,
+  }
+});
+MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+  
+  <body>
+
+    <header class="navigation" role="banner">
+  <div class="navigation-wrapper">
+    <a href="/" class="logo">
+      
+      <img src="/assets/logo.png" alt="YeonjeeJung's Blog">
+      
+    </a>
+    <a href="javascript:void(0)" class="navigation-menu-button" id="js-mobile-menu">
+      <i class="fa fa-bars"></i>
+    </a>
+    <nav role="navigation">
+      <ul id="js-navigation-menu" class="navigation-menu show">
+        <li class="nav-link"><a href="/about">About</a>
+        <li class="nav-link"><a href="/category/thesis">Thesis</a>
+        <li class="nav-link"><a href="/category/lecture">Lecture</a>
+          <ul>
+            <a href="/category/computervision">Computer Vision</a>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+    <div class="page-content">
+        <div class="post">
+
+<div class="post-header-container " >
+  <div class="scrim ">
+    <header class="post-header">
+      <h1 class="title">CV Lecture 6 - Multiview Geometry</h1>
+      <p class="info">by <strong>Yeonjee Jung</strong></p>
+    </header>
+  </div>
+</div>
+
+<div class="wrapper">
+
+ <span class="page-divider">
+  <span class="one"></span>
+  <span class="two"></span>
+</span>
+ 
+
+<section class="post-meta">
+  <div class="post-date">July 26, 2019</div>
+  <div class="post-categories">
+  in 
+    
+    <a href="/category/lecture">Lecture</a>, 
+    
+  
+    
+    <a href="/category/computervision">ComputerVision</a>
+    
+  
+  </div>
+</section>
+
+<article class="post-content">
+  <h1 id="structure-from-motion">Structure from Motion</h1>
+
+<p>Multiview geometry 문제에는 세 종류가 있다.</p>
+<ol>
+  <li>Scene geometry (Structure) : 2D 좌표가 주어질 때, 3D 좌표는 어디에 있는가?</li>
+  <li>Correspondence (stereo matching) : 한 이미지에서의 한 점이 다른 이미지에서는 어디에 존재할 가능성이 있는가?</li>
+  <li>Camera geometry (motion) : 한 대상에 대해 여러 관점의 이미지 좌표가 주어질 때, 카메라 파라미터 행렬은 무엇인가?</li>
+</ol>
+
+<p>이번 단원에서는 1번에 대해 다룰 것이다. (2, 3번은 각각 <a href="https://yeonjeejung.github.io/lecture/computervision/2019/07/20/Lecture5.html">2번</a>, <a href="https://yeonjeejung.github.io/lecture/computervision/2019/07/07/Lecture3.html">3번</a>에서 다루었다.)</p>
+
+<h3 id="structure-from-motion-ambiguity">Structure from Motion Ambiguity</h3>
+
+<p>Scene geometry는 m개의 이미지와 n개의 3D 좌표가 주어졌을 때, m개의 projection matrix $P_i$와 n개의 3D 좌표 $X_j$를 $m\times n$개의 $x_{ij}$로부터 찾는 문제이다.</p>
+
+<script type="math/tex; mode=display">\mathbf{x}_{ij}=P_i\mathbf{X}_j</script>
+
+<script type="math/tex; mode=display">i=1, \cdots , m, j=1, \cdots, n</script>
+
+<p>만약 scale factor $k$가 존재하고, 카메라 파라미터들을 모두 $k$로 나눈다면, 그렇지 않았을 때와 같은 식이 나오게 되므로 정확한 scale 측정이 불가능하다.</p>
+
+<script type="math/tex; mode=display">\mathbf{x}=P\mathbf{X}=\left(\frac{1}{k}P\right)(k\mathbf{X})</script>
+
+<p>또는, transformation matrix $Q$를 이용해도 똑같은 결과가 나온다.</p>
+
+<script type="math/tex; mode=display">\mathbf{x}=P\mathbf{X}=(PQ^{-1})(Q\mathbf{X})</script>
+
+<h3 id="affine-camera">Affine Camera</h3>
+
+<p>Orthographic projection은 이미지 좌표에서 world좌표로 변환 시 $z$축의 변화가 없는 변환이었다. affine 카메라는 3D 공간상에서의 affine 변환, orthographic projection, 이미지상의 affine 변환 효과가 결합된 것이다. 따라서 다음 식으로 나타낼 수 있다.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+P=\left[3\times3 \text{affine}\right]\left[\begin{matrix}1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1\end{matrix}\right]\left[4\times4 \text{affine}\right]=\left[\begin{matrix}a_{11} & a_{12} &a_{13} &b_1 \\a_{21} & a_{22} &a_{23} &b_2 \\ 0 & 0 & 0 & 1\end{matrix}\right]=\left[\begin{matrix}A & b \\ 0 & 1\end{matrix}\right] %]]></script>
+
+<p>결국 affine 카메라는 linear mapping에 translation을 더한 것이다.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\mathbf{x}=\left(\begin{matrix}x \\ y\end{matrix}\right)=\left[\begin{matrix}a_{11} & a_{12} & a_{13} \\ a_{21} & a_{22} & a_{23}\end{matrix}\right]\left(\begin{matrix}X \\ Y \\ Z \end{matrix}\right)+\left(\begin{matrix}b_1 \\ b_2\end{matrix}\right)=A\mathbf{X+b} %]]></script>
+
+<p>이 해는 유일하지 않고, 임의의 affine transformation $Q$에 의해 <script type="math/tex">% <![CDATA[
+\left[\begin{matrix}A & b \\ 0 & 1\end{matrix}\right] \rightarrow \left[\begin{matrix}A & b \\ 0 & 1\end{matrix}\right]Q^{-1} %]]></script>, <script type="math/tex">\left(\begin{matrix}X\\1\end{matrix}\right)\rightarrow Q\left(\begin{matrix}X\\1\end{matrix}\right)</script>가 해가 될 수도 있다.</p>
+
+<h3 id="affine-structure-from-motion">Affine Structure from Motion</h3>
+
+<p><strong><em>우리는 $2mn$개의 변수를 알고 있고, $8m+3n$개를 모르고 $Q$가 12의 degree of freedom을 가지므로 $2mn \geq (8m+3n)-12$여야 이 문제를 풀수 있다?</em></strong></p>
+
+<p>먼저, 이미지 좌표의 중심을 빼므로써 centering을 한다.</p>
+
+<script type="math/tex; mode=display">\hat{\mathbf{x}}_{ij}=\mathbf{x}_{ij}-\frac{1}{n}\sum_{k=1}^n\mathbf{x}_{ik}=A_i\mathbf{X}_j+b_i-\frac{1}{n}\sum_{k=1}^n(A_i\mathbf{X}_k+b_i)=A_i\hat{\mathbf{X}}_j</script>
+
+<p>계산을 쉽게 하기 위해 world좌표계의 원점이 3D좌표계의 center라고 하자.</p>
+
+<script type="math/tex; mode=display">\hat{\mathbf{x}}_{ij}=A_i\mathbf{X}_j</script>
+
+<p>그리고 $2m\times n$개의 데이터 행렬을 만든다.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+D=\left[\begin{matrix}\hat{\mathbf{x}}_{11} & \hat{\mathbf{x}}_{12} & \cdots & \hat{\mathbf{x}}_{1n} \\ \hat{\mathbf{x}}_{21} & \hat{\mathbf{x}}_{22} & \cdots & \hat{\mathbf{x}}_{2n} \\
+& & \ddots & \\
+\hat{\mathbf{x}}_{m1} & \hat{\mathbf{x}}_{m2} & \cdots & \hat{\mathbf{x}}_{mn} \end{matrix}\right]=
+\left[\begin{matrix}A_1 \\ A_2 \\ \vdots \\ A_m\end{matrix}\right]
+\left[\begin{matrix}\mathbf{X}_1 & \mathbf{X}_2& \cdots & \mathbf{X}_n\end{matrix}\right]=MS %]]></script>
+
+<p>이 행렬은 rank가 3이다. ($A$행렬이 열 3개이고 $D$는 $A$와 $X$들의 조합으로 만들어지므로)이제 Singular Value Decomposition (SVD)를 이용해 D를 세 개의 행렬로 나눌 수 있다.</p>
+
+<script type="math/tex; mode=display">D=UWV^T</script>
+
+<p>rank가 3이기 때문에 W의 대각성분 3개 빼고는 다 0이다. 우리는 $U, W, V$행렬에서 좌측 3개만 가져와서 차원을 3으로 압축할 수 있다.</p>
+
+<script type="math/tex; mode=display">D=U_3W_3V_3^T</script>
+
+<p><script type="math/tex">M=U_3W_3^{\frac{1}{2}}, S=W_3^{\frac{1}{2}}V_3^T</script>라고 한다면, 원하는 차원의 $M$과 $S$를 얻을 수 있다.</p>
+
+<p>이 decomposition도 유일하지 않아서, 임의의 $3\times3$ 행렬 $C$를 이용하여 $M\rightarrow MC$, $S\rightarrow C^{-1}S$의 해를 만들 수도 있다.</p>
+
+<h3 id="eliminating-the-affine-ambiguity">Eliminating the Affine Ambiguity</h3>
+
+<p>서로 직교하고 scale이 1인 축을 기준으로 하게 한다. 이 축은 다음 두 식을 만족한다.</p>
+
+<script type="math/tex; mode=display">a_1\cdot a_2=0</script>
+
+<script type="math/tex; mode=display">\|a_1\|^2=\|a_2\|^2=1</script>
+
+<p>이미지 한장당 $a_1, a_2$가 각각 존재할 것이다. 이들은 각각</p>
+
+<script type="math/tex; mode=display">a_1La_1^T=1</script>
+
+<script type="math/tex; mode=display">a_2La_2^T=1</script>
+
+<script type="math/tex; mode=display">a_1La_2^T=0</script>
+
+<p>을 만족한다.</p>
+
+<p><script type="math/tex">A_i=\left[\begin{matrix}a_{1i} \\ a_{2i}\end{matrix}\right]</script>라고 하면 $3m$개의 방정식</p>
+
+<p><script type="math/tex">A_iLA_i^T=I</script>, <script type="math/tex">i=1, \cdots, m</script></p>
+
+<p>을 얻을 수 있다. 이 방정식을 풀고, cholesky decomposition을 이용해 $L=CC^T$로 분해한 뒤 $M\rightarrow MC$, $S\rightarrow C^{-1}S$로 바꿔주면 <strong><em>ambigudity를 없앨 수 있다?</em></strong></p>
+
+<h3 id="missing-data">Missing Data</h3>
+
+<p>실제로 어떤 3D 좌표는 어떤 view의 이미지에서는 보이지 않을 수도 있기 때문에 $M$행렬이 원하는 모양으로 나오지 않을 수도 있다. 이 때는 이 행렬을 dense sub-block으로 나누고, 그 sub-block들을 factorize한 뒤 사용하는 방법이 있다. <strong><em>incremental bilinear refinement를 사용한다는데.. 어떻게 하는거지</em></strong></p>
+
+<h3 id="projective-structure-from-motion">Projective Structure from Motion</h3>
+
+<p>m개의 이미지와 n개의 3D 좌표가 주어졌을 때, m개의 projection matrix $P_i$와 n개의 3D 좌표 $X_j$를 $m\times n$개의 $x_{ij}$로부터 찾는 문제이다. 아까와 똑같지만, $z_{ij}$라는 depth가 추가로 존재한다.</p>
+
+<script type="math/tex; mode=display">z_{ij}\mathbf{x}_{ij}=P_i\mathbf{X}_j</script>
+
+<script type="math/tex; mode=display">i=1, \cdots , m, j=1, \cdots, n</script>
+
+<p><strong><em>calibration 정보가 없으면 카메라와 좌표들은 $4\times4$ projective transformation 행렬 $Q$를 통해서만 발견할 수 있다?</em></strong></p>
+
+<p><strong><em>우리는 $2mn$개의 변수를 알고 있고, $11m+3n$개를 모르고 $Q$가 15의 degree of freedom을 가지므로 $2mn \geq (11m+3n)-15$여야 이 문제를 풀수 있다?</em></strong> 따라서 2개의 카메라에 대해서는 최소 7개 점에 대한 정보가 필요하다.</p>
+
+<p>우선 두 뷰 사이의 fundamental matrix $F$를 계산한다. 기준이 될 카메라의 행렬을 <script type="math/tex">\left[\begin{matrix}I \mid 0\end{matrix}\right]</script>, 다른 카메라의 행렬을 <script type="math/tex">\left[\begin{matrix}A \mid b \end{matrix}\right]</script>라고 하자. 그러면</p>
+
+<script type="math/tex; mode=display">z\mathbf{x}=\left[I \mid 0\right]\mathbf{X}</script>
+
+<script type="math/tex; mode=display">z'\mathbf{x}'=\left[A\mid b\right]\mathbf{X}=A\left[I\mid 0\right]\mathbf{X}+b=zA\mathbf{x}+b</script>
+
+<script type="math/tex; mode=display">z'\mathbf{x}'\times b=zA\mathbf{x}\times b</script>
+
+<script type="math/tex; mode=display">(z'\mathbf{x}'\times b)\cdot \mathbf{x}'=(zA\mathbf{x}\times b)\cdot \mathbf{x}'=0</script>
+
+<p>($\mathbf{x}’\times b$와 $\mathbf{x}’$는 서로 수직이므로 내적하면 0이 된다.)</p>
+
+<script type="math/tex; mode=display">\mathbf{x}'^T[b_{\times}]A\mathbf{x}=0</script>
+
+<p>이므로, $F=[b_{\times}]A$이다.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+D=\left[\begin{matrix}z_{11}\mathbf{x}_{11} & z_{12}\mathbf{x}_{12} & \cdots & z_{1n}\mathbf{x}_{1n} \\ z_{21}\mathbf{x}_{21} & z_{22}\mathbf{x}_{22} & \cdots & z_{2n}\mathbf{x}_{2n} \\
+& & \ddots & \\
+z_{m1}\mathbf{x}_{m1} & z_{m2}\mathbf{x}_{m2} & \cdots & z_{mn}\mathbf{x}_{mn} \end{matrix}\right]=
+\left[\begin{matrix}P_1 \\ P_2 \\ \vdots \\ P_m\end{matrix}\right]
+\left[\begin{matrix}\mathbf{X}_1 & \mathbf{X}_2& \cdots & \mathbf{X}_n\end{matrix}\right]=MS %]]></script>
+
+<p>$z$를 알고 있다면 factorize를 통해 $M, S$를 구할 수 있고, $M, S$를 알고 있다면 $z$를 구할 수 있다.</p>
+
+<h3 id="self-calibration">Self-Calibration</h3>
+
+<p>Self-Calibration (auto-calibration)은 카메라의 intrinsic 파라미터를 바로 알아내는 것이다. intrinsic 파라미터는 모든 이미지에 대해 상관없이 일정하다는 조건을 가지고 찾아낼 수 있다.</p>
+
+<hr />
+<h2 id="terms">Terms</h2>
+<p>tangency : 접합  <br />
+fuse : 사용하다</p>
+
+</article>
+
+
+
+
+
+<section class="rss">
+  <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+</section>
+
+<!-- <section class="share">
+  <span>Share: </span>
+  
+    
+    
+    
+    
+    
+    
+    
+    
+  
+</section> -->
+
+
+
+
+<section class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'true';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+
+</div>
+</div>
+
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h3 class="footer-heading">YeonjeeJung's Blog</h3>
+
+    <div class="site-navigation">
+
+      <p><strong>Site Map</strong></p>
+      <ul class="pages">
+
+        <li class="nav-link"><a href="/about">About</a>
+        <li class="nav-link"><a href="/category/thesis">Thesis</a>
+        <li class="nav-link"><a href="/category/lecture">Lecture</a>
+
+      </ul>
+    </div>
+
+    <div class="site-contact">
+
+      <p><strong>Contact</strong></p>
+      <ul class="social-media-list">
+        <li>
+          <a href="mailto:gotnwlsl@gmail.com">
+            <i class="fa fa-envelope-o"></i>
+            <span class="username">gotnwlsl@gmail.com</span>
+          </a>
+        </li>
+
+        
+          
+          <li>
+            <a href="https://github.com/YeonjeeJung" title="Fork me on GitHub">
+              <i class="fa fa-github"></i>
+              <span class="username">YeonjeeJung</span>
+            </a>
+          </li>
+          
+        
+
+      </ul>
+    </div>
+
+    <div class="site-signature">
+      <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+      <p class="text"></p>
+    </div>
+
+  </div>
+
+</footer>
+
+<!-- Scripts -->
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/js/lightbox.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  // Default syntax highlighting
+  hljs.initHighlightingOnLoad();
+
+  // Header
+  var menuToggle = $('#js-mobile-menu').unbind();
+  $('#js-navigation-menu').removeClass("show");
+  menuToggle.on('click', function(e) {
+    e.preventDefault();
+    $('#js-navigation-menu').slideToggle(function(){
+      if($('#js-navigation-menu').is(':hidden')) {
+        $('#js-navigation-menu').removeAttr('style');
+      }
+    });
+  });
+});
+
+</script>
+
+
+
+
+
+
+  </body>
+
+</html>
