@@ -5,9 +5,171 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 25 Jul 2019 22:00:05 +0900</pubDate>
-    <lastBuildDate>Thu, 25 Jul 2019 22:00:05 +0900</lastBuildDate>
+    <pubDate>Sat, 27 Jul 2019 18:25:19 +0900</pubDate>
+    <lastBuildDate>Sat, 27 Jul 2019 18:25:19 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>CV Lecture 6 - Multiview Geometry</title>
+        <description>&lt;h1 id=&quot;structure-from-motion&quot;&gt;Structure from Motion&lt;/h1&gt;
+
+&lt;p&gt;Multiview geometry 문제에는 세 종류가 있다.&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Scene geometry (Structure) : 2D 좌표가 주어질 때, 3D 좌표는 어디에 있는가?&lt;/li&gt;
+  &lt;li&gt;Correspondence (stereo matching) : 한 이미지에서의 한 점이 다른 이미지에서는 어디에 존재할 가능성이 있는가?&lt;/li&gt;
+  &lt;li&gt;Camera geometry (motion) : 한 대상에 대해 여러 관점의 이미지 좌표가 주어질 때, 카메라 파라미터 행렬은 무엇인가?&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;이번 단원에서는 1번에 대해 다룰 것이다. (2, 3번은 각각 &lt;a href=&quot;https://yeonjeejung.github.io/lecture/computervision/2019/07/20/Lecture5.html&quot;&gt;2번&lt;/a&gt;, &lt;a href=&quot;https://yeonjeejung.github.io/lecture/computervision/2019/07/07/Lecture3.html&quot;&gt;3번&lt;/a&gt;에서 다루었다.)&lt;/p&gt;
+
+&lt;h3 id=&quot;structure-from-motion-ambiguity&quot;&gt;Structure from Motion Ambiguity&lt;/h3&gt;
+
+&lt;p&gt;Scene geometry는 m개의 이미지와 n개의 3D 좌표가 주어졌을 때, m개의 projection matrix $P_i$와 n개의 3D 좌표 $X_j$를 $m\times n$개의 $x_{ij}$로부터 찾는 문제이다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbf{x}_{ij}=P_i\mathbf{X}_j&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;i=1, \cdots , m, j=1, \cdots, n&lt;/script&gt;
+
+&lt;p&gt;만약 scale factor $k$가 존재하고, 카메라 파라미터들을 모두 $k$로 나눈다면, 그렇지 않았을 때와 같은 식이 나오게 되므로 정확한 scale 측정이 불가능하다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbf{x}=P\mathbf{X}=\left(\frac{1}{k}P\right)(k\mathbf{X})&lt;/script&gt;
+
+&lt;p&gt;또는, transformation matrix $Q$를 이용해도 똑같은 결과가 나온다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbf{x}=P\mathbf{X}=(PQ^{-1})(Q\mathbf{X})&lt;/script&gt;
+
+&lt;h3 id=&quot;affine-camera&quot;&gt;Affine Camera&lt;/h3&gt;
+
+&lt;p&gt;Orthographic projection은 이미지 좌표에서 world좌표로 변환 시 $z$축의 변화가 없는 변환이었다. affine 카메라는 3D 공간상에서의 affine 변환, orthographic projection, 이미지상의 affine 변환 효과가 결합된 것이다. 따라서 다음 식으로 나타낼 수 있다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+P=\left[3\times3 \text{affine}\right]\left[\begin{matrix}1 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 1 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 1\end{matrix}\right]\left[4\times4 \text{affine}\right]=\left[\begin{matrix}a_{11} &amp; a_{12} &amp;a_{13} &amp;b_1 \\a_{21} &amp; a_{22} &amp;a_{23} &amp;b_2 \\ 0 &amp; 0 &amp; 0 &amp; 1\end{matrix}\right]=\left[\begin{matrix}A &amp; b \\ 0 &amp; 1\end{matrix}\right] %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;결국 affine 카메라는 linear mapping에 translation을 더한 것이다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\mathbf{x}=\left(\begin{matrix}x \\ y\end{matrix}\right)=\left[\begin{matrix}a_{11} &amp; a_{12} &amp; a_{13} \\ a_{21} &amp; a_{22} &amp; a_{23}\end{matrix}\right]\left(\begin{matrix}X \\ Y \\ Z \end{matrix}\right)+\left(\begin{matrix}b_1 \\ b_2\end{matrix}\right)=A\mathbf{X+b} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;이 해는 유일하지 않고, 임의의 affine transformation $Q$에 의해 &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\left[\begin{matrix}A &amp; b \\ 0 &amp; 1\end{matrix}\right] \rightarrow \left[\begin{matrix}A &amp; b \\ 0 &amp; 1\end{matrix}\right]Q^{-1} %]]&gt;&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;\left(\begin{matrix}X\\1\end{matrix}\right)\rightarrow Q\left(\begin{matrix}X\\1\end{matrix}\right)&lt;/script&gt;가 해가 될 수도 있다.&lt;/p&gt;
+
+&lt;h3 id=&quot;affine-structure-from-motion&quot;&gt;Affine Structure from Motion&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;우리는 $2mn$개의 변수를 알고 있고, $8m+3n$개를 모르고 $Q$가 12의 degree of freedom을 가지므로 $2mn \geq (8m+3n)-12$여야 이 문제를 풀수 있다?&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;먼저, 이미지 좌표의 중심을 빼므로써 centering을 한다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\hat{\mathbf{x}}_{ij}=\mathbf{x}_{ij}-\frac{1}{n}\sum_{k=1}^n\mathbf{x}_{ik}=A_i\mathbf{X}_j+b_i-\frac{1}{n}\sum_{k=1}^n(A_i\mathbf{X}_k+b_i)=A_i\hat{\mathbf{X}}_j&lt;/script&gt;
+
+&lt;p&gt;계산을 쉽게 하기 위해 world좌표계의 원점이 3D좌표계의 center라고 하자.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\hat{\mathbf{x}}_{ij}=A_i\mathbf{X}_j&lt;/script&gt;
+
+&lt;p&gt;그리고 $2m\times n$개의 데이터 행렬을 만든다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+D=\left[\begin{matrix}\hat{\mathbf{x}}_{11} &amp; \hat{\mathbf{x}}_{12} &amp; \cdots &amp; \hat{\mathbf{x}}_{1n} \\ \hat{\mathbf{x}}_{21} &amp; \hat{\mathbf{x}}_{22} &amp; \cdots &amp; \hat{\mathbf{x}}_{2n} \\
+&amp; &amp; \ddots &amp; \\
+\hat{\mathbf{x}}_{m1} &amp; \hat{\mathbf{x}}_{m2} &amp; \cdots &amp; \hat{\mathbf{x}}_{mn} \end{matrix}\right]=
+\left[\begin{matrix}A_1 \\ A_2 \\ \vdots \\ A_m\end{matrix}\right]
+\left[\begin{matrix}\mathbf{X}_1 &amp; \mathbf{X}_2&amp; \cdots &amp; \mathbf{X}_n\end{matrix}\right]=MS %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;이 행렬은 rank가 3이다. ($A$행렬이 열 3개이고 $D$는 $A$와 $X$들의 조합으로 만들어지므로)이제 Singular Value Decomposition (SVD)를 이용해 D를 세 개의 행렬로 나눌 수 있다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;D=UWV^T&lt;/script&gt;
+
+&lt;p&gt;rank가 3이기 때문에 W의 대각성분 3개 빼고는 다 0이다. 우리는 $U, W, V$행렬에서 좌측 3개만 가져와서 차원을 3으로 압축할 수 있다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;D=U_3W_3V_3^T&lt;/script&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;M=U_3W_3^{\frac{1}{2}}, S=W_3^{\frac{1}{2}}V_3^T&lt;/script&gt;라고 한다면, 원하는 차원의 $M$과 $S$를 얻을 수 있다.&lt;/p&gt;
+
+&lt;p&gt;이 decomposition도 유일하지 않아서, 임의의 $3\times3$ 행렬 $C$를 이용하여 $M\rightarrow MC$, $S\rightarrow C^{-1}S$의 해를 만들 수도 있다.&lt;/p&gt;
+
+&lt;h3 id=&quot;eliminating-the-affine-ambiguity&quot;&gt;Eliminating the Affine Ambiguity&lt;/h3&gt;
+
+&lt;p&gt;서로 직교하고 scale이 1인 축을 기준으로 하게 한다. 이 축은 다음 두 식을 만족한다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;a_1\cdot a_2=0&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\|a_1\|^2=\|a_2\|^2=1&lt;/script&gt;
+
+&lt;p&gt;이미지 한장당 $a_1, a_2$가 각각 존재할 것이다. 이들은 각각&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;a_1La_1^T=1&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;a_2La_2^T=1&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;a_1La_2^T=0&lt;/script&gt;
+
+&lt;p&gt;을 만족한다.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;A_i=\left[\begin{matrix}a_{1i} \\ a_{2i}\end{matrix}\right]&lt;/script&gt;라고 하면 $3m$개의 방정식&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;A_iLA_i^T=I&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;i=1, \cdots, m&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;을 얻을 수 있다. 이 방정식을 풀고, cholesky decomposition을 이용해 $L=CC^T$로 분해한 뒤 $M\rightarrow MC$, $S\rightarrow C^{-1}S$로 바꿔주면 &lt;strong&gt;&lt;em&gt;ambigudity를 없앨 수 있다?&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;missing-data&quot;&gt;Missing Data&lt;/h3&gt;
+
+&lt;p&gt;실제로 어떤 3D 좌표는 어떤 view의 이미지에서는 보이지 않을 수도 있기 때문에 $M$행렬이 원하는 모양으로 나오지 않을 수도 있다. 이 때는 이 행렬을 dense sub-block으로 나누고, 그 sub-block들을 factorize한 뒤 사용하는 방법이 있다. &lt;strong&gt;&lt;em&gt;incremental bilinear refinement를 사용한다는데.. 어떻게 하는거지&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;projective-structure-from-motion&quot;&gt;Projective Structure from Motion&lt;/h3&gt;
+
+&lt;p&gt;m개의 이미지와 n개의 3D 좌표가 주어졌을 때, m개의 projection matrix $P_i$와 n개의 3D 좌표 $X_j$를 $m\times n$개의 $x_{ij}$로부터 찾는 문제이다. 아까와 똑같지만, $z_{ij}$라는 depth가 추가로 존재한다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;z_{ij}\mathbf{x}_{ij}=P_i\mathbf{X}_j&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;i=1, \cdots , m, j=1, \cdots, n&lt;/script&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;calibration 정보가 없으면 카메라와 좌표들은 $4\times4$ projective transformation 행렬 $Q$를 통해서만 발견할 수 있다?&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;우리는 $2mn$개의 변수를 알고 있고, $11m+3n$개를 모르고 $Q$가 15의 degree of freedom을 가지므로 $2mn \geq (11m+3n)-15$여야 이 문제를 풀수 있다?&lt;/em&gt;&lt;/strong&gt; 따라서 2개의 카메라에 대해서는 최소 7개 점에 대한 정보가 필요하다.&lt;/p&gt;
+
+&lt;p&gt;우선 두 뷰 사이의 fundamental matrix $F$를 계산한다. 기준이 될 카메라의 행렬을 &lt;script type=&quot;math/tex&quot;&gt;\left[\begin{matrix}I \mid 0\end{matrix}\right]&lt;/script&gt;, 다른 카메라의 행렬을 &lt;script type=&quot;math/tex&quot;&gt;\left[\begin{matrix}A \mid b \end{matrix}\right]&lt;/script&gt;라고 하자. 그러면&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;z\mathbf{x}=\left[I \mid 0\right]\mathbf{X}&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;z'\mathbf{x}'=\left[A\mid b\right]\mathbf{X}=A\left[I\mid 0\right]\mathbf{X}+b=zA\mathbf{x}+b&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;z'\mathbf{x}'\times b=zA\mathbf{x}\times b&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;(z'\mathbf{x}'\times b)\cdot \mathbf{x}'=(zA\mathbf{x}\times b)\cdot \mathbf{x}'=0&lt;/script&gt;
+
+&lt;p&gt;($\mathbf{x}’\times b$와 $\mathbf{x}’$는 서로 수직이므로 내적하면 0이 된다.)&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbf{x}'^T[b_{\times}]A\mathbf{x}=0&lt;/script&gt;
+
+&lt;p&gt;이므로, $F=[b_{\times}]A$이다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+D=\left[\begin{matrix}z_{11}\mathbf{x}_{11} &amp; z_{12}\mathbf{x}_{12} &amp; \cdots &amp; z_{1n}\mathbf{x}_{1n} \\ z_{21}\mathbf{x}_{21} &amp; z_{22}\mathbf{x}_{22} &amp; \cdots &amp; z_{2n}\mathbf{x}_{2n} \\
+&amp; &amp; \ddots &amp; \\
+z_{m1}\mathbf{x}_{m1} &amp; z_{m2}\mathbf{x}_{m2} &amp; \cdots &amp; z_{mn}\mathbf{x}_{mn} \end{matrix}\right]=
+\left[\begin{matrix}P_1 \\ P_2 \\ \vdots \\ P_m\end{matrix}\right]
+\left[\begin{matrix}\mathbf{X}_1 &amp; \mathbf{X}_2&amp; \cdots &amp; \mathbf{X}_n\end{matrix}\right]=MS %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;$z$를 알고 있다면 factorize를 통해 $M, S$를 구할 수 있고, $M, S$를 알고 있다면 $z$를 구할 수 있다.&lt;/p&gt;
+
+&lt;h3 id=&quot;self-calibration&quot;&gt;Self-Calibration&lt;/h3&gt;
+
+&lt;p&gt;Self-Calibration (auto-calibration)은 카메라의 intrinsic 파라미터를 바로 알아내는 것이다. intrinsic 파라미터는 모든 이미지에 대해 상관없이 일정하다는 조건을 가지고 찾아낼 수 있다.&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;h2 id=&quot;terms&quot;&gt;Terms&lt;/h2&gt;
+&lt;p&gt;tangency : 접합  &lt;br /&gt;
+fuse : 사용하다&lt;/p&gt;
+</description>
+        <pubDate>Fri, 26 Jul 2019 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/lecture/computervision/2019/07/26/Lecture6.html</link>
+        <guid isPermaLink="true">http://localhost:4000/lecture/computervision/2019/07/26/Lecture6.html</guid>
+        
+        
+        <category>Lecture</category>
+        
+        <category>ComputerVision</category>
+        
+      </item>
     
       <item>
         <title>Project 1</title>
@@ -186,9 +348,9 @@ R=\left[\begin{matrix}r_1 &amp; r_2 &amp; r_3\end{matrix}\right] %]]&gt;&lt;/scr
     
       <item>
         <title>CV Lecture 5 - Stereo Matching</title>
-        <description>&lt;h2 id=&quot;stereo-matching&quot;&gt;Stereo Matching&lt;/h2&gt;
+        <description>&lt;h1 id=&quot;stereo-matching&quot;&gt;Stereo Matching&lt;/h1&gt;
 
-&lt;h4 id=&quot;stereo-matching-1&quot;&gt;Stereo Matching&lt;/h4&gt;
+&lt;h3 id=&quot;stereo-matching-1&quot;&gt;Stereo Matching&lt;/h3&gt;
 &lt;p&gt;&lt;img src=&quot;https://www.researchgate.net/profile/Nathaniel_Short/publication/265115132/figure/fig7/AS:305305712906251@1449801962495/Simple-geometry-for-stereo-ranging-The-usual-goal-is-to-find-the-range-Z-from-the.png&quot; alt=&quot;&quot; /&gt;
 &lt;a href=&quot;https://www.researchgate.net/profile/Nathaniel_Short/publication/265115132/figure/fig7/AS:305305712906251@1449801962495/Simple-geometry-for-stereo-ranging-The-usual-goal-is-to-find-the-range-Z-from-the.png&quot;&gt;source&lt;/a&gt;&lt;/p&gt;
 
@@ -205,7 +367,7 @@ R=\left[\begin{matrix}r_1 &amp; r_2 &amp; r_3\end{matrix}\right] %]]&gt;&lt;/scr
 
 &lt;p&gt;이 성립하는데, 이때 $x_r-x_l$을 disparity라고 하고, $D = x_r-x_l$이라고 한다.&lt;/p&gt;
 
-&lt;h4 id=&quot;essential-matrix&quot;&gt;Essential Matrix&lt;/h4&gt;
+&lt;h3 id=&quot;essential-matrix&quot;&gt;Essential Matrix&lt;/h3&gt;
 
 &lt;p&gt;회전변환은 없으므로(두 평면이 평행하므로) rotation matrix $R = I$이고, translation matrix $T = [-d, 0, 0]^T$가 된다. 그리고 $E = [T_\times]R = \left(\begin{matrix}0 &amp;amp; 0 &amp;amp; 0 \ 0 &amp;amp; 0 &amp;amp; d \ 0 &amp;amp; -d &amp;amp; 0\end{matrix}\right)$이다. $p_l = [x, y, f], p’ = [x’, y’, f]$라고 하면 $p’^TEp=0$을 이용하여&lt;/p&gt;
 
@@ -218,7 +380,7 @@ R=\left[\begin{matrix}r_1 &amp; r_2 &amp; r_3\end{matrix}\right] %]]&gt;&lt;/scr
 
 &lt;p&gt;임을 알 수 있다. 이는 카메라가 평행이동하여 찍은 두 사진에서, 같은 점은 같은 $y$축 좌표가 같아야 함을 알려준다.&lt;/p&gt;
 
-&lt;h4 id=&quot;sum-of-square-difference-ssd&quot;&gt;Sum of Square Difference (SSD)&lt;/h4&gt;
+&lt;h3 id=&quot;sum-of-square-difference-ssd&quot;&gt;Sum of Square Difference (SSD)&lt;/h3&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;SSD = \sum_i(f_{1i}-f_{2i})^2&lt;/script&gt;
 
@@ -230,14 +392,14 @@ R=\left[\begin{matrix}r_1 &amp; r_2 &amp; r_3\end{matrix}\right] %]]&gt;&lt;/scr
 
 &lt;p&gt;$f_2$는 $f_1$과의 best match이고, $f_2’$는 두 번째 best match이다. &lt;strong&gt;&lt;em&gt;근데 이게 그냥 SSD보다 왜 좋은걸까?&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
 
-&lt;h4 id=&quot;normalized-cross-correlation-ncc&quot;&gt;Normalized Cross Correlation (NCC)&lt;/h4&gt;
+&lt;h3 id=&quot;normalized-cross-correlation-ncc&quot;&gt;Normalized Cross Correlation (NCC)&lt;/h3&gt;
 &lt;p&gt;SSD와 비슷한데, 점끼리의 차가 아닌 region의 차의 제곱을 계산한다. 중앙에 해당 픽셀이 있고, 그 주위 픽셀까지 정사각형으로 묶는다. 그 두 사각형이 $A$와 $B$라고 하면, 이들을 $a$, $b$라는 벡터로 만든다.&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;NCC = \frac{a\cdot b}{\left|a\right|\left|b\right|}, -1\le NCC \le 1&lt;/script&gt;
 
 &lt;p&gt;$A$는 고정해 놓고, $B$를 움직이면서 NCC cost를 계산한다. 이 cost가 가장 작은 점이 best match이다. 이 때, window size가 너무 작으면 노이즈까지 전부 세세하게 고려하게 되고, 너무 크면 디테일이 사라지게 되어 적당한 window size를 고르는 것이 중요하다.&lt;/p&gt;
 
-&lt;h4 id=&quot;stereo-matching-framework&quot;&gt;Stereo Matching Framework&lt;/h4&gt;
+&lt;h3 id=&quot;stereo-matching-framework&quot;&gt;Stereo Matching Framework&lt;/h3&gt;
 
 &lt;ol&gt;
   &lt;li&gt;
@@ -257,7 +419,7 @@ R=\left[\begin{matrix}r_1 &amp; r_2 &amp; r_3\end{matrix}\right] %]]&gt;&lt;/scr
 
 &lt;p&gt;Baseline은 너무 작으면 depth를 계산하는 데에 에러가 있을 수 있고, 너무 크면 같은 점 찾기가 어려워진다. 전통적인 Stereo Matching은 디테일한 표면 예측을 하고, 빠른 계산을 할 수 있다는 장점이 있다. 그러나 Baseline이 작으면 노이즈가 많을 수 있고, 질감에 따라 결과가 다르다는 점, &lt;strong&gt;&lt;em&gt;가까운 폐쇄 경계를 찾을 때 어렵다는 단점이 있다?&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
 
-&lt;h4 id=&quot;data-interpolation&quot;&gt;Data Interpolation&lt;/h4&gt;
+&lt;h3 id=&quot;data-interpolation&quot;&gt;Data Interpolation&lt;/h3&gt;
 
 &lt;p&gt;sparse한 3D 점들이 있을 때 이것을 보간하는 방법에는 여러가지가 있는데, 먼저 energy minimization은 에너지의 최소점을 찾는 것이다.&lt;/p&gt;
 
@@ -314,9 +476,9 @@ sweep : 쓸다&lt;/p&gt;
     
       <item>
         <title>CV Lecture 4 - Camera Calibration</title>
-        <description>&lt;h2 id=&quot;camera-calibration&quot;&gt;Camera Calibration&lt;/h2&gt;
+        <description>&lt;h1 id=&quot;camera-calibration&quot;&gt;Camera Calibration&lt;/h1&gt;
 
-&lt;h4 id=&quot;stereo-reconstruction&quot;&gt;Stereo Reconstruction&lt;/h4&gt;
+&lt;h3 id=&quot;stereo-reconstruction&quot;&gt;Stereo Reconstruction&lt;/h3&gt;
 &lt;p&gt;Stereo Reconstruction은 두 장 이상의 2D 이미지를 이용해서 이를 3D상에서 재건하는 것인데, 단계는 다음과 같다.&lt;/p&gt;
 &lt;ol&gt;
   &lt;li&gt;카메라 변수 찾기&lt;/li&gt;
@@ -332,27 +494,27 @@ E=t\times R=\left[\begin{matrix}0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; -T \\ 0 &am
 
 &lt;p&gt;이 된다.&lt;/p&gt;
 
-&lt;h4 id=&quot;stereo-image-rectification&quot;&gt;Stereo Image Rectification&lt;/h4&gt;
+&lt;h3 id=&quot;stereo-image-rectification&quot;&gt;Stereo Image Rectification&lt;/h3&gt;
 &lt;p&gt;두 카메라가 평행하면 한 좌표를 보는 두 이미지 평면이 평행하지 않을 수 있는데, 이렇게 얻은 이미지 평면을 두 카메라를 잇는 선에 평행한 평면에 옮겨주는 것을 image rectification이라고 한다. 이것을 하고 나면 위에서 쓴 essential 행렬을 사용할 수 있다.&lt;/p&gt;
 
-&lt;h4 id=&quot;homography&quot;&gt;Homography&lt;/h4&gt;
-&lt;p&gt;하나의 평면을 같은 위치에서 다른 각도로 바라보았을 때의 이미지들을 서로 변환할 수 있는 행렬을 homography ($H$)라고 한다. (하나의 이미지는 앞을 보며 찍고, 다른 하나의 이미지는 바닥이나 옆을 보고 찍었을 때)&lt;/p&gt;
+&lt;h3 id=&quot;homography&quot;&gt;Homography&lt;/h3&gt;
+&lt;p&gt;3D평면에 있는 점을 image 평면으로 변환시킬 때 사용하는 행렬을 homography ($H$)라고 한다.&lt;/p&gt;
 
-&lt;p&gt;이 두 시점 변환에 translation이 없으므로 rotation만이 존재하게 되고, $\Pi_r = R\Pi_l$라고 쓸 수 있다. ($\Pi_r$은 첫번째, $\Pi_l$은 두번째 각도의 projection 행렬) $\Pi_l = K[I|0]$이므로&lt;/p&gt;
+&lt;p&gt;이 두 시점 변환에 translation이 없으므로 rotation만이 존재하게 되고, $P_r = RP_l$라고 쓸 수 있다. ($P_r$은 첫번째, $P_l$은 두번째 각도의 projection 행렬) $P_l = K[I\mid0]$이므로&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;x_l = K[I|0]\left[\begin{matrix} X\\ 1 \end{matrix}\right] = KX&lt;/script&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;x_l = K[I\mid0]\left[\begin{matrix} X\\ 1 \end{matrix}\right] = KX&lt;/script&gt;
 
-&lt;p&gt;이고, $\Pi_r = K[R|0]$이므로&lt;/p&gt;
+&lt;p&gt;이고, $P_r = K[R\mid0]$이므로&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;x_r = K[R|0]\left[\begin{matrix}X\\ 1\end{matrix}\right] = KRX&lt;/script&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;x_r = K[R\mid0]\left[\begin{matrix}X\\ 1\end{matrix}\right] = KRX&lt;/script&gt;
 
 &lt;p&gt;이다. 따라서, $x_r = KRK^{-1}x_l$이고, $H = KRK^{-1}$이 된다.&lt;/p&gt;
 
-&lt;p&gt;이미지의 원점이 같은 평면의 다른 각도에서 촬영되었을 때만 homography로 연관될 수 있다. (translation이 없어야 한다.) 그리고, 같은 카메라로 촬영되었을 때만 연관될 수 있다.&lt;/p&gt;
+&lt;p&gt;이미지의 원점이 같은 평면의 다른 각도에서 촬영되었을 때만 homography가 서로 연관될 수 있다. (translation이 없어야 한다.) 그리고, 같은 카메라로 촬영되었을 때만 연관될 수 있다.&lt;/p&gt;
 
 &lt;p&gt;만약 rotation 행렬 $R$을 모른다면, $x_r^TFx_l = 0$에서 $F$를 알아낼 때 썼던 방법을 이용해 찾을 수 있다. &lt;strong&gt;&lt;em&gt;사실, $K^{-T}K^{-1}$의 가장 작은 eigenvalue에 대응하는 eigenvector를 찾으면 된다.&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
 
-&lt;h4 id=&quot;2d-checkerboard-pattern&quot;&gt;2D Checkerboard Pattern&lt;/h4&gt;
+&lt;h3 id=&quot;2d-checkerboard-pattern&quot;&gt;2D Checkerboard Pattern&lt;/h3&gt;
 &lt;p&gt;&lt;img src=&quot;http://www.campi3d.com/External/MariExtensionPack/userGuide4R1/lib/CHeckerSimpleB.png&quot; alt=&quot;&quot; /&gt;
 &lt;a href=&quot;http://www.campi3d.com/External/MariExtensionPack/userGuide4R1/lib/CHeckerSimpleB.png&quot;&gt;Source&lt;/a&gt;&lt;/p&gt;
 
@@ -422,10 +584,10 @@ tripod : 삼각대&lt;/p&gt;
     
       <item>
         <title>CV Lecture 3 - Epipolar Geometry</title>
-        <description>&lt;h2 id=&quot;single-view-geometry&quot;&gt;Single-View Geometry&lt;/h2&gt;
+        <description>&lt;h1 id=&quot;single-view-geometry&quot;&gt;Single-View Geometry&lt;/h1&gt;
 &lt;p&gt;일단 우리의 목표는 한 3D 구조를 재건하는 것이다. 그러나 하나의 이미지는 깊이 정보를 갖고 있지 않기 때문에 정확하게 재건할 수 없다. 따라서 우리는 multi-view geometry가 필요하다.&lt;/p&gt;
 
-&lt;h4 id=&quot;principal-point-offset&quot;&gt;Principal Point Offset&lt;/h4&gt;
+&lt;h3 id=&quot;principal-point-offset&quot;&gt;Principal Point Offset&lt;/h3&gt;
 &lt;p&gt;principal axis는 카메라 중심에서부터 이미지 평면에 수직으로 들어오는 선이다. principal point란 principal axis가 이미지 평면과 만나는 점이다. 따라서 normalized coordinate system 상의 원점은 principal point이다. 그런데 image coordinate system상의 원점은 좌측 하단이다. 따라서 image coordinate system에서 얻은 좌표를 normalized coordinate system에서의 좌표로 변환해야 한다. (normalized coordinate system에서의 좌표에는 음수도 존재한다.)&lt;/p&gt;
 
 &lt;p&gt;principal point의 좌표가 $(p_x, p_y)$라고 하면 normalized coordinate system에서의 좌표는 $(x, y, z) \rightarrow (f\frac{x}{z}, f\frac{y}{z})$가 되고, 이를 image coordinate system의 좌표로 나타내면 $(f\frac{x}{z}+p_x, f\frac{y}{z}+p_y)$가 된다. 이를 하나의 식으로 나타내면&lt;/p&gt;
@@ -444,7 +606,7 @@ f &amp; 0 &amp; p_x\\
 \end{matrix} \right]
 \left[\begin{matrix} x \\ y \\ z \\ 1 \end{matrix}\right] %]]&gt;&lt;/script&gt;
 
-&lt;p&gt;인데, 첫번째 행렬은 intrinsic 행렬이고, 두번째 행렬은 projection 행렬이다. 이 때 이 intrinsic 행렬을 calibration 행렬이라고 하고, $K$로 표기한다. projection 행렬은 $[I|0]$로 표현될 수 있다. 따라서 이 때 곱해지는 행렬 $\Pi$는 $K[I|0]$가 된다.&lt;/p&gt;
+&lt;p&gt;인데, 첫번째 행렬은 intrinsic 행렬이고, 두번째 행렬은 projection 행렬이다. 이 때 이 intrinsic 행렬을 calibration 행렬이라고 하고, $K$로 표기한다. projection 행렬은 $[I\mid0]$로 표현될 수 있다. 따라서 이 때 곱해지는 행렬 $P$는 $K[I\mid0]$가 된다.&lt;/p&gt;
 
 &lt;p&gt;실제 이미지에서는 이렇게 바뀐 좌표를 pixel coordinate로 바꿔야 한다. 가로에는 $1$미터 안에 $m_x$개의 픽셀, 세로에는 $1$미터 안에 $m_y$개의 픽셀이 있다고 하자. 원래의 $K$행렬은 각 좌표를 미터 단위로 변환시켜주는데, 이 앞에 $1$미터 안에 들어있는 픽셀수를 곱해주면 픽셀 단위로 좌표를 변환시킬 수 있다. 따라서 pixel coordinate로 변환시켜줄 새로운 $K$는&lt;/p&gt;
 
@@ -467,20 +629,20 @@ f &amp; 0 &amp; p_x \\
 
 &lt;p&gt;가 된다.&lt;/p&gt;
 
-&lt;h4 id=&quot;camera-rotation-and-translation&quot;&gt;Camera Rotation and Translation&lt;/h4&gt;
-&lt;p&gt;카메라의 extrinsic 파라미터에 해당한다. 일반적으로 카메라를 땅과 평행하게 두고 촬영하지 않기 때문에 projection에 앞서 실제 좌표를 카메라 좌표로 옮기는 일도 필요하다. 여기에는 두 가지 과정이 있는데, 중심을 $(0, 0)$으로 맞추는 과정과 회전변환을 하는 과정이다. 이를 식으로 나타내면 $\tilde{X}_{cam} = R(\tilde{X}-\tilde{C})$ 가 된다. 하지만 이것은 $\tilde{X} = (x, y, z)$라고 가정했을 때의 식이고, 이는 non-homogeneous이므로, homogeneous한 식으로 바꾸면&lt;/p&gt;
+&lt;h3 id=&quot;camera-rotation-and-translation&quot;&gt;Camera Rotation and Translation&lt;/h3&gt;
+&lt;p&gt;카메라의 extrinsic 파라미터에 해당한다. 일반적으로 카메라를 땅과 평행하게 두고 촬영하지 않기 때문에 projection에 앞서 실제 좌표를 카메라 좌표로 옮기는 일도 필요하다. 여기에는 두 가지 과정이 있는데, 중심을 $(0, 0)$으로 맞추는 과정과 회전변환을 하는 과정이다. 이를 식으로 나타내면 $\tilde{\mathbf{X}}_{cam} = R(\tilde{\mathbf{X}}-\tilde{C})$ 가 된다. 하지만 이것은 $\tilde{\mathbf{X}} = (x, y, z)$라고 가정했을 때의 식이고, 이는 non-homogeneous이므로, homogeneous한 식으로 바꾸면&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-X_{cam}=
+\mathbf{X}_{cam}=
 \left[\begin{matrix}
 R &amp; -R\tilde{C}\\ 0 &amp; 1
-\end{matrix}\right]X %]]&gt;&lt;/script&gt;
+\end{matrix}\right]\mathbf{X} %]]&gt;&lt;/script&gt;
 
-&lt;p&gt;라고 쓸 수 있다. (한 차원을 추가해서 그 차원을 상수 $1$로 고정, $X=\left(\begin{matrix} \tilde{X} \ 1\end{matrix}\right)$)&lt;/p&gt;
+&lt;p&gt;라고 쓸 수 있다. (한 차원을 추가해서 그 차원을 상수 $1$로 고정, $\mathbf{X}=\left(\begin{matrix} \tilde{\mathbf{X}} \ 1\end{matrix}\right)$)&lt;/p&gt;
 
-&lt;p&gt;최종적으로 $x = K[I|0]X_{cam} = K[R|-R\tilde{C}]X$가 되고, projection 행렬 $\Pi$는 $\Pi = K[R|-R\tilde{C}]$가 된다.&lt;/p&gt;
+&lt;p&gt;최종적으로 $\mathbf{x} = K[I\mid0]\mathbf{X}_{cam} = K[R\mid-R\tilde{C}]\mathbf{X}$가 되고, projection 행렬 $P$는 $P = K[R\mid-R\tilde{C}]$가 된다.&lt;/p&gt;
 
-&lt;h4 id=&quot;radial-distortion&quot;&gt;Radial Distortion&lt;/h4&gt;
+&lt;h3 id=&quot;radial-distortion&quot;&gt;Radial Distortion&lt;/h3&gt;
 &lt;p&gt;intrinsic 파라미터 중 하나이다. 카메라 렌즈의 굴절에 의해 일어나는 왜곡으로써, 렌즈의 중앙과 멀어질수록 왜곡이 심하게 일어난다. 왜곡 모델은 다음과 같다.&lt;/p&gt;
 
 &lt;p&gt;먼저, $(\hat{x}, \hat{y}, \hat{z})$를 normalized coordinate로 옮긴다.&lt;/p&gt;
@@ -497,65 +659,69 @@ R &amp; -R\tilde{C}\\ 0 &amp; 1
 &lt;p&gt;마지막으로 &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
 K = \left[\begin{matrix}f &amp; 0 &amp; p_x \\ 0 &amp; f &amp; p_y \\ 0 &amp; 0 &amp; 1\end{matrix}\right] %]]&gt;&lt;/script&gt;을 적용한다.&lt;/p&gt;
 
-&lt;h4 id=&quot;camera-calibration--linear-method&quot;&gt;Camera calibration : Linear Method&lt;/h4&gt;
-&lt;p&gt;그렇다면 $\Pi$는 어떻게 찾을 수 있을까? 이미지 상의 좌표 $x$에 대해 $x=\Pi X$를 만족하고, $\Pi \in \mathbb{R}^{3\times4}$이므로, 12개의 변수를 가지고 있다. (하지만 마지막은 항상 1이므로, 사실은 11개의 변수를 가지고 있다.) 따라서 최소 12개의 식을 알고 있다면 이 방정식을 풀어 $\Pi$를 찾을 수 있다. 하나의 $x$는 $x, y$의 두 좌표를 가지고 있으므로, 최소 6개의 $x, X$ 쌍을 알고 있다면 $\Pi$를 알아낼 수 있다.&lt;/p&gt;
+&lt;h3 id=&quot;camera-calibration--linear-method&quot;&gt;Camera calibration : Linear Method&lt;/h3&gt;
+&lt;p&gt;그렇다면 $P$는 어떻게 찾을 수 있을까? 이미지 상의 좌표 $\mathbf{x}$에 대해 $\mathbf{x}=P\mathbf{X}$를 만족하고, $P \in \mathbb{R}^{3\times4}$이므로, 12개의 변수를 가지고 있다. (하지만 마지막은 항상 1이므로, 사실은 11개의 변수를 가지고 있다.) 따라서 최소 12개의 식을 알고 있다면 이 방정식을 풀어 $P$를 찾을 수 있다. 하나의 $\mathbf{x}$는 $x, y$의 두 좌표를 가지고 있으므로, 최소 6개의 $\mathbf{x}, \mathbf{X}$ 쌍을 알고 있다면 $P$를 알아낼 수 있다.&lt;/p&gt;
 
-&lt;p&gt;$X$가 projection에 의해 $x$로 사영되므로, 둘의 방향은 같다. 따라서 $x_i \times \Pi X_i = 0$이라는 관계식을 가지고 있다. 이 식에서 linearly independent한 두 개의 식만 가지고 와서&lt;/p&gt;
+&lt;p&gt;$\mathbf{X}$가 projection에 의해 $\mathbf{x}$로 사영되므로, 둘의 방향은 같다. 따라서 $\mathbf{x}_i \times P\mathbf{X}_i = 0$이라는 관계식을 가지고 있다. 이 식에서 linearly independent한 두 개의 식만 가지고 와서&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \left[\begin{matrix}
-0 &amp; -X_i^T &amp; y_iX_i^T \\
-X_i^T &amp; 0 &amp; -x_iX_i^T
+0 &amp; -\mathbf{X}_i^T &amp; y_i\mathbf{X}_i^T \\
+\mathbf{X}_i^T &amp; 0 &amp; -x_i\mathbf{X}_i^T
 \end{matrix}\right]
-\left(\begin{matrix}\Pi_x \\ \Pi_y \\ \Pi_z\end{matrix}\right)=0 %]]&gt;&lt;/script&gt;
+\left(\begin{matrix}P_x \\ P_y \\ P_z\end{matrix}\right)=0 %]]&gt;&lt;/script&gt;
 
-&lt;p&gt;의 식을 만들 수 있다.($\Pi_{x, y, z} \in \mathbb{R}^{4\times1}$) 6개의 점을 알고 있다면 여기에 대입하여&lt;/p&gt;
+&lt;p&gt;의 식을 만들 수 있다.($P_{x, y, z} \in \mathbb{R}^{4\times1}$) 6개의 점을 알고 있다면 여기에 대입하여&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \left[\begin{matrix}
-0^T &amp; X_1^T &amp; -y_1X_1^T \\
-X_1^T &amp; 0^T &amp; x_1X_1^T \\
+0^T &amp; \mathbf{X}_1^T &amp; -y_1\mathbf{X}_1^T \\
+\mathbf{X}_1^T &amp; 0^T &amp; x_1\mathbf{X}_1^T \\
 \cdots &amp; \cdots &amp; \cdots \\
-0^T &amp; X_6^T &amp; -y_6X_6^T \\
-X_6^T &amp; 0^T &amp; x_6X_6^T \\
+0^T &amp; \mathbf{X}_6^T &amp; -y_6\mathbf{X}_6^T \\
+\mathbf{X}_6^T &amp; 0^T &amp; x_6\mathbf{X}_6^T \\
 \end{matrix}\right]
-\left(\begin{matrix}\Pi_x \\ \Pi_y \\ \Pi_z\end{matrix}\right)=0 %]]&gt;&lt;/script&gt;
+\left(\begin{matrix}P_x \\ P_y \\ P_z\end{matrix}\right)=0 %]]&gt;&lt;/script&gt;
 
-&lt;p&gt;을 풀면 $\Pi$를 알아낼 수 있다.&lt;/p&gt;
+&lt;p&gt;을 풀면 $P$를 알아낼 수 있다.&lt;/p&gt;
 
 &lt;p&gt;Linear method의 장점은 수식화가 쉽고 풀기도 쉽다는 점이다. 하지만 직접적으로 카메라 파라미터를 알 수는 없으며 radial distortion도 고려하지 않는다. 또한 제한 사항도 집어넣을 수 없다는 단점이 있다. 따라서 non-Linear method가 더 선호된다.&lt;/p&gt;
 
-&lt;h2 id=&quot;epipolar-geometry&quot;&gt;Epipolar Geometry&lt;/h2&gt;
+&lt;h1 id=&quot;epipolar-geometry&quot;&gt;Epipolar Geometry&lt;/h1&gt;
 
-&lt;h4 id=&quot;triangulation&quot;&gt;Triangulation&lt;/h4&gt;
-&lt;p&gt;두개, 혹은 그 이상의 이미지를 가지고 3D상의 점을 찾는 것을 triangulation이라고 한다. $O_1$ 을 원점으로 갖는 이미지에서의 점 $x_1$, $O_2$를 원점으로 갖는 이미지에서의 점 $x_2$를 각각의 원점과 이은 선은 실제 점 $x$에서 교차해야 한다. 하지만 노이즈나 에러때문에 정확하게 만나지는 않는다. 따라서 두 선의 거리가 가장 가까운 두 점을 이은 선분의 중점을 $x$라고 예측한다.&lt;/p&gt;
+&lt;h3 id=&quot;triangulation&quot;&gt;Triangulation&lt;/h3&gt;
+&lt;p&gt;두개, 혹은 그 이상의 이미지를 가지고 3D상의 점을 찾는 것을 triangulation이라고 한다. $O_1$ 을 원점으로 갖는 이미지에서의 점 $\mathbf{x}_1$, $O_2$를 원점으로 갖는 이미지에서의 점 $\mathbf{x}_2$를 각각의 원점과 이은 선은 실제 점 $\mathbf{x}$에서 교차해야 한다. 하지만 노이즈나 에러때문에 정확하게 만나지는 않는다. 따라서 두 선의 거리가 가장 가까운 두 점을 이은 선분의 중점을 $\mathbf{X}$라고 예측한다.&lt;/p&gt;
 
-&lt;p&gt;$X$를 알아내는 linear approach는 다음과 같다. $x_1$과 $x_2$는 $\Pi_iX$와 평행하기 때문에 각각 다음의 식이 성립한다.&lt;/p&gt;
+&lt;p&gt;$\mathbf{X}$를 알아내는 linear approach는 다음과 같다. $\mathbf{x}_1$과 $\mathbf{x}_2$는 $P_i\mathbf{X}$와 평행하기 때문에 각각 다음의 식이 성립한다.&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;x_i \times P_iX=0&lt;/script&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbf{x}_i \times P_i\mathbf{X}=0&lt;/script&gt;
 
-&lt;p&gt;그리고 $x_i\times PX=[x_{i\times}]PX$를 만족하는 $[x_{i\times}]$를 찾을 수 있다. 하나의 $x_i$에 대해 $[x_{i\times}]P_xX=0&lt;script type=&quot;math/tex&quot;&gt;,&lt;/script&gt;[x_{i\times}]P_yX=0$의 두 식을 알아낼 수 있고(두 개만 linearly independent하므로) 우리는 두 개의 $x_i$를 알고 있으므로 총 4개의 식을 알고 있다. 알아내야 하는 $X$의 변수가 3개이므로, 방정식을 풀어 $X$를 알아낼 수 있다.&lt;/p&gt;
+&lt;p&gt;그리고 $\mathbf{x}&lt;em&gt;i\times P\mathbf{X}=[\mathbf{x}&lt;/em&gt;{i\times}]P\mathbf{X}$를 만족하는 $[\mathbf{x}&lt;em&gt;{i\times}]$를 찾을 수 있다. 하나의 $\mathbf{x}_i$에 대해 $[\mathbf{x}&lt;/em&gt;{i\times}]P_x\mathbf{X}=0$, $[\mathbf{x}_{i\times}]P_y\mathbf{X}=0$의 두 식을 알아낼 수 있고(두 개만 linearly independent하므로) 우리는 두 개의 $\mathbf{x}_i$를 알고 있으므로 총 4개의 식을 알고 있다. 알아내야 하는 $\mathbf{X}$의 변수가 3개이므로, 방정식을 풀어 $\mathbf{X}$를 알아낼 수 있다.&lt;/p&gt;
 
-&lt;p&gt;$X$를 알아내는 non-linear approach는 $X = argmin(d^2(x_1, P_1X)+d^2(x_2, P_2X))$를 찾아내면 된다.&lt;/p&gt;
+&lt;p&gt;$\mathbf{X}$를 알아내는 non-linear approach는 $\mathbf{X} = argmin(d^2(\mathbf{x}_1, P_1\mathbf{X})+d^2(\mathbf{x}_2, P_2\mathbf{X}))$를 찾아내면 된다.&lt;/p&gt;
 
-&lt;h4 id=&quot;epipolar-geometry-1&quot;&gt;Epipolar Geometry&lt;/h4&gt;
+&lt;h3 id=&quot;epipolar-geometry-1&quot;&gt;Epipolar Geometry&lt;/h3&gt;
 &lt;p&gt;두 개의 이미지에서 한 점의 좌표를 알아내는 상황을 가정한다. baseline은 이미지의 두 원점을 이은 선이고, epipolar plane은 그 선을 포함하는 평면들이다. epipole은 baseline과 각 이미지 평면들의 교점이다. 마지막으로 epipolar line은 epipolar plane과 이미지 평면의 교점이다.&lt;/p&gt;
 
-&lt;h4 id=&quot;epipolar-constraint&quot;&gt;Epipolar Constraint&lt;/h4&gt;
+&lt;h3 id=&quot;epipolar-constraint&quot;&gt;Epipolar Constraint&lt;/h3&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://slideplayer.com/slide/4824174/15/images/43/Epipolar+constraint%3A+Calibrated+case.jpg&quot; alt=&quot;&quot; /&gt;
 &lt;a href=&quot;https://slideplayer.com/slide/4824174/15/images/43/Epipolar+constraint%3A+Calibrated+case.jpg&quot;&gt;Source&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;만약 $I$이미지 상의 $x$가 존재한다면, $I’$이미지에서 이 $x$에 대응하는 점 $x’$은 epipolar line에서 찾을 수 있다는 것이 epipolar constraint이다.&lt;/p&gt;
+&lt;p&gt;만약 $I$이미지 상의 $\mathbf{x}$가 존재한다면, $I’$이미지에서 이 $\mathbf{x}$에 대응하는 점 $\mathbf{x}’$은 epipolar line에서 찾을 수 있다는 것이 epipolar constraint이다.&lt;/p&gt;
 
-&lt;p&gt;원점 $O$에서 $I$위의 점 $x$로 향하는 벡터 $x$와 원점 $O’$에서 $I’$위의 점 $x’$로 향하는 벡터 $Rx’$($R$은 $I$에서 $I’$로의 변환행렬), 그리고 $O$와 $O’$를 잇는 선인 $t$는 같은 평면(삼각형 $XOO’$가 이루는 평면)상의 벡터이다. 따라서 $x\cdot[t\times(Rx’)]=0$이 성립하고, 이는 $x^TEx’=0$으로 표현될 수 있다. ($E=[t_\times]R$) 이때 $E$를 essential 행렬이라고 부른다. 사실 이 $E$가 반드시 존재한다는 것이 epipolar constraint이다.&lt;/p&gt;
+&lt;p&gt;원점 $O$에서 $I$위의 점 $\mathbf{x}$로 향하는 벡터 $\mathbf{x}$와 원점 $O’$에서 $I’$위의 점 $\mathbf{x}’$로 향하는 벡터 $R\mathbf{x}’$($R$은 $I$에서 $I’$로의 변환행렬), 그리고 $O$와 $O’$를 잇는 선인 $t$는 같은 평면(삼각형 $\mathbf{X}OO’$가 이루는 평면)상의 벡터이다. 따라서 $\mathbf{x}\cdot[t\times(R\mathbf{x}’)]=0$이 성립하고, 이는 $\mathbf{x}^TE\mathbf{x}’=0$으로 표현될 수 있다. ($E=[t_\times]R$) 이때 $E$를 essential 행렬이라고 부른다. 사실 이 $E$가 반드시 존재한다는 것이 epipolar constraint이다.&lt;/p&gt;
 
-&lt;p&gt;위 식을 이용하면 epipolar line인 $l$과 $l’$이 $l=Ex’$, $l’=E^Tx$임을 알 수 있다. (삼각형 $XOO’$에서 $x$벡터에 수직인 선분은 $l$밖에 없으므로, $x’$에 대해서도 마찬가지) 따라서 epipolar line상에 있는 epipole들도 $Ee’=0$, $E^Te=0$을 만족한다. $E$는 자유도 3의 회전, 자유도 2의 평행이동으로 이루어져 있으므로 5개의 점의 좌표를 알면 구할 수 있다.&lt;/p&gt;
+&lt;p&gt;위 식을 이용하면 epipolar line인 $l$과 $l’$이 $l=E\mathbf{x}’$, $l’=E^T\mathbf{x}$임을 알 수 있다. (삼각형 $\mathbf{X}OO’$에서 $x$벡터에 수직인 선분은 $l$밖에 없으므로, $\mathbf{x}’$에 대해서도 마찬가지) 따라서 epipolar line상에 있는 epipole들도 $Ee’=0$, $E^Te=0$을 만족한다. $E$는 자유도 3의 회전, 자유도 2의 평행이동으로 이루어져 있으므로 5개의 점의 좌표를 알면 구할 수 있다.&lt;/p&gt;
 
-&lt;p&gt;$E$는 normalized coordinate 상에서의 좌표들의 관계를 나타내는 행렬이고, 다음은 정규화도 되지 않은 실제 공간에서의 좌표들의 관계를 나타내는 행렬 $F$를 구하는 방법이다. 일단 우리는 calibration matrix $K$와 $K’$를 모른다고 가정하고, 이들은 다음을 만족한다. $x = K\hat{x}$, $x’=K’\hat{x}’$. $\hat{x}$와 $\hat{x}’$ 를 이용한 epipolar constraint의 식은 $\hat{x}^TE\hat{x}’=0$ 이다. 이제 $F=K^{-T}EK’^{-1}$에 대해 $x^TFx’=0$이 성립한다. 이 때의 $F$를 fundamental matrix라고 한다. $F$를 구하기 위해서는 $E$를 구할 때보다 $K$, $K’$의 정보가 더 필요하기 때문에 7개의 점의 좌표가 필요하다.&lt;/p&gt;
+&lt;p&gt;$E$는 normalized coordinate 상에서의 좌표들의 관계를 나타내는 행렬이고, 다음은 정규화도 되지 않은 실제 공간에서의 좌표들의 관계를 나타내는 행렬 $F$를 구하는 방법이다. 일단 우리는 calibration matrix $K$와 $K’$를 모른다고 가정하고, 이들은 다음을 만족한다.&lt;/p&gt;
 
-&lt;h4 id=&quot;the-eight-point-algorithm&quot;&gt;The eight-point algorithm&lt;/h4&gt;
-&lt;p&gt;다른 방식으로 $F$를 구할 수도 있다. $F$는 어쨌건 $3\times3$ 행렬이므로 9개의 식을 알고 있으면 구할 수 있다. 게다가, 하나만 존재하게 하기 위해 마지막 수는 항상 1이 되어야 한다는 조건을 추가하면, 8개의 점을 알면 구할 수 있다. 이를 eight-point algorithm이라고 부르며, $\sum_{i=1}^N(x_i^TFx_i’)^2$를 최소화시키는 $F$를 구하면 된다. 이 에러의 의미는 어떤 점 $x$와 epipolar line $Fx’$사이의 유클리드 거리의 합을 최소화시킨다는 것이다. eight-point algorithm은 원래 좌표를 normalize시킨 후 계산하고, 다시 원래 좌표로 변환시켜 계산했을 때 더 정확하다.&lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbf{x} = K\hat{\mathbf{x}}, \mathbf{x}'=K'\hat{\mathbf{x}}'&lt;/script&gt;
+
+&lt;p&gt;$\hat{\mathbf{x}}$와 $\hat{\mathbf{x}}’$ 를 이용한 epipolar constraint의 식은 $\hat{\mathbf{x}}^TE\hat{\mathbf{x}}’=0$ 이다. 이제 $F=K^{-T}EK’^{-1}$에 대해 $\mathbf{x}^TF\mathbf{x}’=0$이 성립한다. 이 때의 $F$를 fundamental matrix라고 한다. $F$를 구하기 위해서는 $E$를 구할 때보다 $K$, $K’$의 정보가 더 필요하기 때문에 7개의 점의 좌표가 필요하다.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-eight-point-algorithm&quot;&gt;The eight-point algorithm&lt;/h3&gt;
+&lt;p&gt;다른 방식으로 $F$를 구할 수도 있다. $F$는 어쨌건 $3\times3$ 행렬이므로 9개의 식을 알고 있으면 구할 수 있다. 게다가, 하나만 존재하게 하기 위해 마지막 수는 항상 1이 되어야 한다는 조건을 추가하면, 8개의 점을 알면 구할 수 있다. 이를 eight-point algorithm이라고 부르며, $\sum_{i=1}^N(\mathbf{x}_i^TF\mathbf{x}_i’)^2$를 최소화시키는 $F$를 구하면 된다. 이 에러의 의미는 어떤 점 $\mathbf{x}$와 epipolar line $F\mathbf{x}’$사이의 유클리드 거리의 합을 최소화시킨다는 것이다. eight-point algorithm은 원래 좌표를 normalize시킨 후 계산하고, 다시 원래 좌표로 변환시켜 계산했을 때 더 정확하다.&lt;/p&gt;
 
 &lt;hr /&gt;
 &lt;h2 id=&quot;terms&quot;&gt;Terms&lt;/h2&gt;
@@ -576,43 +742,43 @@ coplanar : 동일 평면상의&lt;/p&gt;
     
       <item>
         <title>CV Lecture 2 - Image Formation and Camera</title>
-        <description>&lt;h2 id=&quot;pinhole-camera-model&quot;&gt;Pinhole Camera Model&lt;/h2&gt;
+        <description>&lt;h1 id=&quot;pinhole-camera-model&quot;&gt;Pinhole Camera Model&lt;/h1&gt;
 
-&lt;h4 id=&quot;pinhole-camera&quot;&gt;Pinhole Camera&lt;/h4&gt;
+&lt;h3 id=&quot;pinhole-camera&quot;&gt;Pinhole Camera&lt;/h3&gt;
 &lt;p&gt;어떤 물체에서 반사된 빛을 필름에 바로 닿게 하면 물체의 여러 점에서 반사된 빛이 필름의 한 점에 모이게 되어 물체의 모양이 제대로 나올 수 없고 블러된 이미지가 나온다.&lt;/p&gt;
 
 &lt;p&gt;Pinhole은 바늘구멍이다. 물체와 필름 사이에 작은 구멍이 뚫린 장애물을 놓고 반사된 빛이 필름에 닿게 하면 그 바늘구멍을 통과한 빛만이 필름에 닿게 된다. 이는 블러를 줄이게 된다. 이 바늘구멍이 카메라의 조리개 역할을 한다.&lt;/p&gt;
 
 &lt;p&gt;하지만 바늘구멍에 통과된 이미지는 위아래, 좌우가 바뀌게 된다.&lt;/p&gt;
 
-&lt;h4 id=&quot;focal-length&quot;&gt;Focal Length&lt;/h4&gt;
+&lt;h3 id=&quot;focal-length&quot;&gt;Focal Length&lt;/h3&gt;
 &lt;p&gt;필름과 핀홀 사이의 거리를 Focal Length라고 한다. 이 Focal Length가 2배가 되면 필름에 사영된 이미지의 크기도 2배가 되고, 빛의 양은 $1 \over 4$이 된다.&lt;/p&gt;
 
-&lt;h4 id=&quot;aperture-size&quot;&gt;Aperture Size&lt;/h4&gt;
+&lt;h3 id=&quot;aperture-size&quot;&gt;Aperture Size&lt;/h3&gt;
 &lt;p&gt;조리개의 크기가 크면 빛이 많이 들어와서 더 블러된 이미지가 생성되고, 조리개가 작으면 빛이 적게 들어와서 더 확실한 이미지가 생성된다. 그러나 조리개의 크기가 적당 크기 이하로 더 작아지면 Diffraction limit으로 인해 오히려 더 블러된 이미지가 생성된다.&lt;/p&gt;
 
 &lt;p&gt;빛은 파동의 성질을 갖고 있기 때문에 구멍이 작아지면 더 많이 회절하게 되어 더 블러된 이미지가 생성된다. 이런 한계를 Diffraction limit이라고 한다.&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;이를 극복하기 위해서는 point-spread function(PSF)를 deconvolution 하면 된다??&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
 
-&lt;h4 id=&quot;vanishing-points-and-lines&quot;&gt;Vanishing Points and Lines&lt;/h4&gt;
+&lt;h3 id=&quot;vanishing-points-and-lines&quot;&gt;Vanishing Points and Lines&lt;/h3&gt;
 &lt;p&gt;카메라로 사진을 찍으면 3D 대상이 2D 이미지로 사영되는 것이기 때문에 길이와 각도 정보를 잃게 된다. 하지만 직선은 보존된다.&lt;/p&gt;
 
 &lt;p&gt;모든 직선(이미지에 평행한 직선 제외)은 각자의 소실점을 갖고 있다. 한 직선은 그에 대응하는 소실점으로 수렴한다. 마찬가지로 한 평면은 그에 대응하는 소실선으로 수렴한다.&lt;/p&gt;
 
-&lt;h4 id=&quot;perspective-distortion&quot;&gt;Perspective Distortion&lt;/h4&gt;
+&lt;h3 id=&quot;perspective-distortion&quot;&gt;Perspective Distortion&lt;/h3&gt;
 &lt;p&gt;흔히 건물같이 거대한 대상을 촬영할 때 문제가 되는 현상이다. 건물을 아래에서 올려다보는 각도로 찍으면 아래부분은 더 확대되어 보이고, 윗부분은 작게 보인다. 건물과 평행한 각도로 찍으면 건물의 아랫부분밖에 보이지 않는다.&lt;/p&gt;
 
 &lt;p&gt;이 왜곡에 대한 대안점은 렌즈를 건물에 평행한 각도에서 위로 높여 찍는 것이다. 렌즈를 건물 높이에 따라 움직일 수 있는 view camera라는 것이 있다.&lt;/p&gt;
 
 &lt;p&gt;세로에서 일어나는 것고 같이, 가로에서도 같은 현상이 일어난다. 렌즈의 중심에서보다 렌즈의 외곽에 있는 대상에서 왜곡이 많이 일어나 대상이 크게 퍼져 보인다.&lt;/p&gt;
 
-&lt;h2 id=&quot;modeling-projection&quot;&gt;Modeling Projection&lt;/h2&gt;
+&lt;h1 id=&quot;modeling-projection&quot;&gt;Modeling Projection&lt;/h1&gt;
 &lt;p&gt;$(x, y, z)$에서 반사된 점이 $y$축과의 거리가 $f$인 PP를 지나 $(0, 0, 0)$의 조리개에 들어간다고 하자. 이 때 PP에 사영된 $(x, y, z)$의 빛은 $(-f \frac{x}{z}, -f\frac{y}{z}, -f)$를 지난다. 우리는 2D 이미지를 얻을 것이므로 z축은 무시되고, 따라서 $(x, y, z)$는 PP의 $(-f \frac{x}{z}, -f\frac{y}{z})$으로 사영된다.&lt;/p&gt;
 
 &lt;p&gt;이것은 $z$로 나누어지기 때문에 비선형적이므로, 하나의 차원을 더 늘려주는 트릭을 사용하므로써 선형으로 만들 수 있다. $(x, y)$를 $(x, y, 1)$로 표현하는 것이다. 이를 homogeneous coordinates라고 한다. 반대도 마찬가지로, homogeneous coordinates에서 $(x, y, \omega)$로 표현된 좌표는 2차원에서 $(\frac{x}{\omega}, \frac{y}{\omega})$로 표현될 수 있다.&lt;/p&gt;
 
-&lt;h4 id=&quot;perspective-projection&quot;&gt;Perspective Projection&lt;/h4&gt;
+&lt;h3 id=&quot;perspective-projection&quot;&gt;Perspective Projection&lt;/h3&gt;
 &lt;p&gt;사영은 homogeneous coordinates를 사용해서 행렬곱을 하는 것이다. 아까의 예를 들어 보면, $(x, y, z)$의 점을 COP로부터 $f$만큼 떨어져 있는 PP에 사영할 때&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
@@ -630,7 +796,7 @@ coplanar : 동일 평면상의&lt;/p&gt;
 
 &lt;p&gt;가 된다. 마지막 차원의 수가 1이 되도록 나눠야 하기 때문에 곱해지는 행렬에 다른 수가 곱해져도 결과는 같다.&lt;/p&gt;
 
-&lt;h4 id=&quot;orthographic-projection&quot;&gt;Orthographic Projection&lt;/h4&gt;
+&lt;h3 id=&quot;orthographic-projection&quot;&gt;Orthographic Projection&lt;/h3&gt;
 &lt;p&gt;원근 사영의 특이 케이스로, 실제 모양 그대로를 깊이 정보만 없앤 채 PP에 사영시킨다. 곱셈식은 다음과 같고, 이는 실제 정보의 $(x, y, z)$ 정보에서 $(x, y)$만 가지고 오는 것과 같다.&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
@@ -644,7 +810,7 @@ coplanar : 동일 평면상의&lt;/p&gt;
 
 &lt;p&gt;telecentric lens로 orthogonal projection한 영상을 얻을 수 있다. 이 렌즈는 일반 렌즈와 달리 거리에 따라 상의 크기가 달라지지 않으며, 치수를 측정해야 하는 산업용 카메라에 쓰인다. orthogonal projection의 여러 변이들 중에는 확대되어보이게 해주는 weak perspective, 모양을 변형시키는 Affine projection 등이 있다.&lt;/p&gt;
 
-&lt;h4 id=&quot;camera-parameters&quot;&gt;Camera Parameters&lt;/h4&gt;
+&lt;h3 id=&quot;camera-parameters&quot;&gt;Camera Parameters&lt;/h3&gt;
 &lt;p&gt;카메라의 extrinsic 파라미터들에는 translation T와 rotation R이 있고, intrinsic 파라미터에는 focal length $f$가 있다.&lt;/p&gt;
 
 &lt;p&gt;projection equation에서 $X$에 곱해지는 행렬 $\Pi$는 intrinsic matrix와 projection matrix, extrinsic matrix의 곱으로 이루어진다.&lt;/p&gt;

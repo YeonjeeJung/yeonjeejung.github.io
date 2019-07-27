@@ -147,43 +147,43 @@ MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
 </section>
 
 <article class="post-content">
-  <h2 id="pinhole-camera-model">Pinhole Camera Model</h2>
+  <h1 id="pinhole-camera-model">Pinhole Camera Model</h1>
 
-<h4 id="pinhole-camera">Pinhole Camera</h4>
+<h3 id="pinhole-camera">Pinhole Camera</h3>
 <p>어떤 물체에서 반사된 빛을 필름에 바로 닿게 하면 물체의 여러 점에서 반사된 빛이 필름의 한 점에 모이게 되어 물체의 모양이 제대로 나올 수 없고 블러된 이미지가 나온다.</p>
 
 <p>Pinhole은 바늘구멍이다. 물체와 필름 사이에 작은 구멍이 뚫린 장애물을 놓고 반사된 빛이 필름에 닿게 하면 그 바늘구멍을 통과한 빛만이 필름에 닿게 된다. 이는 블러를 줄이게 된다. 이 바늘구멍이 카메라의 조리개 역할을 한다.</p>
 
 <p>하지만 바늘구멍에 통과된 이미지는 위아래, 좌우가 바뀌게 된다.</p>
 
-<h4 id="focal-length">Focal Length</h4>
+<h3 id="focal-length">Focal Length</h3>
 <p>필름과 핀홀 사이의 거리를 Focal Length라고 한다. 이 Focal Length가 2배가 되면 필름에 사영된 이미지의 크기도 2배가 되고, 빛의 양은 $1 \over 4$이 된다.</p>
 
-<h4 id="aperture-size">Aperture Size</h4>
+<h3 id="aperture-size">Aperture Size</h3>
 <p>조리개의 크기가 크면 빛이 많이 들어와서 더 블러된 이미지가 생성되고, 조리개가 작으면 빛이 적게 들어와서 더 확실한 이미지가 생성된다. 그러나 조리개의 크기가 적당 크기 이하로 더 작아지면 Diffraction limit으로 인해 오히려 더 블러된 이미지가 생성된다.</p>
 
 <p>빛은 파동의 성질을 갖고 있기 때문에 구멍이 작아지면 더 많이 회절하게 되어 더 블러된 이미지가 생성된다. 이런 한계를 Diffraction limit이라고 한다.</p>
 
 <p><strong><em>이를 극복하기 위해서는 point-spread function(PSF)를 deconvolution 하면 된다??</em></strong></p>
 
-<h4 id="vanishing-points-and-lines">Vanishing Points and Lines</h4>
+<h3 id="vanishing-points-and-lines">Vanishing Points and Lines</h3>
 <p>카메라로 사진을 찍으면 3D 대상이 2D 이미지로 사영되는 것이기 때문에 길이와 각도 정보를 잃게 된다. 하지만 직선은 보존된다.</p>
 
 <p>모든 직선(이미지에 평행한 직선 제외)은 각자의 소실점을 갖고 있다. 한 직선은 그에 대응하는 소실점으로 수렴한다. 마찬가지로 한 평면은 그에 대응하는 소실선으로 수렴한다.</p>
 
-<h4 id="perspective-distortion">Perspective Distortion</h4>
+<h3 id="perspective-distortion">Perspective Distortion</h3>
 <p>흔히 건물같이 거대한 대상을 촬영할 때 문제가 되는 현상이다. 건물을 아래에서 올려다보는 각도로 찍으면 아래부분은 더 확대되어 보이고, 윗부분은 작게 보인다. 건물과 평행한 각도로 찍으면 건물의 아랫부분밖에 보이지 않는다.</p>
 
 <p>이 왜곡에 대한 대안점은 렌즈를 건물에 평행한 각도에서 위로 높여 찍는 것이다. 렌즈를 건물 높이에 따라 움직일 수 있는 view camera라는 것이 있다.</p>
 
 <p>세로에서 일어나는 것고 같이, 가로에서도 같은 현상이 일어난다. 렌즈의 중심에서보다 렌즈의 외곽에 있는 대상에서 왜곡이 많이 일어나 대상이 크게 퍼져 보인다.</p>
 
-<h2 id="modeling-projection">Modeling Projection</h2>
+<h1 id="modeling-projection">Modeling Projection</h1>
 <p>$(x, y, z)$에서 반사된 점이 $y$축과의 거리가 $f$인 PP를 지나 $(0, 0, 0)$의 조리개에 들어간다고 하자. 이 때 PP에 사영된 $(x, y, z)$의 빛은 $(-f \frac{x}{z}, -f\frac{y}{z}, -f)$를 지난다. 우리는 2D 이미지를 얻을 것이므로 z축은 무시되고, 따라서 $(x, y, z)$는 PP의 $(-f \frac{x}{z}, -f\frac{y}{z})$으로 사영된다.</p>
 
 <p>이것은 $z$로 나누어지기 때문에 비선형적이므로, 하나의 차원을 더 늘려주는 트릭을 사용하므로써 선형으로 만들 수 있다. $(x, y)$를 $(x, y, 1)$로 표현하는 것이다. 이를 homogeneous coordinates라고 한다. 반대도 마찬가지로, homogeneous coordinates에서 $(x, y, \omega)$로 표현된 좌표는 2차원에서 $(\frac{x}{\omega}, \frac{y}{\omega})$로 표현될 수 있다.</p>
 
-<h4 id="perspective-projection">Perspective Projection</h4>
+<h3 id="perspective-projection">Perspective Projection</h3>
 <p>사영은 homogeneous coordinates를 사용해서 행렬곱을 하는 것이다. 아까의 예를 들어 보면, $(x, y, z)$의 점을 COP로부터 $f$만큼 떨어져 있는 PP에 사영할 때</p>
 
 <script type="math/tex; mode=display">% <![CDATA[
@@ -201,7 +201,7 @@ MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
 
 <p>가 된다. 마지막 차원의 수가 1이 되도록 나눠야 하기 때문에 곱해지는 행렬에 다른 수가 곱해져도 결과는 같다.</p>
 
-<h4 id="orthographic-projection">Orthographic Projection</h4>
+<h3 id="orthographic-projection">Orthographic Projection</h3>
 <p>원근 사영의 특이 케이스로, 실제 모양 그대로를 깊이 정보만 없앤 채 PP에 사영시킨다. 곱셈식은 다음과 같고, 이는 실제 정보의 $(x, y, z)$ 정보에서 $(x, y)$만 가지고 오는 것과 같다.</p>
 
 <script type="math/tex; mode=display">% <![CDATA[
@@ -215,7 +215,7 @@ MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
 
 <p>telecentric lens로 orthogonal projection한 영상을 얻을 수 있다. 이 렌즈는 일반 렌즈와 달리 거리에 따라 상의 크기가 달라지지 않으며, 치수를 측정해야 하는 산업용 카메라에 쓰인다. orthogonal projection의 여러 변이들 중에는 확대되어보이게 해주는 weak perspective, 모양을 변형시키는 Affine projection 등이 있다.</p>
 
-<h4 id="camera-parameters">Camera Parameters</h4>
+<h3 id="camera-parameters">Camera Parameters</h3>
 <p>카메라의 extrinsic 파라미터들에는 translation T와 rotation R이 있고, intrinsic 파라미터에는 focal length $f$가 있다.</p>
 
 <p>projection equation에서 $X$에 곱해지는 행렬 $\Pi$는 intrinsic matrix와 projection matrix, extrinsic matrix의 곱으로 이루어진다.</p>
