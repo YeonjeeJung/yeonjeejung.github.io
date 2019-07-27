@@ -5,9 +5,33 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 27 Jul 2019 18:25:19 +0900</pubDate>
-    <lastBuildDate>Sat, 27 Jul 2019 18:25:19 +0900</lastBuildDate>
+    <pubDate>Sat, 27 Jul 2019 18:51:43 +0900</pubDate>
+    <lastBuildDate>Sat, 27 Jul 2019 18:51:43 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>CV Lecture 7 - Thin Lens Optics</title>
+        <description>&lt;h1 id=&quot;camera-with-lens&quot;&gt;Camera with Lens&lt;/h1&gt;
+
+&lt;p&gt;pinehole모델 대신 렌즈를 사용할 수 있다. pinhole 모델은 들어오는 빛이 매우 적어 노출 시간이 길어야 제대로 된 이미지를 얻을 수 있고, sharpness에 약하다는 단점이 있었다.&lt;/p&gt;
+
+&lt;p&gt;렌즈는 필름에 빛을 모아주므로 이런 단점들을 극복할 수 있었다. 렌즈는 focal length만큼 렌즈에서 떨어진 지점에 렌즈에 수직으로 들어오는 평행한 빛들을 모아준다.&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;h2 id=&quot;terms&quot;&gt;Terms&lt;/h2&gt;
+&lt;p&gt;optics : 광학&lt;br /&gt;
+deviate : 벗어나다&lt;/p&gt;
+</description>
+        <pubDate>Sat, 27 Jul 2019 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/lecture/computervision/2019/07/27/Lecture7.html</link>
+        <guid isPermaLink="true">http://localhost:4000/lecture/computervision/2019/07/27/Lecture7.html</guid>
+        
+        
+        <category>Lecture</category>
+        
+        <category>ComputerVision</category>
+        
+      </item>
     
       <item>
         <title>CV Lecture 6 - Multiview Geometry</title>
