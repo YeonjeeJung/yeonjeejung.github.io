@@ -5,26 +5,116 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 27 Jul 2019 18:51:43 +0900</pubDate>
-    <lastBuildDate>Sat, 27 Jul 2019 18:51:43 +0900</lastBuildDate>
+    <pubDate>Sun, 28 Jul 2019 23:18:51 +0900</pubDate>
+    <lastBuildDate>Sun, 28 Jul 2019 23:18:51 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
         <title>CV Lecture 7 - Thin Lens Optics</title>
         <description>&lt;h1 id=&quot;camera-with-lens&quot;&gt;Camera with Lens&lt;/h1&gt;
 
-&lt;p&gt;pinehole모델 대신 렌즈를 사용할 수 있다. pinhole 모델은 들어오는 빛이 매우 적어 노출 시간이 길어야 제대로 된 이미지를 얻을 수 있고, sharpness에 약하다는 단점이 있었다.&lt;/p&gt;
+&lt;p&gt;pinhole 모델은 들어오는 빛이 매우 적어 노출 시간이 길어야 제대로 된 이미지를 얻을 수 있고, sharpness에 약하다는 단점이 있었다.&lt;/p&gt;
 
-&lt;p&gt;렌즈는 필름에 빛을 모아주므로 이런 단점들을 극복할 수 있었다. 렌즈는 focal length만큼 렌즈에서 떨어진 지점에 렌즈에 수직으로 들어오는 평행한 빛들을 모아준다.&lt;/p&gt;
+&lt;p&gt;렌즈는 필름에 빛을 모아주므로 이런 단점들을 극복할 수 있었다. 렌즈는 focal length만큼 렌즈에서 떨어진 지점에 렌즈에 수직으로 들어오는 평행한 빛들을 모아준다. 렌즈의 중심부로 모이는 빛은 변형되지 않고 pinhole 모델에서와 똑같이 행동한다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://www.photonics.com/images/Web/Articles/2009/3/8/GaussianNewtonianThinLensFormulas_Table1.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.photonics.com/images/Web/Articles/2009/3/8/GaussianNewtonianThinLensFormulas_Table1.jpg&quot;&gt;Source&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;대상에서부터 렌즈까지의 거리를 $s’$, 렌즈에서 센서까지의 거리를 $s$라고 하자. 렌즈 중심에서 대상에 내린 수선의 발과 렌즈 끝에서 대상에 내린 수선의 발까지의 거리를 $y’$라고 하고, 렌즈 중심에서 센서평면에 내린 수선의 발과 렌즈 끝에서 대상에 내린 수선의 발에서부터 들어온 빛이 센서평면에 닿는 점까지의 거리를 $y$이라고 하자. 그러면 닮음 삼각형 때문에 $\frac{y}{y’}=\frac{s}{s’}$가 된다.&lt;/p&gt;
+
+&lt;p&gt;focal length가 형성되는 지점을 중심으로 또다른 닮은 삼각형이 있다. 이 때는 $\frac{y}{y’}=\frac{s-f}{f’}$의 식을 만들 수 있다. 위 두 식을 이용하면, $\frac{1}{f}=\frac{1}{s’}+\frac{1}{s}$을 얻을 수 있다.&lt;/p&gt;
+
+&lt;h3 id=&quot;depth-of-field-dof&quot;&gt;Depth of Field (DOF)&lt;/h3&gt;
+
+&lt;p&gt;Depth of Field는 focus된 이미지를 얻을 수 있는 최소 거리와 최대 거리의 차이를 말한다. 만약 조리개 크기를 $f/2.0\rightarrow f/4.0$으로 변화시킨다면 DOF는 2배가 된다. focusing distance를 반으로 줄이면 DOF도 반으로 줄어든다.&lt;/p&gt;
+
+&lt;h3 id=&quot;field-of-view-fov&quot;&gt;Field of View (FOV)&lt;/h3&gt;
+
+&lt;p&gt;시야각이라고 한다. 사진에 담을 수 있는 끝점과 렌즈에 직교하는 선이 이루는 각도이다. $\phi$로 나타내며, 위에서 쓴 notation을 이용하면&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\phi=\tan^{-1}\left(\frac{y}{f}\right)&lt;/script&gt;
+
+&lt;p&gt;이다.&lt;/p&gt;
+
+&lt;h3 id=&quot;lens-flaws&quot;&gt;Lens Flaws&lt;/h3&gt;
+
+&lt;p&gt;렌즈는 빛의 주파수에 따라 다른 굴절율을 갖고 있기 때문에 색채 이상 현상이 나타난다. 이를 chromatic aberration(색 수차)이라고 하며, 가장자리에서 더욱 심하다.&lt;/p&gt;
+
+&lt;p&gt;구면 렌즈에서는 렌즈 가장자리로 들어오는 빛의 초점과 렌즈 중앙으로 들어오는 빛의 초점이 정확하게 일치하지 않는 특징 때문에 spherical aberration(구면 수차)가 발생하기도 한다. 이 때는 초점이 한 점으로 생기는 것이 아니라 원 모양으로 생긴다.&lt;/p&gt;
+
+&lt;p&gt;또한 렌즈에 수직이 아닌 각도로 빛이 들어올 때는 물방울 모양으로 초점이 생기는 현상인 comatic aberration(혜성형 수차)가 나타나기도 한다.&lt;/p&gt;
+
+&lt;p&gt;사람 눈에서 나타나는 난시와 같이, 렌즈의 가로, 세로에서의 초점이 일치하지 않아서 생기는 astigmatism(비점수차)현상도 있다.&lt;/p&gt;
+
+&lt;p&gt;이 외에도 geometrical aberration, wave optics, vignetting, lens flare, &lt;a href=&quot;https://yeonjeejung.github.io/lecture/computervision/2019/07/07/Lecture3.html&quot;&gt;radial distortion&lt;/a&gt; 등의 이상 현상이 일어날 수 있다.&lt;/p&gt;
+
+&lt;h1 id=&quot;digital-camera&quot;&gt;Digital Camera&lt;/h1&gt;
+
+&lt;p&gt;디지털 카메라는 기존 필름의 역할을 센서의 행렬로 교체했다. 각 셀은 빛에 민감한 다이오드이며, 이들이 광양자를 전기신호로 바꿔준다. 주로 이용되는 방식은 Charge Coupled Devive(CCD)와 Complementary Metal Oxide Semiconductor(CMOS)가 있다.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\left[\begin{matrix}B&amp;G\\G&amp;R\end{matrix}\right] %]]&gt;&lt;/script&gt;의 필터가 사람의 추상체 역할을 하며 각 색상에 반응한다. 전체의 $\frac{1}{4}$는 빨강, $\frac{1}{4}$은 파랑, 나머지 $\frac{1}{2}$은 초록색 센서로, 해당 색상이 없는 칸은 옆 칸의 색상으로 보간을 해준다.&lt;/p&gt;
+
+&lt;h3 id=&quot;demosaicing&quot;&gt;Demosaicing&lt;/h3&gt;
+
+&lt;p&gt;보간을 하는 가장 쉬운 방법은 nearest neighbor 보간법이다. 주변의 가장 가까운 곳에 있는 센서의 값을 가져오는 방법인데, 화질 저하를 불러올 수 있다.&lt;/p&gt;
+
+&lt;p&gt;두번째 방법으로는 bilinear interpolation이 있다. 해당 센서 사방에 있는 값을 평균내는 방법이다. 더 넓은 공간의 정보를 이용하는 bicubic interpolation도 있다.&lt;/p&gt;
+
+&lt;h3 id=&quot;focal-length--sensor&quot;&gt;Focal length &amp;amp; Sensor&lt;/h3&gt;
+
+&lt;p&gt;센서의 크기가 작아지면 그에 비례하여 FOV도 작아진다.&lt;/p&gt;
+
+&lt;h3 id=&quot;digital-camera-artifacts&quot;&gt;Digital Camera Artifacts&lt;/h3&gt;
+
+&lt;p&gt;디지털 카메라는 센서로 나뉘어 있기 때문에 필름 카메라에 비해 여러 단점이 있을 수 있다. 우선 양자화로 인해 노이즈가 생길 수 있고, 카메라 내에서 프로세싱이 추가로 진행된다. 또한 압축으로 인해 blocking 현상이 생길 수 있고 주변 픽셀로 번지는 blooming 현상도 있을 수 있다. 또한 색이 의도했던 바와는 다르게 표현될 수 있다.&lt;/p&gt;
+
+&lt;h3 id=&quot;explosure&quot;&gt;Explosure&lt;/h3&gt;
+
+&lt;p&gt;노출이란, 대상으로부터 반사된 빛이 카메라 디텍터에 들어오는 빛의 양이다. $H$로 표현되고, 빛의 양 $E$와 노출시간 $t$에 의해&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;H=E\cdot t&lt;/script&gt;
+
+&lt;p&gt;라고 쓸 수 있다. $E$의 단위는 illuminance(lux)이고 $t$의 단위는 time(second)이므로, 노출의 단위는 $\text{lx}\cdot \text{sec}$ 이다.&lt;/p&gt;
+
+&lt;p&gt;노출에는 두 가지의 주요 파라미터가 있는데, 조리개값과 셔터 속도이다. 더 작은 조리개값으로 같은 노출값을 유지하고 싶다면, 셔터 속도를 늘이면 된다. 단, 셔터 속도는 짧을수록 순간적인 장면을 더 잘 포착할 수 있다.&lt;/p&gt;
+
+&lt;h3 id=&quot;sensitivity-iso&quot;&gt;Sensitivity (ISO)&lt;/h3&gt;
+
+&lt;p&gt;감도라고 한다. 조리개값, 셔터 속도와 함께 노출을 조절해주는 요소이다. 감도가 높으면 더 밝은 사진을 찍을 수 있지만, 노이즈가 더 추가된다.&lt;/p&gt;
+
+&lt;h3 id=&quot;digital-imaging-workflow&quot;&gt;Digital Imaging Workflow&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Scene Radiance&lt;/li&gt;
+  &lt;li&gt;Amplifying &amp;amp; Quantization of voltage&lt;/li&gt;
+  &lt;li&gt;Demosaic &amp;amp; Denoising&lt;/li&gt;
+  &lt;li&gt;White Balancing&lt;/li&gt;
+  &lt;li&gt;Camera Output&lt;/li&gt;
+&lt;/ol&gt;
 
 &lt;hr /&gt;
 &lt;h2 id=&quot;terms&quot;&gt;Terms&lt;/h2&gt;
 &lt;p&gt;optics : 광학&lt;br /&gt;
-deviate : 벗어나다&lt;/p&gt;
+deviate : 벗어나다&lt;br /&gt;
+aparture : 틈, 구멍&lt;br /&gt;
+focal length : 렌즈와 상이 맺히는 지점(focusing plane)까지의 거리&lt;br /&gt;
+focusing distance : 대상과 상이 맺히는 지점까지의 거리&lt;br /&gt;
+aberrated : 비정상의
+flaw : 결함&lt;br /&gt;
+chromatic : 색채의&lt;br /&gt;
+refractive : 굴절에 의한&lt;br /&gt;
+astigmatism : 난시, 비점수차
+diffraction : 회절&lt;br /&gt;
+vignetting : 감광&lt;br /&gt;
+photon : 광양자&lt;br /&gt;
+trichromatic : 삼원색의&lt;br /&gt;
+halo : 강한 빛을 내는 피사체를 찍을 때, 그 주변의 빛번짐 현상&lt;/p&gt;
 </description>
-        <pubDate>Sat, 27 Jul 2019 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/lecture/computervision/2019/07/27/Lecture7.html</link>
-        <guid isPermaLink="true">http://localhost:4000/lecture/computervision/2019/07/27/Lecture7.html</guid>
+        <pubDate>Sun, 28 Jul 2019 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/lecture/computervision/2019/07/28/Lecture7.html</link>
+        <guid isPermaLink="true">http://localhost:4000/lecture/computervision/2019/07/28/Lecture7.html</guid>
         
         
         <category>Lecture</category>
@@ -199,11 +289,11 @@ fuse : 사용하다&lt;/p&gt;
         <title>Project 1</title>
         <description>&lt;p&gt;이 프로젝트는 Camera Calibration과 Disparity Map, Depth Map을 생성하는 프로젝트이다.&lt;/p&gt;
 
-&lt;h2 id=&quot;camera-calibration&quot;&gt;Camera Calibration&lt;/h2&gt;
+&lt;h1 id=&quot;camera-calibration&quot;&gt;Camera Calibration&lt;/h1&gt;
 
 &lt;p&gt;먼저, 체커보드를 이용해서 Camera Calibration을 수행한다. 6개의 체커보드 이미지가 있고, 모서리를 찾아서 이를 평면좌표(world point)로 만들어주는 homography matrix를 찾고, 그 matrix에서 intrinsic, extrinsic 파라미터를 찾는 과정이다. &lt;a href=&quot;http://staff.fh-hagenberg.at/burger/publications/reports/2016Calibration/Burger-CameraCalibration-20160516.pdf&quot;&gt;Zhang’s method&lt;/a&gt;를 사용하여 수행할 수 있다.&lt;/p&gt;
 
-&lt;h4 id=&quot;homography-calculation&quot;&gt;Homography Calculation&lt;/h4&gt;
+&lt;h3 id=&quot;homography-calculation&quot;&gt;Homography Calculation&lt;/h3&gt;
 
 &lt;p&gt;먼저 $s\tilde{q}=H\tilde{p}$를 만족하는 행렬 $H$를 찾아야 한다. ($\tilde{q}$는 world point, $\tilde{p}$는 체커보드 좌표)&lt;/p&gt;
 
@@ -223,11 +313,11 @@ H = \left[\begin{matrix}h_{11} &amp; h_{12} &amp; h_{13}\\ h_{21} &amp; h_{22} &
 \left[\begin{matrix}-X_j &amp; -Y_j &amp; -1 &amp; 0 &amp; 0 &amp; 0 &amp; u_jX_j &amp; u_jY_j &amp; u_j \\  0 &amp; 0 &amp; 0 &amp; -X_j &amp; -Y_j &amp; -1 &amp; v_jX_j &amp; v_jY_j &amp; v_j\end{matrix}\right]
 \left[\begin{matrix}h_{11}\\ h_{12} \\h_{13} \\h_{21} \\h_{22} \\h_{23} \\h_{31} \\h_{32} \\h_{33}\end{matrix}\right] %]]&gt;&lt;/script&gt;
 
-&lt;p&gt;이라고 쓸 수 있다. 앞에 곱해진 행렬을 $L_j$라고 하면 이 문제는 $\min_x||Lx||^2$ 문제가 된다. ($L$은 $L_j$를 세로로 늘어뜨린 행렬) 따라서 $L^TL$의 가장 작은 eigenvalue중 가장 작은 것에 대응하는 eigenvector를 찾으면 된다.&lt;/p&gt;
+&lt;p&gt;이라고 쓸 수 있다. 앞에 곱해진 행렬을 $L_j$라고 하면 이 문제는 $\min_{\mathbf{x}}||L\mathbf{x}||^2$ 문제가 된다. ($L$은 $L_j$를 세로로 늘어뜨린 행렬) 따라서 $L^TL$의 가장 작은 eigenvalue중 가장 작은 것에 대응하는 eigenvector를 찾으면 된다.&lt;/p&gt;
 
 &lt;p&gt;이 때의 $H$ 행렬은 한 이미지당 하나를 찾을 수 있으므로 이 프로젝트에서는 6개의 $H$ 행렬이 나오게 된다.&lt;/p&gt;
 
-&lt;h4 id=&quot;intrinsic-parameter&quot;&gt;Intrinsic Parameter&lt;/h4&gt;
+&lt;h3 id=&quot;intrinsic-parameter&quot;&gt;Intrinsic Parameter&lt;/h3&gt;
 
 &lt;p&gt;우리는 $H$행렬을 알고 있고, &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
 H = K\left[\begin{matrix}r_1 &amp; r_2 &amp; t\end{matrix}\right] %]]&gt;&lt;/script&gt;이다. 그리고 &lt;script type=&quot;math/tex&quot;&gt;r_1^Tr_1=r_2^Tr_2&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;r_1^Tr_2=0&lt;/script&gt;이라는 제약을 갖고 있으므로, 우리는 intrinsic matrix $K$를 알아낼 수 있다.&lt;/p&gt;
@@ -283,7 +373,7 @@ v_{kl}=\left[\begin{matrix}h_{1k}h_{1l} &amp; h_{1k}h_{2l}+h_{2k}h_{1l} &amp; h_
 &lt;p&gt;를 대입하면 intrinsic matrix &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
 K=\left[\begin{matrix}\alpha &amp; \gamma &amp; u_0 \\ 0 &amp; \beta &amp; v_0 \\ 0 &amp; 0 &amp; 1\end{matrix}\right] %]]&gt;&lt;/script&gt;를 구할 수 있다.&lt;/p&gt;
 
-&lt;h4 id=&quot;extrinsic-parameter&quot;&gt;Extrinsic Parameter&lt;/h4&gt;
+&lt;h3 id=&quot;extrinsic-parameter&quot;&gt;Extrinsic Parameter&lt;/h3&gt;
 
 &lt;p&gt;지금까지 구한 $H$와 $K$로 extrinsic parameter들을 구할 수 있다. 먼저 정규화를 위한 상수 &lt;script type=&quot;math/tex&quot;&gt;\lambda'=\frac{\frac{1}{\|K^{-1}h_1\|}+\frac{1}{\|K^{-1}h_2\|}}{2}&lt;/script&gt;를 구한다. 그 후에는&lt;/p&gt;
 
@@ -300,13 +390,13 @@ K=\left[\begin{matrix}\alpha &amp; \gamma &amp; u_0 \\ 0 &amp; \beta &amp; v_0 \
 &lt;p&gt;여기서 구한 rotation matrix &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
 R=\left[\begin{matrix}r_1 &amp; r_2 &amp; r_3\end{matrix}\right] %]]&gt;&lt;/script&gt;은 일반적으로 rotation matrix의 성질을 만족하지 않으므로, 보정을 해줘야 한다. $R=U\Sigma V^T$로 분해할 수 있는데, 여기서 $R’=UV^T$를 구하면 된다.&lt;/p&gt;
 
-&lt;h4 id=&quot;maximum-likelihood-estimation-mle&quot;&gt;Maximum Likelihood Estimation (MLE)&lt;/h4&gt;
+&lt;h3 id=&quot;maximum-likelihood-estimation-mle&quot;&gt;Maximum Likelihood Estimation (MLE)&lt;/h3&gt;
 
 &lt;p&gt;우리가 위에서 구한 값은 그저 방정식을 푼 것이지, 물리적으로 아무 의미가 없는 숫자이다. 따라서 MLE를 통해 값을 보정해줄 필요가 있다. MLE추정은 &lt;script type=&quot;math/tex&quot;&gt;\min_{K, R_i, t_i}\sum_i\sum_j\|q_{ij}-\hat{q_{ij}}\|^2&lt;/script&gt;를 통해 할 수 있다. (사실 이 식은 $H$를 찾을 때 썼던 식이다.)&lt;/p&gt;
 
 &lt;p&gt;코드에서는 intrinsic, extrinsic 파라미터들을 벡터로 만들어 넘겨서 lsqnonlin 함수를 사용하여 최적화했다.(Matlab)&lt;/p&gt;
 
-&lt;h2 id=&quot;depth-map&quot;&gt;Depth Map&lt;/h2&gt;
+&lt;h1 id=&quot;depth-map&quot;&gt;Depth Map&lt;/h1&gt;
 
 &lt;p&gt;Depth map을 구하기 위한 과정은 다음과 같다. (좌, 우에서 찍은 이미지가 주어진다.)&lt;/p&gt;
 
@@ -318,27 +408,27 @@ R=\left[\begin{matrix}r_1 &amp; r_2 &amp; r_3\end{matrix}\right] %]]&gt;&lt;/scr
   &lt;li&gt;disparity map을 카메라 파라미터를 이용해 depth map으로 변환시킨다.&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h4 id=&quot;preprocessing&quot;&gt;Preprocessing&lt;/h4&gt;
+&lt;h3 id=&quot;preprocessing&quot;&gt;Preprocessing&lt;/h3&gt;
 
 &lt;p&gt;단순히 두 이미지를 흑백화시킨다.&lt;/p&gt;
 
-&lt;h4 id=&quot;cost-volume&quot;&gt;Cost Volume&lt;/h4&gt;
+&lt;h3 id=&quot;cost-volume&quot;&gt;Cost Volume&lt;/h3&gt;
 
 &lt;p&gt;좌측 이미지를 기준으로 한다. 좌측 이미지의 모든 픽셀에 대하여 오른쪽 이미지에서는 왼쪽으로 $d$만큼 떨어진 픽셀을 고른다. (좌측 이미지에서 $(10,5)$에 대해, $d=5$라면 우측 이미지에서는 $(5,5)$를 고르는 셈.) 좌우 이미지 모두 해당 픽셀 주변의 window크기만큼의 행렬을 골라 벡터화시킨 후, cost를 계산해 cost volume에 저장한다. 이 계산을 minDisparity부터 maxDisparity까지 수행해 cost volume에 저장한다. (이 프로젝트에서 window 크기는 15로 지정하였고, minDisparity는 11, maxDisparity는 140으로 지정하였다. cost 대신에 &lt;script type=&quot;math/tex&quot;&gt;NCC=\frac{\sum_i\sum_jA_{ij}B_{ij}}{\sqrt{\sum_i\sum_jA_{ij}^2}\sqrt{\sum_i\sum_j{B_{ij}^2}}}&lt;/script&gt;를 사용하였다.)&lt;/p&gt;
 
-&lt;h4 id=&quot;cost-aggregation&quot;&gt;Cost Aggregation&lt;/h4&gt;
+&lt;h3 id=&quot;cost-aggregation&quot;&gt;Cost Aggregation&lt;/h3&gt;
 
 &lt;p&gt;각 layer의 cost를 filter를 이용하여 aggregation한다. 이 프로젝트에서는 imguidedfilter 함수에 해당 이미지를 가이드로 사용해서 필터링하였다.&lt;/p&gt;
 
-&lt;h4 id=&quot;disparity-map&quot;&gt;Disparity Map&lt;/h4&gt;
+&lt;h3 id=&quot;disparity-map&quot;&gt;Disparity Map&lt;/h3&gt;
 
 &lt;p&gt;각 픽셀에 대하여 가장 작은 cost를 가지는 disparity를 고른다. (이 프로젝트에서는 NCC를 사용하였으므로 값이 가장 큰 것을 고른다.)&lt;/p&gt;
 
-&lt;h4 id=&quot;depth-map-1&quot;&gt;Depth Map&lt;/h4&gt;
+&lt;h3 id=&quot;depth-map-1&quot;&gt;Depth Map&lt;/h3&gt;
 
 &lt;p&gt;각 픽셀에 대하여 $Z=\frac{fT}{d}$ 공식을 적용하여 depth map을 만든다.&lt;/p&gt;
 
-&lt;h2 id=&quot;result&quot;&gt;Result&lt;/h2&gt;
+&lt;h1 id=&quot;result&quot;&gt;Result&lt;/h1&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://github.com/YeonjeeJung/ComputervisionProject1/blob/master/code/calibration.jpg?raw=true&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
@@ -720,9 +810,9 @@ K = \left[\begin{matrix}f &amp; 0 &amp; p_x \\ 0 &amp; f &amp; p_y \\ 0 &amp; 0 
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbf{x}_i \times P_i\mathbf{X}=0&lt;/script&gt;
 
-&lt;p&gt;그리고 $\mathbf{x}&lt;em&gt;i\times P\mathbf{X}=[\mathbf{x}&lt;/em&gt;{i\times}]P\mathbf{X}$를 만족하는 $[\mathbf{x}&lt;em&gt;{i\times}]$를 찾을 수 있다. 하나의 $\mathbf{x}_i$에 대해 $[\mathbf{x}&lt;/em&gt;{i\times}]P_x\mathbf{X}=0$, $[\mathbf{x}_{i\times}]P_y\mathbf{X}=0$의 두 식을 알아낼 수 있고(두 개만 linearly independent하므로) 우리는 두 개의 $\mathbf{x}_i$를 알고 있으므로 총 4개의 식을 알고 있다. 알아내야 하는 $\mathbf{X}$의 변수가 3개이므로, 방정식을 풀어 $\mathbf{X}$를 알아낼 수 있다.&lt;/p&gt;
+&lt;p&gt;그리고 &lt;script type=&quot;math/tex&quot;&gt;\mathbf{x}_i\times P\mathbf{X}=[\mathbf{x}_{i\times}]P\mathbf{X}&lt;/script&gt;를 만족하는 &lt;script type=&quot;math/tex&quot;&gt;[\mathbf{x}_{i\times}]&lt;/script&gt;를 찾을 수 있다. 하나의 &lt;script type=&quot;math/tex&quot;&gt;\mathbf{x}_i&lt;/script&gt;에 대해 &lt;script type=&quot;math/tex&quot;&gt;[\mathbf{x}_{i\times}]P_x\mathbf{X}=0&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;[\mathbf{x}_{i\times}]P_y\mathbf{X}=0&lt;/script&gt;의 두 식을 알아낼 수 있고(두 개만 linearly independent하므로) 우리는 두 개의 &lt;script type=&quot;math/tex&quot;&gt;\mathbf{x}_i&lt;/script&gt;를 알고 있으므로 총 4개의 식을 알고 있다. 알아내야 하는 &lt;script type=&quot;math/tex&quot;&gt;\mathbf{X}&lt;/script&gt;의 변수가 3개이므로, 방정식을 풀어 &lt;script type=&quot;math/tex&quot;&gt;\mathbf{X}&lt;/script&gt;를 알아낼 수 있다.&lt;/p&gt;
 
-&lt;p&gt;$\mathbf{X}$를 알아내는 non-linear approach는 $\mathbf{X} = argmin(d^2(\mathbf{x}_1, P_1\mathbf{X})+d^2(\mathbf{x}_2, P_2\mathbf{X}))$를 찾아내면 된다.&lt;/p&gt;
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathbf{X}&lt;/script&gt;를 알아내는 non-linear approach는 &lt;script type=&quot;math/tex&quot;&gt;\mathbf{X} = \text{argmin}(d^2(\mathbf{x}_1, P_1\mathbf{X})+d^2(\mathbf{x}_2, P_2\mathbf{X}))&lt;/script&gt;를 찾아내면 된다.&lt;/p&gt;
 
 &lt;h3 id=&quot;epipolar-geometry-1&quot;&gt;Epipolar Geometry&lt;/h3&gt;
 &lt;p&gt;두 개의 이미지에서 한 점의 좌표를 알아내는 상황을 가정한다. baseline은 이미지의 두 원점을 이은 선이고, epipolar plane은 그 선을 포함하는 평면들이다. epipole은 baseline과 각 이미지 평면들의 교점이다. 마지막으로 epipolar line은 epipolar plane과 이미지 평면의 교점이다.&lt;/p&gt;
