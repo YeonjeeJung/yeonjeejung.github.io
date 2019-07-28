@@ -259,9 +259,9 @@ K = \left[\begin{matrix}f & 0 & p_x \\ 0 & f & p_y \\ 0 & 0 & 1\end{matrix}\righ
 
 <script type="math/tex; mode=display">\mathbf{x}_i \times P_i\mathbf{X}=0</script>
 
-<p>그리고 $\mathbf{x}<em>i\times P\mathbf{X}=[\mathbf{x}</em>{i\times}]P\mathbf{X}$를 만족하는 $[\mathbf{x}<em>{i\times}]$를 찾을 수 있다. 하나의 $\mathbf{x}_i$에 대해 $[\mathbf{x}</em>{i\times}]P_x\mathbf{X}=0$, $[\mathbf{x}_{i\times}]P_y\mathbf{X}=0$의 두 식을 알아낼 수 있고(두 개만 linearly independent하므로) 우리는 두 개의 $\mathbf{x}_i$를 알고 있으므로 총 4개의 식을 알고 있다. 알아내야 하는 $\mathbf{X}$의 변수가 3개이므로, 방정식을 풀어 $\mathbf{X}$를 알아낼 수 있다.</p>
+<p>그리고 <script type="math/tex">\mathbf{x}_i\times P\mathbf{X}=[\mathbf{x}_{i\times}]P\mathbf{X}</script>를 만족하는 <script type="math/tex">[\mathbf{x}_{i\times}]</script>를 찾을 수 있다. 하나의 <script type="math/tex">\mathbf{x}_i</script>에 대해 <script type="math/tex">[\mathbf{x}_{i\times}]P_x\mathbf{X}=0</script>, <script type="math/tex">[\mathbf{x}_{i\times}]P_y\mathbf{X}=0</script>의 두 식을 알아낼 수 있고(두 개만 linearly independent하므로) 우리는 두 개의 <script type="math/tex">\mathbf{x}_i</script>를 알고 있으므로 총 4개의 식을 알고 있다. 알아내야 하는 <script type="math/tex">\mathbf{X}</script>의 변수가 3개이므로, 방정식을 풀어 <script type="math/tex">\mathbf{X}</script>를 알아낼 수 있다.</p>
 
-<p>$\mathbf{X}$를 알아내는 non-linear approach는 $\mathbf{X} = argmin(d^2(\mathbf{x}_1, P_1\mathbf{X})+d^2(\mathbf{x}_2, P_2\mathbf{X}))$를 찾아내면 된다.</p>
+<p><script type="math/tex">\mathbf{X}</script>를 알아내는 non-linear approach는 <script type="math/tex">\mathbf{X} = \text{argmin}(d^2(\mathbf{x}_1, P_1\mathbf{X})+d^2(\mathbf{x}_2, P_2\mathbf{X}))</script>를 찾아내면 된다.</p>
 
 <h3 id="epipolar-geometry-1">Epipolar Geometry</h3>
 <p>두 개의 이미지에서 한 점의 좌표를 알아내는 상황을 가정한다. baseline은 이미지의 두 원점을 이은 선이고, epipolar plane은 그 선을 포함하는 평면들이다. epipole은 baseline과 각 이미지 평면들의 교점이다. 마지막으로 epipolar line은 epipolar plane과 이미지 평면의 교점이다.</p>
