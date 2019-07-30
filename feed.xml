@@ -5,24 +5,55 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 30 Jul 2019 13:50:46 +0900</pubDate>
-    <lastBuildDate>Tue, 30 Jul 2019 13:50:46 +0900</lastBuildDate>
+    <pubDate>Tue, 30 Jul 2019 17:49:28 +0900</pubDate>
+    <lastBuildDate>Tue, 30 Jul 2019 17:49:28 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
         <title>CV Lecture 8 - Light-Field Imaging</title>
-        <description>&lt;h1 id=&quot;light-field-system&quot;&gt;Light-Field System&lt;/h1&gt;
+        <description>&lt;h1 id=&quot;lightfields&quot;&gt;Lightfields&lt;/h1&gt;
 
-&lt;h1 id=&quot;lightfields&quot;&gt;Lightfields&lt;/h1&gt;
+&lt;h3 id=&quot;ray&quot;&gt;Ray&lt;/h3&gt;
+
+&lt;p&gt;Ray는 5D 정보로 이루어져 있다.(3D 위치, 2D 방향) plenoptic 기술은 이런 5D정보를 가진 ray들을 활용하여 다양한 영상처리를 할 수 있다.&lt;/p&gt;
+
+&lt;p&gt;반면, line은 4D의 정보를 가지고 있다. (2D 위치, 2D 방향) &lt;strong&gt;&lt;em&gt;discretize 한 후에 다시 interpolate 할 수 있다?&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;image&quot;&gt;Image&lt;/h3&gt;
+&lt;p&gt;이미지란, 눈(또는 렌즈)이라는 한 점으로 들어오는 빛의 정보들을 수치화한 것이다. 앞 단원들에서 계속 나오던 &lt;a href=&quot;https://yeonjeejung.github.io/lecture/computervision/2019/07/07/Lecture3.html&quot;&gt;이미지 평면&lt;/a&gt;도 결국에는 사물에서 반사된 빛이 눈이라는 한 점으로 들어오는 도중의 한 평면과의 교점들이라고 할 수 있다.&lt;/p&gt;
+
+&lt;h3 id=&quot;object&quot;&gt;Object&lt;/h3&gt;
+
+&lt;p&gt;하지만 대상에서 반사되는 모든 빛을 알 수는 없다. 이미지란 대상의 모든 곳에서 반사되는 빛 중 렌즈로 들어오는 빛만 캡쳐한 것이다. 그러므로 정보의 손실이 일어나게 되는데, 이 정보들 (4D정보들)을 다 모으면 렌즈 방향이 아닌 다른 방향에서 어떻게 보일지도 알 수 있다.&lt;/p&gt;
+
+&lt;h3 id=&quot;lumigraph&quot;&gt;Lumigraph&lt;/h3&gt;
+
+&lt;p&gt;Lumigraph는 위에서 설명한 빛의 정보를 저장하는 방법이다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://www.lightfield-info.com/lightfield-image.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.lightfield-info.com/lightfield-image.jpg&quot;&gt;Source&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;2개의 평면을 이용할 수 있다. 한 평면은 대상이 존재하는 평면($u, v$평면)이고, 다른 평면은 카메라가 움직이는 평면($s, t$평면)이다. 카메라는 카메라 평면을 따라 움직이고, 이미지 평면을 통과하는 빛을 캡쳐한다.&lt;/p&gt;
+
+&lt;p&gt;캡쳐 방법에는 두 가지가 있는데, &lt;strong&gt;&lt;em&gt;카메라를 $s, t$평면 위에서 움직이는 방법과 카메라를 아무데나 움직인 뒤 rebinnig하는 방법이 있다?&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;우리가 알고 있는 평면은 2개이기 때문에 $u, v$평면의 각 점에 $s, t$평면의 모든 정보를 넣을 수도 있고, 반대로 할 수도 있다. 첫 번째 경우는 off-axis perspective view와 같고, 두 번째의 경우는 reflectance map과 같다.&lt;/p&gt;
 
 &lt;h1 id=&quot;light-field-rendering&quot;&gt;Light Field Rendering&lt;/h1&gt;
 
 &lt;hr /&gt;
 &lt;h2 id=&quot;terms&quot;&gt;Terms&lt;/h2&gt;
+&lt;p&gt;aperture : 틈&lt;br /&gt;
+collimate : 일직선의&lt;br /&gt;
+lenticular : 수정체의&lt;br /&gt;
+light field : 물체에서 발산하는 광선의 분포를 재현하는 기술
+dispersive : 전파성의&lt;br /&gt;
+medium : 매개&lt;/p&gt;
 </description>
-        <pubDate>Mon, 29 Jul 2019 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/lecture/computervision/2019/07/29/Lecture8.html</link>
-        <guid isPermaLink="true">http://localhost:4000/lecture/computervision/2019/07/29/Lecture8.html</guid>
+        <pubDate>Tue, 30 Jul 2019 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/lecture/computervision/2019/07/30/Lecture8.html</link>
+        <guid isPermaLink="true">http://localhost:4000/lecture/computervision/2019/07/30/Lecture8.html</guid>
         
         
         <category>Lecture</category>
