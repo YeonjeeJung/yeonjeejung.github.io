@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Lecture</title>
-  <meta name="description" content="">
+  <title>CV Lecture 8 - Light-Field Imaging</title>
+  <meta name="description" content="Light-Field System">
   
   <meta name="author" content="YeonjeeJung">
   <meta name="copyright" content="&copy; YeonjeeJung 2019">
@@ -44,8 +44,8 @@
   
   <!-- Twitter: card tags -->
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Lecture">
-  <meta name="twitter:description" content="">
+  <meta name="twitter:title" content="CV Lecture 8 - Light-Field Imaging">
+  <meta name="twitter:description" content="Light-Field System">
   <meta name="twitter:image" content="http://localhost:4000/assets/logo.png">
   <meta name="twitter:url" content="http://localhost:4000">
   
@@ -54,9 +54,34 @@
 
   <!-- Site styles -->
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://localhost:4000/category/lecture/">
+  <link rel="canonical" href="http://localhost:4000/lecture/computervision/2019/07/29/Lecture8.html">
   <link rel="alternate" type="application/rss+xml" title="YeonjeeJung's Blog" href="http://localhost:4000/feed.xml" />
 </head>
+
+  
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$'] ],
+    processEscapes: true,
+  }
+});
+MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
 
   
   <body>
@@ -87,44 +112,97 @@
 
 
     <div class="page-content">
-        <div class="wrapper">
-<div class="page">
+        <div class="post">
 
-  <header class="post-header">
-    <h1 class="post-title">Lecture</h1>
-  </header>
+<div class="post-header-container " >
+  <div class="scrim ">
+    <header class="post-header">
+      <h1 class="title">CV Lecture 8 - Light-Field Imaging</h1>
+      <p class="info">by <strong>Yeonjee Jung</strong></p>
+    </header>
+  </div>
+</div>
 
-  <span class="page-divider">
+<div class="wrapper">
+
+ <span class="page-divider">
   <span class="one"></span>
   <span class="two"></span>
 </span>
+ 
+
+<section class="post-meta">
+  <div class="post-date">July 29, 2019</div>
+  <div class="post-categories">
+  in 
+    
+    <a href="/category/lecture">Lecture</a>, 
+    
+  
+    
+    <a href="/category/computervision">ComputerVision</a>
+    
+  
+  </div>
+</section>
+
+<article class="post-content">
+  <h1 id="light-field-system">Light-Field System</h1>
+
+<h1 id="lightfields">Lightfields</h1>
+
+<h1 id="light-field-rendering">Light Field Rendering</h1>
+
+<hr />
+<h2 id="terms">Terms</h2>
+
+</article>
 
 
-  <article class="post-content">
-    <ul class="posts-list">
-      
-      <li><strong><a class="post-link" href="/lecture/computervision/2019/07/29/Lecture8.html">CV Lecture 8 - Light-Field Imaging</a></strong><span class="post-date"> - July 29, 2019</span></li>
-      
-      <li><strong><a class="post-link" href="/lecture/computervision/2019/07/28/Lecture7.html">CV Lecture 7 - Thin Lens Optics</a></strong><span class="post-date"> - July 28, 2019</span></li>
-      
-      <li><strong><a class="post-link" href="/lecture/computervision/2019/07/26/Lecture6.html">CV Lecture 6 - Multiview Geometry</a></strong><span class="post-date"> - July 26, 2019</span></li>
-      
-      <li><strong><a class="post-link" href="/lecture/computervision/2019/07/25/Project1.html">Project 1</a></strong><span class="post-date"> - July 25, 2019</span></li>
-      
-      <li><strong><a class="post-link" href="/lecture/computervision/2019/07/20/Lecture5.html">CV Lecture 5 - Stereo Matching</a></strong><span class="post-date"> - July 20, 2019</span></li>
-      
-      <li><strong><a class="post-link" href="/lecture/computervision/2019/07/08/Lecture4.html">CV Lecture 4 - Camera Calibration</a></strong><span class="post-date"> - July 8, 2019</span></li>
-      
-      <li><strong><a class="post-link" href="/lecture/computervision/2019/07/07/Lecture3.html">CV Lecture 3 - Epipolar Geometry</a></strong><span class="post-date"> - July 7, 2019</span></li>
-      
-      <li><strong><a class="post-link" href="/lecture/computervision/2019/07/06/Lecture2.html">CV Lecture 2 - Image Formation and Camera</a></strong><span class="post-date"> - July 6, 2019</span></li>
-      
-    </ul>
-  </article>
+
+
+
+<section class="rss">
+  <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+</section>
+
+<!-- <section class="share">
+  <span>Share: </span>
+  
+    
+    
+    
+    
+    
+    
+    
+    
+  
+</section> -->
+
+
+
+
+<section class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'true';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
 
 </div>
 </div>
-<br>
 
     </div>
 
