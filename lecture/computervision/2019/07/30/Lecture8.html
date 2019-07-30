@@ -170,13 +170,27 @@ MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
 
 <p><a href="https://www.lightfield-info.com/lightfield-image.jpg">Source</a></p>
 
-<p>2개의 평면을 이용할 수 있다. 한 평면은 대상이 존재하는 평면($u, v$평면)이고, 다른 평면은 카메라가 움직이는 평면($s, t$평면)이다. 카메라는 카메라 평면을 따라 움직이고, 이미지 평면을 통과하는 빛을 캡쳐한다.</p>
+<p>2개의 평면을 이용할 수 있다. 한 평면은 대상이 존재하는 평면($u, v$평면)이고, 다른 평면은 카메라 평면($s, t$평면)이다. 카메라는 카메라 평면 위에서 움직이고, 각 이미지 평면을 통과하는 빛을 캡쳐한다.</p>
 
-<p>캡쳐 방법에는 두 가지가 있는데, <strong><em>카메라를 $s, t$평면 위에서 움직이는 방법과 카메라를 아무데나 움직인 뒤 rebinnig하는 방법이 있다?</em></strong></p>
+<p>캡쳐 방법에는 두 가지가 있는데, <strong><em>카메라를 $s, t$평면에서 움직이는 방법(lightfield rendering)과 카메라를 아무데나 움직인 뒤 rebinnig하는 방법(lumigraph)이 있다?</em></strong></p>
 
 <p>우리가 알고 있는 평면은 2개이기 때문에 $u, v$평면의 각 점에 $s, t$평면의 모든 정보를 넣을 수도 있고, 반대로 할 수도 있다. 첫 번째 경우는 off-axis perspective view와 같고, 두 번째의 경우는 reflectance map과 같다.</p>
 
 <h1 id="light-field-rendering">Light Field Rendering</h1>
+
+<p>렌더링을 하기 위해서는 특정 위치에서 바라볼 때 빛이 어디서 어떻게 들어오는지의 정보를 lumigraph로부터 알아내야 한다. 모든 점에 대해서 정보를 가지고 있는 것이 아니므로 정보가 없는 점은 interpolation을 이용해서 정보를 만들어낸다. 이 때는 quadrilinear interpolation을 사용한다. 원래의 bilinear interpolation은 주변 네 개의 점을 이용한다. 식은 다음과 같다.</p>
+
+<script type="math/tex; mode=display">s = \alpha_0s_0+\alpha_1s_1 \text{  where  } \alpha_0+\alpha_1=1</script>
+
+<p>quadrilinear interpolation은 점 $(s, t_0)$와 $(u_0, v_0)$가 주어질 때 $s_0$와 $s_1$에 대해서 계산해야 하기 때문에</p>
+
+<script type="math/tex; mode=display">L(s, t_0, u_0, v_0)=\alpha_0L(s_0, t_0, u_0, v_0)+\alpha_1L(s_1, t_0, u_0, v_0)</script>
+
+<p>이 되는데, 이 계산을 $s, t, u, v$에 대해서 다 해야하므로</p>
+
+<script type="math/tex; mode=display">L(s, t, u, v)=\sum_{i=0}^1\sum_{j=0}^1\sum_{k=0}^1\sum_{l=0}^1\alpha_i\beta_j\gamma_k\delta_lL(s_i, t_j, u_k, v_l)</script>
+
+<p>이라는 식으로 설명할 수 있다.</p>
 
 <hr />
 <h2 id="terms">Terms</h2>
