@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>CV Lecture 8 - Light-Field Imaging</title>
-  <meta name="description" content="Light-Field System">
+  <meta name="description" content="Lightfields">
   
   <meta name="author" content="YeonjeeJung">
   <meta name="copyright" content="&copy; YeonjeeJung 2019">
@@ -45,7 +45,7 @@
   <!-- Twitter: card tags -->
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="CV Lecture 8 - Light-Field Imaging">
-  <meta name="twitter:description" content="Light-Field System">
+  <meta name="twitter:description" content="Lightfields">
   <meta name="twitter:image" content="http://localhost:4000/assets/logo.png">
   <meta name="twitter:url" content="http://localhost:4000">
   
@@ -54,7 +54,7 @@
 
   <!-- Site styles -->
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://localhost:4000/lecture/computervision/2019/07/29/Lecture8.html">
+  <link rel="canonical" href="http://localhost:4000/lecture/computervision/2019/07/30/Lecture8.html">
   <link rel="alternate" type="application/rss+xml" title="YeonjeeJung's Blog" href="http://localhost:4000/feed.xml" />
 </head>
 
@@ -132,7 +132,7 @@ MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
  
 
 <section class="post-meta">
-  <div class="post-date">July 29, 2019</div>
+  <div class="post-date">July 30, 2019</div>
   <div class="post-categories">
   in 
     
@@ -147,14 +147,45 @@ MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
 </section>
 
 <article class="post-content">
-  <h1 id="light-field-system">Light-Field System</h1>
+  <h1 id="lightfields">Lightfields</h1>
 
-<h1 id="lightfields">Lightfields</h1>
+<h3 id="ray">Ray</h3>
+
+<p>Ray는 5D 정보로 이루어져 있다.(3D 위치, 2D 방향) plenoptic 기술은 이런 5D정보를 가진 ray들을 활용하여 다양한 영상처리를 할 수 있다.</p>
+
+<p>반면, line은 4D의 정보를 가지고 있다. (2D 위치, 2D 방향) <strong><em>discretize 한 후에 다시 interpolate 할 수 있다?</em></strong></p>
+
+<h3 id="image">Image</h3>
+<p>이미지란, 눈(또는 렌즈)이라는 한 점으로 들어오는 빛의 정보들을 수치화한 것이다. 앞 단원들에서 계속 나오던 <a href="https://yeonjeejung.github.io/lecture/computervision/2019/07/07/Lecture3.html">이미지 평면</a>도 결국에는 사물에서 반사된 빛이 눈이라는 한 점으로 들어오는 도중의 한 평면과의 교점들이라고 할 수 있다.</p>
+
+<h3 id="object">Object</h3>
+
+<p>하지만 대상에서 반사되는 모든 빛을 알 수는 없다. 이미지란 대상의 모든 곳에서 반사되는 빛 중 렌즈로 들어오는 빛만 캡쳐한 것이다. 그러므로 정보의 손실이 일어나게 되는데, 이 정보들 (4D정보들)을 다 모으면 렌즈 방향이 아닌 다른 방향에서 어떻게 보일지도 알 수 있다.</p>
+
+<h3 id="lumigraph">Lumigraph</h3>
+
+<p>Lumigraph는 위에서 설명한 빛의 정보를 저장하는 방법이다.</p>
+
+<p><img src="https://www.lightfield-info.com/lightfield-image.jpg" alt="" /></p>
+
+<p><a href="https://www.lightfield-info.com/lightfield-image.jpg">Source</a></p>
+
+<p>2개의 평면을 이용할 수 있다. 한 평면은 대상이 존재하는 평면($u, v$평면)이고, 다른 평면은 카메라가 움직이는 평면($s, t$평면)이다. 카메라는 카메라 평면을 따라 움직이고, 이미지 평면을 통과하는 빛을 캡쳐한다.</p>
+
+<p>캡쳐 방법에는 두 가지가 있는데, <strong><em>카메라를 $s, t$평면 위에서 움직이는 방법과 카메라를 아무데나 움직인 뒤 rebinnig하는 방법이 있다?</em></strong></p>
+
+<p>우리가 알고 있는 평면은 2개이기 때문에 $u, v$평면의 각 점에 $s, t$평면의 모든 정보를 넣을 수도 있고, 반대로 할 수도 있다. 첫 번째 경우는 off-axis perspective view와 같고, 두 번째의 경우는 reflectance map과 같다.</p>
 
 <h1 id="light-field-rendering">Light Field Rendering</h1>
 
 <hr />
 <h2 id="terms">Terms</h2>
+<p>aperture : 틈<br />
+collimate : 일직선의<br />
+lenticular : 수정체의<br />
+light field : 물체에서 발산하는 광선의 분포를 재현하는 기술
+dispersive : 전파성의<br />
+medium : 매개</p>
 
 </article>
 
