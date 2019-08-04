@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>CV Lecture 9 - High-Dynamic-Range Imaging</title>
+  <meta name="description" content="High-Dynamic-Range Imaging">
+  
+  <meta name="author" content="YeonjeeJung">
+  <meta name="copyright" content="&copy; YeonjeeJung 2019">
+  
+
+  <!-- External libraries -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/monokai-sublime.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css">
+
+  <!-- Favicon and other icons (made with http://www.favicon-generator.org/) -->
+  <link rel="shortcut icon" href="/assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" sizes="57x57" href="/assets/icons/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/assets/icons/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/assets/icons/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/assets/icons/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/assets/icons/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/assets/icons/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/assets/icons/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/assets/icons/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/assets/icons/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+  <link rel="manifest" href="/assets/icons/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/assets/icons/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  
+
+  
+  <!-- Twitter: card tags -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="CV Lecture 9 - High-Dynamic-Range Imaging">
+  <meta name="twitter:description" content="High-Dynamic-Range Imaging">
+  <meta name="twitter:image" content="http://localhost:4000/assets/logo.png">
+  <meta name="twitter:url" content="http://localhost:4000">
+  
+
+  
+
+  <!-- Site styles -->
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/lecture/computervision/2019/08/04/Lecture9.html">
+  <link rel="alternate" type="application/rss+xml" title="YeonjeeJung's Blog" href="http://localhost:4000/feed.xml" />
+</head>
+
+  
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$'] ],
+    processEscapes: true,
+  }
+});
+MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+  
+  <body>
+
+    <header class="navigation" role="banner">
+  <div class="navigation-wrapper">
+    <a href="/" class="logo">
+      
+      <img src="/assets/logo.png" alt="YeonjeeJung's Blog">
+      
+    </a>
+    <a href="javascript:void(0)" class="navigation-menu-button" id="js-mobile-menu">
+      <i class="fa fa-bars"></i>
+    </a>
+    <nav role="navigation">
+      <ul id="js-navigation-menu" class="navigation-menu show">
+        <li class="nav-link"><a href="/about">About</a>
+        <li class="nav-link"><a href="/category/thesis">Thesis</a>
+        <li class="nav-link"><a href="/category/lecture">Lecture</a>
+          <ul>
+            <a href="/category/computervision">Computer Vision</a>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+    <div class="page-content">
+        <div class="post">
+
+<div class="post-header-container " >
+  <div class="scrim ">
+    <header class="post-header">
+      <h1 class="title">CV Lecture 9 - High-Dynamic-Range Imaging</h1>
+      <p class="info">by <strong>Yeonjee Jung</strong></p>
+    </header>
+  </div>
+</div>
+
+<div class="wrapper">
+
+ <span class="page-divider">
+  <span class="one"></span>
+  <span class="two"></span>
+</span>
+ 
+
+<section class="post-meta">
+  <div class="post-date">August 4, 2019</div>
+  <div class="post-categories">
+  in 
+    
+    <a href="/category/lecture">Lecture</a>, 
+    
+  
+    
+    <a href="/category/computervision">ComputerVision</a>
+    
+  
+  </div>
+</section>
+
+<article class="post-content">
+  <h1 id="high-dynamic-range-imaging">High-Dynamic-Range Imaging</h1>
+
+<h3 id="high-dynamic-range-imaging-ldrrightarrowhdr">High Dynamic Range Imaging (LDR$\rightarrow$HDR)</h3>
+
+<p>현실은 dynamic range가 매우 높다. 이를 낮은 대비를 가지는 사진으로 옮기려면 전체 range의 간격을 좁히거나, 특정 범위만 옮기는 방법이 있다. 이 때 어떤 범위를 저장할 것인가는 노출(<a href="https://yeonjeejung.github.io/lecture/computervision/2019/07/28/Lecture7.html">exposure</a>)이 결정하는데, 이 노출을 조절하는 방법에는 서터 속도, 조리개, 감도, 중성 농도 필터 등이 있다.</p>
+
+<p>셔터 속도의 조절 범위는 30sec~1/4000sec이고, 확실한 방법이고 선형적인 효과를 가져오지만, 긴 노출에 대해서는 노이즈가 섞일 우려가 있다.</p>
+
+<p>조리개의 조절 범위는 f/1.4~f/22이고 DOF가 변경된다는 단점이 있고, 최후의 방법으로 유용하다.</p>
+
+<p>감도의 조절 범위는 100~1600이고, 노이즈가 생긴다는 단점이 있다. 조리개값과 마찬가지로 최후의 방법으로 유용하다.</p>
+
+<p>중성 농도 필터는 4농도까지 조절할 수 있으며, 쌓을 수도 있다. 단점은 완벽히 중성은 아니고 색감 이동이 있을 수 있고, 정확하지는 않다. 장점은 번쩍거리는 빛에도 사용할 수 있다는 점이고, 최후의 보충 방법으로 사용될 수 있다.</p>
+
+<h3 id="response-curve">Response Curve</h3>
+
+<p>만약 response curve를 알고 있다면 어떤 노출값을 갖는 사진을 찍어야 원하는 빛의 양을 얻을 수 있는지 알 수 있다. response curve의 역 값을 보면 된다. response curve를 얻는 방법에는 두가지가 있다.</p>
+
+<ol>
+  <li>장면의 빛의 양(scene luminance)을 조절한 뒤 픽셀값을 본다.</li>
+  <li>노출값을 조절한 뒤 픽셀값을 본다.</li>
+</ol>
+
+<p>가장 좋은 방법은 노출값을 조절한 뒤 많은 범위의 픽셀값을 고루 관찰하는 것이다.</p>
+
+<script type="math/tex; mode=display">Z=f(H)</script>
+
+<script type="math/tex; mode=display">H=E\cdot\Delta t</script>
+
+<script type="math/tex; mode=display">\log(H)=\log(E)+\log(\Delta t)</script>
+
+<p>$Z$ 는 픽셀값, $H$는 노출, $E$는 빛의 양, $\Delta t$는 노출시간이다.</p>
+
+<p>$g(Z)$가 response curve의 역에 $\log$를 취한 함수라고 하자.</p>
+
+<script type="math/tex; mode=display">Z=f(H)\rightarrow H=f^{-1}(Z)\rightarrow \log H=\log f^{-1}(Z)\rightarrow\log H=g(Z)</script>
+
+<p>$j$번째 이미지의 $i$번째 픽셀에 대해서</p>
+
+<script type="math/tex; mode=display">g(Z_{ij})=\log(E_i)+\log(\Delta t_j)</script>
+
+<p>임을 원하기 때문에</p>
+
+<script type="math/tex; mode=display">\sum_{i=1}^N\sum_{j=1}^P[\log(E_i)+\log(\Delta t_j)-g(Z_{ij})]^2 + \lambda\sum_{z=Z_{min}}^{Z_{max}}g''(z)^2</script>
+
+<p>을 최소화시키면 된다. 앞의 항은 Data term, 뒤의 항은 Regularization term이다.</p>
+
+<p>radiance를 재건하려면</p>
+
+<script type="math/tex; mode=display">\log E_i=\frac{\sum_{j=1}^Pw(Z_{ij})(g(Z_{ij})-\log(\Delta t_j))}{\sum_{j=1}^Pw(Z_{ij})}</script>
+
+<p>을 사용하면 된다. $w(Z_{ij})$는 해당 픽셀의 가중치이고, 해당 조각들의 노이즈 관여를 조절한다.</p>
+
+<p><img src="http://cybertron.cg.tu-berlin.de/eitz/hdr/exposure_series_response_curve.jpg" alt="" />
+<a href="http://cybertron.cg.tu-berlin.de/eitz/hdr/exposure_series_response_curve.jpg">Source</a></p>
+
+<p>response curve를 그리기 위해 사용하는 이미지</p>
+
+<p><img src="http://cybertron.cg.tu-berlin.de/eitz/hdr/response_curve.jpg" alt="" />
+<a href="http://cybertron.cg.tu-berlin.de/eitz/hdr/response_curve.jpg">Source</a></p>
+
+<p>위 이미지를 통해 그린 response curve</p>
+
+<p><img src="http://vision.gel.ulaval.ca/~jflalonde/cours/4105/h14/tps/results/tp5/raziehtoony/Image/Radiance%20Map.jpg" alt="" />
+<a href="http://vision.gel.ulaval.ca/~jflalonde/cours/4105/h14/tps/results/tp5/raziehtoony/Image/Radiance%20Map.jpg">Source</a></p>
+
+<p>디지털 카메라를 이용해서 장면 밝기 (scene radiance)를 측정한 radiance map</p>
+
+<h3 id="image-registration">Image Registration</h3>
+
+<p>서로 다른 노출을 갖는 이미지를 비교하기 위한 방법이다. Median-Threshold Bitmap (MTB)를 이용해서 흑백으로 만들고, <strong><em>그 차이를 최소화하는 translation을 찾는다. 그리고 피라미드를 이용해서 더 촉진한다?</em></strong></p>
+
+<h3 id="file-formats">File Formats</h3>
+
+<p>.pfm : Portable Float Map. 채널당 32비트 float을 사용하고, 3채널을 저장한다. 따라서 픽셀당 96비트를 사용한다.</p>
+
+<p>.pic, .hdr : Radiance Format. 픽셀당 32비트를 사용한다. (채널당 8비트, 지수에 8비트)</p>
+
+<p>.exr : ILM’s OpenEXR. 비손실 압축을 지원한다. half-precision float (채널당 16비트)을 사용하며, 멀티채널을 지원한다.</p>
+
+<h3 id="high-dynamic-range-display-hdrrightarrowhdr">High Dynamic Range Display (HDR$\rightarrow$HDR)</h3>
+
+<p>Sunnybrook HDR Display는 저해상도의 광원과 2개의 8비트 모듈레이터를 이용하여 HDR 영상을 띄울 수 있다. LED 백라이트와 LCD 스크린을 결합하여 결과를 만들어 낸다.</p>
+
+<hr />
+<h2 id="terms">Terms</h2>
+<p>dynamic range : 증폭 회로 등에서, 다룰 수 있는 가장 큰 신호와 가장 작은 신호와의 크기의 비율을 데시벨로 나타낸 것<br />
+precision : 정밀도</p>
+
+</article>
+
+
+
+
+
+<section class="rss">
+  <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+</section>
+
+<!-- <section class="share">
+  <span>Share: </span>
+  
+    
+    
+    
+    
+    
+    
+    
+    
+  
+</section> -->
+
+
+
+
+<section class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'true';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+
+</div>
+</div>
+
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h3 class="footer-heading">YeonjeeJung's Blog</h3>
+
+    <div class="site-navigation">
+
+      <p><strong>Site Map</strong></p>
+      <ul class="pages">
+
+        <li class="nav-link"><a href="/about">About</a>
+        <li class="nav-link"><a href="/category/thesis">Thesis</a>
+        <li class="nav-link"><a href="/category/lecture">Lecture</a>
+
+      </ul>
+    </div>
+
+    <div class="site-contact">
+
+      <p><strong>Contact</strong></p>
+      <ul class="social-media-list">
+        <li>
+          <a href="mailto:gotnwlsl@gmail.com">
+            <i class="fa fa-envelope-o"></i>
+            <span class="username">gotnwlsl@gmail.com</span>
+          </a>
+        </li>
+
+        
+          
+          <li>
+            <a href="https://github.com/YeonjeeJung" title="Fork me on GitHub">
+              <i class="fa fa-github"></i>
+              <span class="username">YeonjeeJung</span>
+            </a>
+          </li>
+          
+        
+
+      </ul>
+    </div>
+
+    <div class="site-signature">
+      <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+      <p class="text"></p>
+    </div>
+
+  </div>
+
+</footer>
+
+<!-- Scripts -->
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/js/lightbox.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  // Default syntax highlighting
+  hljs.initHighlightingOnLoad();
+
+  // Header
+  var menuToggle = $('#js-mobile-menu').unbind();
+  $('#js-navigation-menu').removeClass("show");
+  menuToggle.on('click', function(e) {
+    e.preventDefault();
+    $('#js-navigation-menu').slideToggle(function(){
+      if($('#js-navigation-menu').is(':hidden')) {
+        $('#js-navigation-menu').removeAttr('style');
+      }
+    });
+  });
+});
+
+</script>
+
+
+
+
+
+
+  </body>
+
+</html>
