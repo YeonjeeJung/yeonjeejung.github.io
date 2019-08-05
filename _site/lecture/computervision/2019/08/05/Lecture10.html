@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>CV Lecture 10 - High-Dynamic-Range Rendering</title>
+  <meta name="description" content="High-Dynamic-Range Imaging">
+  
+  <meta name="author" content="YeonjeeJung">
+  <meta name="copyright" content="&copy; YeonjeeJung 2019">
+  
+
+  <!-- External libraries -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/monokai-sublime.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css">
+
+  <!-- Favicon and other icons (made with http://www.favicon-generator.org/) -->
+  <link rel="shortcut icon" href="/assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" sizes="57x57" href="/assets/icons/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/assets/icons/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/assets/icons/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/assets/icons/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/assets/icons/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/assets/icons/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/assets/icons/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/assets/icons/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/assets/icons/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+  <link rel="manifest" href="/assets/icons/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/assets/icons/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  
+
+  
+  <!-- Twitter: card tags -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="CV Lecture 10 - High-Dynamic-Range Rendering">
+  <meta name="twitter:description" content="High-Dynamic-Range Imaging">
+  <meta name="twitter:image" content="http://localhost:4000/assets/logo.png">
+  <meta name="twitter:url" content="http://localhost:4000">
+  
+
+  
+
+  <!-- Site styles -->
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/lecture/computervision/2019/08/05/Lecture10.html">
+  <link rel="alternate" type="application/rss+xml" title="YeonjeeJung's Blog" href="http://localhost:4000/feed.xml" />
+</head>
+
+  
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$'] ],
+    processEscapes: true,
+  }
+});
+MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+  
+  <body>
+
+    <header class="navigation" role="banner">
+  <div class="navigation-wrapper">
+    <a href="/" class="logo">
+      
+      <img src="/assets/logo.png" alt="YeonjeeJung's Blog">
+      
+    </a>
+    <a href="javascript:void(0)" class="navigation-menu-button" id="js-mobile-menu">
+      <i class="fa fa-bars"></i>
+    </a>
+    <nav role="navigation">
+      <ul id="js-navigation-menu" class="navigation-menu show">
+        <li class="nav-link"><a href="/about">About</a>
+        <li class="nav-link"><a href="/category/thesis">Thesis</a>
+        <li class="nav-link"><a href="/category/lecture">Lecture</a>
+          <ul>
+            <a href="/category/computervision">Computer Vision</a>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+    <div class="page-content">
+        <div class="post">
+
+<div class="post-header-container " >
+  <div class="scrim ">
+    <header class="post-header">
+      <h1 class="title">CV Lecture 10 - High-Dynamic-Range Rendering</h1>
+      <p class="info">by <strong>Yeonjee Jung</strong></p>
+    </header>
+  </div>
+</div>
+
+<div class="wrapper">
+
+ <span class="page-divider">
+  <span class="one"></span>
+  <span class="two"></span>
+</span>
+ 
+
+<section class="post-meta">
+  <div class="post-date">August 5, 2019</div>
+  <div class="post-categories">
+  in 
+    
+    <a href="/category/lecture">Lecture</a>, 
+    
+  
+    
+    <a href="/category/computervision">ComputerVision</a>
+    
+  
+  </div>
+</section>
+
+<article class="post-content">
+  <h1 id="high-dynamic-range-imaging">High-Dynamic-Range Imaging</h1>
+
+<h3 id="tone-mapping-hdrrightarrowldr-display">Tone Mapping (HDR$\rightarrow$LDR display)</h3>
+
+<p>이미지는 HDR인데 디스플레이가 LDR이라면 어쩔 수 없이 LDR로 봐야 한다. 그런데 동시에 디테일도 보존하고 싶다. tone mapping은 비록 LDR의 이미지이지만, 그것을 보고 현실 세계같이 인지할 수 있도록 만들자는 것으로부터 시작한다.</p>
+
+<p>먼저 사람의 눈이 다양한 범위에 대해 어떻게 인지하는지에 대해 알아야 한다. 사람의 눈은 대비에 민감하다. 즉, 1:2의 대비와 100:200의 대비를 같다고 인지한다. 또한 망막과 동공에서 빛을 수용할 수 있고, 신경$\cdot$화학적으로 수용할 수 있다. 그리고 공간적 주파수에 따라 민감도가 다르다.</p>
+
+<h3 id="contrast-sensitivity-function-csf">Contrast Sensitivity Function (CSF)</h3>
+
+<p><img src="https://ars.els-cdn.com/content/image/3-s2.0-B9780121197926501182-f62-03-9780121197926.gif" alt="scale=0.5" />
+<a href="https://ars.els-cdn.com/content/image/3-s2.0-B9780121197926501182-f62-03-9780121197926.gif">Source</a></p>
+
+<p>위 그래프는 공간적 주파수에 따른 민감도 그래프이다. 초반에는 주파수가 로그함수로 높아지면 민감도가 올라가지만, 특정 지점 이후에는 급격히 줄어든다. 즉, 주파수가 매우 높으면 인지할 수 없다는 말이다. 따라서 출력하는 주파수를 피크점 이전까지로 해야 한다. 동시에 색상은 유지해야 한다.</p>
+
+<h3 id="gamma-compression">Gamma Compression</h3>
+
+<p>만약 원본이 1:10000의 대비를 가지고 있고, 화면은 1:100의 대비를 가지고 있다면, 단순히 $x\rightarrow x^{\gamma}$를 이용해서 변환시킬 수 있다. (주파수가 로그로 증가할 때 선형 증가하므로, 우리는 지수함수를 써야한다)그러나 이렇게 하면 대비는 유지되지만, 색상 이상이 일어난다</p>
+
+<h3 id="gamma-compression-on-intensity">Gamma Compression on Intensity</h3>
+
+<p>gamma compression on intensity은 이미지에서 intensity와 color 맵을 추출하여 이용하는 방법이다. 이렇게 하면 하면 색상은 유지되지만, 디테일이 블러된다. 그렇다면 고주파수는 그대로 두고, 저주파수의 대비를 줄이는 방법을 사용할 수 있다. 이미지에서 저주파수, 고주파수 맵과 color 맵을 이용하는데, 이러면 halo artifact가 생긴다. 이 현상은 주파수가 높은 경계 부분만 빛의 테두리가 나타나는 왜곡 현상이다.</p>
+
+<h3 id="durand-bilateral-filtering">Durand Bilateral Filtering</h3>
+
+<p>이 방법은 경계를 블러링 하지 않는 방법이고, non-linear한 방법이다. 이미지에서 large scale, detail, color 맵을 추출하여 이용한다.</p>
+
+<p>우선 가우시안 필터링부터 시작한다. 가우시안 필터링은 가우시안 함수 모양의 마스크를 이미지에 컨볼루션하는 방법이다.</p>
+
+<script type="math/tex; mode=display">J = f \otimes I</script>
+
+<p>($J$는 결과 이미지, $f$는 가우시안 마스크, $I$는 이미지)</p>
+
+<p>만약 $I$가 계단 모양 이미지였다면, 결과물 $J$는 블러되어 경계 부분이 경사진 모양으로 나타난다. 만약 우리가 이미지의 $x$지점($I(x)$)을 관찰한다고 하고, 그 점은 경계 부근이라고 하자. 그럼 가우시안 필터는 그 주변 픽셀들에 마스크를 씌워 결과$J(x)$를 낼 것인데, 경계의 반대 부분에 있는 픽셀을 $I(\xi)$라고 하자. 이 점 $I(\xi)$는 결과물 $J(x)$를 오염시킨다. (경계를 보존하지 않고 스무딩 시키므로)</p>
+
+<p>이 때 차이 나는 intensity만큼 패널티 $g$를 준다.</p>
+
+<script type="math/tex; mode=display">J(x) = \frac{1}{k(x)}\sum_{\xi}{f(x, \xi)g(I(\xi)-I(x))I(\xi)}</script>
+
+<p>($f$는 $x$와 $\xi$의 거리이고, $g$는 intensity의 차이, $k$는 <script type="math/tex">k(x) = \sum_{\xi}f(x, \xi)g(I(\xi)-I(x))</script>이다.) 이 결과로는 경계는 스무딩 되지 않고 나머지 노이즈만 스무딩된 결과가 나오게 된다. 여기서 사용되는 필터가 Bilateral Filter이다.</p>
+
+<p>이제 Durand Bilateral Filtering의 전체 과정을 설명할 수 있다.</p>
+
+<ol>
+  <li>Input 이미지는 대비가 매우 높기 때문에 intensity와 color맵을 추출한다.</li>
+  <li>intensity 맵은 Fast Bilateral Filter를 이용해 Large scale로 변환시킨다.</li>
+  <li>Intensity에서 Large scale을 빼서 detail을 얻는다.</li>
+  <li>그 후 Large scale에서 대비를 줄여 이를 detail과 color 맵과 합쳐서 결과물을 만든다.</li>
+</ol>
+
+<h3 id="fattals-gradient-domain-hdr-tone-mapping-operator">Fattal’s Gradient Domain HDR Tone-mapping Operator</h3>
+
+<p>이 방법의 절차는 다음과 같다.</p>
+
+<ol>
+  <li>HDR 이미지에서 gradient를 구한다.</li>
+  <li>강한 gradient를 줄인다.</li>
+  <li>줄인 gradient에서 LDR 이미지를 재건한다.</li>
+</ol>
+
+<p>먼저 gradient를 알아야 한다. 여기서의 gradient는 다인자 함수를 미분한 것이다. 예를 들어 $f(x, y)$의 gradient는</p>
+
+<script type="math/tex; mode=display">\triangledown f=\left(\frac{df}{dx}, \frac{df}{dy}\right) = \left(\frac{f(x+h)-f(x)}{h}, \frac{f(y+h)-f(y)}{h}\right)</script>
+
+<p>이다. 우리는 이미지를 가지고 하므로,</p>
+
+<script type="math/tex; mode=display">\frac{df}{dx}\approx f(x+1,y)-f(x,y)</script>
+
+<script type="math/tex; mode=display">\frac{df}{dy}\approx f(x, y+1)-f(x,y)</script>
+
+<p>가 된다.</p>
+
+<p>절차를 다시 설명해보면 이렇다.</p>
+<ol>
+  <li>우리가 HDR scanline을 가지고 있다고 생각해보자. (1차원)</li>
+  <li>$H(x)$는 $I(x)$의 로그이다. <script type="math/tex">H(x) = \log(\text{scanline})</script></li>
+  <li>$H(x)$의 변화율을 구한다. ($H’(x)$)</li>
+  <li>$H’(x)$를 줄인다. $G(x) = H’(x)\Phi(x)$</li>
+  <li>$I(x)$를 다시 재건한다. $I(x) = C + \int_0^xG(t)$</li>
+  <li>아까 로그를 씌웠으니 역인 지수함수를 씌워준다. $\exp(I(x))$</li>
+</ol>
+
+<p>여기서 우리의 이미지는 2차원이므로, $G(x,y) = \triangledown H(x,y)\Phi(x,y)$를 써야 한다. 2차원으로 넘어오면서 생기는 또다른 문제점은, $G=\triangledown I$를 만족하는 $I$가 존재하지 않을수도 있다는 점이다. 따라서 우리는 적분을 직접 하는 대신,</p>
+
+<script type="math/tex; mode=display">\iint F(\triangledown I, G)dxdy</script>
+
+<p>를 최소화시키는 $I$를 구하면 되는데, 이때 <script type="math/tex">F(\triangledown I, G) = \|\triangledown I-G\|^2 = \left(\frac{\partial I}{\partial x}-G_x\right)^2+\left(\frac{\partial I}{\partial y}-G_y\right)^2</script> 이다.</p>
+
+<p><script type="math/tex">\iint F(\triangledown I, G)dxdy</script>가 Euler-Lagrange equation (<script type="math/tex">\frac{\partial F}{\partial I} = \frac{d}{dx}\frac{\partial F}{\partial I_x}+\frac{d}{dy}\frac{\partial F}{\partial I_y}</script>)을 따른다고 해보자. 그러면 Poisson Equation을 얻을 수 있다.</p>
+
+<script type="math/tex; mode=display">\triangle I = \triangledown^2I=\text{div}G</script>
+
+<p>($\triangle$은 라플라스 연산자)</p>
+
+<script type="math/tex; mode=display">\triangle I=\triangledown^2I=\triangledown\cdot\triangledown I=\frac{\partial^2I}{\partial x^2}+\frac{\partial^2I}{\partial y^2}</script>
+
+<script type="math/tex; mode=display">\text{div}G=\triangledown\cdot G=\frac{\partial G_x}{\partial x}+\frac{\partial G_y}{\partial y}</script>
+
+<p>이제 attenuation factor $\Phi$에 대해 알아볼 것이다. 우선 이미지 피라미드($H_0, H_1, \cdots, H_d$)를 만든다. $H_0$은 원본 이미지고 $H_d$는 가장 멀리서 본 이미지이다. 각 레벨 $k$에서 $\triangledown H_k$를 다음과 같이 정의한다.</p>
+
+<script type="math/tex; mode=display">\triangledown H_k = \left(\frac{H_k(x+1, y)-H_k(x-1, y)}{2^{k+1}}, \frac{H_k(x, y+1)-H_k(x, y-1)}{2^{k+1}}\right)</script>
+
+<p>각 레벨 $k$에서의 scaling factor $\phi_k(x,y)$는 다음과 같이 정의된다.</p>
+
+<script type="math/tex; mode=display">\phi_k(x,y)=\frac{\|\triangledown H_k(x,y)\|}{\alpha}\left(\frac{\alpha}{\|\triangledown H_k(x,y)\|}\right)^{\beta}</script>
+
+<p>원본 이미지의 gradient attenuation Function $\Phi(x, y)$는 top-down 방식으로 $\phi_k(x,y)$에서부터 전파되어 계산된다.</p>
+
+<script type="math/tex; mode=display">\Phi_d(x,y) = \phi_d(x,y)</script>
+
+<script type="math/tex; mode=display">\Phi_k(x,y) = L(\Phi_{k+1})(x,y)\phi_k(x,y)</script>
+
+<script type="math/tex; mode=display">\Phi(x,y) = \phi_0(x,y)</script>
+
+<p>($L$은 linear interpolation을 이용한 upsampling operator이다)</p>
+
+<p>그다음은 color 계산법이다.</p>
+
+<script type="math/tex; mode=display">C_{out}=\left(\frac{C_{in}}{L_{in}}\right)^sL_{out}</script>
+
+<p>$L_{in}$과 $L_{out}$은 HDR compression 전과 후의 luminance이고, $s$는 채도를 조절한다.</p>
+
+<h1 id="extra-reading">Extra Reading</h1>
+
+<h3 id="poisson-reconstruction">Poisson Reconstruction</h3>
+
+<p>원래 이미지 $f^* $가 있고, 모양을 흉내낼 이미지 $\mathbf{v}$(사실은 이미지가 아니고 vector field이다)가 있을 때, 원래 이미지 $f^* $에서 모양을 흉내내고 싶은 부분 $\Omega$(hole)를 뚫는다. 이 때 에러가 최소화되는 이미지 $f$를 찾는 방법이 poisson reconstruction이다.</p>
+
+<script type="math/tex; mode=display">\min_f\iint_{\Omega}\|\triangledown f-\mathbf{v}\|^2</script>
+
+<p>with <script type="math/tex">f\mid_ {\partial\Omega}=f^* \mid_ {\partial\Omega}</script>, $\partial\Omega$는 hole $\Omega$의 boundary</p>
+
+<p>이 에러를 최소화하는 $f$를 찾으면 되는데, 이미지는 이산 함수이므로 우리는 이산 버전으로 최적화를 바꿔야 한다.</p>
+
+<script type="math/tex; mode=display">\min_{f |_ {\Omega}}\sum_{\langle p, q\rangle\cap\Omega\neq0}\|(f_p-f_q)-v_{pq}\|^2</script>
+
+<p>with <script type="math/tex">f_p=f^* _ p</script>, for all <script type="math/tex">p\in\partial\Omega</script>, where <script type="math/tex">f\mid_ {\Omega}=\{f_p, p\in\Omega\}, v_{pq}:= \mathbf{v}\left(\frac{p+q}{2}\right)\cdot\vec{pq}</script></p>
+
+<p>우리는 모든 $p\in\Omega$에 대해 아래의 방정식을 풀면 된다.</p>
+
+<script type="math/tex; mode=display">\left| N_p\right| f_p - \sum_{q\in N_p\cap\Omega}f_q=\sum_{q\in N_p\cap\partial\Omega}f^* _ q+\sum_{q\in N_p}v_{pq}</script>
+
+<p><script type="math/tex">\mid N_p\mid</script>는 $p$의 4방향 이웃 $N_p$의 cardinality를 의미한다.</p>
+
+<p>이를 선형방정식으로 만들면,</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+A\mathbf{x}=b\leftrightarrow
+\left[\begin{matrix}
+4 & -1 & & & -1 & & & & & & \\
+-1 & 4 & -1 & & & -1 & & & & & \\
+ & -1 & 4 & -1 & & & -1 & & & & \\
+ & & -1 & 4 & -1 & & & -1 & & & \\
+ -1 & & & -1 & 4 & -1 & & & -1 & & \\
+ & -1 & & & -1 & 4 & -1 & & & -1 & \\
+ & & -1 & & & -1 & 4 & -1 & & & -1  \\
+ & & & -1 & & & -1 & 4 & -1 & & \\
+ & & & & -1 & & & -1 & 4 & -1 & \\
+ & & & & & & -1 & & -1 & 4 & -1 \\
+ & & & & & & & -1 & & -1 & 4 & \\
+ \end{matrix}\right]
+ \left[\begin{matrix}f_1\\f_2\\f_3\\f_4\\ \\ \vdots \\ \\ f_{n-3}\\f_{n-2}\\f_{n-1}\\f_n\end{matrix}\right] =
+ \left[\begin{matrix}b_1\\b_2\\b_3\\b_4\\ \\ \vdots \\ \\ b_{n-3}\\b_{n-2}\\b_{n-1}\\b_n\end{matrix}\right] %]]></script>
+
+<p>라고 할 수 있는데, <strong><em>$A_p$는 $f$의 라플라시안을 의미하고, $b$는 boundary condition $f^* $에서 velocity field $v$의 값을 의미한다?</em></strong> 결국 이 식을 통해서 poisson equation $\triangle f=\text{div}\mathbf{v}$를 푼 것이다.</p>
+
+<hr />
+<p>이번 내용은 수학이 너무 많이 나와서 어렵다…나중에 다시 봐야 할듯</p>
+
+<hr />
+<h2 id="terms">Terms</h2>
+<p>bilateral : 쌍방의<br />
+attenuate : 줄이다<br />
+conservative : 보존되는</p>
+
+</article>
+
+
+
+
+
+<section class="rss">
+  <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+</section>
+
+<!-- <section class="share">
+  <span>Share: </span>
+  
+    
+    
+    
+    
+    
+    
+    
+    
+  
+</section> -->
+
+
+
+
+<section class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'true';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+
+</div>
+</div>
+
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h3 class="footer-heading">YeonjeeJung's Blog</h3>
+
+    <div class="site-navigation">
+
+      <p><strong>Site Map</strong></p>
+      <ul class="pages">
+
+        <li class="nav-link"><a href="/about">About</a>
+        <li class="nav-link"><a href="/category/thesis">Thesis</a>
+        <li class="nav-link"><a href="/category/lecture">Lecture</a>
+
+      </ul>
+    </div>
+
+    <div class="site-contact">
+
+      <p><strong>Contact</strong></p>
+      <ul class="social-media-list">
+        <li>
+          <a href="mailto:gotnwlsl@gmail.com">
+            <i class="fa fa-envelope-o"></i>
+            <span class="username">gotnwlsl@gmail.com</span>
+          </a>
+        </li>
+
+        
+          
+          <li>
+            <a href="https://github.com/YeonjeeJung" title="Fork me on GitHub">
+              <i class="fa fa-github"></i>
+              <span class="username">YeonjeeJung</span>
+            </a>
+          </li>
+          
+        
+
+      </ul>
+    </div>
+
+    <div class="site-signature">
+      <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+      <p class="text"></p>
+    </div>
+
+  </div>
+
+</footer>
+
+<!-- Scripts -->
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/js/lightbox.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  // Default syntax highlighting
+  hljs.initHighlightingOnLoad();
+
+  // Header
+  var menuToggle = $('#js-mobile-menu').unbind();
+  $('#js-navigation-menu').removeClass("show");
+  menuToggle.on('click', function(e) {
+    e.preventDefault();
+    $('#js-navigation-menu').slideToggle(function(){
+      if($('#js-navigation-menu').is(':hidden')) {
+        $('#js-navigation-menu').removeAttr('style');
+      }
+    });
+  });
+});
+
+</script>
+
+
+
+
+
+
+  </body>
+
+</html>
