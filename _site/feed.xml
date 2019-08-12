@@ -5,9 +5,65 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 11 Aug 2019 21:52:26 +0900</pubDate>
-    <lastBuildDate>Sun, 11 Aug 2019 21:52:26 +0900</lastBuildDate>
+    <pubDate>Tue, 13 Aug 2019 01:28:19 +0900</pubDate>
+    <lastBuildDate>Tue, 13 Aug 2019 01:28:19 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>왜 XAI가 필요한가?</title>
+        <description>&lt;h1 id=&quot;사람-vs-인공지능&quot;&gt;사람 vs. 인공지능&lt;/h1&gt;
+
+&lt;h3 id=&quot;사람과-인공지능의-의사결정-과정&quot;&gt;사람과 인공지능의 의사결정 과정&lt;/h3&gt;
+
+&lt;p&gt;사람 : 사진 10장정도로 학습 가능&lt;br /&gt;
+인공지능 : 엄청난 수의 이미지 필요&lt;/p&gt;
+
+&lt;h3 id=&quot;1-사람이-발달과정-중-얻는-직관&quot;&gt;1. 사람이 발달과정 중 얻는 직관&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;물리적 직관&lt;/li&gt;
+  &lt;li&gt;심리적 직관&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;2-사람은-학습모델을-빠르게-구축&quot;&gt;2. 사람은 학습모델을 빠르게 구축&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;더 기초적인 문제로 조합&lt;/li&gt;
+  &lt;li&gt;인과관계 이용&lt;/li&gt;
+  &lt;li&gt;기존지식을 새로운 분야에 적용&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;3-사람은-빠르게-생각할-수-있다&quot;&gt;3. 사람은 빠르게 생각할 수 있다.&lt;/h3&gt;
+
+&lt;h1 id=&quot;darpa&quot;&gt;DARPA&lt;/h1&gt;
+
+&lt;h3 id=&quot;설명가능한-모델-구축&quot;&gt;설명가능한 모델 구축&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;심층 설명 학습 : DNN의 각 레이어에서 의미있는 특징을 학습하도록 함&lt;/li&gt;
+  &lt;li&gt;해석 가능한 모델 : 해석 가능한 인과관계 모델 구축 ( 모델을 작은 조각들의 조합으로 표현)&lt;/li&gt;
+  &lt;li&gt;모델 귀납 : 원래 있던 모델을 해석&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;이유-설명-인터페이스&quot;&gt;이유 설명 인터페이스&lt;/h3&gt;
+
+&lt;h3 id=&quot;인과관계-모델--딥러닝--mrf&quot;&gt;인과관계 모델 : 딥러닝 + MRF&lt;/h3&gt;
+
+&lt;h3 id=&quot;lrp--계층적-상관성-전파-입력의-어느-부분이-출력에-영향을-미쳤는지-알려줌&quot;&gt;LRP : 계층적 상관성 전파. 입력의 어느 부분이 출력에 영향을 미쳤는지 알려줌&lt;/h3&gt;
+
+&lt;hr /&gt;
+&lt;h1 id=&quot;future-study&quot;&gt;Future Study&lt;/h1&gt;
+&lt;p&gt;LRP, MRF, BPL&lt;/p&gt;
+</description>
+        <pubDate>Mon, 12 Aug 2019 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/note/2019/08/12/WHYXAI.html</link>
+        <guid isPermaLink="true">http://localhost:4000/note/2019/08/12/WHYXAI.html</guid>
+        
+        <category>XAI</category>
+        
+        
+        <category>Note</category>
+        
+        <category>note</category>
+        
+      </item>
     
       <item>
         <title>Peeking Inside the Black-Box ; A Survey on Explainable Artificial Intelligence (XAI) - 1</title>
@@ -1142,164 +1198,6 @@ tripod : 삼각대&lt;/p&gt;
         <pubDate>Mon, 08 Jul 2019 00:00:00 +0900</pubDate>
         <link>http://localhost:4000/lecture/computervision/2019/07/08/Lecture4.html</link>
         <guid isPermaLink="true">http://localhost:4000/lecture/computervision/2019/07/08/Lecture4.html</guid>
-        
-        
-        <category>Lecture</category>
-        
-        <category>ComputerVision</category>
-        
-      </item>
-    
-      <item>
-        <title>CV Lecture 3 - Epipolar Geometry</title>
-        <description>&lt;h1 id=&quot;single-view-geometry&quot;&gt;Single-View Geometry&lt;/h1&gt;
-&lt;p&gt;일단 우리의 목표는 한 3D 구조를 재건하는 것이다. 그러나 하나의 이미지는 깊이 정보를 갖고 있지 않기 때문에 정확하게 재건할 수 없다. 따라서 우리는 multi-view geometry가 필요하다.&lt;/p&gt;
-
-&lt;h3 id=&quot;principal-point-offset&quot;&gt;Principal Point Offset&lt;/h3&gt;
-&lt;p&gt;principal axis는 카메라 중심에서부터 이미지 평면에 수직으로 들어오는 선이다. principal point란 principal axis가 이미지 평면과 만나는 점이다. 따라서 normalized coordinate system 상의 원점은 principal point이다. 그런데 image coordinate system상의 원점은 좌측 하단이다. 따라서 image coordinate system에서 얻은 좌표를 normalized coordinate system에서의 좌표로 변환해야 한다. (normalized coordinate system에서의 좌표에는 음수도 존재한다.)&lt;/p&gt;
-
-&lt;p&gt;principal point의 좌표가 $(p_x, p_y)$라고 하면 normalized coordinate system에서의 좌표는 $(x, y, z) \rightarrow (f\frac{x}{z}, f\frac{y}{z})$가 되고, 이를 image coordinate system의 좌표로 나타내면 $(f\frac{x}{z}+p_x, f\frac{y}{z}+p_y)$가 된다. 이를 하나의 식으로 나타내면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\left[\begin{matrix} fx+zp_x \\ fy+zp_y \\ z \end{matrix}\right]=
-\left[\begin{matrix}
-f &amp; 0 &amp; p_x\\
-0 &amp; f &amp; p_y\\
-0 &amp; 0 &amp; 1
-\end{matrix} \right]
-\left[\begin{matrix}
-1 &amp; 0 &amp; 0 &amp; 0\\
-0 &amp; 1 &amp; 0 &amp; 0\\
-0 &amp; 0 &amp; 1 &amp; 0
-\end{matrix} \right]
-\left[\begin{matrix} x \\ y \\ z \\ 1 \end{matrix}\right] %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;인데, 첫번째 행렬은 intrinsic 행렬이고, 두번째 행렬은 projection 행렬이다. 이 때 이 intrinsic 행렬을 calibration 행렬이라고 하고, $K$로 표기한다. projection 행렬은 $[I\mid0]$로 표현될 수 있다. 따라서 이 때 곱해지는 행렬 $P$는 $K[I\mid0]$가 된다.&lt;/p&gt;
-
-&lt;p&gt;실제 이미지에서는 이렇게 바뀐 좌표를 pixel coordinate로 바꿔야 한다. 가로에는 $1$미터 안에 $m_x$개의 픽셀, 세로에는 $1$미터 안에 $m_y$개의 픽셀이 있다고 하자. 원래의 $K$행렬은 각 좌표를 미터 단위로 변환시켜주는데, 이 앞에 $1$미터 안에 들어있는 픽셀수를 곱해주면 픽셀 단위로 좌표를 변환시킬 수 있다. 따라서 pixel coordinate로 변환시켜줄 새로운 $K$는&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-K=\left[\begin{matrix}
-m_x &amp; 0 &amp; 0 \\
-0 &amp; m_y &amp; 0 \\
-0 &amp; 0 &amp; 1\\
-\end{matrix}\right]
-\left[\begin{matrix}
-f &amp; 0 &amp; p_x \\
-0 &amp; f &amp; p_y \\
-0 &amp; 0 &amp; 1
-\end{matrix}\right]=
-\left[\begin{matrix}
-\alpha_x &amp; 0 &amp; \beta_x \\
-0 &amp; \alpha_y &amp; \beta_y \\
-0 &amp; 0 &amp; 1
-\end{matrix}\right] %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;가 된다.&lt;/p&gt;
-
-&lt;h3 id=&quot;camera-rotation-and-translation&quot;&gt;Camera Rotation and Translation&lt;/h3&gt;
-&lt;p&gt;카메라의 extrinsic 파라미터에 해당한다. 일반적으로 카메라를 땅과 평행하게 두고 촬영하지 않기 때문에 projection에 앞서 실제 좌표를 카메라 좌표로 옮기는 일도 필요하다. 여기에는 두 가지 과정이 있는데, 중심을 $(0, 0)$으로 맞추는 과정과 회전변환을 하는 과정이다. 이를 식으로 나타내면 $\tilde{\mathbf{X}}_{cam} = R(\tilde{\mathbf{X}}-\tilde{C})$ 가 된다. 하지만 이것은 $\tilde{\mathbf{X}} = (x, y, z)$라고 가정했을 때의 식이고, 이는 non-homogeneous이므로, homogeneous한 식으로 바꾸면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\mathbf{X}_{cam}=
-\left[\begin{matrix}
-R &amp; -R\tilde{C}\\ 0 &amp; 1
-\end{matrix}\right]\mathbf{X} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;라고 쓸 수 있다. (한 차원을 추가해서 그 차원을 상수 $1$로 고정, $\mathbf{X}=\left(\begin{matrix} \tilde{\mathbf{X}} \ 1\end{matrix}\right)$)&lt;/p&gt;
-
-&lt;p&gt;최종적으로 $\mathbf{x} = K[I\mid0]\mathbf{X}_{cam} = K[R\mid-R\tilde{C}]\mathbf{X}$가 되고, projection 행렬 $P$는 $P = K[R\mid-R\tilde{C}]$가 된다.&lt;/p&gt;
-
-&lt;h3 id=&quot;radial-distortion&quot;&gt;Radial Distortion&lt;/h3&gt;
-&lt;p&gt;intrinsic 파라미터 중 하나이다. 카메라 렌즈의 굴절에 의해 일어나는 왜곡으로써, 렌즈의 중앙과 멀어질수록 왜곡이 심하게 일어난다. 왜곡 모델은 다음과 같다.&lt;/p&gt;
-
-&lt;p&gt;먼저, $(\hat{x}, \hat{y}, \hat{z})$를 normalized coordinate로 옮긴다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;(x_n', y_n') = (\frac{\hat{x}}{\hat{z}}, \frac{\hat{y}}{\hat{z}})&lt;/script&gt;
-
-&lt;p&gt;그 후 radial distortion을 적용한다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;r^2 = x_n'^2 + y_n'^2&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\left(\begin{matrix}x_d' \\ y_d'\end{matrix}\right)=
-(1+k_1r^2+k_2r^4)\left(\begin{matrix}x_n' \\ y_n'\end{matrix}\right)&lt;/script&gt;
-
-&lt;p&gt;마지막으로 &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
-K = \left[\begin{matrix}f &amp; 0 &amp; p_x \\ 0 &amp; f &amp; p_y \\ 0 &amp; 0 &amp; 1\end{matrix}\right] %]]&gt;&lt;/script&gt;을 적용한다.&lt;/p&gt;
-
-&lt;h3 id=&quot;camera-calibration--linear-method&quot;&gt;Camera calibration : Linear Method&lt;/h3&gt;
-&lt;p&gt;그렇다면 $P$는 어떻게 찾을 수 있을까? 이미지 상의 좌표 $\mathbf{x}$에 대해 $\mathbf{x}=P\mathbf{X}$를 만족하고, $P \in \mathbb{R}^{3\times4}$이므로, 12개의 변수를 가지고 있다. (하지만 마지막은 항상 1이므로, 사실은 11개의 변수를 가지고 있다.) 따라서 최소 12개의 식을 알고 있다면 이 방정식을 풀어 $P$를 찾을 수 있다. 하나의 $\mathbf{x}$는 $x, y$의 두 좌표를 가지고 있으므로, 최소 6개의 $\mathbf{x}, \mathbf{X}$ 쌍을 알고 있다면 $P$를 알아낼 수 있다.&lt;/p&gt;
-
-&lt;p&gt;$\mathbf{X}$가 projection에 의해 $\mathbf{x}$로 사영되므로, 둘의 방향은 같다. 따라서 $\mathbf{x}_i \times P\mathbf{X}_i = 0$이라는 관계식을 가지고 있다. 이 식에서 linearly independent한 두 개의 식만 가지고 와서&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\left[\begin{matrix}
-0 &amp; -\mathbf{X}_i^T &amp; y_i\mathbf{X}_i^T \\
-\mathbf{X}_i^T &amp; 0 &amp; -x_i\mathbf{X}_i^T
-\end{matrix}\right]
-\left(\begin{matrix}P_x \\ P_y \\ P_z\end{matrix}\right)=0 %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;의 식을 만들 수 있다.($P_{x, y, z} \in \mathbb{R}^{4\times1}$) 6개의 점을 알고 있다면 여기에 대입하여&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\left[\begin{matrix}
-0^T &amp; \mathbf{X}_1^T &amp; -y_1\mathbf{X}_1^T \\
-\mathbf{X}_1^T &amp; 0^T &amp; x_1\mathbf{X}_1^T \\
-\cdots &amp; \cdots &amp; \cdots \\
-0^T &amp; \mathbf{X}_6^T &amp; -y_6\mathbf{X}_6^T \\
-\mathbf{X}_6^T &amp; 0^T &amp; x_6\mathbf{X}_6^T \\
-\end{matrix}\right]
-\left(\begin{matrix}P_x \\ P_y \\ P_z\end{matrix}\right)=0 %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;을 풀면 $P$를 알아낼 수 있다.&lt;/p&gt;
-
-&lt;p&gt;Linear method의 장점은 수식화가 쉽고 풀기도 쉽다는 점이다. 하지만 직접적으로 카메라 파라미터를 알 수는 없으며 radial distortion도 고려하지 않는다. 또한 제한 사항도 집어넣을 수 없다는 단점이 있다. 따라서 non-Linear method가 더 선호된다.&lt;/p&gt;
-
-&lt;h1 id=&quot;epipolar-geometry&quot;&gt;Epipolar Geometry&lt;/h1&gt;
-
-&lt;h3 id=&quot;triangulation&quot;&gt;Triangulation&lt;/h3&gt;
-&lt;p&gt;두개, 혹은 그 이상의 이미지를 가지고 3D상의 점을 찾는 것을 triangulation이라고 한다. $O_1$ 을 원점으로 갖는 이미지에서의 점 $\mathbf{x}_1$, $O_2$를 원점으로 갖는 이미지에서의 점 $\mathbf{x}_2$를 각각의 원점과 이은 선은 실제 점 $\mathbf{x}$에서 교차해야 한다. 하지만 노이즈나 에러때문에 정확하게 만나지는 않는다. 따라서 두 선의 거리가 가장 가까운 두 점을 이은 선분의 중점을 $\mathbf{X}$라고 예측한다.&lt;/p&gt;
-
-&lt;p&gt;$\mathbf{X}$를 알아내는 linear approach는 다음과 같다. $\mathbf{x}_1$과 $\mathbf{x}_2$는 $P_i\mathbf{X}$와 평행하기 때문에 각각 다음의 식이 성립한다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbf{x}_i \times P_i\mathbf{X}=0&lt;/script&gt;
-
-&lt;p&gt;그리고 &lt;script type=&quot;math/tex&quot;&gt;\mathbf{x}_i\times P\mathbf{X}=[\mathbf{x}_{i\times}]P\mathbf{X}&lt;/script&gt;를 만족하는 &lt;script type=&quot;math/tex&quot;&gt;[\mathbf{x}_{i\times}]&lt;/script&gt;를 찾을 수 있다. 하나의 &lt;script type=&quot;math/tex&quot;&gt;\mathbf{x}_i&lt;/script&gt;에 대해 &lt;script type=&quot;math/tex&quot;&gt;[\mathbf{x}_{i\times}]P_x\mathbf{X}=0&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;[\mathbf{x}_{i\times}]P_y\mathbf{X}=0&lt;/script&gt;의 두 식을 알아낼 수 있고(두 개만 linearly independent하므로) 우리는 두 개의 &lt;script type=&quot;math/tex&quot;&gt;\mathbf{x}_i&lt;/script&gt;를 알고 있으므로 총 4개의 식을 알고 있다. 알아내야 하는 &lt;script type=&quot;math/tex&quot;&gt;\mathbf{X}&lt;/script&gt;의 변수가 3개이므로, 방정식을 풀어 &lt;script type=&quot;math/tex&quot;&gt;\mathbf{X}&lt;/script&gt;를 알아낼 수 있다.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathbf{X}&lt;/script&gt;를 알아내는 non-linear approach는 &lt;script type=&quot;math/tex&quot;&gt;\mathbf{X} = \text{argmin}(d^2(\mathbf{x}_1, P_1\mathbf{X})+d^2(\mathbf{x}_2, P_2\mathbf{X}))&lt;/script&gt;를 찾아내면 된다.&lt;/p&gt;
-
-&lt;h3 id=&quot;epipolar-geometry-1&quot;&gt;Epipolar Geometry&lt;/h3&gt;
-&lt;p&gt;두 개의 이미지에서 한 점의 좌표를 알아내는 상황을 가정한다. baseline은 이미지의 두 원점을 이은 선이고, epipolar plane은 그 선을 포함하는 평면들이다. epipole은 baseline과 각 이미지 평면들의 교점이다. 마지막으로 epipolar line은 epipolar plane과 이미지 평면의 교점이다.&lt;/p&gt;
-
-&lt;h3 id=&quot;epipolar-constraint&quot;&gt;Epipolar Constraint&lt;/h3&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://slideplayer.com/slide/4824174/15/images/43/Epipolar+constraint%3A+Calibrated+case.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;a href=&quot;https://slideplayer.com/slide/4824174/15/images/43/Epipolar+constraint%3A+Calibrated+case.jpg&quot;&gt;Source&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;만약 $I$이미지 상의 $\mathbf{x}$가 존재한다면, $I’$이미지에서 이 $\mathbf{x}$에 대응하는 점 $\mathbf{x}’$은 epipolar line에서 찾을 수 있다는 것이 epipolar constraint이다.&lt;/p&gt;
-
-&lt;p&gt;원점 $O$에서 $I$위의 점 $\mathbf{x}$로 향하는 벡터 $\mathbf{x}$와 원점 $O’$에서 $I’$위의 점 $\mathbf{x}’$로 향하는 벡터 $R\mathbf{x}’$($R$은 $I$에서 $I’$로의 변환행렬), 그리고 $O$와 $O’$를 잇는 선인 $t$는 같은 평면(삼각형 $\mathbf{X}OO’$가 이루는 평면)상의 벡터이다. 따라서 $\mathbf{x}\cdot[t\times(R\mathbf{x}’)]=0$이 성립하고, 이는 $\mathbf{x}^TE\mathbf{x}’=0$으로 표현될 수 있다. ($E=[t_\times]R$) 이때 $E$를 essential 행렬이라고 부른다. 사실 이 $E$가 반드시 존재한다는 것이 epipolar constraint이다.&lt;/p&gt;
-
-&lt;p&gt;위 식을 이용하면 epipolar line인 $l$과 $l’$이 $l=E\mathbf{x}’$, $l’=E^T\mathbf{x}$임을 알 수 있다. (삼각형 $\mathbf{X}OO’$에서 $x$벡터에 수직인 선분은 $l$밖에 없으므로, $\mathbf{x}’$에 대해서도 마찬가지) 따라서 epipolar line상에 있는 epipole들도 $Ee’=0$, $E^Te=0$을 만족한다. $E$는 자유도 3의 회전, 자유도 2의 평행이동으로 이루어져 있으므로 5개의 점의 좌표를 알면 구할 수 있다.&lt;/p&gt;
-
-&lt;p&gt;$E$는 normalized coordinate 상에서의 좌표들의 관계를 나타내는 행렬이고, 다음은 정규화도 되지 않은 실제 공간에서의 좌표들의 관계를 나타내는 행렬 $F$를 구하는 방법이다. 일단 우리는 calibration matrix $K$와 $K’$를 모른다고 가정하고, 이들은 다음을 만족한다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbf{x} = K\hat{\mathbf{x}}, \mathbf{x}'=K'\hat{\mathbf{x}}'&lt;/script&gt;
-
-&lt;p&gt;$\hat{\mathbf{x}}$와 $\hat{\mathbf{x}}’$ 를 이용한 epipolar constraint의 식은 $\hat{\mathbf{x}}^TE\hat{\mathbf{x}}’=0$ 이다. 이제 $F=K^{-T}EK’^{-1}$에 대해 $\mathbf{x}^TF\mathbf{x}’=0$이 성립한다. 이 때의 $F$를 fundamental matrix라고 한다. $F$를 구하기 위해서는 $E$를 구할 때보다 $K$, $K’$의 정보가 더 필요하기 때문에 7개의 점의 좌표가 필요하다.&lt;/p&gt;
-
-&lt;h3 id=&quot;the-eight-point-algorithm&quot;&gt;The eight-point algorithm&lt;/h3&gt;
-&lt;p&gt;다른 방식으로 $F$를 구할 수도 있다. $F$는 어쨌건 $3\times3$ 행렬이므로 9개의 식을 알고 있으면 구할 수 있다. 게다가, 하나만 존재하게 하기 위해 마지막 수는 항상 1이 되어야 한다는 조건을 추가하면, 8개의 점을 알면 구할 수 있다. 이를 eight-point algorithm이라고 부르며, $\sum_{i=1}^N(\mathbf{x}_i^TF\mathbf{x}_i’)^2$를 최소화시키는 $F$를 구하면 된다. 이 에러의 의미는 어떤 점 $\mathbf{x}$와 epipolar line $F\mathbf{x}’$사이의 유클리드 거리의 합을 최소화시킨다는 것이다. eight-point algorithm은 원래 좌표를 normalize시킨 후 계산하고, 다시 원래 좌표로 변환시켜 계산했을 때 더 정확하다.&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;h2 id=&quot;terms&quot;&gt;Terms&lt;/h2&gt;
-&lt;p&gt;calibration : 교정, 눈금&lt;br /&gt;
-epipolar : 등극선 (이라는데 명확하지 않은 번역이므로 그냥 epipolar라고 쓴다)&lt;br /&gt;
-coplanar : 동일 평면상의&lt;/p&gt;
-</description>
-        <pubDate>Sun, 07 Jul 2019 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/lecture/computervision/2019/07/07/Lecture3.html</link>
-        <guid isPermaLink="true">http://localhost:4000/lecture/computervision/2019/07/07/Lecture3.html</guid>
         
         
         <category>Lecture</category>
