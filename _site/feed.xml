@@ -5,8 +5,8 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 16 Aug 2019 13:47:17 +0900</pubDate>
-    <lastBuildDate>Fri, 16 Aug 2019 13:47:17 +0900</lastBuildDate>
+    <pubDate>Sat, 17 Aug 2019 00:39:36 +0900</pubDate>
+    <lastBuildDate>Sat, 17 Aug 2019 00:39:36 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -139,9 +139,7 @@
 
 &lt;h3 id=&quot;related-surveys&quot;&gt;Related Surveys&lt;/h3&gt;
 
-&lt;p&gt;XAI에 대한 연구는 늘어나고 있지만, 총정리 서베이와 종류를 구별한 서베이는 별로 없다.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://arxiv.org/abs/1606.03490&quot;&gt;[25]&lt;/a&gt;와 &lt;a href=&quot;https://arxiv.org/abs/1702.08608&quot;&gt;[62]&lt;/a&gt;는 설명가능성 연구를 분류하려고 했다. &lt;a href=&quot;https://dl.acm.org/citation.cfm?id=3236009&quot;&gt;[63]&lt;/a&gt;은 블랙박스 모델을 설명하는 방법에 대해서 리뷰했다. 그리고 문제들이 직면한 타입을 기준으로 분류하는 자세한 방법에 대해 소개했다. &lt;a href=&quot;https://ieeexplore.ieee.org/abstract/document/8400040&quot;&gt;[64]&lt;/a&gt;는 감독학습과 DNN에 집중적으로 모델의 설명력에 대해 소개했다. 이 논문은 이들과는 다르게 여러 다른 관점에서 XAI 연구 성과에 대한 오버뷰를 제시할 것이다. 전체론과 투명성에 집중할 것이다.&lt;/p&gt;
+&lt;p&gt;XAI에 대한 연구는 늘어나고 있지만, 총정리 서베이와 종류를 구별한 서베이는 별로 없다. 이 논문은 이전 연구들과는 다르게 여러 다른 관점에서 XAI 연구 성과에 대한 오버뷰를 제시할 것이다. 전체론과 투명성에 집중할 것이다.&lt;/p&gt;
 
 &lt;p&gt;이후에는 4개의 주축으로 나누어 설명할 것인데, 다음과 같다.&lt;/p&gt;
 
