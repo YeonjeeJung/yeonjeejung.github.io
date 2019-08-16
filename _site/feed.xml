@@ -5,9 +5,22 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 14 Aug 2019 12:56:07 +0900</pubDate>
-    <lastBuildDate>Wed, 14 Aug 2019 12:56:07 +0900</lastBuildDate>
+    <pubDate>Fri, 16 Aug 2019 13:47:17 +0900</pubDate>
+    <lastBuildDate>Fri, 16 Aug 2019 13:47:17 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>PR Lecture 8 - Graphical Models</title>
+        <description>
+</description>
+        <pubDate>Wed, 14 Aug 2019 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/xai/2019/08/14/MRF.html</link>
+        <guid isPermaLink="true">http://localhost:4000/xai/2019/08/14/MRF.html</guid>
+        
+        
+        <category>XAI</category>
+        
+      </item>
     
       <item>
         <title>왜 XAI가 필요한가?</title>
@@ -105,10 +118,12 @@
 
 &lt;p&gt;XAI가 필요한 4가지 이유&lt;/p&gt;
 
-&lt;p&gt;a) 결과가 옳다고 주장하기 위해
-b) 결과를 조절하기 위해
-c) 결과를 개선하기 위해
-d) 새로운 것을 발견하기 위해&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;결과가 옳다고 주장하기 위해&lt;/li&gt;
+  &lt;li&gt;결과를 조절하기 위해&lt;/li&gt;
+  &lt;li&gt;결과를 개선하기 위해&lt;/li&gt;
+  &lt;li&gt;새로운 것을 발견하기 위해&lt;/li&gt;
+&lt;/ol&gt;
 
 &lt;p&gt;그러나 구글 연구원 노빅은 사람도 자신의 선택을 설명하는 것을 잘 못한다고 했다. 설명력은 매우 중요하지만, 필수적이지는 않다. 설명을 잘 하는 모델이 정확도는 더 떨어질 수도 있기 때문이다. 게다가 비싸다. 그래서 특정 상황일 때만 XAI를 쓰는 것이 적절하다. AI 알고리즘의 복잡도로부터 발생되는 불투명도의 정도가 높을 때 (알고리즘이 복잡해서 우리가 못알아들을 때), 그리고 응용 분야의 에러 저항력이 낮을 때 (조금이라도 틀리면 치명적일 때) 사용해야 한다.&lt;/p&gt;
 
@@ -138,8 +153,8 @@ d) 새로운 것을 발견하기 위해&lt;/p&gt;
 &lt;/ol&gt;
 </description>
         <pubDate>Sun, 11 Aug 2019 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/thesis/2019/08/11/XAI.html</link>
-        <guid isPermaLink="true">http://localhost:4000/thesis/2019/08/11/XAI.html</guid>
+        <link>http://localhost:4000/thesis/2019/08/11/XAI1.html</link>
+        <guid isPermaLink="true">http://localhost:4000/thesis/2019/08/11/XAI1.html</guid>
         
         <category>XAI</category>
         
@@ -1088,114 +1103,6 @@ sweep : 쓸다&lt;/p&gt;
         <pubDate>Sat, 20 Jul 2019 00:00:00 +0900</pubDate>
         <link>http://localhost:4000/lecture/computervision/2019/07/20/Lecture5.html</link>
         <guid isPermaLink="true">http://localhost:4000/lecture/computervision/2019/07/20/Lecture5.html</guid>
-        
-        
-        <category>Lecture</category>
-        
-        <category>ComputerVision</category>
-        
-      </item>
-    
-      <item>
-        <title>CV Lecture 4 - Camera Calibration</title>
-        <description>&lt;h1 id=&quot;camera-calibration&quot;&gt;Camera Calibration&lt;/h1&gt;
-
-&lt;h3 id=&quot;stereo-reconstruction&quot;&gt;Stereo Reconstruction&lt;/h3&gt;
-&lt;p&gt;Stereo Reconstruction은 두 장 이상의 2D 이미지를 이용해서 이를 3D상에서 재건하는 것인데, 단계는 다음과 같다.&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;카메라 변수 찾기&lt;/li&gt;
-  &lt;li&gt;이미지 바로잡기&lt;/li&gt;
-  &lt;li&gt;차이 계산&lt;/li&gt;
-  &lt;li&gt;깊이 예측&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;가장 간단한 케이스는 평행한 두 지점에서 찍힌 이미지를 이용해 재건하는 것이다. 이미지 $I’$가 이미지 $I$보다 $x$축으로 $T$만큼 이동했다면, $R = I$(identity)이고 $t=(T, 0, 0)$이 된다. 따라서&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-E=t\times R=\left[\begin{matrix}0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; -T \\ 0 &amp; T &amp; 0\end{matrix}\right] %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;이 된다.&lt;/p&gt;
-
-&lt;h3 id=&quot;stereo-image-rectification&quot;&gt;Stereo Image Rectification&lt;/h3&gt;
-&lt;p&gt;두 카메라가 평행하면 한 좌표를 보는 두 이미지 평면이 평행하지 않을 수 있는데, 이렇게 얻은 이미지 평면을 두 카메라를 잇는 선에 평행한 평면에 옮겨주는 것을 image rectification이라고 한다. 이것을 하고 나면 위에서 쓴 essential 행렬을 사용할 수 있다.&lt;/p&gt;
-
-&lt;h3 id=&quot;homography&quot;&gt;Homography&lt;/h3&gt;
-&lt;p&gt;3D평면에 있는 점을 image 평면으로 변환시킬 때 사용하는 행렬을 homography ($H$)라고 한다.&lt;/p&gt;
-
-&lt;p&gt;이 두 시점 변환에 translation이 없으므로 rotation만이 존재하게 되고, $P_r = RP_l$라고 쓸 수 있다. ($P_r$은 첫번째, $P_l$은 두번째 각도의 projection 행렬) $P_l = K[I\mid0]$이므로&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;x_l = K[I\mid0]\left[\begin{matrix} X\\ 1 \end{matrix}\right] = KX&lt;/script&gt;
-
-&lt;p&gt;이고, $P_r = K[R\mid0]$이므로&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;x_r = K[R\mid0]\left[\begin{matrix}X\\ 1\end{matrix}\right] = KRX&lt;/script&gt;
-
-&lt;p&gt;이다. 따라서, $x_r = KRK^{-1}x_l$이고, $H = KRK^{-1}$이 된다.&lt;/p&gt;
-
-&lt;p&gt;이미지의 원점이 같은 평면의 다른 각도에서 촬영되었을 때만 homography가 서로 연관될 수 있다. (translation이 없어야 한다.) 그리고, 같은 카메라로 촬영되었을 때만 연관될 수 있다.&lt;/p&gt;
-
-&lt;p&gt;만약 rotation 행렬 $R$을 모른다면, $x_r^TFx_l = 0$에서 $F$를 알아낼 때 썼던 방법을 이용해 찾을 수 있다. &lt;strong&gt;&lt;em&gt;사실, $K^{-T}K^{-1}$의 가장 작은 eigenvalue에 대응하는 eigenvector를 찾으면 된다.&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;2d-checkerboard-pattern&quot;&gt;2D Checkerboard Pattern&lt;/h3&gt;
-&lt;p&gt;&lt;img src=&quot;http://www.campi3d.com/External/MariExtensionPack/userGuide4R1/lib/CHeckerSimpleB.png&quot; alt=&quot;&quot; /&gt;
-&lt;a href=&quot;http://www.campi3d.com/External/MariExtensionPack/userGuide4R1/lib/CHeckerSimpleB.png&quot;&gt;Source&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;2D 체스판을 생각해 보자. 체스판의 모든 좌표는 하나의 평면에 있다. 따라서, 모든 점의 $z$좌표는 모두 $0$이다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\left(\begin{matrix}u\\v\\1\end{matrix}\right)=K
-\left[\begin{matrix}
-r_{11} &amp; r_{12} &amp; r_{13} &amp; t_1 \\
-r_{21} &amp; r_{22} &amp; r_{23} &amp; t_2 \\
-r_{31} &amp; r_{32} &amp; r_{33} &amp; t_3 \\
-\end{matrix}\right]\left(\begin{matrix}x\\y\\z\\1\end{matrix}\right)=K
-\left[\begin{matrix}
-r_{11} &amp; r_{12} &amp; r_{13} &amp; t_1 \\
-r_{21} &amp; r_{22} &amp; r_{23} &amp; t_2 \\
-r_{31} &amp; r_{32} &amp; r_{33} &amp; t_3 \\
-\end{matrix}\right]\left(\begin{matrix}x\\y\\0\\1\end{matrix}\right) %]]&gt;&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\therefore \left(\begin{matrix}u\\v\\1\end{matrix}\right)=K
-\left[\begin{matrix}
-r_{11} &amp; r_{12} &amp; t_1 \\
-r_{21} &amp; r_{22} &amp; t_2 \\
-r_{31} &amp; r_{32} &amp; t_3 \\
-\end{matrix}\right]\left(\begin{matrix}x\\y\\1\end{matrix}\right)=H
-\left(\begin{matrix}x\\y\\1\end{matrix}\right) %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;($(u, v, 1)$은 image plane위의 점이고, $(x, y, 1)$은 체스판 위의 점이다.)&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-H=K
-\left[\begin{matrix}
-r_{11} &amp; r_{12} &amp; t_1 \\
-r_{21} &amp; r_{22} &amp; t_2 \\
-r_{31} &amp; r_{32} &amp; t_3 \\
-\end{matrix}\right]=
-\left[\begin{matrix}
-h_{11} &amp; h_{12} &amp; h_{13} \\
-h_{21} &amp; h_{22} &amp; h_{23} \\
-h_{31} &amp; h_{32} &amp; h_{33} \\
-\end{matrix}\right]=
-\left[\begin{matrix}
-h_{11}' &amp; h_{12}' &amp; h_{13}' \\
-h_{21}' &amp; h_{22}' &amp; h_{23}' \\
-h_{31}' &amp; h_{32}' &amp; 1 \\
-\end{matrix}\right] %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;$H$는 변수가 8개이므로, 8개의 식을 알면 풀 수 있다. 각 점들은 2개의 관계식을 주기 때문에, 우리는 4개의 점만 알면 $H$를 알아낼 수 있다.&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;h2 id=&quot;terms&quot;&gt;Terms&lt;/h2&gt;
-&lt;p&gt;rectify : 바로잡기&lt;br /&gt;
-disparity : 차이, 이격&lt;br /&gt;
-anaglyph : 애너글리프. 인간의 두 눈의 시차를 이용하여 3D영상을 보는 것처럼 하는 것.&lt;br /&gt;
-tripod : 삼각대&lt;/p&gt;
-</description>
-        <pubDate>Mon, 08 Jul 2019 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/lecture/computervision/2019/07/08/Lecture4.html</link>
-        <guid isPermaLink="true">http://localhost:4000/lecture/computervision/2019/07/08/Lecture4.html</guid>
         
         
         <category>Lecture</category>
