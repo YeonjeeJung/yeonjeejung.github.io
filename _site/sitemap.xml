@@ -61,10 +61,6 @@
 <lastmod>2019-08-12T00:00:00+09:00</lastmod>
 </url>
 <url>
-<loc>http://localhost:4000/lecture/xai/2019/08/14/MRF.html</loc>
-<lastmod>2019-08-14T00:00:00+09:00</lastmod>
-</url>
-<url>
 <loc>http://localhost:4000/thesis/2019/08/17/XAI2.html</loc>
 <lastmod>2019-08-17T00:00:00+09:00</lastmod>
 </url>
@@ -97,9 +93,6 @@
 </url>
 <url>
 <loc>http://localhost:4000/category/note/</loc>
-</url>
-<url>
-<loc>http://localhost:4000/category/xai/</loc>
 </url>
 <url>
 <loc>http://localhost:4000/page2/</loc>
