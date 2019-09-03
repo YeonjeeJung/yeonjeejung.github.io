@@ -5,9 +5,62 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 18 Aug 2019 02:43:54 +0900</pubDate>
-    <lastBuildDate>Sun, 18 Aug 2019 02:43:54 +0900</lastBuildDate>
+    <pubDate>Tue, 03 Sep 2019 17:45:12 +0900</pubDate>
+    <lastBuildDate>Tue, 03 Sep 2019 17:45:12 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>Lecture 1</title>
+        <description>&lt;p&gt;딥러닝에서 objective function의 설계는 중요하다. 이 때 문제를 더 간단하게 만들기 위해 convex의 개념을 도입한다.&lt;/p&gt;
+
+&lt;h3 id=&quot;convex-set&quot;&gt;Convex set&lt;/h3&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\text{For } x \in C \text{ and } y \in C \Rightarrow (1-\alpha)x+\alpha y \in C, \forall\alpha\in[0, 1]&lt;/script&gt;
+
+&lt;p&gt;convex set을 쓰면 line 전체가 constraint 안에 있기 때문에 line search를 할 때 쓴다. convex set을 가정한 방법들은 non-convex에서도 사용할 수 있다. local minima 부근에서는 convex이기 때문인데, 이 때 convex 방법들을 적용하면 global minima는 아니다.&lt;/p&gt;
+
+&lt;h3 id=&quot;convex-function&quot;&gt;Convex function&lt;/h3&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\alpha f(x_1)+(1-\alpha)f(x_2) \ge f(\alpha x_1 + (1-\alpha)x_2), \forall x_1, x_2, \forall \alpha \in [0, 1]&lt;/script&gt;
+
+&lt;p&gt;convex function의 가장 큰 특징은 global minima가 하나이고, 2차 미분식(또는 해시안 함수)이 항상 양수라는 점이다. 이또한 분석이 쉽다는 장점을 가지고 있다. 사실, unimodal function도 global minima가 하나지만, 이차미분항이 양수와 음수를 왔다갔다 할 수 있기 때문에 convex function보다는 더 분석이 어렵다.&lt;/p&gt;
+
+&lt;p&gt;이차미분항이 양수라는 점에서 오는 장점은, convergence behavior를 알기가 쉽다는 점이다. 보통 잘 알고 있는 gradient descent 방법의 식은 다음과 같다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;x_{t+1} \leftarrow x_t + \gamma\triangledown f(x)&lt;/script&gt;
+
+&lt;p&gt;이 때 이차미분항이 양수이면, $\triangledown f(x)$의 양상을 더 쉽게 알 수 있다.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 02 Sep 2019 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/lecture/optimization/2019/09/02/Lecture1.html</link>
+        <guid isPermaLink="true">http://localhost:4000/lecture/optimization/2019/09/02/Lecture1.html</guid>
+        
+        
+        <category>Lecture</category>
+        
+        <category>Optimization</category>
+        
+      </item>
+    
+      <item>
+        <title>CV Lecture 11 - Light</title>
+        <description>&lt;h1 id=&quot;light&quot;&gt;Light&lt;/h1&gt;
+
+&lt;h1 id=&quot;color-vector&quot;&gt;Color Vector&lt;/h1&gt;
+
+&lt;hr /&gt;
+&lt;h2 id=&quot;terms&quot;&gt;Terms&lt;/h2&gt;
+</description>
+        <pubDate>Sat, 31 Aug 2019 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/lecture/computervision/2019/08/31/Lecture11.html</link>
+        <guid isPermaLink="true">http://localhost:4000/lecture/computervision/2019/08/31/Lecture11.html</guid>
+        
+        
+        <category>Lecture</category>
+        
+        <category>ComputerVision</category>
+        
+      </item>
     
       <item>
         <title>Peeking Inside the Black-Box ; A Survey on Explainable Artificial Intelligence (XAI) - 2</title>
@@ -927,309 +980,6 @@ fuse : 사용하다&lt;/p&gt;
         <pubDate>Fri, 26 Jul 2019 00:00:00 +0900</pubDate>
         <link>http://localhost:4000/lecture/computervision/2019/07/26/Lecture6.html</link>
         <guid isPermaLink="true">http://localhost:4000/lecture/computervision/2019/07/26/Lecture6.html</guid>
-        
-        
-        <category>Lecture</category>
-        
-        <category>ComputerVision</category>
-        
-      </item>
-    
-      <item>
-        <title>Project 1</title>
-        <description>&lt;p&gt;이 프로젝트는 Camera Calibration과 Disparity Map, Depth Map을 생성하는 프로젝트이다.&lt;/p&gt;
-
-&lt;h1 id=&quot;camera-calibration&quot;&gt;Camera Calibration&lt;/h1&gt;
-
-&lt;p&gt;먼저, 체커보드를 이용해서 Camera Calibration을 수행한다. 6개의 체커보드 이미지가 있고, 모서리를 찾아서 이를 평면좌표(world point)로 만들어주는 homography matrix를 찾고, 그 matrix에서 intrinsic, extrinsic 파라미터를 찾는 과정이다. &lt;a href=&quot;http://staff.fh-hagenberg.at/burger/publications/reports/2016Calibration/Burger-CameraCalibration-20160516.pdf&quot;&gt;Zhang’s method&lt;/a&gt;를 사용하여 수행할 수 있다.&lt;/p&gt;
-
-&lt;h3 id=&quot;homography-calculation&quot;&gt;Homography Calculation&lt;/h3&gt;
-
-&lt;p&gt;먼저 $s\tilde{q}=H\tilde{p}$를 만족하는 행렬 $H$를 찾아야 한다. ($\tilde{q}$는 world point, $\tilde{p}$는 체커보드 좌표)&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-H = \left[\begin{matrix}h_{11} &amp; h_{12} &amp; h_{13}\\ h_{21} &amp; h_{22} &amp; h_{23} \\ h_{31} &amp; h_{32} &amp; h_{33}\end{matrix}\right] %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;으로 표현되고, $\min_H\sum_{j=1}^m\left|\left|q_j-\hat{q_j}\right|\right|^2$를 최소화하는 $H$를 찾으면 된다.
-(&lt;script type=&quot;math/tex&quot;&gt;q_j = \left[\begin{matrix}u_j \\ v_j\end{matrix}\right]&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;\hat{q_j} = \frac{1}{h_{31}X_j+h_{32}Y_j+h_{33}}\left[\begin{matrix}h_{11}X_j+h_{12}Y_j+h_{33}\\h_{21}X_j+h_{22}Y_j+h_{23}\end{matrix}\right]&lt;/script&gt;)&lt;/p&gt;
-
-&lt;p&gt;이를 정리하면,&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\min_H\sum_j\left|\left|\left[\begin{matrix}u_0(h_{31}X_j+h_{32}Y_j+h_{33})-(h_{11}X_j+h_{12}Y_j+h_{13})\\v_0(h_{31}X_j+h_{32}Y_j+h_{33})-(h_{21}X_j+h_{22}Y_j+h_{23})\end{matrix}\right]\right|\right|^2&lt;/script&gt;
-
-&lt;p&gt;이 되는데, 각 항을 풀어보면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\left[\begin{matrix}-X_j &amp; -Y_j &amp; -1 &amp; 0 &amp; 0 &amp; 0 &amp; u_jX_j &amp; u_jY_j &amp; u_j \\  0 &amp; 0 &amp; 0 &amp; -X_j &amp; -Y_j &amp; -1 &amp; v_jX_j &amp; v_jY_j &amp; v_j\end{matrix}\right]
-\left[\begin{matrix}h_{11}\\ h_{12} \\h_{13} \\h_{21} \\h_{22} \\h_{23} \\h_{31} \\h_{32} \\h_{33}\end{matrix}\right] %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;이라고 쓸 수 있다. 앞에 곱해진 행렬을 $L_j$라고 하면 이 문제는 $\min_{\mathbf{x}}||L\mathbf{x}||^2$ 문제가 된다. ($L$은 $L_j$를 세로로 늘어뜨린 행렬) 따라서 $L^TL$의 가장 작은 eigenvalue중 가장 작은 것에 대응하는 eigenvector를 찾으면 된다.&lt;/p&gt;
-
-&lt;p&gt;이 때의 $H$ 행렬은 한 이미지당 하나를 찾을 수 있으므로 이 프로젝트에서는 6개의 $H$ 행렬이 나오게 된다.&lt;/p&gt;
-
-&lt;h3 id=&quot;intrinsic-parameter&quot;&gt;Intrinsic Parameter&lt;/h3&gt;
-
-&lt;p&gt;우리는 $H$행렬을 알고 있고, &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
-H = K\left[\begin{matrix}r_1 &amp; r_2 &amp; t\end{matrix}\right] %]]&gt;&lt;/script&gt;이다. 그리고 &lt;script type=&quot;math/tex&quot;&gt;r_1^Tr_1=r_2^Tr_2&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;r_1^Tr_2=0&lt;/script&gt;이라는 제약을 갖고 있으므로, 우리는 intrinsic matrix $K$를 알아낼 수 있다.&lt;/p&gt;
-
-&lt;p&gt;먼저 &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
-H=\left[\begin{matrix}h_1 &amp; h_2 &amp; h_3\end{matrix}\right] %]]&gt;&lt;/script&gt;이라고 하자. $h_1=Kr_1$, $h_2=Kr_2$이기 때문에 $r_1=K^{-1}h_1$, $r_2=K^{-1}h_2$이다.&lt;/p&gt;
-
-&lt;p&gt;위 조건들을 대입해 보면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;h_1^TK^{-T}K^{-1}h_1=h_2^TK^{-T}k^{-1}h_2&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;h_1^TK^{-T}K^{-1}h_2=0&lt;/script&gt;
-
-&lt;p&gt;라는 식을 만들어낼 수 있다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-B=K^{-T}K^{-1}=\left[\begin{matrix}B_{11} &amp; B_{12} &amp; B_{13} \\B_{21} &amp; B_{22} &amp; B_{23} \\B_{31} &amp; B_{32} &amp; B_{33}\end{matrix}\right] %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;이라고 하면,&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-B=\left[\begin{matrix}\frac{1}{\alpha^2} &amp; -\frac{\gamma}{\alpha^2\beta} &amp; \frac{v_0\gamma-u_0\beta}{\alpha^2\beta} \\ -\frac{\gamma}{\alpha^2}{\beta} &amp; -\frac{\gamma}{\alpha^2\beta}+\frac{1}{\beta^2} &amp; -\frac{\gamma(v_0\gamma-u_0\beta)}{\alpha^2\beta^2}\\ \frac{v_0\gamma-u_0\beta}{\alpha^2\beta} &amp; -\frac{\gamma(v_0\gamma-u_0\beta)}{\alpha^2\beta^2}-\frac{v_0}{\beta^2} &amp; \frac{(v_0\gamma-u_0\beta)^2}{\alpha^2\beta^2}+\frac{v_0^2}{\beta^2}+1\end{matrix}\right] %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;이다. (&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
-K=\left[\begin{matrix}\alpha &amp; \gamma &amp; u_0 \\ 0 &amp; \beta &amp; v_0 \\ 0 &amp; 0 &amp; 1\end{matrix}\right] %]]&gt;&lt;/script&gt;이므로)&lt;/p&gt;
-
-&lt;p&gt;$B_{11}, B_{12}, B_{13}, B_{22}, B_{23}, B_{33}$만 알면 $K$의 변수들을 구할 수 있으므로 &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
-b=\left[\begin{matrix}B_{11} &amp; B_{12} &amp; B_{13} &amp; B_{22} &amp; B_{23} &amp; B_{33}\end{matrix}\right]^T %]]&gt;&lt;/script&gt;를 구하는 것을 목표로 한다.&lt;/p&gt;
-
-&lt;p&gt;두 개의 조건을 압축해서&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\left[\begin{matrix}v_{12}^T \\ (v_{11}-v_{22})^T\end{matrix}\right]b=0&lt;/script&gt;
-
-&lt;p&gt;이라고 쓸 수 있다. (&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
-v_{kl}=\left[\begin{matrix}h_{1k}h_{1l} &amp; h_{1k}h_{2l}+h_{2k}h_{1l} &amp; h_{1k}h_{3l}+h_{3k}h_{1l} &amp; h_{2k}h_{2l} &amp; h_{2k}h_{3l}+h_{3k}h_{2l} &amp; h_{3k}h_{3l} \end{matrix}\right]^T %]]&gt;&lt;/script&gt;)&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;V=\left[\begin{matrix}v_{12}^T \\ (v_{11}-v_{22})^T\end{matrix}\right]&lt;/script&gt;라고 하면 각 $V$들은 이미지당 하나씩 있으므로, 우리는 총 6개의 $V$를 가지고 $B$를 찾을 수 있다. 이 $V$들을 세로로 합쳐서 $V’$행렬을 만들고, &lt;script type=&quot;math/tex&quot;&gt;\min_b\|V'b\|^2&lt;/script&gt; 문제를 풀면 $b$를 구할 수 있다. 이 때의 해는 $V’^TV’$의 eigenvalue중 가장 작은 것에 대응하는 eigenvector를 구하면 된다.&lt;/p&gt;
-
-&lt;p&gt;이렇게 구한 b를 이용해서 각각의 변수에&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;v_0=\left(\frac{B_{12}B_{13}-B_{11}B_{23}}{B_{11}B_{22}-B_{12}^2}\right)&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\lambda=B_{33}-\frac{B_{13}^2+v_0(B_{12}B_{13}-B_{11}B_{23})}{B_{11}}&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\alpha=\sqrt{\frac{\lambda}{B_{11}}}&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\beta=\sqrt{\frac{\lambda B_{11}}{B_{11}B_{22}-B_{12}^2}}&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\gamma=-\frac{B_{12}\alpha^2\beta}{\lambda}&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;u_0=\frac{\gamma v_0}{\beta}-\frac{B_{13}\alpha^2}{\lambda}&lt;/script&gt;
-
-&lt;p&gt;를 대입하면 intrinsic matrix &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
-K=\left[\begin{matrix}\alpha &amp; \gamma &amp; u_0 \\ 0 &amp; \beta &amp; v_0 \\ 0 &amp; 0 &amp; 1\end{matrix}\right] %]]&gt;&lt;/script&gt;를 구할 수 있다.&lt;/p&gt;
-
-&lt;h3 id=&quot;extrinsic-parameter&quot;&gt;Extrinsic Parameter&lt;/h3&gt;
-
-&lt;p&gt;지금까지 구한 $H$와 $K$로 extrinsic parameter들을 구할 수 있다. 먼저 정규화를 위한 상수 &lt;script type=&quot;math/tex&quot;&gt;\lambda'=\frac{\frac{1}{\|K^{-1}h_1\|}+\frac{1}{\|K^{-1}h_2\|}}{2}&lt;/script&gt;를 구한다. 그 후에는&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;r_1=\lambda' K^{-1}h_1&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;r_2=\lambda' K^{-1}h_2&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;r_3=r_1\times r_2&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;t=\lambda'K^{-1}h_3&lt;/script&gt;
-
-&lt;p&gt;을 이용해 extrinsic parameter들을 구한다.&lt;/p&gt;
-
-&lt;p&gt;여기서 구한 rotation matrix &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
-R=\left[\begin{matrix}r_1 &amp; r_2 &amp; r_3\end{matrix}\right] %]]&gt;&lt;/script&gt;은 일반적으로 rotation matrix의 성질을 만족하지 않으므로, 보정을 해줘야 한다. $R=U\Sigma V^T$로 분해할 수 있는데, 여기서 $R’=UV^T$를 구하면 된다.&lt;/p&gt;
-
-&lt;h3 id=&quot;maximum-likelihood-estimation-mle&quot;&gt;Maximum Likelihood Estimation (MLE)&lt;/h3&gt;
-
-&lt;p&gt;우리가 위에서 구한 값은 그저 방정식을 푼 것이지, 물리적으로 아무 의미가 없는 숫자이다. 따라서 MLE를 통해 값을 보정해줄 필요가 있다. MLE추정은 &lt;script type=&quot;math/tex&quot;&gt;\min_{K, R_i, t_i}\sum_i\sum_j\|q_{ij}-\hat{q_{ij}}\|^2&lt;/script&gt;를 통해 할 수 있다. (사실 이 식은 $H$를 찾을 때 썼던 식이다.)&lt;/p&gt;
-
-&lt;p&gt;코드에서는 intrinsic, extrinsic 파라미터들을 벡터로 만들어 넘겨서 lsqnonlin 함수를 사용하여 최적화했다.(Matlab)&lt;/p&gt;
-
-&lt;h1 id=&quot;depth-map&quot;&gt;Depth Map&lt;/h1&gt;
-
-&lt;p&gt;Depth map을 구하기 위한 과정은 다음과 같다. (좌, 우에서 찍은 이미지가 주어진다.)&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;이미지를 흑백화시킨다.&lt;/li&gt;
-  &lt;li&gt;cost function을 정해서 cost volume을 만든다.&lt;/li&gt;
-  &lt;li&gt;cost aggregation을 한다.&lt;/li&gt;
-  &lt;li&gt;최소 cost를 갖는 인덱스를 골라 disparity map을 만든다.&lt;/li&gt;
-  &lt;li&gt;disparity map을 카메라 파라미터를 이용해 depth map으로 변환시킨다.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;preprocessing&quot;&gt;Preprocessing&lt;/h3&gt;
-
-&lt;p&gt;단순히 두 이미지를 흑백화시킨다.&lt;/p&gt;
-
-&lt;h3 id=&quot;cost-volume&quot;&gt;Cost Volume&lt;/h3&gt;
-
-&lt;p&gt;좌측 이미지를 기준으로 한다. 좌측 이미지의 모든 픽셀에 대하여 오른쪽 이미지에서는 왼쪽으로 $d$만큼 떨어진 픽셀을 고른다. (좌측 이미지에서 $(10,5)$에 대해, $d=5$라면 우측 이미지에서는 $(5,5)$를 고르는 셈.) 좌우 이미지 모두 해당 픽셀 주변의 window크기만큼의 행렬을 골라 벡터화시킨 후, cost를 계산해 cost volume에 저장한다. 이 계산을 minDisparity부터 maxDisparity까지 수행해 cost volume에 저장한다. (이 프로젝트에서 window 크기는 15로 지정하였고, minDisparity는 11, maxDisparity는 140으로 지정하였다. cost 대신에 &lt;script type=&quot;math/tex&quot;&gt;NCC=\frac{\sum_i\sum_jA_{ij}B_{ij}}{\sqrt{\sum_i\sum_jA_{ij}^2}\sqrt{\sum_i\sum_j{B_{ij}^2}}}&lt;/script&gt;를 사용하였다.)&lt;/p&gt;
-
-&lt;h3 id=&quot;cost-aggregation&quot;&gt;Cost Aggregation&lt;/h3&gt;
-
-&lt;p&gt;각 layer의 cost를 filter를 이용하여 aggregation한다. 이 프로젝트에서는 imguidedfilter 함수에 해당 이미지를 가이드로 사용해서 필터링하였다.&lt;/p&gt;
-
-&lt;h3 id=&quot;disparity-map&quot;&gt;Disparity Map&lt;/h3&gt;
-
-&lt;p&gt;각 픽셀에 대하여 가장 작은 cost를 가지는 disparity를 고른다. (이 프로젝트에서는 NCC를 사용하였으므로 값이 가장 큰 것을 고른다.)&lt;/p&gt;
-
-&lt;h3 id=&quot;depth-map-1&quot;&gt;Depth Map&lt;/h3&gt;
-
-&lt;p&gt;각 픽셀에 대하여 $Z=\frac{fT}{d}$ 공식을 적용하여 depth map을 만든다.&lt;/p&gt;
-
-&lt;h1 id=&quot;result&quot;&gt;Result&lt;/h1&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://github.com/YeonjeeJung/ComputervisionProject1/blob/master/code/calibration.jpg?raw=true&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;위 표는 카메라 파라미터 측정에 대한 결과이다.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://github.com/YeonjeeJung/ComputervisionProject1/blob/master/code/scene2.jpg?raw=true&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;위 이미지는 각각 좌, 우에서 찍은 이미지이다.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://github.com/YeonjeeJung/ComputervisionProject1/blob/master/code/scne2_disparity.jpg?raw=true&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;위 이미지는 disparity map이다.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://github.com/YeonjeeJung/ComputervisionProject1/blob/master/code/scene2_depth.jpg?raw=true&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;위 이미지는 depth map이다.&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;이 프로젝트에 대한 코드는 &lt;a href=&quot;https://github.com/YeonjeeJung/ComputervisionProject1&quot;&gt;링크&lt;/a&gt;에서 볼 수 있다.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 25 Jul 2019 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/lecture/computervision/2019/07/25/Project1.html</link>
-        <guid isPermaLink="true">http://localhost:4000/lecture/computervision/2019/07/25/Project1.html</guid>
-        
-        
-        <category>Lecture</category>
-        
-        <category>ComputerVision</category>
-        
-      </item>
-    
-      <item>
-        <title>CV Lecture 5 - Stereo Matching</title>
-        <description>&lt;h1 id=&quot;stereo-matching&quot;&gt;Stereo Matching&lt;/h1&gt;
-
-&lt;h3 id=&quot;stereo-matching-1&quot;&gt;Stereo Matching&lt;/h3&gt;
-&lt;p&gt;&lt;img src=&quot;https://www.researchgate.net/profile/Nathaniel_Short/publication/265115132/figure/fig7/AS:305305712906251@1449801962495/Simple-geometry-for-stereo-ranging-The-usual-goal-is-to-find-the-range-Z-from-the.png&quot; alt=&quot;&quot; /&gt;
-&lt;a href=&quot;https://www.researchgate.net/profile/Nathaniel_Short/publication/265115132/figure/fig7/AS:305305712906251@1449801962495/Simple-geometry-for-stereo-ranging-The-usual-goal-is-to-find-the-range-Z-from-the.png&quot;&gt;source&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;($f$:focal length, $p^l, p^r$:image point(left, right), $P$:world point, $Z$:depth of $P$)
-(length of Baseline을 $t$라고 하자. 그리고 $x_l$은 $O_l$을 기준으로 한 선으로부터 음의 방향으로 $p_l$까지의 거리, $x_r$은 $O_r$을 기준으로 한 선으로부터 양의 방향으로 $p_r$까지의 거리이다.)&lt;/p&gt;
-
-&lt;p&gt;그러면 $\triangle(p_l, P, p_r)$과 $\triangle(O_l, P, O_r)$은 닮음이므로&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{t+x_l-x_r}{Z-f} = \frac{t}{Z}&lt;/script&gt;
-
-&lt;p&gt;이 성립하므로,&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;Z = f\frac{t}{x_r-x_l}&lt;/script&gt;
-
-&lt;p&gt;이 성립하는데, 이때 $x_r-x_l$을 disparity라고 하고, $D = x_r-x_l$이라고 한다.&lt;/p&gt;
-
-&lt;h3 id=&quot;essential-matrix&quot;&gt;Essential Matrix&lt;/h3&gt;
-
-&lt;p&gt;회전변환은 없으므로(두 평면이 평행하므로) rotation matrix $R = I$이고, translation matrix $T = [-d, 0, 0]^T$가 된다. 그리고 $E = [T_\times]R = \left(\begin{matrix}0 &amp;amp; 0 &amp;amp; 0 \ 0 &amp;amp; 0 &amp;amp; d \ 0 &amp;amp; -d &amp;amp; 0\end{matrix}\right)$이다. $p_l = [x, y, f], p’ = [x’, y’, f]$라고 하면 $p’^TEp=0$을 이용하여&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
-\left[\begin{matrix}x' &amp; y' &amp; f\end{matrix}\right]
-\left[\begin{matrix}0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; d \\ 0 &amp; -d &amp; 0\end{matrix}\right]\left[\begin{matrix}x\\y\\f\end{matrix}\right]=0 %]]&gt;&lt;/script&gt;
-&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
-\Leftrightarrow\left[\begin{matrix}x' &amp; y' &amp; f\end{matrix}\right]
-\left[\begin{matrix}0\\df\\-dy\end{matrix}\right]=0  \Leftrightarrow y=y' %]]&gt;&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;임을 알 수 있다. 이는 카메라가 평행이동하여 찍은 두 사진에서, 같은 점은 같은 $y$축 좌표가 같아야 함을 알려준다.&lt;/p&gt;
-
-&lt;h3 id=&quot;sum-of-square-difference-ssd&quot;&gt;Sum of Square Difference (SSD)&lt;/h3&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;SSD = \sum_i(f_{1i}-f_{2i})^2&lt;/script&gt;
-
-&lt;p&gt;왼쪽 사진에서 한 픽셀에 대하여 오른쪽 사진에는 epipolar line이 있을 것이다. 그 epipolar line 위에 있는 모든 픽셀에 대해서, 왼쪽 사진 픽셀과의 차이를 제곱해서 모두 더한다. 그 cost가 가장 작은 것이 best match이다. 그러나 이 방법은 비슷한 패턴들이 많이 나타날 때에는 best match가 많이 나타날 수도 있다.&lt;/p&gt;
-
-&lt;p&gt;따라서, ratio distance를 정의한다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;ratio \ distance = \frac{SSD(f_1, f_2)}{SSD(f_1, f_2')}&lt;/script&gt;
-
-&lt;p&gt;$f_2$는 $f_1$과의 best match이고, $f_2’$는 두 번째 best match이다. &lt;strong&gt;&lt;em&gt;근데 이게 그냥 SSD보다 왜 좋은걸까?&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;normalized-cross-correlation-ncc&quot;&gt;Normalized Cross Correlation (NCC)&lt;/h3&gt;
-&lt;p&gt;SSD와 비슷한데, 점끼리의 차가 아닌 region의 차의 제곱을 계산한다. 중앙에 해당 픽셀이 있고, 그 주위 픽셀까지 정사각형으로 묶는다. 그 두 사각형이 $A$와 $B$라고 하면, 이들을 $a$, $b$라는 벡터로 만든다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;NCC = \frac{a\cdot b}{\left|a\right|\left|b\right|}, -1\le NCC \le 1&lt;/script&gt;
-
-&lt;p&gt;$A$는 고정해 놓고, $B$를 움직이면서 NCC cost를 계산한다. 이 cost가 가장 작은 점이 best match이다. 이 때, window size가 너무 작으면 노이즈까지 전부 세세하게 고려하게 되고, 너무 크면 디테일이 사라지게 되어 적당한 window size를 고르는 것이 중요하다.&lt;/p&gt;
-
-&lt;h3 id=&quot;stereo-matching-framework&quot;&gt;Stereo Matching Framework&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;모든 차이에 대해서 raw matching cost를 계산한다. ($E_0(x,y;d)=\rho(I_L(x’+d,y’)-I_R(x’,y’))$)
-이때 $\rho$는 robust function인데, input $u$가 작으면 제곱에 가까운 값을, 크면 1에 수렴하는 값을 내놓는다. ($\rho(u;\sigma) = \frac{u^2}{\sigma^2+u^2}$) &lt;strong&gt;&lt;em&gt;폐쇄된 부분(occlusion)이나 튀는 값 때문에 이 함수를 쓴다?&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;&lt;em&gt;cost를 공간적으로 합친다?&lt;/em&gt;&lt;/strong&gt; ($E(x,y;d)=\sum_{(x’,y’)\in N(x,y)}E_0(x’,y’,d)$)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;각각의 픽셀에 대해 winning disparity를 찾는다. ($d(x,y)=argmin_d(x,y;d)$)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;sub-pixel accuracy로 보간한다.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Baseline은 너무 작으면 depth를 계산하는 데에 에러가 있을 수 있고, 너무 크면 같은 점 찾기가 어려워진다. 전통적인 Stereo Matching은 디테일한 표면 예측을 하고, 빠른 계산을 할 수 있다는 장점이 있다. 그러나 Baseline이 작으면 노이즈가 많을 수 있고, 질감에 따라 결과가 다르다는 점, &lt;strong&gt;&lt;em&gt;가까운 폐쇄 경계를 찾을 때 어렵다는 단점이 있다?&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;data-interpolation&quot;&gt;Data Interpolation&lt;/h3&gt;
-
-&lt;p&gt;sparse한 3D 점들이 있을 때 이것을 보간하는 방법에는 여러가지가 있는데, 먼저 energy minimization은 에너지의 최소점을 찾는 것이다.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;E_{total}(d)=E_{data}(d)+\lambda E_{membrane}(d)&lt;/script&gt;
-&lt;script type=&quot;math/tex&quot;&gt;E_{total}(d)=\sum_{x,y}(d_{x,y}-z_{x,y})^2+\lambda\sum_{x,y}(d_{x,y}-d_{x-1,y})^2&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;각 항을 미분하면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{\partial}{\partial d_{x,y}}E_{data}(d)=\frac{\partial}{\partial d_{x,y}}\sum_{x,y}(d_{x,y}-z_{x,y})^2=\frac{\partial}{\partial d_{x,y}}\left[(d_{x,y}-z_{x,y})^2\right]=2(d_{x,y}-z_{x,y})&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{\partial}{\partial d_{x,y}}E_{membrane}(d)=\frac{\partial}{\partial d_{x,y}}\sum_{x,y}(d_{x,y}-d_{x-1,y})^2=\frac{\partial}{\partial d_{x,y}}\left[(d_{x,y}-d_{x-1,y})^2+(d_{x+1,y}-d_{x,y})^2\right]&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;=2(2d_{x,y}-d_{x-1,y}-d_{x+1,y})&lt;/script&gt;
-
-&lt;p&gt;이고, 우리는 $E_{total}(d)$를 줄이는 것이 목표이기 때문에&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{\partial}{\partial d_{x,y}}E_{total}(d)=2(d_{x,y}-z_{x,y})+2\lambda (2d_{x,y}-d_{x-1,y}-d_{x+1,y})=0&lt;/script&gt;
-
-&lt;p&gt;으로 만들어 주는 방향으로 가면 된다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;d_{x,y}\leftarrow\frac{1}{1+2\lambda}(z_{x,y}+d_{x-1,y}+d_{x+1,y})&lt;/script&gt;
-
-&lt;p&gt;이렇게 iteration을 돌려주면 된다. 이걸 dynamic programming으로 푸는 방법이 있다. 먼저 가장 쉬운 1차원 cost function을 살펴본다. 우선 아까와는 다르게 &lt;script type=&quot;math/tex&quot;&gt;E_{membrane}(d)=\sum_{x,y}\|d_{x,y}-d_{x-1,y}\|&lt;/script&gt;로 정의한다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;E_{data}(d)=\sum_{x,y}\|d_{x+1,y}-d_{x,y}\|+\sum_{x,y}E_0(x,y;d)&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\tilde{E}(x,y,d)=E_0(x,y;d)+\min_{d'}(\tilde{E}(x-1,y,d')+\| d_{x,y}-d_{x-1,y}'\|)&lt;/script&gt;
-
-&lt;p&gt;2D에는 이를 적용할 수 없다. ($d_{x,y-1}$과 $d_{x-1,y}$가 서로 다른 $d_{x-1,y-1}$값에 의해 결정되기 때문) 그래서 Graph cuts optimization 이라는 알고리즘을 사용한다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;E_{data}(d)=\sum_{x,y}f_{x,y}(d_{x,y})&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;E_{membrane}(d)=\sum_{x,y}\|d_{x,y}-d_{x-1,y}\|+\sum_{x,y}\|d_{x,y}-d_{x,y-1}\|&lt;/script&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;그래서 그래프컷을 어떻게 사용함?&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;h2 id=&quot;terms&quot;&gt;Terms&lt;/h2&gt;
-&lt;p&gt;disparity : 차이, 이격도&lt;br /&gt;
-occlusion : 폐쇄&lt;br /&gt;
-specularity : 반사&lt;br /&gt;
-sweep : 쓸다&lt;/p&gt;
-</description>
-        <pubDate>Sat, 20 Jul 2019 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/lecture/computervision/2019/07/20/Lecture5.html</link>
-        <guid isPermaLink="true">http://localhost:4000/lecture/computervision/2019/07/20/Lecture5.html</guid>
         
         
         <category>Lecture</category>
