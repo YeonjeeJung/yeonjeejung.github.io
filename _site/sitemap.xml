@@ -65,6 +65,14 @@
 <lastmod>2019-08-17T00:00:00+09:00</lastmod>
 </url>
 <url>
+<loc>http://localhost:4000/lecture/computervision/2019/08/31/Lecture11.html</loc>
+<lastmod>2019-08-31T00:00:00+09:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/lecture/optimization/2019/09/02/Lecture1.html</loc>
+<lastmod>2019-09-02T00:00:00+09:00</lastmod>
+</url>
+<url>
 <loc>http://localhost:4000/about</loc>
 </url>
 <url>
@@ -93,6 +101,9 @@
 </url>
 <url>
 <loc>http://localhost:4000/category/note/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/category/optimization/</loc>
 </url>
 <url>
 <loc>http://localhost:4000/page2/</loc>
