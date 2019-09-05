@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Lecture 2</title>
+  <meta name="description" content="Convex Optimization">
+  
+  <meta name="author" content="YeonjeeJung">
+  <meta name="copyright" content="&copy; YeonjeeJung 2019">
+  
+
+  <!-- External libraries -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/monokai-sublime.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css">
+
+  <!-- Favicon and other icons (made with http://www.favicon-generator.org/) -->
+  <link rel="shortcut icon" href="/assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" sizes="57x57" href="/assets/icons/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/assets/icons/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/assets/icons/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/assets/icons/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/assets/icons/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/assets/icons/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/assets/icons/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/assets/icons/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/assets/icons/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+  <link rel="manifest" href="/assets/icons/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/assets/icons/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  
+
+  
+  <!-- Twitter: card tags -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Lecture 2">
+  <meta name="twitter:description" content="Convex Optimization">
+  <meta name="twitter:image" content="http://localhost:4000/assets/logo.png">
+  <meta name="twitter:url" content="http://localhost:4000">
+  
+
+  
+
+  <!-- Site styles -->
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/lecture/optimization/2019/09/04/Lecture2.html">
+  <link rel="alternate" type="application/rss+xml" title="YeonjeeJung's Blog" href="http://localhost:4000/feed.xml" />
+</head>
+
+  
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$'] ],
+    processEscapes: true,
+  }
+});
+MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+  
+  <body>
+
+    <header class="navigation" role="banner">
+  <div class="navigation-wrapper">
+    <a href="/" class="logo">
+      
+      <img src="/assets/logo.png" alt="YeonjeeJung's Blog">
+      
+    </a>
+    <a href="javascript:void(0)" class="navigation-menu-button" id="js-mobile-menu">
+      <i class="fa fa-bars"></i>
+    </a>
+    <nav role="navigation">
+      <ul id="js-navigation-menu" class="navigation-menu show">
+        <li class="nav-link"><a href="/about">About</a>
+        <li class="nav-link"><a href="/category/note">Note</a>
+        <li class="nav-link"><a href="/category/thesis">Thesis</a>
+        <li class="nav-link"><a href="/category/lecture">Lecture</a>
+          <ul>
+            <a href="/category/computervision">CV</a>
+            <a href="/category/optimization">Optimization</a>
+            <a href="/category/robot">Robot</a>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+    <div class="page-content">
+        <div class="post">
+
+<div class="post-header-container " >
+  <div class="scrim ">
+    <header class="post-header">
+      <h1 class="title">Lecture 2</h1>
+      <p class="info">by <strong>Yeonjee Jung</strong></p>
+    </header>
+  </div>
+</div>
+
+<div class="wrapper">
+
+ <span class="page-divider">
+  <span class="one"></span>
+  <span class="two"></span>
+</span>
+ 
+
+<section class="post-meta">
+  <div class="post-date">September 4, 2019</div>
+  <div class="post-categories">
+  in 
+    
+    <a href="/category/lecture">Lecture</a>, 
+    
+  
+    
+    <a href="/category/optimization">Optimization</a>
+    
+  
+  </div>
+</section>
+
+<article class="post-content">
+  <h1 id="convex-optimization">Convex Optimization</h1>
+
+<h2 id="convex-optimization-1">Convex Optimization</h2>
+
+<p>Convex Optimization이란 $x^* = \text{min}_{x \in C} f(x)$를 찾는 문제이다. 이 때 $f$는 convex function이고, $C$는 convex set이다. 수렴도도 중요하지만, 얼마나 빨리 수렴하는지도 수렴 알고리즘의 선택에서 중요한 요소이다.</p>
+
+<h3 id="convergence-rate">Convergence Rate</h3>
+
+<p>convergence rate은 $f(x^* )$가 optimal value일 때,</p>
+
+<script type="math/tex; mode=display">\frac{f(x_t)-f(x^* )}{g(t)} \le c</script>
+
+<p>에서의 $g(t)$이다. 이 때 $x_t$는 $x$가 $t$번 업데이트 된 값이고, $c$는 상수이다. 주로</p>
+<ol>
+  <li>$g(t) = \frac{1}{t}$</li>
+  <li>$g(t) = \frac{1}{\sqrt{t}}$</li>
+  <li>$g(t) = e^{-t}$</li>
+</ol>
+
+<p>가 쓰이는데, $g(t) = e^{-t}$가 가장 수렴속도가 빠르다.</p>
+
+<p>$f(x_t)-f(x^* ) \le \epsilon$으로 만들 때,</p>
+<ol>
+  <li>$g(t) = \frac{1}{t}$일 때는 $\frac{1}{\epsilon}$번의 step이 필요하고,</li>
+  <li>$g(t) = \frac{1}{\sqrt{t}}$일 때는 $\frac{1}{\epsilon^2}$번의 step,</li>
+  <li>$g(t) = e^{-t}$일 때는 $\ln{\frac{1}{\epsilon}}$번의 step이 필요하며, 가장 빠르다.</li>
+</ol>
+
+<h2 id="convex-functions">Convex Functions</h2>
+
+<p>Convex Function의 예시에는 다음과 같은 함수들이 있다.</p>
+<ol>
+  <li>Linear Functions : $f(x) = a^Tx$</li>
+  <li>Affine Functions : $f(x) = a^Tx + b$</li>
+  <li>Exponential Functions : $f(x) = e^{\alpha x}$</li>
+  <li>Norms</li>
+</ol>
+
+<h3 id="norms">Norms</h3>
+
+<p>주어진 벡터공간 $V$에서의 norm은 0보다 크거나 같은 scalar function $p$이다.</p>
+
+<script type="math/tex; mode=display">p : V \rightarrow [0, +\infty)</script>
+
+<p>norm은 다음과 같은 특징을 가진다.</p>
+<ol>
+  <li>$p(x) + p(x) \ge p(x+y), \forall x, y\in V$</li>
+  <li>$p(ax) = | a|p(x)$</li>
+  <li>$p(x) = 0 \Leftrightarrow x=0$</li>
+</ol>
+
+<h3 id="p-norm">p-norm</h3>
+
+<script type="math/tex; mode=display">\|x\|_ p = \left(\sum_{i=1}^d |x_i|^p\right)^{\frac{1}{p}}</script>
+
+<p>주로 쓰이는 $p$값은 $1, 2, \infty$이다.</p>
+
+<h3 id="example-of-norms">Example of Norms</h3>
+<p>young’s inequality : $ab\le\frac{a^p}{p}+\frac{b^q}{q}, \forall p, q \ge 1, \frac{1}{p}+\frac{1}{q}=1$<br />
+Hoelder inequality : $|\sum_{i=1}^n u_i\cdot v_i| \le \left(\sum_{i=1}^n|u_i|^p\right)^{\frac{1}{p}}\left(\sum_{i=1}^n|v_i|^q\right)^{\frac{1}{q}}$<br />
+Minkowski inequality : $\left(\sum_{i=1}^n|x_i+y_i|^p\right)^{\frac{1}{p}}\le\left(\sum_{i=1}^n|x_i|^p\right)^{\frac{1}{p}}+\left(\sum_{i=1}^n|y_i|^p\right)^{\frac{1}{p}}$</p>
+
+<p>Hoelder’s inequality를 증명하는 데에 young’s inequality를 사용하고, Minkowski inequality를 증명하는 데에 Hoelder’s inequality를 사용한다.</p>
+
+<h3 id="proof-youngs-inequality">(Proof) Young’s inequality</h3>
+
+<h3 id="proof-hoelders-inequality">(Proof) Hoelder’s inequality</h3>
+
+<h3 id="proof-minkowski-inequality">(Proof) Minkowski inequality</h3>
+
+<h2 id="proof-every-norm-is-convex">(Proof) Every norm is Convex</h2>
+<p>(Recall) triangle inequality : $p(x) + p(y) \ge p(x+y), \forall x, y \in V$</p>
+
+<p>$\alpha p(x) + (1-\alpha)p(y)$<br />
+$= p(\alpha x) + p((1-\alpha)y)$<br />
+$\ge p(\alpha x + (1-\alpha)y)$</p>
+
+<h2 id="lemma-jensens-inequality">(Lemma) Jensen’s inequality</h2>
+
+<p>$f$가 convex이고, $x_1, x_2, \cdots, x_m \in \text{dom}(f)$이고, <script type="math/tex">\lambda_1, \lambda_2, \cdots, \lambda_m \in \mathbb{R}_+</script> s.t. $\sum_{i=1}^m \lambda_i = 1$일 때,</p>
+
+<script type="math/tex; mode=display">f\left(\sum_{i=1}^m \lambda_ix_i\right) \le \sum_{i=1}^m \lambda_i f(x_i)</script>
+
+<p>$x$가 random variable이라면</p>
+
+<script type="math/tex; mode=display">f(E(x)) \le E[f(x)]</script>
+
+<p>이 부등식은 $\lambda_1 + \lambda_2 =1$이고 $\lambda_1, \lambda_2 \ge 0$일 때</p>
+
+<script type="math/tex; mode=display">\lambda_1f(x_1) +\lambda_2f(x_2) \ge f(\lambda_1x_1+\lambda_2x_2)</script>
+
+<p>라는 convex의 정의를 이용해, 수학적 귀납법으로 증명할 수 있다.</p>
+
+<h3 id="proof">(Proof)</h3>
+<p>m일 때 성립한다고 가정한다. 그러면<br />
+$f(\sum_{i=1}^{m+1}\lambda_ix_i)$<br />
+$=f(\sum_{i=1}^m\lambda_ix_i + \lambda_{m+1}x_{m+1})$<br />
+$=f((1-\lambda_{m+1})\sum_{i=1}^m\frac{\lambda_i}{1-\lambda_{m+1}}x_i+\lambda_{m+1}x_{m+1})$<br />
+$\le(1-\lambda_{m+1})f(\sum_{i=1}^m\frac{\lambda_i}{1-\lambda_{m+1}}x_i)+\lambda_{m+1}f(x_{m+1})$<br />
+$\le(1-\lambda_{m+1})\sum_{i=1}^m\frac{\lambda_i}{1-\lambda_{m+1}}f(x_i)+\lambda_{m+1}f(x_{m+1})$<br />
+$=\sum_{i=1}^{m+1}\lambda_if(x_i)$</p>
+
+<p>따라서,</p>
+
+<script type="math/tex; mode=display">f\left(\sum_{i=1}^{m+1}\lambda_ix_i\right)\le\sum_{i=1}^{m+1}\lambda_if(x_i)</script>
+
+<p>가 성립한다.</p>
+
+<h2 id="differentiable-functions">Differentiable Functions</h2>
+
+<h3 id="differentiable">Differentiable</h3>
+<p>$f$가 continuous한 일차미분식을 갖는다면, $f$는 differentiable하다. 이 특징은 매우 중요한데, 대부분의 최적화 iteration은 gradient값을 사용하기 때문이다.</p>
+
+<h3 id="tangent-hyperplane">Tangent Hyperplane</h3>
+
+<script type="math/tex; mode=display">g(x) = f(x_0) + \triangledown f(x_0)^T(x-x_0)</script>
+
+<p>이 tangent hyperplane이다. 이 직선은 $(x, f(x)$를 지나고 $\triangledown f(x_0)$의 기울기를 갖는다.</p>
+
+<h2 id="first-order-characterization-of-convexity">First-order Characterization of Convexity</h2>
+
+<script type="math/tex; mode=display">\triangledown f(x) = \left(\frac{\partial f(x)}{\partial x_1}, \cdots, \frac{\partial f(x)}{\partial x_d}\right)^T</script>
+
+<p>가 first-order derivative이다.</p>
+
+<script type="math/tex; mode=display">f : \text{ convex function} \Leftrightarrow f(y) \ge f(x) + \triangledown f(x)^T (y-x), \forall x, y \in \text{dom}(f)</script>
+
+<h3 id="proof-leftarrow">(Proof) $\Leftarrow$</h3>
+
+<p>Let $z = \theta x + (1-\theta) y, \theta\in [0, 1]$<br />
+$(f(x) \ge f(z) + \triangledown f(z)^T(x-z)) \times\theta$<br />
+$(f(y) \ge f(z) + \triangledown f(z)^T(y-z))\times(1-\theta)$<br />
+$\Rightarrow \theta f(x) + (1-\theta)f(y)\ge f(z) + \triangledown f(z)^T(\theta x+(1-\theta)y-z)$<br />
+$\therefore\theta f(x)+(1-\theta)f(y)\ge f(\theta x+(1-\theta)y)$</p>
+
+<h3 id="proof-rightarrow">(Proof) $\Rightarrow$</h3>
+
+<p>$(1-t)f(x) + tf(y)\ge f(x+(y-x)t)$<br />
+$\Rightarrow f(y)\ge f(x) + \frac{f(x+(y-x)t)-f(x)}{t}$<br />
+as $t\rightarrow 0, f(y)\ge f(x)+\triangledown f(x)^T(y-x)$</p>
+
+<h2 id="nondifferentiable-functions">Nondifferentiable Functions</h2>
+<p>$f(x) = |x|$같은 함수의 경우, $x=0$부근에서 많은 접점이 있지만 정확한 극한값은 없다. 이 때 그냥 하나를 마음대로 정할 수 있는데, 이것이 subgradient이다.</p>
+
+<script type="math/tex; mode=display">f(y)\ge f(x) + g_x^T(y-x)</script>
+
+<p>에서 $g_x$가 subgradient. 위에서 예를 든 $f(x) = |x|$의 경우, $g\in[-1,1]$은 모두 subgradient가 될 수 있다.</p>
+
+<h2 id="second-order-characterization-of-convexity">Second-order Characterization of Convexity</h2>
+
+<p>일변수함수에 대해서는 이차미분식이 그냥 하나의 식이지만, 다변수함수에서는 이차미분식이 Hessian이다. Hessian은</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\triangledown^2f(x) = \left(\begin{matrix}
+  \frac{\partial^2f}{\partial x_1 \partial x_1} & \frac{\partial^2f}{\partial x_1 \partial x_2} & \cdots & \frac{\partial^2f}{\partial x_1 \partial x_d} \\
+  \frac{\partial^2f}{\partial x_2 \partial x_1} & \frac{\partial^2f}{\partial x_2 \partial x_2} & \cdots & \frac{\partial^2f}{\partial x_2 \partial x_d} \\
+  \vdots & \vdots & \cdots & \vdots \\
+  \frac{\partial^2f}{\partial x_d \partial x_1} & \frac{\partial^2f}{\partial x_d \partial x_2} & \cdots & \frac{\partial^2f}{\partial x_d \partial x_d}
+  \end{matrix}\right) %]]></script>
+
+<p>으로 정의된다.</p>
+
+<h3 id="def-positive-definite">(Def) Positive Definite</h3>
+<p><script type="math/tex">A\in \mathbb{R}^{d\times d}</script>가 symmetric하고 $x^TAx \gt 0, \forall x\in\mathbb{R}^d$일 때 $f$는 positive definite이다.</p>
+
+<h3 id="proof-f---convex-function-leftrightarrow-triangledown2fx-is-positive-semidefinite">(Proof) $f : $ convex function $\Leftrightarrow \triangledown^2f(x)$ is positive semidefinite</h3>
+<p>$g(t) = f(x+(y-x)t)$는 $t$에 대한 convex function이다.<br />
+$\Leftrightarrow g’(t) = \triangledown f(x+(y-x)t)(y-x)$<br />
+<script type="math/tex">\Leftrightarrow g''(t) = (y-x)^T\triangledown^2f(x+(y-x)t)(y-x)</script><br />
+$g(t)$가 convex function이므로, <script type="math/tex">g''(t) \ge 0, \forall t, \forall x, y</script>를 만족한다.<br />
+따라서 $t=0$일 때도 만족하는데, 이를 대입해보면 다음과 같다.<br />
+<script type="math/tex">g''(t)\mid_ {t=0} = (y-x)^T\triangledown^2f(x)(y-x) \ge 0, \forall x, y</script><br />
+이는 positive semidefinite의 정의이므로, 둘은 동치이다.</p>
+
+<h2 id="local-minima-critical-point">Local Minima, Critical Point</h2>
+<h3 id="def-local-minima">(Def) Local Minima</h3>
+<p>$\epsilon \gt0$에 대해, $f(x)\le f(y), \forall y \text{ s.t. }|y-x|\le\epsilon$을 만족하면 $x$는 local minima이다.</p>
+
+<h3 id="def-critical-point">(Def) Critical Point</h3>
+<p>$\triangledown f(x)=0$을 만족하면 $x$는 critical point이다. 만약 $f$가 convex라면, critical point는 global minima이다. critical point는 최적화에서는 bad point인데, tangent line이 기울기가 0이기 때문에 gradient가 존재하지 않아 local minima를 빠져나가기가 어렵다.</p>
+
+<h2 id="constrained-minimization">Constrained Minimization</h2>
+<p>$f$가 convex function이고, $X$가 convex set이면</p>
+
+<script type="math/tex; mode=display">f(x^* )\le f(y), \forall y\in X \Leftrightarrow \triangledown f(x^* )^T(x-x^* ) \ge 0, \forall x\in X</script>
+
+<h3 id="proofrightarrow">(Proof)$\Rightarrow$</h3>
+<p>Let $f(x^* )\le f(y), \forall y \in X$<br />
+Since $f$ is convex, $tf(x^* )+(1-t)f(y) \ge f(y+(x^* -y)t)$<br />
+$\Rightarrow f(x^* ) \ge \frac{f(y+(x^* -y)t)-f(y)}{t} + f(y)$<br />
+as $t\rightarrow0$,<br />
+$=(x^* -y)\triangledown f(y)+f(y)$<br />
+$\Rightarrow (y-x^* )\triangledown f(y)\ge f(y)-f(x^* ) \ge 0$<br />
+$\therefore (y-x^* )\triangledown f(y) \ge 0, \forall y\in X$</p>
+
+<h3 id="proof-leftarrow-1">(Proof) $\Leftarrow$</h3>
+<p>Let $\triangledown f(x^* )^T(y-x^* )\ge 0, \forall y\in X$<br />
+$f$가 convex이기 때문에, $f(y)\ge f(x^* )+\triangledown f(x^* )^T(y-x^* )$이다.<br />
+$\Rightarrow f(y)-f(x^* )\ge\triangledown f(x^* )^T(y-x^* )\ge 0$<br />
+$\therefore f(y)\ge f(x^* ), \forall y\in X$</p>
+
+<h2 id="thm-tayler">(Thm) Tayler</h2>
+
+<p>$f(x) = f(0) + f’(0)x + \frac{1}{2}f^{\prime\prime}(0)x^2+\cdots$<br />
+$f(b) = f(a) + f’(a)(b-a) + \frac{1}{2}f^{\prime\prime}(c)(b-a)^2, c\in[a, b]$<br />
+$ = f(a) + \triangledown f(a)^T(b-a) + \frac{1}{2}(b-a)^T\triangledown^2f(c)(b-a), c\in[a, a+\theta(b-a)], \theta\in[0, 1]$<br />
+$\therefore f(b) \ge f(a)+\triangledown f(a)^T(b-a)$</p>
+
+</article>
+
+
+
+
+
+<section class="rss">
+  <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+</section>
+
+<!-- <section class="share">
+  <span>Share: </span>
+  
+    
+    
+    
+    
+    
+    
+    
+    
+  
+</section> -->
+
+
+
+
+<section class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'true';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+
+</div>
+</div>
+
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h3 class="footer-heading">YeonjeeJung's Blog</h3>
+
+    <div class="site-navigation">
+
+      <p><strong>Site Map</strong></p>
+      <ul class="pages">
+
+        <li class="nav-link"><a href="/about">About</a>
+        <li class="nav-link"><a href="/category/note">Note</a>
+        <li class="nav-link"><a href="/category/thesis">Thesis</a>
+        <li class="nav-link"><a href="/category/lecture">Lecture</a>
+
+      </ul>
+    </div>
+
+    <div class="site-contact">
+
+      <p><strong>Contact</strong></p>
+      <ul class="social-media-list">
+        <li>
+          <a href="mailto:gotnwlsl@gmail.com">
+            <i class="fa fa-envelope-o"></i>
+            <span class="username">gotnwlsl@gmail.com</span>
+          </a>
+        </li>
+
+        
+          
+          <li>
+            <a href="https://github.com/YeonjeeJung" title="Fork me on GitHub">
+              <i class="fa fa-github"></i>
+              <span class="username">YeonjeeJung</span>
+            </a>
+          </li>
+          
+        
+
+      </ul>
+    </div>
+
+    <div class="site-signature">
+      <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+      <p class="text"></p>
+    </div>
+
+  </div>
+
+</footer>
+
+<!-- Scripts -->
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/js/lightbox.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  // Default syntax highlighting
+  hljs.initHighlightingOnLoad();
+
+  // Header
+  var menuToggle = $('#js-mobile-menu').unbind();
+  $('#js-navigation-menu').removeClass("show");
+  menuToggle.on('click', function(e) {
+    e.preventDefault();
+    $('#js-navigation-menu').slideToggle(function(){
+      if($('#js-navigation-menu').is(':hidden')) {
+        $('#js-navigation-menu').removeAttr('style');
+      }
+    });
+  });
+});
+
+</script>
+
+
+
+
+
+
+  </body>
+
+</html>
