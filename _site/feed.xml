@@ -5,9 +5,230 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 03 Sep 2019 17:47:43 +0900</pubDate>
-    <lastBuildDate>Tue, 03 Sep 2019 17:47:43 +0900</lastBuildDate>
+    <pubDate>Thu, 05 Sep 2019 14:16:07 +0900</pubDate>
+    <lastBuildDate>Thu, 05 Sep 2019 14:16:07 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>Lecture 2</title>
+        <description>&lt;h1 id=&quot;convex-optimization&quot;&gt;Convex Optimization&lt;/h1&gt;
+
+&lt;h2 id=&quot;convex-optimization-1&quot;&gt;Convex Optimization&lt;/h2&gt;
+
+&lt;p&gt;Convex Optimization이란 $x^* = \text{min}_{x \in C} f(x)$를 찾는 문제이다. 이 때 $f$는 convex function이고, $C$는 convex set이다. 수렴도도 중요하지만, 얼마나 빨리 수렴하는지도 수렴 알고리즘의 선택에서 중요한 요소이다.&lt;/p&gt;
+
+&lt;h3 id=&quot;convergence-rate&quot;&gt;Convergence Rate&lt;/h3&gt;
+
+&lt;p&gt;convergence rate은 $f(x^* )$가 optimal value일 때,&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{f(x_t)-f(x^* )}{g(t)} \le c&lt;/script&gt;
+
+&lt;p&gt;에서의 $g(t)$이다. 이 때 $x_t$는 $x$가 $t$번 업데이트 된 값이고, $c$는 상수이다. 주로&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;$g(t) = \frac{1}{t}$&lt;/li&gt;
+  &lt;li&gt;$g(t) = \frac{1}{\sqrt{t}}$&lt;/li&gt;
+  &lt;li&gt;$g(t) = e^{-t}$&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;가 쓰이는데, $g(t) = e^{-t}$가 가장 수렴속도가 빠르다.&lt;/p&gt;
+
+&lt;p&gt;$f(x_t)-f(x^* ) \le \epsilon$으로 만들 때,&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;$g(t) = \frac{1}{t}$일 때는 $\frac{1}{\epsilon}$번의 step이 필요하고,&lt;/li&gt;
+  &lt;li&gt;$g(t) = \frac{1}{\sqrt{t}}$일 때는 $\frac{1}{\epsilon^2}$번의 step,&lt;/li&gt;
+  &lt;li&gt;$g(t) = e^{-t}$일 때는 $\ln{\frac{1}{\epsilon}}$번의 step이 필요하며, 가장 빠르다.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;convex-functions&quot;&gt;Convex Functions&lt;/h2&gt;
+
+&lt;p&gt;Convex Function의 예시에는 다음과 같은 함수들이 있다.&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Linear Functions : $f(x) = a^Tx$&lt;/li&gt;
+  &lt;li&gt;Affine Functions : $f(x) = a^Tx + b$&lt;/li&gt;
+  &lt;li&gt;Exponential Functions : $f(x) = e^{\alpha x}$&lt;/li&gt;
+  &lt;li&gt;Norms&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;norms&quot;&gt;Norms&lt;/h3&gt;
+
+&lt;p&gt;주어진 벡터공간 $V$에서의 norm은 0보다 크거나 같은 scalar function $p$이다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p : V \rightarrow [0, +\infty)&lt;/script&gt;
+
+&lt;p&gt;norm은 다음과 같은 특징을 가진다.&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;$p(x) + p(x) \ge p(x+y), \forall x, y\in V$&lt;/li&gt;
+  &lt;li&gt;$p(ax) = | a|p(x)$&lt;/li&gt;
+  &lt;li&gt;$p(x) = 0 \Leftrightarrow x=0$&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;p-norm&quot;&gt;p-norm&lt;/h3&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\|x\|_ p = \left(\sum_{i=1}^d |x_i|^p\right)^{\frac{1}{p}}&lt;/script&gt;
+
+&lt;p&gt;주로 쓰이는 $p$값은 $1, 2, \infty$이다.&lt;/p&gt;
+
+&lt;h3 id=&quot;example-of-norms&quot;&gt;Example of Norms&lt;/h3&gt;
+&lt;p&gt;young’s inequality : $ab\le\frac{a^p}{p}+\frac{b^q}{q}, \forall p, q \ge 1, \frac{1}{p}+\frac{1}{q}=1$&lt;br /&gt;
+Hoelder inequality : $|\sum_{i=1}^n u_i\cdot v_i| \le \left(\sum_{i=1}^n|u_i|^p\right)^{\frac{1}{p}}\left(\sum_{i=1}^n|v_i|^q\right)^{\frac{1}{q}}$&lt;br /&gt;
+Minkowski inequality : $\left(\sum_{i=1}^n|x_i+y_i|^p\right)^{\frac{1}{p}}\le\left(\sum_{i=1}^n|x_i|^p\right)^{\frac{1}{p}}+\left(\sum_{i=1}^n|y_i|^p\right)^{\frac{1}{p}}$&lt;/p&gt;
+
+&lt;p&gt;Hoelder’s inequality를 증명하는 데에 young’s inequality를 사용하고, Minkowski inequality를 증명하는 데에 Hoelder’s inequality를 사용한다.&lt;/p&gt;
+
+&lt;h3 id=&quot;proof-youngs-inequality&quot;&gt;(Proof) Young’s inequality&lt;/h3&gt;
+
+&lt;h3 id=&quot;proof-hoelders-inequality&quot;&gt;(Proof) Hoelder’s inequality&lt;/h3&gt;
+
+&lt;h3 id=&quot;proof-minkowski-inequality&quot;&gt;(Proof) Minkowski inequality&lt;/h3&gt;
+
+&lt;h2 id=&quot;proof-every-norm-is-convex&quot;&gt;(Proof) Every norm is Convex&lt;/h2&gt;
+&lt;p&gt;(Recall) triangle inequality : $p(x) + p(y) \ge p(x+y), \forall x, y \in V$&lt;/p&gt;
+
+&lt;p&gt;$\alpha p(x) + (1-\alpha)p(y)$&lt;br /&gt;
+$= p(\alpha x) + p((1-\alpha)y)$&lt;br /&gt;
+$\ge p(\alpha x + (1-\alpha)y)$&lt;/p&gt;
+
+&lt;h2 id=&quot;lemma-jensens-inequality&quot;&gt;(Lemma) Jensen’s inequality&lt;/h2&gt;
+
+&lt;p&gt;$f$가 convex이고, $x_1, x_2, \cdots, x_m \in \text{dom}(f)$이고, &lt;script type=&quot;math/tex&quot;&gt;\lambda_1, \lambda_2, \cdots, \lambda_m \in \mathbb{R}_+&lt;/script&gt; s.t. $\sum_{i=1}^m \lambda_i = 1$일 때,&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;f\left(\sum_{i=1}^m \lambda_ix_i\right) \le \sum_{i=1}^m \lambda_i f(x_i)&lt;/script&gt;
+
+&lt;p&gt;$x$가 random variable이라면&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(E(x)) \le E[f(x)]&lt;/script&gt;
+
+&lt;p&gt;이 부등식은 $\lambda_1 + \lambda_2 =1$이고 $\lambda_1, \lambda_2 \ge 0$일 때&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\lambda_1f(x_1) +\lambda_2f(x_2) \ge f(\lambda_1x_1+\lambda_2x_2)&lt;/script&gt;
+
+&lt;p&gt;라는 convex의 정의를 이용해, 수학적 귀납법으로 증명할 수 있다.&lt;/p&gt;
+
+&lt;h3 id=&quot;proof&quot;&gt;(Proof)&lt;/h3&gt;
+&lt;p&gt;m일 때 성립한다고 가정한다. 그러면&lt;br /&gt;
+$f(\sum_{i=1}^{m+1}\lambda_ix_i)$&lt;br /&gt;
+$=f(\sum_{i=1}^m\lambda_ix_i + \lambda_{m+1}x_{m+1})$&lt;br /&gt;
+$=f((1-\lambda_{m+1})\sum_{i=1}^m\frac{\lambda_i}{1-\lambda_{m+1}}x_i+\lambda_{m+1}x_{m+1})$&lt;br /&gt;
+$\le(1-\lambda_{m+1})f(\sum_{i=1}^m\frac{\lambda_i}{1-\lambda_{m+1}}x_i)+\lambda_{m+1}f(x_{m+1})$&lt;br /&gt;
+$\le(1-\lambda_{m+1})\sum_{i=1}^m\frac{\lambda_i}{1-\lambda_{m+1}}f(x_i)+\lambda_{m+1}f(x_{m+1})$&lt;br /&gt;
+$=\sum_{i=1}^{m+1}\lambda_if(x_i)$&lt;/p&gt;
+
+&lt;p&gt;따라서,&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;f\left(\sum_{i=1}^{m+1}\lambda_ix_i\right)\le\sum_{i=1}^{m+1}\lambda_if(x_i)&lt;/script&gt;
+
+&lt;p&gt;가 성립한다.&lt;/p&gt;
+
+&lt;h2 id=&quot;differentiable-functions&quot;&gt;Differentiable Functions&lt;/h2&gt;
+
+&lt;h3 id=&quot;differentiable&quot;&gt;Differentiable&lt;/h3&gt;
+&lt;p&gt;$f$가 continuous한 일차미분식을 갖는다면, $f$는 differentiable하다. 이 특징은 매우 중요한데, 대부분의 최적화 iteration은 gradient값을 사용하기 때문이다.&lt;/p&gt;
+
+&lt;h3 id=&quot;tangent-hyperplane&quot;&gt;Tangent Hyperplane&lt;/h3&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;g(x) = f(x_0) + \triangledown f(x_0)^T(x-x_0)&lt;/script&gt;
+
+&lt;p&gt;이 tangent hyperplane이다. 이 직선은 $(x, f(x)$를 지나고 $\triangledown f(x_0)$의 기울기를 갖는다.&lt;/p&gt;
+
+&lt;h2 id=&quot;first-order-characterization-of-convexity&quot;&gt;First-order Characterization of Convexity&lt;/h2&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\triangledown f(x) = \left(\frac{\partial f(x)}{\partial x_1}, \cdots, \frac{\partial f(x)}{\partial x_d}\right)^T&lt;/script&gt;
+
+&lt;p&gt;가 first-order derivative이다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;f : \text{ convex function} \Leftrightarrow f(y) \ge f(x) + \triangledown f(x)^T (y-x), \forall x, y \in \text{dom}(f)&lt;/script&gt;
+
+&lt;h3 id=&quot;proof-leftarrow&quot;&gt;(Proof) $\Leftarrow$&lt;/h3&gt;
+
+&lt;p&gt;Let $z = \theta x + (1-\theta) y, \theta\in [0, 1]$&lt;br /&gt;
+$(f(x) \ge f(z) + \triangledown f(z)^T(x-z)) \times\theta$&lt;br /&gt;
+$(f(y) \ge f(z) + \triangledown f(z)^T(y-z))\times(1-\theta)$&lt;br /&gt;
+$\Rightarrow \theta f(x) + (1-\theta)f(y)\ge f(z) + \triangledown f(z)^T(\theta x+(1-\theta)y-z)$&lt;br /&gt;
+$\therefore\theta f(x)+(1-\theta)f(y)\ge f(\theta x+(1-\theta)y)$&lt;/p&gt;
+
+&lt;h3 id=&quot;proof-rightarrow&quot;&gt;(Proof) $\Rightarrow$&lt;/h3&gt;
+
+&lt;p&gt;$(1-t)f(x) + tf(y)\ge f(x+(y-x)t)$&lt;br /&gt;
+$\Rightarrow f(y)\ge f(x) + \frac{f(x+(y-x)t)-f(x)}{t}$&lt;br /&gt;
+as $t\rightarrow 0, f(y)\ge f(x)+\triangledown f(x)^T(y-x)$&lt;/p&gt;
+
+&lt;h2 id=&quot;nondifferentiable-functions&quot;&gt;Nondifferentiable Functions&lt;/h2&gt;
+&lt;p&gt;$f(x) = |x|$같은 함수의 경우, $x=0$부근에서 많은 접점이 있지만 정확한 극한값은 없다. 이 때 그냥 하나를 마음대로 정할 수 있는데, 이것이 subgradient이다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(y)\ge f(x) + g_x^T(y-x)&lt;/script&gt;
+
+&lt;p&gt;에서 $g_x$가 subgradient. 위에서 예를 든 $f(x) = |x|$의 경우, $g\in[-1,1]$은 모두 subgradient가 될 수 있다.&lt;/p&gt;
+
+&lt;h2 id=&quot;second-order-characterization-of-convexity&quot;&gt;Second-order Characterization of Convexity&lt;/h2&gt;
+
+&lt;p&gt;일변수함수에 대해서는 이차미분식이 그냥 하나의 식이지만, 다변수함수에서는 이차미분식이 Hessian이다. Hessian은&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\triangledown^2f(x) = \left(\begin{matrix}
+  \frac{\partial^2f}{\partial x_1 \partial x_1} &amp; \frac{\partial^2f}{\partial x_1 \partial x_2} &amp; \cdots &amp; \frac{\partial^2f}{\partial x_1 \partial x_d} \\
+  \frac{\partial^2f}{\partial x_2 \partial x_1} &amp; \frac{\partial^2f}{\partial x_2 \partial x_2} &amp; \cdots &amp; \frac{\partial^2f}{\partial x_2 \partial x_d} \\
+  \vdots &amp; \vdots &amp; \cdots &amp; \vdots \\
+  \frac{\partial^2f}{\partial x_d \partial x_1} &amp; \frac{\partial^2f}{\partial x_d \partial x_2} &amp; \cdots &amp; \frac{\partial^2f}{\partial x_d \partial x_d}
+  \end{matrix}\right) %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;으로 정의된다.&lt;/p&gt;
+
+&lt;h3 id=&quot;def-positive-definite&quot;&gt;(Def) Positive Definite&lt;/h3&gt;
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;A\in \mathbb{R}^{d\times d}&lt;/script&gt;가 symmetric하고 $x^TAx \gt 0, \forall x\in\mathbb{R}^d$일 때 $f$는 positive definite이다.&lt;/p&gt;
+
+&lt;h3 id=&quot;proof-f---convex-function-leftrightarrow-triangledown2fx-is-positive-semidefinite&quot;&gt;(Proof) $f : $ convex function $\Leftrightarrow \triangledown^2f(x)$ is positive semidefinite&lt;/h3&gt;
+&lt;p&gt;$g(t) = f(x+(y-x)t)$는 $t$에 대한 convex function이다.&lt;br /&gt;
+$\Leftrightarrow g’(t) = \triangledown f(x+(y-x)t)(y-x)$&lt;br /&gt;
+&lt;script type=&quot;math/tex&quot;&gt;\Leftrightarrow g''(t) = (y-x)^T\triangledown^2f(x+(y-x)t)(y-x)&lt;/script&gt;&lt;br /&gt;
+$g(t)$가 convex function이므로, &lt;script type=&quot;math/tex&quot;&gt;g''(t) \ge 0, \forall t, \forall x, y&lt;/script&gt;를 만족한다.&lt;br /&gt;
+따라서 $t=0$일 때도 만족하는데, 이를 대입해보면 다음과 같다.&lt;br /&gt;
+&lt;script type=&quot;math/tex&quot;&gt;g''(t)\mid_ {t=0} = (y-x)^T\triangledown^2f(x)(y-x) \ge 0, \forall x, y&lt;/script&gt;&lt;br /&gt;
+이는 positive semidefinite의 정의이므로, 둘은 동치이다.&lt;/p&gt;
+
+&lt;h2 id=&quot;local-minima-critical-point&quot;&gt;Local Minima, Critical Point&lt;/h2&gt;
+&lt;h3 id=&quot;def-local-minima&quot;&gt;(Def) Local Minima&lt;/h3&gt;
+&lt;p&gt;$\epsilon \gt0$에 대해, $f(x)\le f(y), \forall y \text{ s.t. }|y-x|\le\epsilon$을 만족하면 $x$는 local minima이다.&lt;/p&gt;
+
+&lt;h3 id=&quot;def-critical-point&quot;&gt;(Def) Critical Point&lt;/h3&gt;
+&lt;p&gt;$\triangledown f(x)=0$을 만족하면 $x$는 critical point이다. 만약 $f$가 convex라면, critical point는 global minima이다. critical point는 최적화에서는 bad point인데, tangent line이 기울기가 0이기 때문에 gradient가 존재하지 않아 local minima를 빠져나가기가 어렵다.&lt;/p&gt;
+
+&lt;h2 id=&quot;constrained-minimization&quot;&gt;Constrained Minimization&lt;/h2&gt;
+&lt;p&gt;$f$가 convex function이고, $X$가 convex set이면&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(x^* )\le f(y), \forall y\in X \Leftrightarrow \triangledown f(x^* )^T(x-x^* ) \ge 0, \forall x\in X&lt;/script&gt;
+
+&lt;h3 id=&quot;proofrightarrow&quot;&gt;(Proof)$\Rightarrow$&lt;/h3&gt;
+&lt;p&gt;Let $f(x^* )\le f(y), \forall y \in X$&lt;br /&gt;
+Since $f$ is convex, $tf(x^* )+(1-t)f(y) \ge f(y+(x^* -y)t)$&lt;br /&gt;
+$\Rightarrow f(x^* ) \ge \frac{f(y+(x^* -y)t)-f(y)}{t} + f(y)$&lt;br /&gt;
+as $t\rightarrow0$,&lt;br /&gt;
+$=(x^* -y)\triangledown f(y)+f(y)$&lt;br /&gt;
+$\Rightarrow (y-x^* )\triangledown f(y)\ge f(y)-f(x^* ) \ge 0$&lt;br /&gt;
+$\therefore (y-x^* )\triangledown f(y) \ge 0, \forall y\in X$&lt;/p&gt;
+
+&lt;h3 id=&quot;proof-leftarrow-1&quot;&gt;(Proof) $\Leftarrow$&lt;/h3&gt;
+&lt;p&gt;Let $\triangledown f(x^* )^T(y-x^* )\ge 0, \forall y\in X$&lt;br /&gt;
+$f$가 convex이기 때문에, $f(y)\ge f(x^* )+\triangledown f(x^* )^T(y-x^* )$이다.&lt;br /&gt;
+$\Rightarrow f(y)-f(x^* )\ge\triangledown f(x^* )^T(y-x^* )\ge 0$&lt;br /&gt;
+$\therefore f(y)\ge f(x^* ), \forall y\in X$&lt;/p&gt;
+
+&lt;h2 id=&quot;thm-tayler&quot;&gt;(Thm) Tayler&lt;/h2&gt;
+
+&lt;p&gt;$f(x) = f(0) + f’(0)x + \frac{1}{2}f^{\prime\prime}(0)x^2+\cdots$&lt;br /&gt;
+$f(b) = f(a) + f’(a)(b-a) + \frac{1}{2}f^{\prime\prime}(c)(b-a)^2, c\in[a, b]$&lt;br /&gt;
+$ = f(a) + \triangledown f(a)^T(b-a) + \frac{1}{2}(b-a)^T\triangledown^2f(c)(b-a), c\in[a, a+\theta(b-a)], \theta\in[0, 1]$&lt;br /&gt;
+$\therefore f(b) \ge f(a)+\triangledown f(a)^T(b-a)$&lt;/p&gt;
+</description>
+        <pubDate>Wed, 04 Sep 2019 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/lecture/optimization/2019/09/04/Lecture2.html</link>
+        <guid isPermaLink="true">http://localhost:4000/lecture/optimization/2019/09/04/Lecture2.html</guid>
+        
+        
+        <category>Lecture</category>
+        
+        <category>Optimization</category>
+        
+      </item>
     
       <item>
         <title>Lecture 1</title>
@@ -818,168 +1039,6 @@ halo : 강한 빛을 내는 피사체를 찍을 때, 그 주변의 빛번짐 현
         <pubDate>Sun, 28 Jul 2019 00:00:00 +0900</pubDate>
         <link>http://localhost:4000/lecture/computervision/2019/07/28/Lecture7.html</link>
         <guid isPermaLink="true">http://localhost:4000/lecture/computervision/2019/07/28/Lecture7.html</guid>
-        
-        
-        <category>Lecture</category>
-        
-        <category>ComputerVision</category>
-        
-      </item>
-    
-      <item>
-        <title>CV Lecture 6 - Multiview Geometry</title>
-        <description>&lt;h1 id=&quot;structure-from-motion&quot;&gt;Structure from Motion&lt;/h1&gt;
-
-&lt;p&gt;Multiview geometry 문제에는 세 종류가 있다.&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;Scene geometry (Structure) : 2D 좌표가 주어질 때, 3D 좌표는 어디에 있는가?&lt;/li&gt;
-  &lt;li&gt;Correspondence (stereo matching) : 한 이미지에서의 한 점이 다른 이미지에서는 어디에 존재할 가능성이 있는가?&lt;/li&gt;
-  &lt;li&gt;Camera geometry (motion) : 한 대상에 대해 여러 관점의 이미지 좌표가 주어질 때, 카메라 파라미터 행렬은 무엇인가?&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;이번 단원에서는 1번에 대해 다룰 것이다. (2, 3번은 각각 &lt;a href=&quot;https://yeonjeejung.github.io/lecture/computervision/2019/07/20/Lecture5.html&quot;&gt;2번&lt;/a&gt;, &lt;a href=&quot;https://yeonjeejung.github.io/lecture/computervision/2019/07/07/Lecture3.html&quot;&gt;3번&lt;/a&gt;에서 다루었다.)&lt;/p&gt;
-
-&lt;h3 id=&quot;structure-from-motion-ambiguity&quot;&gt;Structure from Motion Ambiguity&lt;/h3&gt;
-
-&lt;p&gt;Scene geometry는 m개의 이미지와 n개의 3D 좌표가 주어졌을 때, m개의 projection matrix $P_i$와 n개의 3D 좌표 $X_j$를 $m\times n$개의 $x_{ij}$로부터 찾는 문제이다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbf{x}_{ij}=P_i\mathbf{X}_j&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;i=1, \cdots , m, j=1, \cdots, n&lt;/script&gt;
-
-&lt;p&gt;만약 scale factor $k$가 존재하고, 카메라 파라미터들을 모두 $k$로 나눈다면, 그렇지 않았을 때와 같은 식이 나오게 되므로 정확한 scale 측정이 불가능하다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbf{x}=P\mathbf{X}=\left(\frac{1}{k}P\right)(k\mathbf{X})&lt;/script&gt;
-
-&lt;p&gt;또는, transformation matrix $Q$를 이용해도 똑같은 결과가 나온다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbf{x}=P\mathbf{X}=(PQ^{-1})(Q\mathbf{X})&lt;/script&gt;
-
-&lt;h3 id=&quot;affine-camera&quot;&gt;Affine Camera&lt;/h3&gt;
-
-&lt;p&gt;Orthographic projection은 이미지 좌표에서 world좌표로 변환 시 $z$축의 변화가 없는 변환이었다. affine 카메라는 3D 공간상에서의 affine 변환, orthographic projection, 이미지상의 affine 변환 효과가 결합된 것이다. 따라서 다음 식으로 나타낼 수 있다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-P=\left[3\times3 \text{affine}\right]\left[\begin{matrix}1 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 1 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 1\end{matrix}\right]\left[4\times4 \text{affine}\right]=\left[\begin{matrix}a_{11} &amp; a_{12} &amp;a_{13} &amp;b_1 \\a_{21} &amp; a_{22} &amp;a_{23} &amp;b_2 \\ 0 &amp; 0 &amp; 0 &amp; 1\end{matrix}\right]=\left[\begin{matrix}A &amp; b \\ 0 &amp; 1\end{matrix}\right] %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;결국 affine 카메라는 linear mapping에 translation을 더한 것이다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\mathbf{x}=\left(\begin{matrix}x \\ y\end{matrix}\right)=\left[\begin{matrix}a_{11} &amp; a_{12} &amp; a_{13} \\ a_{21} &amp; a_{22} &amp; a_{23}\end{matrix}\right]\left(\begin{matrix}X \\ Y \\ Z \end{matrix}\right)+\left(\begin{matrix}b_1 \\ b_2\end{matrix}\right)=A\mathbf{X+b} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;이 해는 유일하지 않고, 임의의 affine transformation $Q$에 의해 &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
-\left[\begin{matrix}A &amp; b \\ 0 &amp; 1\end{matrix}\right] \rightarrow \left[\begin{matrix}A &amp; b \\ 0 &amp; 1\end{matrix}\right]Q^{-1} %]]&gt;&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;\left(\begin{matrix}X\\1\end{matrix}\right)\rightarrow Q\left(\begin{matrix}X\\1\end{matrix}\right)&lt;/script&gt;가 해가 될 수도 있다.&lt;/p&gt;
-
-&lt;h3 id=&quot;affine-structure-from-motion&quot;&gt;Affine Structure from Motion&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;우리는 $2mn$개의 변수를 알고 있고, $8m+3n$개를 모르고 $Q$가 12의 degree of freedom을 가지므로 $2mn \geq (8m+3n)-12$여야 이 문제를 풀수 있다?&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;먼저, 이미지 좌표의 중심을 빼므로써 centering을 한다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\hat{\mathbf{x}}_{ij}=\mathbf{x}_{ij}-\frac{1}{n}\sum_{k=1}^n\mathbf{x}_{ik}=A_i\mathbf{X}_j+b_i-\frac{1}{n}\sum_{k=1}^n(A_i\mathbf{X}_k+b_i)=A_i\hat{\mathbf{X}}_j&lt;/script&gt;
-
-&lt;p&gt;계산을 쉽게 하기 위해 world좌표계의 원점이 3D좌표계의 center라고 하자.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\hat{\mathbf{x}}_{ij}=A_i\mathbf{X}_j&lt;/script&gt;
-
-&lt;p&gt;그리고 $2m\times n$개의 데이터 행렬을 만든다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-D=\left[\begin{matrix}\hat{\mathbf{x}}_{11} &amp; \hat{\mathbf{x}}_{12} &amp; \cdots &amp; \hat{\mathbf{x}}_{1n} \\ \hat{\mathbf{x}}_{21} &amp; \hat{\mathbf{x}}_{22} &amp; \cdots &amp; \hat{\mathbf{x}}_{2n} \\
-&amp; &amp; \ddots &amp; \\
-\hat{\mathbf{x}}_{m1} &amp; \hat{\mathbf{x}}_{m2} &amp; \cdots &amp; \hat{\mathbf{x}}_{mn} \end{matrix}\right]=
-\left[\begin{matrix}A_1 \\ A_2 \\ \vdots \\ A_m\end{matrix}\right]
-\left[\begin{matrix}\mathbf{X}_1 &amp; \mathbf{X}_2&amp; \cdots &amp; \mathbf{X}_n\end{matrix}\right]=MS %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;이 행렬은 rank가 3이다. ($A$행렬이 열 3개이고 $D$는 $A$와 $X$들의 조합으로 만들어지므로)이제 Singular Value Decomposition (SVD)를 이용해 D를 세 개의 행렬로 나눌 수 있다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;D=UWV^T&lt;/script&gt;
-
-&lt;p&gt;rank가 3이기 때문에 W의 대각성분 3개 빼고는 다 0이다. 우리는 $U, W, V$행렬에서 좌측 3개만 가져와서 차원을 3으로 압축할 수 있다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;D=U_3W_3V_3^T&lt;/script&gt;
-
-&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;M=U_3W_3^{\frac{1}{2}}, S=W_3^{\frac{1}{2}}V_3^T&lt;/script&gt;라고 한다면, 원하는 차원의 $M$과 $S$를 얻을 수 있다.&lt;/p&gt;
-
-&lt;p&gt;이 decomposition도 유일하지 않아서, 임의의 $3\times3$ 행렬 $C$를 이용하여 $M\rightarrow MC$, $S\rightarrow C^{-1}S$의 해를 만들 수도 있다.&lt;/p&gt;
-
-&lt;h3 id=&quot;eliminating-the-affine-ambiguity&quot;&gt;Eliminating the Affine Ambiguity&lt;/h3&gt;
-
-&lt;p&gt;서로 직교하고 scale이 1인 축을 기준으로 하게 한다. 이 축은 다음 두 식을 만족한다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;a_1\cdot a_2=0&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\|a_1\|^2=\|a_2\|^2=1&lt;/script&gt;
-
-&lt;p&gt;이미지 한장당 $a_1, a_2$가 각각 존재할 것이다. 이들은 각각&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;a_1La_1^T=1&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;a_2La_2^T=1&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;a_1La_2^T=0&lt;/script&gt;
-
-&lt;p&gt;을 만족한다.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;A_i=\left[\begin{matrix}a_{1i} \\ a_{2i}\end{matrix}\right]&lt;/script&gt;라고 하면 $3m$개의 방정식&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;A_iLA_i^T=I&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;i=1, \cdots, m&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;을 얻을 수 있다. 이 방정식을 풀고, cholesky decomposition을 이용해 $L=CC^T$로 분해한 뒤 $M\rightarrow MC$, $S\rightarrow C^{-1}S$로 바꿔주면 &lt;strong&gt;&lt;em&gt;ambigudity를 없앨 수 있다?&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;missing-data&quot;&gt;Missing Data&lt;/h3&gt;
-
-&lt;p&gt;실제로 어떤 3D 좌표는 어떤 view의 이미지에서는 보이지 않을 수도 있기 때문에 $M$행렬이 원하는 모양으로 나오지 않을 수도 있다. 이 때는 이 행렬을 dense sub-block으로 나누고, 그 sub-block들을 factorize한 뒤 사용하는 방법이 있다. &lt;strong&gt;&lt;em&gt;incremental bilinear refinement를 사용한다는데.. 어떻게 하는거지&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;projective-structure-from-motion&quot;&gt;Projective Structure from Motion&lt;/h3&gt;
-
-&lt;p&gt;m개의 이미지와 n개의 3D 좌표가 주어졌을 때, m개의 projection matrix $P_i$와 n개의 3D 좌표 $X_j$를 $m\times n$개의 $x_{ij}$로부터 찾는 문제이다. 아까와 똑같지만, $z_{ij}$라는 depth가 추가로 존재한다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;z_{ij}\mathbf{x}_{ij}=P_i\mathbf{X}_j&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;i=1, \cdots , m, j=1, \cdots, n&lt;/script&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;calibration 정보가 없으면 카메라와 좌표들은 $4\times4$ projective transformation 행렬 $Q$를 통해서만 발견할 수 있다?&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;우리는 $2mn$개의 변수를 알고 있고, $11m+3n$개를 모르고 $Q$가 15의 degree of freedom을 가지므로 $2mn \geq (11m+3n)-15$여야 이 문제를 풀수 있다?&lt;/em&gt;&lt;/strong&gt; 따라서 2개의 카메라에 대해서는 최소 7개 점에 대한 정보가 필요하다.&lt;/p&gt;
-
-&lt;p&gt;우선 두 뷰 사이의 fundamental matrix $F$를 계산한다. 기준이 될 카메라의 행렬을 &lt;script type=&quot;math/tex&quot;&gt;\left[\begin{matrix}I \mid 0\end{matrix}\right]&lt;/script&gt;, 다른 카메라의 행렬을 &lt;script type=&quot;math/tex&quot;&gt;\left[\begin{matrix}A \mid b \end{matrix}\right]&lt;/script&gt;라고 하자. 그러면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;z\mathbf{x}=\left[I \mid 0\right]\mathbf{X}&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;z'\mathbf{x}'=\left[A\mid b\right]\mathbf{X}=A\left[I\mid 0\right]\mathbf{X}+b=zA\mathbf{x}+b&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;z'\mathbf{x}'\times b=zA\mathbf{x}\times b&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;(z'\mathbf{x}'\times b)\cdot \mathbf{x}'=(zA\mathbf{x}\times b)\cdot \mathbf{x}'=0&lt;/script&gt;
-
-&lt;p&gt;($\mathbf{x}’\times b$와 $\mathbf{x}’$는 서로 수직이므로 내적하면 0이 된다.)&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbf{x}'^T[b_{\times}]A\mathbf{x}=0&lt;/script&gt;
-
-&lt;p&gt;이므로, $F=[b_{\times}]A$이다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-D=\left[\begin{matrix}z_{11}\mathbf{x}_{11} &amp; z_{12}\mathbf{x}_{12} &amp; \cdots &amp; z_{1n}\mathbf{x}_{1n} \\ z_{21}\mathbf{x}_{21} &amp; z_{22}\mathbf{x}_{22} &amp; \cdots &amp; z_{2n}\mathbf{x}_{2n} \\
-&amp; &amp; \ddots &amp; \\
-z_{m1}\mathbf{x}_{m1} &amp; z_{m2}\mathbf{x}_{m2} &amp; \cdots &amp; z_{mn}\mathbf{x}_{mn} \end{matrix}\right]=
-\left[\begin{matrix}P_1 \\ P_2 \\ \vdots \\ P_m\end{matrix}\right]
-\left[\begin{matrix}\mathbf{X}_1 &amp; \mathbf{X}_2&amp; \cdots &amp; \mathbf{X}_n\end{matrix}\right]=MS %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;$z$를 알고 있다면 factorize를 통해 $M, S$를 구할 수 있고, $M, S$를 알고 있다면 $z$를 구할 수 있다.&lt;/p&gt;
-
-&lt;h3 id=&quot;self-calibration&quot;&gt;Self-Calibration&lt;/h3&gt;
-
-&lt;p&gt;Self-Calibration (auto-calibration)은 카메라의 intrinsic 파라미터를 바로 알아내는 것이다. intrinsic 파라미터는 모든 이미지에 대해 상관없이 일정하다는 조건을 가지고 찾아낼 수 있다.&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;h2 id=&quot;terms&quot;&gt;Terms&lt;/h2&gt;
-&lt;p&gt;tangency : 접합  &lt;br /&gt;
-fuse : 사용하다&lt;/p&gt;
-</description>
-        <pubDate>Fri, 26 Jul 2019 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/lecture/computervision/2019/07/26/Lecture6.html</link>
-        <guid isPermaLink="true">http://localhost:4000/lecture/computervision/2019/07/26/Lecture6.html</guid>
         
         
         <category>Lecture</category>
