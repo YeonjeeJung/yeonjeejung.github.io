@@ -5,12 +5,155 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 05 Sep 2019 14:16:07 +0900</pubDate>
-    <lastBuildDate>Thu, 05 Sep 2019 14:16:07 +0900</lastBuildDate>
+    <pubDate>Tue, 10 Sep 2019 23:27:57 +0900</pubDate>
+    <lastBuildDate>Tue, 10 Sep 2019 23:27:57 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
-        <title>Lecture 2</title>
+        <title>Robot Lecture 3</title>
+        <description>
+</description>
+        <pubDate>Mon, 09 Sep 2019 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/lecture/robot/2019/09/09/RobLecture3.html</link>
+        <guid isPermaLink="true">http://localhost:4000/lecture/robot/2019/09/09/RobLecture3.html</guid>
+        
+        
+        <category>Lecture</category>
+        
+        <category>Robot</category>
+        
+      </item>
+    
+      <item>
+        <title>Optimization Lecture 3</title>
+        <description>&lt;h1 id=&quot;convex-optimization&quot;&gt;Convex Optimization&lt;/h1&gt;
+&lt;h2 id=&quot;gradient-descent&quot;&gt;Gradient Descent&lt;/h2&gt;
+&lt;h3 id=&quot;gradient-descent-algorithm&quot;&gt;Gradient Descent Algorithm&lt;/h3&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;x_t \leftarrow x_t - \gamma\triangledown f(x_t)&lt;/script&gt;
+
+&lt;p&gt;이거나, $\gamma$를 $t$의 함수로 표현하여&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;x_t \leftarrow x_t - \gamma_t\triangledown f(x_t)&lt;/script&gt;
+
+&lt;p&gt;로 업데이트 하여 최적점을 찾아가는 방법을 gradient descent 알고리즘이라고 한다. 이 때 $\gamma_t$는 $\frac{1}{t}$, $\frac{1}{\sqrt{t}}$, $\frac{1}{\log{t}}$, $\cos{\theta t}$가 주로 쓰인다.&lt;/p&gt;
+
+&lt;h3 id=&quot;convergence-rate&quot;&gt;Convergence Rate&lt;/h3&gt;
+
+&lt;p&gt;Convergence rate은&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(x_t)-f(x^* )\le\epsilon&lt;/script&gt;
+
+&lt;p&gt;을 만족하는 $t$를 찾기까지의 시행 수를 Big O 표기법으로 나타내는 것이다.&lt;/p&gt;
+
+&lt;h2 id=&quot;strong-convex&quot;&gt;Strong Convex&lt;/h2&gt;
+&lt;h3 id=&quot;alpha-strong-convex&quot;&gt;$\alpha$-Strong Convex&lt;/h3&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(x)-f(y)\le\triangledown f(x)^T(x-y)-\frac{\alpha}{2}\|x-y\|^2, \forall x,y&lt;/script&gt;
+
+&lt;p&gt;를 만족할 때의 $\alpha$를 앞에 붙여 $\alpha$-strong convex라고 한다. 만약 $f$가 미분불가능하면 subgradient로 $\alpha$-strongly convexity를 정할 수 있다.&lt;/p&gt;
+
+&lt;p&gt;다르게는
+&lt;script type=&quot;math/tex&quot;&gt;f(y)\ge f(x)+\triangledown f(x)^T(y-x)+\frac{\alpha}{2}\|x-y\|^2&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;로 쓸 수 있다.&lt;/p&gt;
+
+&lt;h2 id=&quot;smooth&quot;&gt;Smooth&lt;/h2&gt;
+&lt;h3 id=&quot;beta-smooth&quot;&gt;$\beta$-Smooth&lt;/h3&gt;
+&lt;p&gt;$\triangledown f$가 $\beta$-Lipschitz이고&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\|\triangledown f(x)-\triangledown f(y)\|\le\beta\|x-y\|&lt;/script&gt;
+
+&lt;p&gt;를 만족할 때의 $\beta$를 앞에 붙여 $\beta$-smooth라고 한다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(x)-f(y) \ge \triangledown f(x)^T(x-y)-\frac{\beta}{2}\|x-y\|^2, \forall x,y&lt;/script&gt;
+
+&lt;p&gt;라고도 쓸 수 있고, 또는&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(y) \le f(x)+\triangledown f(x)^T(y-x)+\frac{\beta}{2}\|x-y\|^2&lt;/script&gt;
+
+&lt;p&gt;라고도 쓸 수 있다.&lt;/p&gt;
+
+&lt;p&gt;$\beta$-smooth 함수에서 gradient descent 알고리즘을 사용해 최적값을 찾을 때에는 &lt;script type=&quot;math/tex&quot;&gt;\|\triangledown f(x)-\triangledown f(x^* )\|\le\beta \|x-x^* \|&lt;/script&gt;이고, $\triangledown f(x^* )=0$이기 때문에 learning rate가 $\gamma = \frac{1}{\beta}$인 것이 좋다. 하지만 보통의 convex optimization에서는 $\beta$를 모르기 때문에 learning rate를 정하는 것이 어렵다.&lt;/p&gt;
+
+&lt;p&gt;어떤 함수가 $\alpha$-strong이고 $\beta$-smooth이면 항상 $\alpha \le \beta$가 성립한다. 또한, convex optimization에서 $\alpha = \beta$일 때 가장 쉽게 해를 찾을 수 있다. 항상 $0 \le \frac{\alpha}{\beta} \le 1$ 이므로, $\frac{\alpha}{\beta}$가 1에 가까울수록 해를 찾기가 쉽다.&lt;/p&gt;
+
+&lt;h2 id=&quot;second-order-characterization-of-convexity&quot;&gt;Second-order Characterization of convexity&lt;/h2&gt;
+
+&lt;p&gt;$f$가 두 번 미분가능하면 $\forall x\in\mathbf{dom}{(f)}$에서 항상 $\triangledown^2f(x)$가 존재한다. 그리고&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;f \text{ is convex }\Leftrightarrow \triangledown^2 f(x) \text{ is positive semidefinite }\forall x\in\mathbf{dom}{(f)}&lt;/script&gt;
+
+&lt;p&gt;가 항상 성립한다.&lt;/p&gt;
+
+&lt;h3 id=&quot;def-positive-definite&quot;&gt;(Def) Positive Definite&lt;/h3&gt;
+
+&lt;p&gt;$A\in\mathbb{R}^{d\times d}$는&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;x^TAx \gt 0, \forall x\in \mathbb{R}^d&lt;/script&gt;
+
+&lt;p&gt;를 만족할 때 positive definite라고 한다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;x^TAx\ge 0 , \forall x\in \mathbb{R}^d&lt;/script&gt;
+
+&lt;p&gt;를 만족하면 positive semidefinite이라고 한다.&lt;/p&gt;
+
+&lt;h2 id=&quot;hessian-smooth-strong-convexity&quot;&gt;Hessian, Smooth, Strong convexity&lt;/h2&gt;
+&lt;p&gt;$f$가 $\alpha$-strongly convex이고 $\beta$-smooth이면&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\alpha I \le \triangledown^2f(x)\le\beta I&lt;/script&gt;
+
+&lt;p&gt;를 항상 만족하는데, 행렬 $A, B$에 대하여 $A\le B$는 $B-A$가 positive semidefinite임을 뜻한다. 또한, 이는 $\triangledown^2 f(x)$의 eigenvalue들이 $\alpha$보다 크고 $\beta$보다 작음을 뜻한다.&lt;/p&gt;
+
+&lt;h2 id=&quot;vanila-analysis&quot;&gt;Vanila Analysis&lt;/h2&gt;
+&lt;p&gt;만약 $f$가 strongly convex도 아니고, smooth하지도 않지만 $L$-Lipschitz continuous하다고 했을 때, $f(x)-f(x^* )$를 gradient descent를 이용해 어떻게 bound하는지에 대해 알아보자. 여기서는 &lt;script type=&quot;math/tex&quot;&gt;2a^Tb = \|a\|^2+\|b\|^2-\|a-b\|^2 \cdots(* )&lt;/script&gt;임을 이용할 것이다.&lt;/p&gt;
+
+&lt;p&gt;$f(x_t)-f(x^* )$&lt;/p&gt;
+
+&lt;p&gt;$\le\triangledown f(x_t)^T(x_t-x^* )$&lt;/p&gt;
+
+&lt;p&gt;$=\frac{1}{\gamma}(x_t-x_{t+1})^T(x_t-x^* )$ ($x_{t+1} = x_t-\gamma\triangledown f(x_t)$, gradient descent)&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;=\frac{1}{2\gamma}(\|x_t-x_{t+1}\|^2+\|x_t-x^* \|^2-\|x_{t+1}-x^* \|^2)&lt;/script&gt; (위 $(* )$에 의해)&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;=\frac{\gamma}{2}\|\triangledown f(x_t)\|^2+\frac{1}{2\gamma}(\|x_t-x^* \| -\|x_{t+1}-x^* \|^2)&lt;/script&gt; 이다.&lt;/p&gt;
+
+&lt;p&gt;이들을 모든 $t$에 대해 다 더하면,&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\sum_{t=0}^{T-1}\left(f(x_t)-f(x^* )\right)\le\frac{1}{2\gamma}(\|x_0-x^* \|^2-\|x_T-x^* \|^2) + \sum_{t=0}^{T-1}\frac{\gamma}{2}\|\triangledown f(x_t)\|^2&lt;/script&gt;
+
+&lt;p&gt;가 된다. $f$가 Lipschitz continuous라고 했으므로 항상 &lt;script type=&quot;math/tex&quot;&gt;\|\triangledown f(x_t)\|^2 \le L^2&lt;/script&gt;이다. &lt;script type=&quot;math/tex&quot;&gt;\bar{x} = \frac{x_0+\cdots+x_{T-1}}{T}&lt;/script&gt;라고 하면, &lt;script type=&quot;math/tex&quot;&gt;f(\bar{x})\le\frac{1}{T}\sum_{t=0}^{T-1}f(x_t)&lt;/script&gt; 임이 성립하고,&lt;/p&gt;
+
+&lt;p&gt;$f(\bar{x})-f(x^* )$&lt;/p&gt;
+
+&lt;p&gt;$\le\frac{1}{T}\sum_{t=0}^{T-1}\left(f(x_t)-f(x^* )\right)$&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;\le \frac{1}{2\gamma T}\|x_0-x^* \|^2 + \frac{\gamma}{2}L^2&lt;/script&gt; (Lipschitz continuous에 의해)&lt;/p&gt;
+
+&lt;p&gt;$=\frac{1}{2\gamma T}R^2 + \frac{\gamma}{2}L^2$ ($R = x_0-x^* $라고 하자)&lt;/p&gt;
+
+&lt;p&gt;가 된다. 따라서 여기에 적합한 learning rate 를 rough하게 계산해보면 $\gamma = \frac{R}{L\sqrt{T}}$가 적합하다. (마지막 식을 미분해서 0 되는 $\gamma$ 찾음)&lt;/p&gt;
+
+&lt;h3 id=&quot;l-lipschitz-continuous&quot;&gt;$L$-Lipschitz Continuous&lt;/h3&gt;
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;\|f(x)-f(y)\| \le L\|x-y\|, \forall x,y&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;를 만족할 때 $L$-Lipschitz continuous라고 하고, $f$가 미분가능하면 &lt;script type=&quot;math/tex&quot;&gt;\|\triangledown f(x)\|\le L&lt;/script&gt;을 만족할 때 Lipschitz continuous라고 한다.&lt;/p&gt;
+
+&lt;p&gt;이 때 $\gamma = \frac{1}{L}$로 잡으면 diverge는 방지할 수 있지만 fast converge는 보장하지 못한다.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 09 Sep 2019 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/lecture/optimization/2019/09/09/OptLecture3.html</link>
+        <guid isPermaLink="true">http://localhost:4000/lecture/optimization/2019/09/09/OptLecture3.html</guid>
+        
+        
+        <category>Lecture</category>
+        
+        <category>Optimization</category>
+        
+      </item>
+    
+      <item>
+        <title>Optimization Lecture 2</title>
         <description>&lt;h1 id=&quot;convex-optimization&quot;&gt;Convex Optimization&lt;/h1&gt;
 
 &lt;h2 id=&quot;convex-optimization-1&quot;&gt;Convex Optimization&lt;/h2&gt;
@@ -220,8 +363,8 @@ $ = f(a) + \triangledown f(a)^T(b-a) + \frac{1}{2}(b-a)^T\triangledown^2f(c)(b-a
 $\therefore f(b) \ge f(a)+\triangledown f(a)^T(b-a)$&lt;/p&gt;
 </description>
         <pubDate>Wed, 04 Sep 2019 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/lecture/optimization/2019/09/04/Lecture2.html</link>
-        <guid isPermaLink="true">http://localhost:4000/lecture/optimization/2019/09/04/Lecture2.html</guid>
+        <link>http://localhost:4000/lecture/optimization/2019/09/04/OptLecture2.html</link>
+        <guid isPermaLink="true">http://localhost:4000/lecture/optimization/2019/09/04/OptLecture2.html</guid>
         
         
         <category>Lecture</category>
@@ -231,7 +374,7 @@ $\therefore f(b) \ge f(a)+\triangledown f(a)^T(b-a)$&lt;/p&gt;
       </item>
     
       <item>
-        <title>Lecture 1</title>
+        <title>Optimization Lecture 1</title>
         <description>&lt;p&gt;딥러닝에서 objective function의 설계는 중요하다. 이 때 문제를 더 간단하게 만들기 위해 convex의 개념을 도입한다.&lt;/p&gt;
 
 &lt;h3 id=&quot;convex-set&quot;&gt;Convex set&lt;/h3&gt;
@@ -253,8 +396,8 @@ $\therefore f(b) \ge f(a)+\triangledown f(a)^T(b-a)$&lt;/p&gt;
 &lt;p&gt;이 때 이차미분항이 양수이면, $\triangledown f(x)$의 양상을 더 쉽게 알 수 있다.&lt;/p&gt;
 </description>
         <pubDate>Mon, 02 Sep 2019 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/lecture/optimization/2019/09/02/Lecture1.html</link>
-        <guid isPermaLink="true">http://localhost:4000/lecture/optimization/2019/09/02/Lecture1.html</guid>
+        <link>http://localhost:4000/lecture/optimization/2019/09/02/OptLecture1.html</link>
+        <guid isPermaLink="true">http://localhost:4000/lecture/optimization/2019/09/02/OptLecture1.html</guid>
         
         
         <category>Lecture</category>
@@ -846,199 +989,6 @@ precision : 정밀도&lt;/p&gt;
         <pubDate>Sun, 04 Aug 2019 00:00:00 +0900</pubDate>
         <link>http://localhost:4000/lecture/computervision/2019/08/04/Lecture9.html</link>
         <guid isPermaLink="true">http://localhost:4000/lecture/computervision/2019/08/04/Lecture9.html</guid>
-        
-        
-        <category>Lecture</category>
-        
-        <category>ComputerVision</category>
-        
-      </item>
-    
-      <item>
-        <title>CV Lecture 8 - Light-Field Imaging</title>
-        <description>&lt;h1 id=&quot;lightfields&quot;&gt;Lightfields&lt;/h1&gt;
-
-&lt;h3 id=&quot;ray&quot;&gt;Ray&lt;/h3&gt;
-
-&lt;p&gt;Ray는 5D 정보로 이루어져 있다.(3D 위치, 2D 방향) plenoptic 기술은 이런 5D정보를 가진 ray들을 활용하여 다양한 영상처리를 할 수 있다.&lt;/p&gt;
-
-&lt;p&gt;반면, line은 4D의 정보를 가지고 있다. (2D 위치, 2D 방향) &lt;strong&gt;&lt;em&gt;discretize 한 후에 다시 interpolate 할 수 있다?&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;image&quot;&gt;Image&lt;/h3&gt;
-&lt;p&gt;이미지란, 눈(또는 렌즈)이라는 한 점으로 들어오는 빛의 정보들을 수치화한 것이다. 앞 단원들에서 계속 나오던 &lt;a href=&quot;https://yeonjeejung.github.io/lecture/computervision/2019/07/07/Lecture3.html&quot;&gt;이미지 평면&lt;/a&gt;도 결국에는 사물에서 반사된 빛이 눈이라는 한 점으로 들어오는 도중의 한 평면과의 교점들이라고 할 수 있다.&lt;/p&gt;
-
-&lt;h3 id=&quot;object&quot;&gt;Object&lt;/h3&gt;
-
-&lt;p&gt;하지만 대상에서 반사되는 모든 빛을 알 수는 없다. 이미지란 대상의 모든 곳에서 반사되는 빛 중 렌즈로 들어오는 빛만 캡쳐한 것이다. 그러므로 정보의 손실이 일어나게 되는데, 이 정보들 (4D정보들)을 다 모으면 렌즈 방향이 아닌 다른 방향에서 어떻게 보일지도 알 수 있다.&lt;/p&gt;
-
-&lt;h3 id=&quot;lumigraph&quot;&gt;Lumigraph&lt;/h3&gt;
-
-&lt;p&gt;Lumigraph는 위에서 설명한 빛의 정보를 저장하는 방법이다.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://www.lightfield-info.com/lightfield-image.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.lightfield-info.com/lightfield-image.jpg&quot;&gt;Source&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;2개의 평면을 이용할 수 있다. 한 평면은 대상이 존재하는 평면($u, v$평면)이고, 다른 평면은 카메라 평면($s, t$평면)이다. 카메라는 카메라 평면 위에서 움직이고, 각 이미지 평면을 통과하는 빛을 캡쳐한다.&lt;/p&gt;
-
-&lt;p&gt;캡쳐 방법에는 두 가지가 있는데, &lt;strong&gt;&lt;em&gt;카메라를 $s, t$평면에서 움직이는 방법(lightfield rendering)과 카메라를 아무데나 움직인 뒤 rebinnig하는 방법(lumigraph)이 있다?&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;우리가 알고 있는 평면은 2개이기 때문에 $u, v$평면의 각 점에 $s, t$평면의 모든 정보를 넣을 수도 있고, 반대로 할 수도 있다. 첫 번째 경우는 off-axis perspective view와 같고, 두 번째의 경우는 reflectance map과 같다.&lt;/p&gt;
-
-&lt;h1 id=&quot;light-field-rendering&quot;&gt;Light Field Rendering&lt;/h1&gt;
-
-&lt;p&gt;렌더링을 하기 위해서는 특정 위치에서 바라볼 때 빛이 어디서 어떻게 들어오는지의 정보를 lumigraph로부터 알아내야 한다. 우선 렌더링 시점은 카메라 평면보다 뒤쪽이다. 내 위치에서 모든 방향으로부터 들어오는 빛의 정보가 필요한데, 카메라가 모든 카메라평면에 대해 존재하는 것이 아니기 때문에 모든 점에 대해서 정보를 가지고 있는 것이 아니므로 정보가 없는 점은 interpolation을 이용해서 정보를 만들어낸다. 이 때는 quadrilinear interpolation을 사용한다. 원래의 bilinear interpolation은 주변 네 개의 점을 이용한다. 식은 다음과 같다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;s = \alpha_0s_0+\alpha_1s_1 \text{  where  } \alpha_0+\alpha_1=1&lt;/script&gt;
-
-&lt;p&gt;quadrilinear interpolation은 점 $(s, t_0)$와 $(u_0, v_0)$가 주어질 때 $s_0$와 $s_1$에 대해서 계산해야 하기 때문에&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;L(s, t_0, u_0, v_0)=\alpha_0L(s_0, t_0, u_0, v_0)+\alpha_1L(s_1, t_0, u_0, v_0)&lt;/script&gt;
-
-&lt;p&gt;이 되는데, 이 계산을 $s, t, u, v$에 대해서 다 해야하므로&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;L(s, t, u, v)=\sum_{i=0}^1\sum_{j=0}^1\sum_{k=0}^1\sum_{l=0}^1\alpha_i\beta_j\gamma_k\delta_lL(s_i, t_j, u_k, v_l)&lt;/script&gt;
-
-&lt;p&gt;이라는 식으로 설명할 수 있다.&lt;/p&gt;
-
-&lt;p&gt;표현을 쉽게 하기 위해 2D Ray Space를 사용할 수 있는데, 편의를 위해 특정 $t$와 특정 $v$가 주어졌다고 할 때의 $s, u$의 조합을 그려보면 $n_s\times n_u$개의 조합이 생긴다.(가로가 $u$, 세로가 $s$) 이를 2D평면으로 옮긴 것으로, 하나의 조합은 하나의 점으로 표현된다. 그리고 여러 조합의 교점은 직선으로 표현된다. 이 때, 2D Ray Space에서의 직선의 기울기가 작으면($s$는 조금 움직이는데 $u$는 많이 움직임) 해당 점이 더 가까운 것이므로 depth가 작다고 볼 수 있고, 반대로 직선의 기울기가 작으면 ($s$는 많이 움직이는데 $u$는 거의 움직이지 않음) 해당 점이 더 먼 것이므로 depth가 크다고 볼 수 있다.&lt;/p&gt;
-
-&lt;h3 id=&quot;various-lumigraph&quot;&gt;Various Lumigraph&lt;/h3&gt;
-
-&lt;p&gt;우리는 카메라 평면을 사용하여 4D lumigraph를 만들었는데, 여기서 $t$를 빼고 3D lumigraph를 만들 수도 있다. 4D에서와 똑같지만 카메라를 한 직선에서만 움직이는 방법을 사용할 수 있다.&lt;/p&gt;
-
-&lt;p&gt;이때 직선이 아닌 원을 그리며 카메라를 움직이면 Concentric Mosaic를 만들 수도 있다.&lt;/p&gt;
-
-&lt;h3 id=&quot;layered-depth-image&quot;&gt;Layered Depth Image&lt;/h3&gt;
-
-&lt;p&gt;2.5D representation이라는 것도 있다. Layered Depth Image라고도 하는데, 최소 3개의 카메라를 이용하여 대상을 둘러싸서 이미지를 얻는다. 그러면 가운데 카메라에서는 보이지 않는 깊이 정보가 양 옆 카메라에 의해 얻어지게 된다. 평면이지만, depth정보에 따라 더 앞으로 나오거나 더 뒤로 들어간 평면들이 걸과물로 나오게 된다.&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;h2 id=&quot;terms&quot;&gt;Terms&lt;/h2&gt;
-&lt;p&gt;aperture : 틈&lt;br /&gt;
-collimate : 일직선의&lt;br /&gt;
-lenticular : 수정체의&lt;br /&gt;
-light field : 물체에서 발산하는 광선의 분포를 재현하는 기술
-dispersive : 전파성의&lt;br /&gt;
-medium : 매개&lt;/p&gt;
-</description>
-        <pubDate>Tue, 30 Jul 2019 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/lecture/computervision/2019/07/30/Lecture8.html</link>
-        <guid isPermaLink="true">http://localhost:4000/lecture/computervision/2019/07/30/Lecture8.html</guid>
-        
-        
-        <category>Lecture</category>
-        
-        <category>ComputerVision</category>
-        
-      </item>
-    
-      <item>
-        <title>CV Lecture 7 - Thin Lens Optics</title>
-        <description>&lt;h1 id=&quot;camera-with-lens&quot;&gt;Camera with Lens&lt;/h1&gt;
-
-&lt;p&gt;pinhole 모델은 들어오는 빛이 매우 적어 노출 시간이 길어야 제대로 된 이미지를 얻을 수 있고, sharpness에 약하다는 단점이 있었다.&lt;/p&gt;
-
-&lt;p&gt;렌즈는 필름에 빛을 모아주므로 이런 단점들을 극복할 수 있었다. 렌즈는 focal length만큼 렌즈에서 떨어진 지점에 렌즈에 수직으로 들어오는 평행한 빛들을 모아준다. 렌즈의 중심부로 모이는 빛은 변형되지 않고 pinhole 모델에서와 똑같이 행동한다.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://www.photonics.com/images/Web/Articles/2009/3/8/GaussianNewtonianThinLensFormulas_Table1.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.photonics.com/images/Web/Articles/2009/3/8/GaussianNewtonianThinLensFormulas_Table1.jpg&quot;&gt;Source&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;대상에서부터 렌즈까지의 거리를 $s’$, 렌즈에서 센서까지의 거리를 $s$라고 하자. 렌즈 중심에서 대상에 내린 수선의 발과 렌즈 끝에서 대상에 내린 수선의 발까지의 거리를 $y’$라고 하고, 렌즈 중심에서 센서평면에 내린 수선의 발과 렌즈 끝에서 대상에 내린 수선의 발에서부터 들어온 빛이 센서평면에 닿는 점까지의 거리를 $y$이라고 하자. 그러면 닮음 삼각형 때문에 $\frac{y}{y’}=\frac{s}{s’}$가 된다.&lt;/p&gt;
-
-&lt;p&gt;focal length가 형성되는 지점을 중심으로 또다른 닮은 삼각형이 있다. 이 때는 $\frac{y}{y’}=\frac{s-f}{f’}$의 식을 만들 수 있다. 위 두 식을 이용하면, $\frac{1}{f}=\frac{1}{s’}+\frac{1}{s}$을 얻을 수 있다.&lt;/p&gt;
-
-&lt;h3 id=&quot;depth-of-field-dof&quot;&gt;Depth of Field (DOF)&lt;/h3&gt;
-
-&lt;p&gt;Depth of Field는 focus된 이미지를 얻을 수 있는 최소 거리와 최대 거리의 차이를 말한다. 만약 조리개 크기를 $f/2.0\rightarrow f/4.0$으로 변화시킨다면 DOF는 2배가 된다. focusing distance를 반으로 줄이면 DOF도 반으로 줄어든다.&lt;/p&gt;
-
-&lt;h3 id=&quot;field-of-view-fov&quot;&gt;Field of View (FOV)&lt;/h3&gt;
-
-&lt;p&gt;시야각이라고 한다. 사진에 담을 수 있는 끝점과 렌즈에 직교하는 선이 이루는 각도이다. $\phi$로 나타내며, 위에서 쓴 notation을 이용하면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\phi=\tan^{-1}\left(\frac{y}{f}\right)&lt;/script&gt;
-
-&lt;p&gt;이다.&lt;/p&gt;
-
-&lt;h3 id=&quot;lens-flaws&quot;&gt;Lens Flaws&lt;/h3&gt;
-
-&lt;p&gt;렌즈는 빛의 주파수에 따라 다른 굴절율을 갖고 있기 때문에 색채 이상 현상이 나타난다. 이를 chromatic aberration(색 수차)이라고 하며, 가장자리에서 더욱 심하다.&lt;/p&gt;
-
-&lt;p&gt;구면 렌즈에서는 렌즈 가장자리로 들어오는 빛의 초점과 렌즈 중앙으로 들어오는 빛의 초점이 정확하게 일치하지 않는 특징 때문에 spherical aberration(구면 수차)가 발생하기도 한다. 이 때는 초점이 한 점으로 생기는 것이 아니라 원 모양으로 생긴다.&lt;/p&gt;
-
-&lt;p&gt;또한 렌즈에 수직이 아닌 각도로 빛이 들어올 때는 물방울 모양으로 초점이 생기는 현상인 comatic aberration(혜성형 수차)가 나타나기도 한다.&lt;/p&gt;
-
-&lt;p&gt;사람 눈에서 나타나는 난시와 같이, 렌즈의 가로, 세로에서의 초점이 일치하지 않아서 생기는 astigmatism(비점수차)현상도 있다.&lt;/p&gt;
-
-&lt;p&gt;이 외에도 geometrical aberration, wave optics, vignetting, lens flare, &lt;a href=&quot;https://yeonjeejung.github.io/lecture/computervision/2019/07/07/Lecture3.html&quot;&gt;radial distortion&lt;/a&gt; 등의 이상 현상이 일어날 수 있다.&lt;/p&gt;
-
-&lt;h1 id=&quot;digital-camera&quot;&gt;Digital Camera&lt;/h1&gt;
-
-&lt;p&gt;디지털 카메라는 기존 필름의 역할을 센서의 행렬로 교체했다. 각 셀은 빛에 민감한 다이오드이며, 이들이 광양자를 전기신호로 바꿔준다. 주로 이용되는 방식은 Charge Coupled Devive(CCD)와 Complementary Metal Oxide Semiconductor(CMOS)가 있다.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
-\left[\begin{matrix}B&amp;G\\G&amp;R\end{matrix}\right] %]]&gt;&lt;/script&gt;의 필터가 사람의 추상체 역할을 하며 각 색상에 반응한다. 전체의 $\frac{1}{4}$는 빨강, $\frac{1}{4}$은 파랑, 나머지 $\frac{1}{2}$은 초록색 센서로, 해당 색상이 없는 칸은 옆 칸의 색상으로 보간을 해준다.&lt;/p&gt;
-
-&lt;h3 id=&quot;demosaicing&quot;&gt;Demosaicing&lt;/h3&gt;
-
-&lt;p&gt;보간을 하는 가장 쉬운 방법은 nearest neighbor 보간법이다. 주변의 가장 가까운 곳에 있는 센서의 값을 가져오는 방법인데, 화질 저하를 불러올 수 있다.&lt;/p&gt;
-
-&lt;p&gt;두번째 방법으로는 bilinear interpolation이 있다. 해당 센서 사방에 있는 값을 평균내는 방법이다. 더 넓은 공간의 정보를 이용하는 bicubic interpolation도 있다.&lt;/p&gt;
-
-&lt;h3 id=&quot;focal-length--sensor&quot;&gt;Focal length &amp;amp; Sensor&lt;/h3&gt;
-
-&lt;p&gt;센서의 크기가 작아지면 그에 비례하여 FOV도 작아진다.&lt;/p&gt;
-
-&lt;h3 id=&quot;digital-camera-artifacts&quot;&gt;Digital Camera Artifacts&lt;/h3&gt;
-
-&lt;p&gt;디지털 카메라는 센서로 나뉘어 있기 때문에 필름 카메라에 비해 여러 단점이 있을 수 있다. 우선 양자화로 인해 노이즈가 생길 수 있고, 카메라 내에서 프로세싱이 추가로 진행된다. 또한 압축으로 인해 blocking 현상이 생길 수 있고 주변 픽셀로 번지는 blooming 현상도 있을 수 있다. 또한 색이 의도했던 바와는 다르게 표현될 수 있다.&lt;/p&gt;
-
-&lt;h3 id=&quot;explosure&quot;&gt;Explosure&lt;/h3&gt;
-
-&lt;p&gt;노출이란, 대상으로부터 반사된 빛이 카메라 디텍터에 들어오는 빛의 양이다. $H$로 표현되고, 빛의 양 $E$와 노출시간 $t$에 의해&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;H=E\cdot t&lt;/script&gt;
-
-&lt;p&gt;라고 쓸 수 있다. $E$의 단위는 illuminance(lux)이고 $t$의 단위는 time(second)이므로, 노출의 단위는 $\text{lx}\cdot \text{sec}$ 이다.&lt;/p&gt;
-
-&lt;p&gt;노출에는 두 가지의 주요 파라미터가 있는데, 조리개값과 셔터 속도이다. 더 작은 조리개값으로 같은 노출값을 유지하고 싶다면, 셔터 속도를 늘이면 된다. 단, 셔터 속도는 짧을수록 순간적인 장면을 더 잘 포착할 수 있다.&lt;/p&gt;
-
-&lt;h3 id=&quot;sensitivity-iso&quot;&gt;Sensitivity (ISO)&lt;/h3&gt;
-
-&lt;p&gt;감도라고 한다. 조리개값, 셔터 속도와 함께 노출을 조절해주는 요소이다. 감도가 높으면 더 밝은 사진을 찍을 수 있지만, 노이즈가 더 추가된다.&lt;/p&gt;
-
-&lt;h3 id=&quot;digital-imaging-workflow&quot;&gt;Digital Imaging Workflow&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Scene Radiance&lt;/li&gt;
-  &lt;li&gt;Amplifying &amp;amp; Quantization of voltage&lt;/li&gt;
-  &lt;li&gt;Demosaic &amp;amp; Denoising&lt;/li&gt;
-  &lt;li&gt;White Balancing&lt;/li&gt;
-  &lt;li&gt;Camera Output&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;hr /&gt;
-&lt;h2 id=&quot;terms&quot;&gt;Terms&lt;/h2&gt;
-&lt;p&gt;optics : 광학&lt;br /&gt;
-deviate : 벗어나다&lt;br /&gt;
-aparture : 틈, 구멍&lt;br /&gt;
-focal length : 렌즈와 상이 맺히는 지점(focusing plane)까지의 거리&lt;br /&gt;
-focusing distance : 대상과 상이 맺히는 지점까지의 거리&lt;br /&gt;
-aberrated : 비정상의
-flaw : 결함&lt;br /&gt;
-chromatic : 색채의&lt;br /&gt;
-refractive : 굴절에 의한&lt;br /&gt;
-astigmatism : 난시, 비점수차
-diffraction : 회절&lt;br /&gt;
-vignetting : 감광&lt;br /&gt;
-photon : 광양자&lt;br /&gt;
-trichromatic : 삼원색의&lt;br /&gt;
-halo : 강한 빛을 내는 피사체를 찍을 때, 그 주변의 빛번짐 현상&lt;/p&gt;
-</description>
-        <pubDate>Sun, 28 Jul 2019 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/lecture/computervision/2019/07/28/Lecture7.html</link>
-        <guid isPermaLink="true">http://localhost:4000/lecture/computervision/2019/07/28/Lecture7.html</guid>
         
         
         <category>Lecture</category>
