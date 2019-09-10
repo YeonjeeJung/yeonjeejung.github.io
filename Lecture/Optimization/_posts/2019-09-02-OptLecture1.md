@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Lecture 1
+title: Optimization Lecture 1
 author: Yeonjee Jung
 use_math: true
 ---

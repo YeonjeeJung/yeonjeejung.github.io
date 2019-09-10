@@ -54,7 +54,7 @@
 
   <!-- Site styles -->
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://localhost:4000/page3/">
+  <link rel="canonical" href="http://localhost:4000/page5/">
   <link rel="alternate" type="application/rss+xml" title="YeonjeeJung's Blog" href="http://localhost:4000/feed.xml" />
 </head>
 
@@ -106,125 +106,17 @@
   
   <li>
     <h2>
-      <a class="post-link" href="/lecture/computervision/2019/07/30/Lecture8.html">CV Lecture 8 - Light-Field Imaging</a>
+      <a class="post-link" href="/thesis/2019/06/29/ZSL.html">Zero-shot Learning on Semantic Class Prototype Graph</a>
     </h2>
     <section class="post-excerpt" itemprop="description">
-      <p>Lightfields Ray Ray는 5D 정보로 이루어져 있다.(3D 위치, 2D 방향) plenoptic 기술은 이런 5D정보를 가진 ray들을 활용하여 다양한 영상처리를 할 수 있다. 반면, line은 4D의 정보를 가지고 있다. (2D 위치, 2D 방향) discretize 한 후에 다시 interpolate 할 수 있다? Image 이미지란, 눈(또는 렌즈)이라는 한 점으로 들어오는 빛의 정보들을 수치화한...</p>
+      <p>이 논문은 Zero-Shot Learning(ZSL)에서의 새로운 distance metric을 제안하는 논문이다. Zero-Shot Learning(ZSL) ZSL에서는 seen class와 unseen class, 그리고 image feature가 semantic embedding space에 사영된다. 새로운 input은 seen class중 한 class에 해당하고, 어떤 image feature를 가지고 있다고 하자. 그 사영된 공간에서 seen class와 image feature가 결합된 벡터가 unseen class와 가까우면, unseen class에...</p>
     </section>
     <section class="post-meta">
-      <div class="post-date">July 30, 2019</div>
+      <div class="post-date">June 29, 2019</div>
       <div class="post-categories">
       in 
         
-        <a href="/category/lecture">Lecture</a>, 
-        
-      
-        
-        <a href="/category/computervision">ComputerVision</a>
-        
-      
-      </div>
-    </section>
-  </li>
-  
-  <hr>
-  
-  
-  <li>
-    <h2>
-      <a class="post-link" href="/lecture/computervision/2019/07/28/Lecture7.html">CV Lecture 7 - Thin Lens Optics</a>
-    </h2>
-    <section class="post-excerpt" itemprop="description">
-      <p>Camera with Lens pinhole 모델은 들어오는 빛이 매우 적어 노출 시간이 길어야 제대로 된 이미지를 얻을 수 있고, sharpness에 약하다는 단점이 있었다. 렌즈는 필름에 빛을 모아주므로 이런 단점들을 극복할 수 있었다. 렌즈는 focal length만큼 렌즈에서 떨어진 지점에 렌즈에 수직으로 들어오는 평행한 빛들을 모아준다. 렌즈의 중심부로 모이는 빛은 변형되지 않고 pinhole...</p>
-    </section>
-    <section class="post-meta">
-      <div class="post-date">July 28, 2019</div>
-      <div class="post-categories">
-      in 
-        
-        <a href="/category/lecture">Lecture</a>, 
-        
-      
-        
-        <a href="/category/computervision">ComputerVision</a>
-        
-      
-      </div>
-    </section>
-  </li>
-  
-  <hr>
-  
-  
-  <li>
-    <h2>
-      <a class="post-link" href="/lecture/computervision/2019/07/26/Lecture6.html">CV Lecture 6 - Multiview Geometry</a>
-    </h2>
-    <section class="post-excerpt" itemprop="description">
-      <p>Structure from Motion Multiview geometry 문제에는 세 종류가 있다. Scene geometry (Structure) : 2D 좌표가 주어질 때, 3D 좌표는 어디에 있는가? Correspondence (stereo matching) : 한 이미지에서의 한 점이 다른 이미지에서는 어디에 존재할 가능성이 있는가? Camera geometry (motion) : 한 대상에 대해 여러 관점의 이미지 좌표가 주어질 때, 카메라 파라미터...</p>
-    </section>
-    <section class="post-meta">
-      <div class="post-date">July 26, 2019</div>
-      <div class="post-categories">
-      in 
-        
-        <a href="/category/lecture">Lecture</a>, 
-        
-      
-        
-        <a href="/category/computervision">ComputerVision</a>
-        
-      
-      </div>
-    </section>
-  </li>
-  
-  <hr>
-  
-  
-  <li>
-    <h2>
-      <a class="post-link" href="/lecture/computervision/2019/07/25/Project1.html">Project 1</a>
-    </h2>
-    <section class="post-excerpt" itemprop="description">
-      <p>이 프로젝트는 Camera Calibration과 Disparity Map, Depth Map을 생성하는 프로젝트이다. Camera Calibration 먼저, 체커보드를 이용해서 Camera Calibration을 수행한다. 6개의 체커보드 이미지가 있고, 모서리를 찾아서 이를 평면좌표(world point)로 만들어주는 homography matrix를 찾고, 그 matrix에서 intrinsic, extrinsic 파라미터를 찾는 과정이다. Zhang’s method를 사용하여 수행할 수 있다. Homography Calculation 먼저 $s\tilde{q}=H\tilde{p}$를 만족하는 행렬...</p>
-    </section>
-    <section class="post-meta">
-      <div class="post-date">July 25, 2019</div>
-      <div class="post-categories">
-      in 
-        
-        <a href="/category/lecture">Lecture</a>, 
-        
-      
-        
-        <a href="/category/computervision">ComputerVision</a>
-        
-      
-      </div>
-    </section>
-  </li>
-  
-  <hr>
-  
-  
-  <li>
-    <h2>
-      <a class="post-link" href="/lecture/computervision/2019/07/20/Lecture5.html">CV Lecture 5 - Stereo Matching</a>
-    </h2>
-    <section class="post-excerpt" itemprop="description">
-      <p>Stereo Matching Stereo Matching source ($f$:focal length, $p^l, p^r$:image point(left, right), $P$:world point, $Z$:depth of $P$) (length of Baseline을 $t$라고 하자. 그리고 $x_l$은 $O_l$을 기준으로 한 선으로부터 음의 방향으로 $p_l$까지의 거리, $x_r$은 $O_r$을 기준으로 한 선으로부터 양의 방향으로 $p_r$까지의 거리이다.) 그러면 $\triangle(p_l, P, p_r)$과 $\triangle(O_l, P, O_r)$은 닮음이므로 이 성립하므로,...</p>
-    </section>
-    <section class="post-meta">
-      <div class="post-date">July 20, 2019</div>
-      <div class="post-categories">
-      in 
-        
-        <a href="/category/lecture">Lecture</a>, 
-        
-      
-        
-        <a href="/category/computervision">ComputerVision</a>
+        <a href="/category/thesis">Thesis</a>
         
       
       </div>
@@ -238,7 +130,7 @@
 	<p>
     
 			
-			<a class="newer-posts" href="/page2">
+			<a class="newer-posts" href="/page4">
 				<span class="fa-stack fa-lg">
 					<i class="fa fa-square fa-stack-2x"></i>
 					<i class="fa fa-angle-double-left fa-stack-1x fa-inverse"></i>
@@ -246,14 +138,12 @@
 			</a>
 			
 		
-		<span class="page-number">Page 3 of 5</span>
+		<span class="page-number">Page 5 of 5</span>
 		
-		<a class="newer-posts" href="/page4">
-      <span class="fa-stack fa-lg">
-        <i class="fa fa-square fa-stack-2x"></i>
-        <i class="fa fa-angle-double-right fa-stack-1x fa-inverse"></i>
-      </span>
-    </a>
+		<span class="fa-stack fa-lg">
+      <i class="fa fa-square fa-stack-2x"></i>
+      <i class="fa fa-angle-double-right fa-stack-1x fa-inverse"></i>
+    </span>
 		
 	</p>
 </nav>
