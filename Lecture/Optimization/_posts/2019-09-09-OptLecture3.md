@@ -114,6 +114,12 @@ $=\frac{1}{2\gamma T}R^2 + \frac{\gamma}{2}L^2$ ($R = x_0-x^* $라고 하자)
 
 가 된다. 따라서 여기에 적합한 learning rate 를 rough하게 계산해보면 $\gamma = \frac{R}{L\sqrt{T}}$가 적합하다. (마지막 식을 미분해서 0 되는 $\gamma$ 찾음)
 
+이를 대입해 보면
+
+$$f(\bar{x})-f(x^* )\le\frac{RL}{\sqrt{T}}$$
+
+가 성립한다.
+
 ### $L$-Lipschitz Continuous
 $$\|f(x)-f(y)\| \le L\|x-y\|, \forall x,y$$
 

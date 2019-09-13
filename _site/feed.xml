@@ -5,8 +5,8 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 10 Sep 2019 23:27:57 +0900</pubDate>
-    <lastBuildDate>Tue, 10 Sep 2019 23:27:57 +0900</lastBuildDate>
+    <pubDate>Fri, 13 Sep 2019 18:25:53 +0900</pubDate>
+    <lastBuildDate>Fri, 13 Sep 2019 18:25:53 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -133,6 +133,12 @@
 &lt;p&gt;$=\frac{1}{2\gamma T}R^2 + \frac{\gamma}{2}L^2$ ($R = x_0-x^* $라고 하자)&lt;/p&gt;
 
 &lt;p&gt;가 된다. 따라서 여기에 적합한 learning rate 를 rough하게 계산해보면 $\gamma = \frac{R}{L\sqrt{T}}$가 적합하다. (마지막 식을 미분해서 0 되는 $\gamma$ 찾음)&lt;/p&gt;
+
+&lt;p&gt;이를 대입해 보면&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(\bar{x})-f(x^* )\le\frac{RL}{\sqrt{T}}&lt;/script&gt;
+
+&lt;p&gt;가 성립한다.&lt;/p&gt;
 
 &lt;h3 id=&quot;l-lipschitz-continuous&quot;&gt;$L$-Lipschitz Continuous&lt;/h3&gt;
 &lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;\|f(x)-f(y)\| \le L\|x-y\|, \forall x,y&lt;/script&gt;&lt;/p&gt;
