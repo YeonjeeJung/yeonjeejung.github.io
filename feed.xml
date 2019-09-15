@@ -5,9 +5,28 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 13 Sep 2019 18:25:53 +0900</pubDate>
-    <lastBuildDate>Fri, 13 Sep 2019 18:25:53 +0900</lastBuildDate>
+    <pubDate>Sun, 15 Sep 2019 15:06:53 +0900</pubDate>
+    <lastBuildDate>Sun, 15 Sep 2019 15:06:53 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>Optimization Lecture 4</title>
+        <description>&lt;h1 id=&quot;convex-optimization&quot;&gt;Convex Optimization&lt;/h1&gt;
+
+&lt;p&gt;##&lt;/p&gt;
+
+&lt;h2 id=&quot;beta-smooth-functions--frac1t-learning-rate&quot;&gt;$\beta$-smooth functions : $\frac{1}{t}$ learning Rate&lt;/h2&gt;
+</description>
+        <pubDate>Wed, 11 Sep 2019 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/lecture/optimization/2019/09/11/Lecture4.html</link>
+        <guid isPermaLink="true">http://localhost:4000/lecture/optimization/2019/09/11/Lecture4.html</guid>
+        
+        
+        <category>Lecture</category>
+        
+        <category>Optimization</category>
+        
+      </item>
     
       <item>
         <title>Robot Lecture 3</title>
@@ -99,11 +118,69 @@
 &lt;p&gt;를 만족하면 positive semidefinite이라고 한다.&lt;/p&gt;
 
 &lt;h2 id=&quot;hessian-smooth-strong-convexity&quot;&gt;Hessian, Smooth, Strong convexity&lt;/h2&gt;
-&lt;p&gt;$f$가 $\alpha$-strongly convex이고 $\beta$-smooth이면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\alpha I \le \triangledown^2f(x)\le\beta I&lt;/script&gt;
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;f \text{ 가 }\alpha\text{-strongly convex 이고 } \beta\text{-smooth 이다} \Leftrightarrow \alpha I \le \triangledown^2f(x)\le\beta I&lt;/script&gt;&lt;/p&gt;
 
 &lt;p&gt;를 항상 만족하는데, 행렬 $A, B$에 대하여 $A\le B$는 $B-A$가 positive semidefinite임을 뜻한다. 또한, 이는 $\triangledown^2 f(x)$의 eigenvalue들이 $\alpha$보다 크고 $\beta$보다 작음을 뜻한다.&lt;/p&gt;
+
+&lt;p&gt;hessian은 이러한 성질 때문에 step size를 정하기에 매우 중요한데, 이를 second-order method라고 한다. 하지만 계산량이 많고 저장할 숫자도 많으므로 딥러닝에서는 first-order method만 사용한다.&lt;/p&gt;
+
+&lt;h3 id=&quot;proof-rightarrow&quot;&gt;(Proof) $\Rightarrow$&lt;/h3&gt;
+
+&lt;p&gt;우선 $\alpha$-strongly convex이기 때문에&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;f(y)-f(x)\le\triangledown f(y)^T(y-x)-\frac{\alpha}{2}\|x-y\|^2&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;f(x)-f(y)\le\triangledown f(x)^T(x-y)-\frac{\alpha}{2}\|x-y\|^2&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;가 항상 성립한다. 마찬가지로 $\beta$-smooth이기 때문에&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;f(y)-f(x)\ge\triangledown f(y)^T(y-x)-\frac{\beta}{2}\|x-y\|^2&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;f(x)-f(y)\ge\triangledown f(x)^T(x-y)-\frac{\beta}{2}\|x-y\|^2&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;가 항상 성립한다.&lt;/p&gt;
+
+&lt;p&gt;$\alpha$에 대한 두 식을 합치면&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;0\le(\triangledown f(x)-\triangledown f(y))^T(x-y)-\alpha\|x-y\|^2\cdots(1)&lt;/script&gt;
+
+&lt;p&gt;를 얻게 되고, 마찬가지로 $\beta$에 대한 식을 합치면&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;0\ge(\triangledown f(x)-\triangledown f(y))^T(x-y)-\beta\|x-y\|^2\cdots(2)&lt;/script&gt;
+
+&lt;p&gt;를 얻게 된다.&lt;/p&gt;
+
+&lt;p&gt;$x=y+ht$룰 대입하면 ($h$는 벡터, $t$는 스칼라)&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;(\triangledown f(x)-\triangledown f(y))^T(x-y) = \frac{\triangledown f(y+ht)-\triangledown f(y)}{t}ht^2&lt;/script&gt;
+
+&lt;p&gt;를 얻을 수 있는데, 여기에 극한을 취하면&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\lim_{t\rightarrow 0}{\frac{\triangledown f(y+ht)-\triangledown f(y)}{t}}ht^2=h^T\triangledown^2f(y)ht^2&lt;/script&gt;
+
+&lt;p&gt;을 얻을 수 있다.&lt;/p&gt;
+
+&lt;p&gt;이를 $(1)$과 $(2)$에 대입하면&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\alpha t^2\|h\|^2\le h^T\triangledown^2f(y)t^2h\le \beta t^2\|h\|^2&lt;/script&gt;
+
+&lt;p&gt;를 얻게 되고,&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\alpha\le\frac{h^T\triangledown^2 f(y)h}{\|h\|^2}\le\beta&lt;/script&gt;
+
+&lt;p&gt;를 얻을 수 있다.&lt;/p&gt;
+
+&lt;h3 id=&quot;proof-leftarrow&quot;&gt;(Proof) $\Leftarrow$&lt;/h3&gt;
+
+&lt;p&gt;Taylor Thm을 이용하면&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(y) = f(x) + \triangledown f(x)^T(y-x) + \frac{1}{2}(y-x)^T\triangledown^2f(c)(y-x), c=x+(y-x)t, \forall t\in[0, 1]&lt;/script&gt;
+
+&lt;p&gt;라고 할 수 있는데, 이 때&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{1}{2}(y-x)T\triangledown f(c)^T(y-x)\ge\frac{1}{2}k\|y-x\|^2&lt;/script&gt;
+
+&lt;p&gt;를 만족하는 $k$를 $\alpha$라고 하고,&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{1}{2}(y-x)T\triangledown f(c)^T(y-x)\le\frac{1}{2}k\|y-x\|^2&lt;/script&gt;
+
+&lt;p&gt;를 만족하는 $k$를 $\beta$라고 하면 $f$는 $\alpha$-strongly convex이고 $\beta$-smooth이다.&lt;/p&gt;
 
 &lt;h2 id=&quot;vanila-analysis&quot;&gt;Vanila Analysis&lt;/h2&gt;
 &lt;p&gt;만약 $f$가 strongly convex도 아니고, smooth하지도 않지만 $L$-Lipschitz continuous하다고 했을 때, $f(x)-f(x^* )$를 gradient descent를 이용해 어떻게 bound하는지에 대해 알아보자. 여기서는 &lt;script type=&quot;math/tex&quot;&gt;2a^Tb = \|a\|^2+\|b\|^2-\|a-b\|^2 \cdots(* )&lt;/script&gt;임을 이용할 것이다.&lt;/p&gt;
@@ -893,108 +970,6 @@ conservative : 보존되는&lt;/p&gt;
         <pubDate>Mon, 05 Aug 2019 00:00:00 +0900</pubDate>
         <link>http://localhost:4000/lecture/computervision/2019/08/05/Lecture10.html</link>
         <guid isPermaLink="true">http://localhost:4000/lecture/computervision/2019/08/05/Lecture10.html</guid>
-        
-        
-        <category>Lecture</category>
-        
-        <category>ComputerVision</category>
-        
-      </item>
-    
-      <item>
-        <title>CV Lecture 9 - High-Dynamic-Range Imaging</title>
-        <description>&lt;h1 id=&quot;high-dynamic-range-imaging&quot;&gt;High-Dynamic-Range Imaging&lt;/h1&gt;
-
-&lt;h3 id=&quot;high-dynamic-range-imaging-ldrrightarrowhdr&quot;&gt;High Dynamic Range Imaging (LDR$\rightarrow$HDR)&lt;/h3&gt;
-
-&lt;p&gt;현실은 dynamic range가 매우 높다. 이를 낮은 대비를 가지는 사진으로 옮기려면 전체 range의 간격을 좁히거나, 특정 범위만 옮기는 방법이 있다. 이 때 어떤 범위를 저장할 것인가는 노출(&lt;a href=&quot;https://yeonjeejung.github.io/lecture/computervision/2019/07/28/Lecture7.html&quot;&gt;exposure&lt;/a&gt;)이 결정하는데, 이 노출을 조절하는 방법에는 서터 속도, 조리개, 감도, 중성 농도 필터 등이 있다.&lt;/p&gt;
-
-&lt;p&gt;셔터 속도의 조절 범위는 30sec~1/4000sec이고, 확실한 방법이고 선형적인 효과를 가져오지만, 긴 노출에 대해서는 노이즈가 섞일 우려가 있다.&lt;/p&gt;
-
-&lt;p&gt;조리개의 조절 범위는 f/1.4~f/22이고 DOF가 변경된다는 단점이 있고, 최후의 방법으로 유용하다.&lt;/p&gt;
-
-&lt;p&gt;감도의 조절 범위는 100~1600이고, 노이즈가 생긴다는 단점이 있다. 조리개값과 마찬가지로 최후의 방법으로 유용하다.&lt;/p&gt;
-
-&lt;p&gt;중성 농도 필터는 4농도까지 조절할 수 있으며, 쌓을 수도 있다. 단점은 완벽히 중성은 아니고 색감 이동이 있을 수 있고, 정확하지는 않다. 장점은 번쩍거리는 빛에도 사용할 수 있다는 점이고, 최후의 보충 방법으로 사용될 수 있다.&lt;/p&gt;
-
-&lt;h3 id=&quot;response-curve&quot;&gt;Response Curve&lt;/h3&gt;
-
-&lt;p&gt;만약 response curve를 알고 있다면 어떤 노출값을 갖는 사진을 찍어야 원하는 빛의 양을 얻을 수 있는지 알 수 있다. response curve의 역 값을 보면 된다. response curve를 얻는 방법에는 두가지가 있다.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;장면의 빛의 양(scene luminance)을 조절한 뒤 픽셀값을 본다.&lt;/li&gt;
-  &lt;li&gt;노출값을 조절한 뒤 픽셀값을 본다.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;가장 좋은 방법은 노출값을 조절한 뒤 많은 범위의 픽셀값을 고루 관찰하는 것이다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;Z=f(H)&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;H=E\cdot\Delta t&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\log(H)=\log(E)+\log(\Delta t)&lt;/script&gt;
-
-&lt;p&gt;$Z$ 는 픽셀값, $H$는 노출, $E$는 빛의 양, $\Delta t$는 노출시간이다.&lt;/p&gt;
-
-&lt;p&gt;$g(Z)$가 response curve의 역에 $\log$를 취한 함수라고 하자.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;Z=f(H)\rightarrow H=f^{-1}(Z)\rightarrow \log H=\log f^{-1}(Z)\rightarrow\log H=g(Z)&lt;/script&gt;
-
-&lt;p&gt;$j$번째 이미지의 $i$번째 픽셀에 대해서&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;g(Z_{ij})=\log(E_i)+\log(\Delta t_j)&lt;/script&gt;
-
-&lt;p&gt;임을 원하기 때문에&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\sum_{i=1}^N\sum_{j=1}^P[\log(E_i)+\log(\Delta t_j)-g(Z_{ij})]^2 + \lambda\sum_{z=Z_{min}}^{Z_{max}}g''(z)^2&lt;/script&gt;
-
-&lt;p&gt;을 최소화시키면 된다. 앞의 항은 Data term, 뒤의 항은 Regularization term이다.&lt;/p&gt;
-
-&lt;p&gt;radiance를 재건하려면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\log E_i=\frac{\sum_{j=1}^Pw(Z_{ij})(g(Z_{ij})-\log(\Delta t_j))}{\sum_{j=1}^Pw(Z_{ij})}&lt;/script&gt;
-
-&lt;p&gt;을 사용하면 된다. $w(Z_{ij})$는 해당 픽셀의 가중치이고, 해당 조각들의 노이즈 관여를 조절한다.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://cybertron.cg.tu-berlin.de/eitz/hdr/exposure_series_response_curve.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;a href=&quot;http://cybertron.cg.tu-berlin.de/eitz/hdr/exposure_series_response_curve.jpg&quot;&gt;Source&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;response curve를 그리기 위해 사용하는 이미지&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://cybertron.cg.tu-berlin.de/eitz/hdr/response_curve.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;a href=&quot;http://cybertron.cg.tu-berlin.de/eitz/hdr/response_curve.jpg&quot;&gt;Source&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;위 이미지를 통해 그린 response curve&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://vision.gel.ulaval.ca/~jflalonde/cours/4105/h14/tps/results/tp5/raziehtoony/Image/Radiance%20Map.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;a href=&quot;http://vision.gel.ulaval.ca/~jflalonde/cours/4105/h14/tps/results/tp5/raziehtoony/Image/Radiance%20Map.jpg&quot;&gt;Source&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;디지털 카메라를 이용해서 장면 밝기 (scene radiance)를 측정한 radiance map&lt;/p&gt;
-
-&lt;h3 id=&quot;image-registration&quot;&gt;Image Registration&lt;/h3&gt;
-
-&lt;p&gt;서로 다른 노출을 갖는 이미지를 비교하기 위한 방법이다. Median-Threshold Bitmap (MTB)를 이용해서 흑백으로 만들고, &lt;strong&gt;&lt;em&gt;그 차이를 최소화하는 translation을 찾는다. 그리고 피라미드를 이용해서 더 촉진한다?&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;file-formats&quot;&gt;File Formats&lt;/h3&gt;
-
-&lt;p&gt;.pfm : Portable Float Map. 채널당 32비트 float을 사용하고, 3채널을 저장한다. 따라서 픽셀당 96비트를 사용한다.&lt;/p&gt;
-
-&lt;p&gt;.pic, .hdr : Radiance Format. 픽셀당 32비트를 사용한다. (채널당 8비트, 지수에 8비트)&lt;/p&gt;
-
-&lt;p&gt;.exr : ILM’s OpenEXR. 비손실 압축을 지원한다. half-precision float (채널당 16비트)을 사용하며, 멀티채널을 지원한다.&lt;/p&gt;
-
-&lt;h3 id=&quot;high-dynamic-range-display-hdrrightarrowhdr&quot;&gt;High Dynamic Range Display (HDR$\rightarrow$HDR)&lt;/h3&gt;
-
-&lt;p&gt;Sunnybrook HDR Display는 저해상도의 광원과 2개의 8비트 모듈레이터를 이용하여 HDR 영상을 띄울 수 있다. LED 백라이트와 LCD 스크린을 결합하여 결과를 만들어 낸다.&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;h2 id=&quot;terms&quot;&gt;Terms&lt;/h2&gt;
-&lt;p&gt;dynamic range : 증폭 회로 등에서, 다룰 수 있는 가장 큰 신호와 가장 작은 신호와의 크기의 비율을 데시벨로 나타낸 것&lt;br /&gt;
-precision : 정밀도&lt;/p&gt;
-</description>
-        <pubDate>Sun, 04 Aug 2019 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/lecture/computervision/2019/08/04/Lecture9.html</link>
-        <guid isPermaLink="true">http://localhost:4000/lecture/computervision/2019/08/04/Lecture9.html</guid>
         
         
         <category>Lecture</category>
