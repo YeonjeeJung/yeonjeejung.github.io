@@ -163,7 +163,7 @@ MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
 
 <p>이다. 이 식에서의 극점은 $\gamma = \frac{1}{\beta}$일 때이므로 이를 대입하면</p>
 
-<script type="math/tex; mode=display">f(x_t)-f(x_{t+1})\ge \frac{1}{2\beta}\|\triangledown f(x_t)\|^2</script>
+<script type="math/tex; mode=display">\begin{align}f(x_t)-f(x_{t+1})\ge \frac{1}{2\beta}\|\triangledown f(x_t)\|^2\end{align}</script>
 
 <p>를 얻게 된다. 이 때 $t=0$부터 $t=T-1$까지 다 대입한 후 다 더하면</p>
 
@@ -198,11 +198,59 @@ MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
 
 <p>를 만족하는 $c\in(0, 1)$가 존재한다면 $f$는 선형적으로 수렴한다고 말할 수 있다. 만약 $\frac{f(x_{t+1})-f(x^* )}{f(x_t)-f(x^* )}\le c, \forall t, \forall c\in (0, 1)$라면</p>
 
-<script type="math/tex; mode=display">f(x_t)-f(x^* )\le c^t(f(x_0)-f(x^* ))</script>
+<script type="math/tex; mode=display">\begin{align}f(x_t)-f(x^* )\le c^t(f(x_0)-f(x^* ))\end{align}</script>
 
 <p>가 항상 성립한다.</p>
 
 <h2 id="alpha-strongly-convex-and-beta-smooth-function">$\alpha$-strongly convex and $\beta$-smooth function</h2>
+
+<p>Vanilla Analysis의 중간 과정에서</p>
+
+<script type="math/tex; mode=display">\triangledown f(x_t)^T(x_t-x^* )=\frac{\gamma}{2}\|\triangledown f(x_t)\|^2+\frac{1}{\gamma}(\|x_t-x^* \|^2-\|x_{t+1}-x^* \|^2)</script>
+
+<p>의 식을 얻을 수 있었다. 그리고 $f$가 $\alpha$-strongly convex라고 하면</p>
+
+<script type="math/tex; mode=display">\triangledown f(x_t)^T(x_t-x^* )\ge f(x_t)-f(x^* )+\frac{\alpha}{2}\|x_t-x^* \|^2</script>
+
+<p>를 만족한다. 둘을 합치고 변형하면,</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align} f(x_t)-f(x^* )+\frac{\alpha}{2}\|x_t-x^* \|^2&\le\frac{\gamma}{2}\|\triangledown f(x_t)\|^2+\frac{1}{2\gamma}(\|x_t-x^* \|^2-\|x_{t+1}-x^* \|^2)\\
+ -\frac{1}{2\gamma}(\|x_t-x^* \|^2-\|x_{t+1}-x^* \|^2)+\frac{\alpha}{2}\|x_t-x^* \|^2 &\le f(x^* )-f(x_t )+ \frac{\gamma}{2}\|\triangledown f(x_t)\|^2\\
+ -\|x_t-x^* \|^2+\|x_{t+1}-x^* \|^2+\alpha\gamma\|x_t-x^* \|^2 &\le 2\gamma(f(x^* )-f(x_t ))+ \gamma^2\|\triangledown f(x_t)\|^2\\
+\end{align} %]]></script>
+
+<p>을 얻을 수 있다. 이 때 $\gamma = \frac{1}{\beta}$를 대입하면 우변은</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}2\gamma(f(x^* )-f(x_t ))+ \gamma^2\|\triangledown f(x_t)\|^2&=\frac{2}{\beta}(f(x^* )-f(x_t))+\frac{1}{\beta^2}\|f(x_t)\|^2\\
+&\le\frac{2}{\beta}(f(x_{t+1})-f(x_t))+\frac{1}{\beta^2}\|\triangledown f(x_t)\|^2\\
+&\le-\frac{1}{\beta^2}\|\triangledown f(x_t)\|^2+\frac{1}{\beta^2}\|\triangledown f(x_t)\|^2\\
+&=0\end{align} %]]></script>
+
+<p>($(11)\rightarrow(12)$은 $(4)$ 때문이다.) $(8)$을 정리하면</p>
+
+<script type="math/tex; mode=display">\|x_{t+1}-x^* \|^2\le \left(1-\frac{\alpha}{\beta}\right)\|x_t-x^* \|^2</script>
+
+<p>이라고 할 수 있고, $(6)$에 의해</p>
+
+<script type="math/tex; mode=display">\|x_T-x^* \|^2\le\left(1-\frac{\alpha}{\beta}\right)^T\|x_0-x^* \|^2</script>
+
+<p>가 성립한다.</p>
+
+<h2 id="convergence">Convergence</h2>
+
+<p>$f$가 $\beta$-smooth라면</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}f(x_T)-f(x^* )&\le\triangledown f(x^* )^T(x_T-x^* )+\frac{\beta}{2}\|x_T-x^* \|^2\\
+&=\frac{\beta}{2}\|x_T-x^* \|^2\end{align} %]]></script>
+
+<p>이므로,</p>
+
+<script type="math/tex; mode=display">f(x_T)-f(x^* )\le\frac{\beta}{2}\|x_T-x^* \|^2\le\frac{\beta}{2}\left(1-\frac{\alpha}{\beta}\right)^T\|x_0-x^* \|^2</script>
+
+<p>가 성립한다. 이 때 $\frac{\alpha}{\beta}$를 condition number라고 하는데, 이 값이 $1$이면, 즉 $\alpha = \beta$이면 한 번의 이터레이션으로 최적값을 찾을 수 있다.</p>
 
 </article>
 
