@@ -78,6 +78,7 @@ $$x^TAx\ge 0 , \forall x\in \mathbb{R}^d$$
 를 만족하면 positive semidefinite이라고 한다.
 
 ## Hessian, Smooth, Strong convexity
+
 $$f \text{ 가 }\alpha\text{-strongly convex 이고 } \beta\text{-smooth 이다} \Leftrightarrow \alpha I \le \triangledown^2f(x)\le\beta I$$
 
 를 항상 만족하는데, 행렬 $A, B$에 대하여 $A\le B$는 $B-A$가 positive semidefinite임을 뜻한다. 또한, 이는 $\triangledown^2 f(x)$의 eigenvalue들이 $\alpha$보다 크고 $\beta$보다 작음을 뜻한다.
