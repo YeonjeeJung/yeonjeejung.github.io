@@ -223,11 +223,69 @@ MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
 <p>를 만족하면 positive semidefinite이라고 한다.</p>
 
 <h2 id="hessian-smooth-strong-convexity">Hessian, Smooth, Strong convexity</h2>
-<p>$f$가 $\alpha$-strongly convex이고 $\beta$-smooth이면</p>
-
-<script type="math/tex; mode=display">\alpha I \le \triangledown^2f(x)\le\beta I</script>
+<p><script type="math/tex">f \text{ 가 }\alpha\text{-strongly convex 이고 } \beta\text{-smooth 이다} \Leftrightarrow \alpha I \le \triangledown^2f(x)\le\beta I</script></p>
 
 <p>를 항상 만족하는데, 행렬 $A, B$에 대하여 $A\le B$는 $B-A$가 positive semidefinite임을 뜻한다. 또한, 이는 $\triangledown^2 f(x)$의 eigenvalue들이 $\alpha$보다 크고 $\beta$보다 작음을 뜻한다.</p>
+
+<p>hessian은 이러한 성질 때문에 step size를 정하기에 매우 중요한데, 이를 second-order method라고 한다. 하지만 계산량이 많고 저장할 숫자도 많으므로 딥러닝에서는 first-order method만 사용한다.</p>
+
+<h3 id="proof-rightarrow">(Proof) $\Rightarrow$</h3>
+
+<p>우선 $\alpha$-strongly convex이기 때문에</p>
+
+<p><script type="math/tex">f(y)-f(x)\le\triangledown f(y)^T(y-x)-\frac{\alpha}{2}\|x-y\|^2</script>, <script type="math/tex">f(x)-f(y)\le\triangledown f(x)^T(x-y)-\frac{\alpha}{2}\|x-y\|^2</script></p>
+
+<p>가 항상 성립한다. 마찬가지로 $\beta$-smooth이기 때문에</p>
+
+<p><script type="math/tex">f(y)-f(x)\ge\triangledown f(y)^T(y-x)-\frac{\beta}{2}\|x-y\|^2</script>, <script type="math/tex">f(x)-f(y)\ge\triangledown f(x)^T(x-y)-\frac{\beta}{2}\|x-y\|^2</script></p>
+
+<p>가 항상 성립한다.</p>
+
+<p>$\alpha$에 대한 두 식을 합치면</p>
+
+<script type="math/tex; mode=display">0\le(\triangledown f(x)-\triangledown f(y))^T(x-y)-\alpha\|x-y\|^2\cdots(1)</script>
+
+<p>를 얻게 되고, 마찬가지로 $\beta$에 대한 식을 합치면</p>
+
+<script type="math/tex; mode=display">0\ge(\triangledown f(x)-\triangledown f(y))^T(x-y)-\beta\|x-y\|^2\cdots(2)</script>
+
+<p>를 얻게 된다.</p>
+
+<p>$x=y+ht$룰 대입하면 ($h$는 벡터, $t$는 스칼라)</p>
+
+<script type="math/tex; mode=display">(\triangledown f(x)-\triangledown f(y))^T(x-y) = \frac{\triangledown f(y+ht)-\triangledown f(y)}{t}ht^2</script>
+
+<p>를 얻을 수 있는데, 여기에 극한을 취하면</p>
+
+<script type="math/tex; mode=display">\lim_{t\rightarrow 0}{\frac{\triangledown f(y+ht)-\triangledown f(y)}{t}}ht^2=h^T\triangledown^2f(y)ht^2</script>
+
+<p>을 얻을 수 있다.</p>
+
+<p>이를 $(1)$과 $(2)$에 대입하면</p>
+
+<script type="math/tex; mode=display">\alpha t^2\|h\|^2\le h^T\triangledown^2f(y)t^2h\le \beta t^2\|h\|^2</script>
+
+<p>를 얻게 되고,</p>
+
+<script type="math/tex; mode=display">\alpha\le\frac{h^T\triangledown^2 f(y)h}{\|h\|^2}\le\beta</script>
+
+<p>를 얻을 수 있다.</p>
+
+<h3 id="proof-leftarrow">(Proof) $\Leftarrow$</h3>
+
+<p>Taylor Thm을 이용하면</p>
+
+<script type="math/tex; mode=display">f(y) = f(x) + \triangledown f(x)^T(y-x) + \frac{1}{2}(y-x)^T\triangledown^2f(c)(y-x), c=x+(y-x)t, \forall t\in[0, 1]</script>
+
+<p>라고 할 수 있는데, 이 때</p>
+
+<script type="math/tex; mode=display">\frac{1}{2}(y-x)T\triangledown f(c)^T(y-x)\ge\frac{1}{2}k\|y-x\|^2</script>
+
+<p>를 만족하는 $k$를 $\alpha$라고 하고,</p>
+
+<script type="math/tex; mode=display">\frac{1}{2}(y-x)T\triangledown f(c)^T(y-x)\le\frac{1}{2}k\|y-x\|^2</script>
+
+<p>를 만족하는 $k$를 $\beta$라고 하면 $f$는 $\alpha$-strongly convex이고 $\beta$-smooth이다.</p>
 
 <h2 id="vanila-analysis">Vanila Analysis</h2>
 <p>만약 $f$가 strongly convex도 아니고, smooth하지도 않지만 $L$-Lipschitz continuous하다고 했을 때, $f(x)-f(x^* )$를 gradient descent를 이용해 어떻게 bound하는지에 대해 알아보자. 여기서는 <script type="math/tex">2a^Tb = \|a\|^2+\|b\|^2-\|a-b\|^2 \cdots(* )</script>임을 이용할 것이다.</p>
