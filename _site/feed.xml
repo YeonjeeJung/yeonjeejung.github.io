@@ -5,17 +5,65 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 15 Sep 2019 15:06:53 +0900</pubDate>
-    <lastBuildDate>Sun, 15 Sep 2019 15:06:53 +0900</lastBuildDate>
+    <pubDate>Sun, 15 Sep 2019 17:14:41 +0900</pubDate>
+    <lastBuildDate>Sun, 15 Sep 2019 17:14:41 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
         <title>Optimization Lecture 4</title>
         <description>&lt;h1 id=&quot;convex-optimization&quot;&gt;Convex Optimization&lt;/h1&gt;
 
-&lt;p&gt;##&lt;/p&gt;
-
 &lt;h2 id=&quot;beta-smooth-functions--frac1t-learning-rate&quot;&gt;$\beta$-smooth functions : $\frac{1}{t}$ learning Rate&lt;/h2&gt;
+
+&lt;p&gt;$f$가 $\beta$-smooth하다고 하면&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}f(x_t)-f(x_{t+1}) &amp; \ge \triangledown f(x_t)^T(x_t-x_{t+1})-\frac{\beta}{2}\|x_t-x_{t+1}\|^2\\
+ &amp; =\gamma\|\triangledown f(x_t)\|^2-\frac{\gamma^2\beta}{2}\|\triangledown f(x_t)\|^2 (x_{t+1}-x_t=-\gamma\triangledown f(x_t), \text{gradient descent})\\
+ &amp; =(\gamma-\frac{\gamma^2\beta}{2})\|\triangledown f(x_t)\|^2\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;이다. 이 식에서의 극점은 $\gamma = \frac{1}{\beta}$일 때이므로 이를 대입하면&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(x_t)-f(x_{t+1})\ge \frac{1}{2\beta}\|\triangledown f(x_t)\|^2&lt;/script&gt;
+
+&lt;p&gt;를 얻게 된다. 이 때 $t=0$부터 $t=T-1$까지 다 대입한 후 다 더하면&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}f(x_0)-f(x_T) &amp; \ge \sum_{t=0}^{T-1}\frac{1}{2\beta}\|\triangledown f(x_t)\|^2\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;을 얻게 된다. 이전 단원의 Vanilla Analysis 중간에서 얻은 식에 $\gamma=\frac{1}{\beta}$를 대입하면&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\sum_{t=0}^{T-1}{(f(x_t)-f(x^* ))}\le\frac{\beta}{2}\|x_0-x^* \|^2+\sum_{t=0}^{T-1}\frac{1}{2\beta}\|\triangledown f(x_t)\|^2&lt;/script&gt;
+
+&lt;p&gt;을 얻는데, $(4)$을 이용하면&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\sum_{t=0}^{T-1}{(f(x_t)-f(x^* ))}\le\frac{\beta}{2}\|x_0-x^* \|^2+\sum_{t=0}^{T-1}\frac{1}{2\beta}\|\triangledown f(x_t)\|^2 \le \frac{\beta}{2}\|x_0-x^* \|^2+ f(x_0)-f(x_T)&lt;/script&gt;
+
+&lt;p&gt;이라고 할 수 있고, 맨 우측 두 항을 좌변으로 넘기면&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\sum_{t=1}^T(f(x_t)-f(x^* ))\le\frac{\beta}{2}\|x_0-x^* \|^2&lt;/script&gt;
+
+&lt;p&gt;를 얻는다. $f(x_T)\le f(x_t), 0\le \forall t\le T$이므로, 최종적으로&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(x_T)-f(x^* )\le\frac{1}{T}\sum_{t=1}^T(f(x_t)-f(x^* ))\le\frac{\beta}{2T}\|x_0-x^* \|^2&lt;/script&gt;
+
+&lt;p&gt;를 얻는다.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;upper bound와 convergence speed에 관한 설명 추가&lt;/em&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;def-linear-convergence&quot;&gt;(Def) Linear Convergence&lt;/h3&gt;
+
+&lt;p&gt;만약&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\lim_{t\rightarrow\infty}{\frac{f(x_{t+1})-f(x^* )}{f(x_t)-f(x^* )}}=c&lt;/script&gt;
+
+&lt;p&gt;를 만족하는 $c\in(0, 1)$가 존재한다면 $f$는 선형적으로 수렴한다고 말할 수 있다. 만약 $\frac{f(x_{t+1})-f(x^* )}{f(x_t)-f(x^* )}\le c, \forall t, \forall c\in (0, 1)$라면&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(x_t)-f(x^* )\le c^t(f(x_0)-f(x^* ))&lt;/script&gt;
+
+&lt;p&gt;가 항상 성립한다.&lt;/p&gt;
+
+&lt;h2 id=&quot;alpha-strongly-convex-and-beta-smooth-function&quot;&gt;$\alpha$-strongly convex and $\beta$-smooth function&lt;/h2&gt;
 </description>
         <pubDate>Wed, 11 Sep 2019 00:00:00 +0900</pubDate>
         <link>http://localhost:4000/lecture/optimization/2019/09/11/Lecture4.html</link>
@@ -310,9 +358,10 @@ Minkowski inequality : $\left(\sum_{i=1}^n|x_i+y_i|^p\right)^{\frac{1}{p}}\le\le
 &lt;h2 id=&quot;proof-every-norm-is-convex&quot;&gt;(Proof) Every norm is Convex&lt;/h2&gt;
 &lt;p&gt;(Recall) triangle inequality : $p(x) + p(y) \ge p(x+y), \forall x, y \in V$&lt;/p&gt;
 
-&lt;p&gt;$\alpha p(x) + (1-\alpha)p(y)$&lt;br /&gt;
-$= p(\alpha x) + p((1-\alpha)y)$&lt;br /&gt;
-$\ge p(\alpha x + (1-\alpha)y)$&lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}\alpha p(x) + (1-\alpha)p(y) &amp;
+= p(\alpha x) + p((1-\alpha)y) \\
+&amp; \ge p(\alpha x + (1-\alpha)y)\end{align} %]]&gt;&lt;/script&gt;
 
 &lt;h2 id=&quot;lemma-jensens-inequality&quot;&gt;(Lemma) Jensen’s inequality&lt;/h2&gt;
 
@@ -331,13 +380,15 @@ $\ge p(\alpha x + (1-\alpha)y)$&lt;/p&gt;
 &lt;p&gt;라는 convex의 정의를 이용해, 수학적 귀납법으로 증명할 수 있다.&lt;/p&gt;
 
 &lt;h3 id=&quot;proof&quot;&gt;(Proof)&lt;/h3&gt;
-&lt;p&gt;m일 때 성립한다고 가정한다. 그러면&lt;br /&gt;
-$f(\sum_{i=1}^{m+1}\lambda_ix_i)$&lt;br /&gt;
-$=f(\sum_{i=1}^m\lambda_ix_i + \lambda_{m+1}x_{m+1})$&lt;br /&gt;
-$=f((1-\lambda_{m+1})\sum_{i=1}^m\frac{\lambda_i}{1-\lambda_{m+1}}x_i+\lambda_{m+1}x_{m+1})$&lt;br /&gt;
-$\le(1-\lambda_{m+1})f(\sum_{i=1}^m\frac{\lambda_i}{1-\lambda_{m+1}}x_i)+\lambda_{m+1}f(x_{m+1})$&lt;br /&gt;
-$\le(1-\lambda_{m+1})\sum_{i=1}^m\frac{\lambda_i}{1-\lambda_{m+1}}f(x_i)+\lambda_{m+1}f(x_{m+1})$&lt;br /&gt;
-$=\sum_{i=1}^{m+1}\lambda_if(x_i)$&lt;/p&gt;
+&lt;p&gt;m일 때 성립한다고 가정한다. 그러면&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}f(\sum_{i=1}^{m+1}\lambda_ix_i)
+&amp; =f(\sum_{i=1}^m\lambda_ix_i + \lambda_{m+1}x_{m+1})\\
+&amp; =f((1-\lambda_{m+1})\sum_{i=1}^m\frac{\lambda_i}{1-\lambda_{m+1}}x_i+\lambda_{m+1}x_{m+1})\\
+&amp; \le(1-\lambda_{m+1})f(\sum_{i=1}^m\frac{\lambda_i}{1-\lambda_{m+1}}x_i)+\lambda_{m+1}f(x_{m+1})\\
+&amp; \le(1-\lambda_{m+1})\sum_{i=1}^m\frac{\lambda_i}{1-\lambda_{m+1}}f(x_i)+\lambda_{m+1}f(x_{m+1})\\
+&amp; =\sum_{i=1}^{m+1}\lambda_if(x_i)\end{align} %]]&gt;&lt;/script&gt;
 
 &lt;p&gt;따라서,&lt;/p&gt;
 
@@ -366,17 +417,20 @@ $=\sum_{i=1}^{m+1}\lambda_if(x_i)$&lt;/p&gt;
 
 &lt;h3 id=&quot;proof-leftarrow&quot;&gt;(Proof) $\Leftarrow$&lt;/h3&gt;
 
-&lt;p&gt;Let $z = \theta x + (1-\theta) y, \theta\in [0, 1]$&lt;br /&gt;
-$(f(x) \ge f(z) + \triangledown f(z)^T(x-z)) \times\theta$&lt;br /&gt;
-$(f(y) \ge f(z) + \triangledown f(z)^T(y-z))\times(1-\theta)$&lt;br /&gt;
-$\Rightarrow \theta f(x) + (1-\theta)f(y)\ge f(z) + \triangledown f(z)^T(\theta x+(1-\theta)y-z)$&lt;br /&gt;
-$\therefore\theta f(x)+(1-\theta)f(y)\ge f(\theta x+(1-\theta)y)$&lt;/p&gt;
+&lt;p&gt;$z = \theta x + (1-\theta) y, \theta\in [0, 1]$ 라고 하자.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}&amp; (f(x) \ge f(z) + \triangledown f(z)^T(x-z)) \times\theta \\
+&amp; (f(y) \ge f(z) + \triangledown f(z)^T(y-z))\times(1-\theta)\\
+&amp; \Rightarrow \theta f(x) + (1-\theta)f(y)\ge f(z) + \triangledown f(z)^T(\theta x+(1-\theta)y-z)\\
+&amp; \therefore\theta f(x)+(1-\theta)f(y)\ge f(\theta x+(1-\theta)y)\end{align} %]]&gt;&lt;/script&gt;
 
 &lt;h3 id=&quot;proof-rightarrow&quot;&gt;(Proof) $\Rightarrow$&lt;/h3&gt;
 
-&lt;p&gt;$(1-t)f(x) + tf(y)\ge f(x+(y-x)t)$&lt;br /&gt;
-$\Rightarrow f(y)\ge f(x) + \frac{f(x+(y-x)t)-f(x)}{t}$&lt;br /&gt;
-as $t\rightarrow 0, f(y)\ge f(x)+\triangledown f(x)^T(y-x)$&lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}&amp;(1-t)f(x) + tf(y)\ge f(x+(y-x)t)\\
+&amp; \Rightarrow f(y)\ge f(x) + \frac{f(x+(y-x)t)-f(x)}{t}\\
+&amp; \text{ as } t\rightarrow 0, f(y)\ge f(x)+\triangledown f(x)^T(y-x)\end{align} %]]&gt;&lt;/script&gt;
 
 &lt;h2 id=&quot;nondifferentiable-functions&quot;&gt;Nondifferentiable Functions&lt;/h2&gt;
 &lt;p&gt;$f(x) = |x|$같은 함수의 경우, $x=0$부근에서 많은 접점이 있지만 정확한 극한값은 없다. 이 때 그냥 하나를 마음대로 정할 수 있는데, 이것이 subgradient이다.&lt;/p&gt;
@@ -403,13 +457,16 @@ as $t\rightarrow 0, f(y)\ge f(x)+\triangledown f(x)^T(y-x)$&lt;/p&gt;
 &lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;A\in \mathbb{R}^{d\times d}&lt;/script&gt;가 symmetric하고 $x^TAx \gt 0, \forall x\in\mathbb{R}^d$일 때 $f$는 positive definite이다.&lt;/p&gt;
 
 &lt;h3 id=&quot;proof-f---convex-function-leftrightarrow-triangledown2fx-is-positive-semidefinite&quot;&gt;(Proof) $f : $ convex function $\Leftrightarrow \triangledown^2f(x)$ is positive semidefinite&lt;/h3&gt;
-&lt;p&gt;$g(t) = f(x+(y-x)t)$는 $t$에 대한 convex function이다.&lt;br /&gt;
-$\Leftrightarrow g’(t) = \triangledown f(x+(y-x)t)(y-x)$&lt;br /&gt;
-&lt;script type=&quot;math/tex&quot;&gt;\Leftrightarrow g''(t) = (y-x)^T\triangledown^2f(x+(y-x)t)(y-x)&lt;/script&gt;&lt;br /&gt;
-$g(t)$가 convex function이므로, &lt;script type=&quot;math/tex&quot;&gt;g''(t) \ge 0, \forall t, \forall x, y&lt;/script&gt;를 만족한다.&lt;br /&gt;
-따라서 $t=0$일 때도 만족하는데, 이를 대입해보면 다음과 같다.&lt;br /&gt;
-&lt;script type=&quot;math/tex&quot;&gt;g''(t)\mid_ {t=0} = (y-x)^T\triangledown^2f(x)(y-x) \ge 0, \forall x, y&lt;/script&gt;&lt;br /&gt;
-이는 positive semidefinite의 정의이므로, 둘은 동치이다.&lt;/p&gt;
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\begin{align}&amp; g(t) = f(x+(y-x)t)\text{ 는 } t\text{에 대한 convex function이다}\\
+&amp; \Leftrightarrow g'(t) = \triangledown f(x+(y-x)t)(y-x)\\
+&amp; \Leftrightarrow g''(t) = (y-x)^T\triangledown^2f(x+(y-x)t)(y-x)\end{align} %]]&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;$g(t)$가 convex function이므로, &lt;script type=&quot;math/tex&quot;&gt;g''(t) \ge 0, \forall t, \forall x, y&lt;/script&gt;를 만족한다. 따라서 $t=0$일 때도 만족하는데, 이를 대입해보면 다음과 같다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;g''(t)\mid_ {t=0} = (y-x)^T\triangledown^2f(x)(y-x) \ge 0, \forall x, y&lt;/script&gt;
+
+&lt;p&gt;이는 positive semidefinite의 정의이므로, 둘은 동치이다.&lt;/p&gt;
 
 &lt;h2 id=&quot;local-minima-critical-point&quot;&gt;Local Minima, Critical Point&lt;/h2&gt;
 &lt;h3 id=&quot;def-local-minima&quot;&gt;(Def) Local Minima&lt;/h3&gt;
@@ -425,12 +482,14 @@ $g(t)$가 convex function이므로, &lt;script type=&quot;math/tex&quot;&gt;g''(
 
 &lt;h3 id=&quot;proofrightarrow&quot;&gt;(Proof)$\Rightarrow$&lt;/h3&gt;
 &lt;p&gt;Let $f(x^* )\le f(y), \forall y \in X$&lt;br /&gt;
-Since $f$ is convex, $tf(x^* )+(1-t)f(y) \ge f(y+(x^* -y)t)$&lt;br /&gt;
-$\Rightarrow f(x^* ) \ge \frac{f(y+(x^* -y)t)-f(y)}{t} + f(y)$&lt;br /&gt;
-as $t\rightarrow0$,&lt;br /&gt;
-$=(x^* -y)\triangledown f(y)+f(y)$&lt;br /&gt;
-$\Rightarrow (y-x^* )\triangledown f(y)\ge f(y)-f(x^* ) \ge 0$&lt;br /&gt;
-$\therefore (y-x^* )\triangledown f(y) \ge 0, \forall y\in X$&lt;/p&gt;
+Since $f$ is convex,&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}&amp;tf(x^* )+(1-t)f(y) \ge f(y+(x^* -y)t)\\
+&amp;\Rightarrow f(x^* ) \ge \frac{f(y+(x^* -y)t)-f(y)}{t} + f(y)\\
+&amp;\Rightarrow f(x^* )\ge (x^* -y)\triangledown f(y)+f(y) (\text{ as }t\rightarrow0)\\
+&amp;\Rightarrow (y-x^* )\triangledown f(y)\ge f(y)-f(x^* ) \ge 0\\
+&amp;\therefore (y-x^* )\triangledown f(y) \ge 0, \forall y\in X\end{align} %]]&gt;&lt;/script&gt;
 
 &lt;h3 id=&quot;proof-leftarrow-1&quot;&gt;(Proof) $\Leftarrow$&lt;/h3&gt;
 &lt;p&gt;Let $\triangledown f(x^* )^T(y-x^* )\ge 0, \forall y\in X$&lt;br /&gt;
@@ -440,10 +499,11 @@ $\therefore f(y)\ge f(x^* ), \forall y\in X$&lt;/p&gt;
 
 &lt;h2 id=&quot;thm-tayler&quot;&gt;(Thm) Tayler&lt;/h2&gt;
 
-&lt;p&gt;$f(x) = f(0) + f’(0)x + \frac{1}{2}f^{\prime\prime}(0)x^2+\cdots$&lt;br /&gt;
-$f(b) = f(a) + f’(a)(b-a) + \frac{1}{2}f^{\prime\prime}(c)(b-a)^2, c\in[a, b]$&lt;br /&gt;
-$ = f(a) + \triangledown f(a)^T(b-a) + \frac{1}{2}(b-a)^T\triangledown^2f(c)(b-a), c\in[a, a+\theta(b-a)], \theta\in[0, 1]$&lt;br /&gt;
-$\therefore f(b) \ge f(a)+\triangledown f(a)^T(b-a)$&lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}f(x) &amp;= f(0) + f'(0)x + \frac{1}{2}f^{\prime\prime}(0)x^2+\cdots\\
+f(b) &amp;= f(a) + f'(a)(b-a) + \frac{1}{2}f^{\prime\prime}(c)(b-a)^2, c\in[a, b]\\
+&amp; = f(a) + \triangledown f(a)^T(b-a) + \frac{1}{2}(b-a)^T\triangledown^2f(c)(b-a), c\in[a, a+\theta(b-a)], \theta\in[0, 1]\end{align}\\
+ \therefore f(b) \ge f(a)+\triangledown f(a)^T(b-a) %]]&gt;&lt;/script&gt;
 </description>
         <pubDate>Wed, 04 Sep 2019 00:00:00 +0900</pubDate>
         <link>http://localhost:4000/lecture/optimization/2019/09/04/OptLecture2.html</link>

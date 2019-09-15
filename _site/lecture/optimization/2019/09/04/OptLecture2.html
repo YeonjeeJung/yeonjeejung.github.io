@@ -223,9 +223,10 @@ Minkowski inequality : $\left(\sum_{i=1}^n|x_i+y_i|^p\right)^{\frac{1}{p}}\le\le
 <h2 id="proof-every-norm-is-convex">(Proof) Every norm is Convex</h2>
 <p>(Recall) triangle inequality : $p(x) + p(y) \ge p(x+y), \forall x, y \in V$</p>
 
-<p>$\alpha p(x) + (1-\alpha)p(y)$<br />
-$= p(\alpha x) + p((1-\alpha)y)$<br />
-$\ge p(\alpha x + (1-\alpha)y)$</p>
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}\alpha p(x) + (1-\alpha)p(y) &
+= p(\alpha x) + p((1-\alpha)y) \\
+& \ge p(\alpha x + (1-\alpha)y)\end{align} %]]></script>
 
 <h2 id="lemma-jensens-inequality">(Lemma) Jensen’s inequality</h2>
 
@@ -244,13 +245,15 @@ $\ge p(\alpha x + (1-\alpha)y)$</p>
 <p>라는 convex의 정의를 이용해, 수학적 귀납법으로 증명할 수 있다.</p>
 
 <h3 id="proof">(Proof)</h3>
-<p>m일 때 성립한다고 가정한다. 그러면<br />
-$f(\sum_{i=1}^{m+1}\lambda_ix_i)$<br />
-$=f(\sum_{i=1}^m\lambda_ix_i + \lambda_{m+1}x_{m+1})$<br />
-$=f((1-\lambda_{m+1})\sum_{i=1}^m\frac{\lambda_i}{1-\lambda_{m+1}}x_i+\lambda_{m+1}x_{m+1})$<br />
-$\le(1-\lambda_{m+1})f(\sum_{i=1}^m\frac{\lambda_i}{1-\lambda_{m+1}}x_i)+\lambda_{m+1}f(x_{m+1})$<br />
-$\le(1-\lambda_{m+1})\sum_{i=1}^m\frac{\lambda_i}{1-\lambda_{m+1}}f(x_i)+\lambda_{m+1}f(x_{m+1})$<br />
-$=\sum_{i=1}^{m+1}\lambda_if(x_i)$</p>
+<p>m일 때 성립한다고 가정한다. 그러면</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}f(\sum_{i=1}^{m+1}\lambda_ix_i)
+& =f(\sum_{i=1}^m\lambda_ix_i + \lambda_{m+1}x_{m+1})\\
+& =f((1-\lambda_{m+1})\sum_{i=1}^m\frac{\lambda_i}{1-\lambda_{m+1}}x_i+\lambda_{m+1}x_{m+1})\\
+& \le(1-\lambda_{m+1})f(\sum_{i=1}^m\frac{\lambda_i}{1-\lambda_{m+1}}x_i)+\lambda_{m+1}f(x_{m+1})\\
+& \le(1-\lambda_{m+1})\sum_{i=1}^m\frac{\lambda_i}{1-\lambda_{m+1}}f(x_i)+\lambda_{m+1}f(x_{m+1})\\
+& =\sum_{i=1}^{m+1}\lambda_if(x_i)\end{align} %]]></script>
 
 <p>따라서,</p>
 
@@ -279,17 +282,20 @@ $=\sum_{i=1}^{m+1}\lambda_if(x_i)$</p>
 
 <h3 id="proof-leftarrow">(Proof) $\Leftarrow$</h3>
 
-<p>Let $z = \theta x + (1-\theta) y, \theta\in [0, 1]$<br />
-$(f(x) \ge f(z) + \triangledown f(z)^T(x-z)) \times\theta$<br />
-$(f(y) \ge f(z) + \triangledown f(z)^T(y-z))\times(1-\theta)$<br />
-$\Rightarrow \theta f(x) + (1-\theta)f(y)\ge f(z) + \triangledown f(z)^T(\theta x+(1-\theta)y-z)$<br />
-$\therefore\theta f(x)+(1-\theta)f(y)\ge f(\theta x+(1-\theta)y)$</p>
+<p>$z = \theta x + (1-\theta) y, \theta\in [0, 1]$ 라고 하자.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}& (f(x) \ge f(z) + \triangledown f(z)^T(x-z)) \times\theta \\
+& (f(y) \ge f(z) + \triangledown f(z)^T(y-z))\times(1-\theta)\\
+& \Rightarrow \theta f(x) + (1-\theta)f(y)\ge f(z) + \triangledown f(z)^T(\theta x+(1-\theta)y-z)\\
+& \therefore\theta f(x)+(1-\theta)f(y)\ge f(\theta x+(1-\theta)y)\end{align} %]]></script>
 
 <h3 id="proof-rightarrow">(Proof) $\Rightarrow$</h3>
 
-<p>$(1-t)f(x) + tf(y)\ge f(x+(y-x)t)$<br />
-$\Rightarrow f(y)\ge f(x) + \frac{f(x+(y-x)t)-f(x)}{t}$<br />
-as $t\rightarrow 0, f(y)\ge f(x)+\triangledown f(x)^T(y-x)$</p>
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}&(1-t)f(x) + tf(y)\ge f(x+(y-x)t)\\
+& \Rightarrow f(y)\ge f(x) + \frac{f(x+(y-x)t)-f(x)}{t}\\
+& \text{ as } t\rightarrow 0, f(y)\ge f(x)+\triangledown f(x)^T(y-x)\end{align} %]]></script>
 
 <h2 id="nondifferentiable-functions">Nondifferentiable Functions</h2>
 <p>$f(x) = |x|$같은 함수의 경우, $x=0$부근에서 많은 접점이 있지만 정확한 극한값은 없다. 이 때 그냥 하나를 마음대로 정할 수 있는데, 이것이 subgradient이다.</p>
@@ -316,13 +322,16 @@ as $t\rightarrow 0, f(y)\ge f(x)+\triangledown f(x)^T(y-x)$</p>
 <p><script type="math/tex">A\in \mathbb{R}^{d\times d}</script>가 symmetric하고 $x^TAx \gt 0, \forall x\in\mathbb{R}^d$일 때 $f$는 positive definite이다.</p>
 
 <h3 id="proof-f---convex-function-leftrightarrow-triangledown2fx-is-positive-semidefinite">(Proof) $f : $ convex function $\Leftrightarrow \triangledown^2f(x)$ is positive semidefinite</h3>
-<p>$g(t) = f(x+(y-x)t)$는 $t$에 대한 convex function이다.<br />
-$\Leftrightarrow g’(t) = \triangledown f(x+(y-x)t)(y-x)$<br />
-<script type="math/tex">\Leftrightarrow g''(t) = (y-x)^T\triangledown^2f(x+(y-x)t)(y-x)</script><br />
-$g(t)$가 convex function이므로, <script type="math/tex">g''(t) \ge 0, \forall t, \forall x, y</script>를 만족한다.<br />
-따라서 $t=0$일 때도 만족하는데, 이를 대입해보면 다음과 같다.<br />
-<script type="math/tex">g''(t)\mid_ {t=0} = (y-x)^T\triangledown^2f(x)(y-x) \ge 0, \forall x, y</script><br />
-이는 positive semidefinite의 정의이므로, 둘은 동치이다.</p>
+<p><script type="math/tex">% <![CDATA[
+\begin{align}& g(t) = f(x+(y-x)t)\text{ 는 } t\text{에 대한 convex function이다}\\
+& \Leftrightarrow g'(t) = \triangledown f(x+(y-x)t)(y-x)\\
+& \Leftrightarrow g''(t) = (y-x)^T\triangledown^2f(x+(y-x)t)(y-x)\end{align} %]]></script></p>
+
+<p>$g(t)$가 convex function이므로, <script type="math/tex">g''(t) \ge 0, \forall t, \forall x, y</script>를 만족한다. 따라서 $t=0$일 때도 만족하는데, 이를 대입해보면 다음과 같다.</p>
+
+<script type="math/tex; mode=display">g''(t)\mid_ {t=0} = (y-x)^T\triangledown^2f(x)(y-x) \ge 0, \forall x, y</script>
+
+<p>이는 positive semidefinite의 정의이므로, 둘은 동치이다.</p>
 
 <h2 id="local-minima-critical-point">Local Minima, Critical Point</h2>
 <h3 id="def-local-minima">(Def) Local Minima</h3>
@@ -338,12 +347,14 @@ $g(t)$가 convex function이므로, <script type="math/tex">g''(t) \ge 0, \foral
 
 <h3 id="proofrightarrow">(Proof)$\Rightarrow$</h3>
 <p>Let $f(x^* )\le f(y), \forall y \in X$<br />
-Since $f$ is convex, $tf(x^* )+(1-t)f(y) \ge f(y+(x^* -y)t)$<br />
-$\Rightarrow f(x^* ) \ge \frac{f(y+(x^* -y)t)-f(y)}{t} + f(y)$<br />
-as $t\rightarrow0$,<br />
-$=(x^* -y)\triangledown f(y)+f(y)$<br />
-$\Rightarrow (y-x^* )\triangledown f(y)\ge f(y)-f(x^* ) \ge 0$<br />
-$\therefore (y-x^* )\triangledown f(y) \ge 0, \forall y\in X$</p>
+Since $f$ is convex,</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}&tf(x^* )+(1-t)f(y) \ge f(y+(x^* -y)t)\\
+&\Rightarrow f(x^* ) \ge \frac{f(y+(x^* -y)t)-f(y)}{t} + f(y)\\
+&\Rightarrow f(x^* )\ge (x^* -y)\triangledown f(y)+f(y) (\text{ as }t\rightarrow0)\\
+&\Rightarrow (y-x^* )\triangledown f(y)\ge f(y)-f(x^* ) \ge 0\\
+&\therefore (y-x^* )\triangledown f(y) \ge 0, \forall y\in X\end{align} %]]></script>
 
 <h3 id="proof-leftarrow-1">(Proof) $\Leftarrow$</h3>
 <p>Let $\triangledown f(x^* )^T(y-x^* )\ge 0, \forall y\in X$<br />
@@ -353,10 +364,11 @@ $\therefore f(y)\ge f(x^* ), \forall y\in X$</p>
 
 <h2 id="thm-tayler">(Thm) Tayler</h2>
 
-<p>$f(x) = f(0) + f’(0)x + \frac{1}{2}f^{\prime\prime}(0)x^2+\cdots$<br />
-$f(b) = f(a) + f’(a)(b-a) + \frac{1}{2}f^{\prime\prime}(c)(b-a)^2, c\in[a, b]$<br />
-$ = f(a) + \triangledown f(a)^T(b-a) + \frac{1}{2}(b-a)^T\triangledown^2f(c)(b-a), c\in[a, a+\theta(b-a)], \theta\in[0, 1]$<br />
-$\therefore f(b) \ge f(a)+\triangledown f(a)^T(b-a)$</p>
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}f(x) &= f(0) + f'(0)x + \frac{1}{2}f^{\prime\prime}(0)x^2+\cdots\\
+f(b) &= f(a) + f'(a)(b-a) + \frac{1}{2}f^{\prime\prime}(c)(b-a)^2, c\in[a, b]\\
+& = f(a) + \triangledown f(a)^T(b-a) + \frac{1}{2}(b-a)^T\triangledown^2f(c)(b-a), c\in[a, a+\theta(b-a)], \theta\in[0, 1]\end{align}\\
+ \therefore f(b) \ge f(a)+\triangledown f(a)^T(b-a) %]]></script>
 
 </article>
 
