@@ -123,9 +123,17 @@ $$\alpha t^2\|h\|^2\le h^T\triangledown^2f(y)t^2h\le \beta t^2\|h\|^2$$
 
 를 얻게 되고,
 
-$$\alpha\le\frac{h^T\triangledown^2 f(y)h}{\|h\|^2}\le\beta$$
+$$h^T\alpha h\le h^T\triangledown^2 f(y)h\le h^T\beta h, \forall h$$
 
 를 얻을 수 있다.
+
+$$0\le h^T(\triangledown^2 f(y)-\alpha)h, 0\le h^T(\beta-\triangledown^2 f(y))h , \forall h$$
+
+이므로,
+
+$$\alpha I \le \triangledown^2 f(y)\le \beta I$$
+
+와 동치이다.
 
 ### (Proof) $\Leftarrow$
 
