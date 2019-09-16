@@ -188,6 +188,7 @@ $$f(\bar{x})-f(x^* )\le\frac{RL}{\sqrt{T}}$$
 가 성립한다.
 
 ### $L$-Lipschitz Continuous
+
 $$\|f(x)-f(y)\| \le L\|x-y\|, \forall x,y$$
 
 를 만족할 때 $L$-Lipschitz continuous라고 하고, $f$가 미분가능하면 $$\|\triangledown f(x)\|\le L$$을 만족할 때 Lipschitz continuous라고 한다.
