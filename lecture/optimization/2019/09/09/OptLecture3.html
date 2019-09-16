@@ -268,9 +268,17 @@ MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
 
 <p>를 얻게 되고,</p>
 
-<script type="math/tex; mode=display">\alpha\le\frac{h^T\triangledown^2 f(y)h}{\|h\|^2}\le\beta</script>
+<script type="math/tex; mode=display">h^T\alpha h\le h^T\triangledown^2 f(y)h\le h^T\beta h, \forall h</script>
 
 <p>를 얻을 수 있다.</p>
+
+<script type="math/tex; mode=display">0\le h^T(\triangledown^2 f(y)-\alpha)h, 0\le h^T(\beta-\triangledown^2 f(y))h , \forall h</script>
+
+<p>이므로,</p>
+
+<script type="math/tex; mode=display">\alpha I \le \triangledown^2 f(y)\le \beta I</script>
+
+<p>와 동치이다.</p>
 
 <h3 id="proof-leftarrow">(Proof) $\Leftarrow$</h3>
 
