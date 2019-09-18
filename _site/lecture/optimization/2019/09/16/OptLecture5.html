@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Optimization Lecture 5</title>
+  <meta name="description" content="Projected Gradient Descent">
+  
+  <meta name="author" content="YeonjeeJung">
+  <meta name="copyright" content="&copy; YeonjeeJung 2019">
+  
+
+  <!-- External libraries -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/monokai-sublime.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css">
+
+  <!-- Favicon and other icons (made with http://www.favicon-generator.org/) -->
+  <link rel="shortcut icon" href="/assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" sizes="57x57" href="/assets/icons/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/assets/icons/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/assets/icons/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/assets/icons/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/assets/icons/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/assets/icons/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/assets/icons/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/assets/icons/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/assets/icons/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+  <link rel="manifest" href="/assets/icons/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/assets/icons/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  
+
+  
+  <!-- Twitter: card tags -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Optimization Lecture 5">
+  <meta name="twitter:description" content="Projected Gradient Descent">
+  <meta name="twitter:image" content="http://localhost:4000/assets/logo.png">
+  <meta name="twitter:url" content="http://localhost:4000">
+  
+
+  
+
+  <!-- Site styles -->
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/lecture/optimization/2019/09/16/OptLecture5.html">
+  <link rel="alternate" type="application/rss+xml" title="YeonjeeJung's Blog" href="http://localhost:4000/feed.xml" />
+</head>
+
+  
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$'] ],
+    processEscapes: true,
+  }
+});
+MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+  
+  <body>
+
+    <header class="navigation" role="banner">
+  <div class="navigation-wrapper">
+    <a href="/" class="logo">
+      
+      <img src="/assets/logo.png" alt="YeonjeeJung's Blog">
+      
+    </a>
+    <a href="javascript:void(0)" class="navigation-menu-button" id="js-mobile-menu">
+      <i class="fa fa-bars"></i>
+    </a>
+    <nav role="navigation">
+      <ul id="js-navigation-menu" class="navigation-menu show">
+        <li class="nav-link"><a href="/about">About</a>
+        <li class="nav-link"><a href="/category/note">Note</a>
+        <li class="nav-link"><a href="/category/thesis">Thesis</a>
+        <li class="nav-link"><a href="/category/lecture">Lecture</a>
+          <ul>
+            <a href="/category/computervision">CV</a>
+            <a href="/category/optimization">Optimization</a>
+            <a href="/category/robot">Robot</a>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+    <div class="page-content">
+        <div class="post">
+
+<div class="post-header-container " >
+  <div class="scrim ">
+    <header class="post-header">
+      <h1 class="title">Optimization Lecture 5</h1>
+      <p class="info">by <strong>Yeonjee Jung</strong></p>
+    </header>
+  </div>
+</div>
+
+<div class="wrapper">
+
+ <span class="page-divider">
+  <span class="one"></span>
+  <span class="two"></span>
+</span>
+ 
+
+<section class="post-meta">
+  <div class="post-date">September 16, 2019</div>
+  <div class="post-categories">
+  in 
+    
+    <a href="/category/lecture">Lecture</a>, 
+    
+  
+    
+    <a href="/category/optimization">Optimization</a>
+    
+  
+  </div>
+</section>
+
+<article class="post-content">
+  <h1 id="projected-gradient-descent">Projected Gradient Descent</h1>
+
+<h2 id="constrained-optimization">Constrained Optimization</h2>
+
+<p>Constrained Problem은 $f(x)$를 최소화하는 $x$를 찾는 문제인데, $x$의 범위 $X$가 주어져 있다는 점에서 이전과 다르다. 이 문제를 해결하는 방법에는 두 가지가 있는데,</p>
+
+<ol>
+  <li>Projected Gradient Descent를 이용하는 방법과</li>
+  <li>unconstrained problem으로 바꿔서 해결하는 방법이 있다.</li>
+</ol>
+
+<p>이번 단원은 첫번째 방법에 대한 내용이다.</p>
+
+<h2 id="projected-gradient-descent-1">Projected Gradient Descent</h2>
+
+<p>Project 는 <script type="math/tex">\Pi_X(y):=\arg\min_{x\in X}\|x-y\|</script>, 즉 $X$바깥에 있는 $y$와 가장 가까운 $x\in X$에 매칭시켜주는 것이다.</p>
+
+<p>Projected gradient를 업데이트 하는 방법은 <script type="math/tex">x_{t+1}=\Pi_X(x_t-\gamma\triangledown f(x_t))</script>이다.</p>
+
+<h2 id="propconvex-constrained-problem">(Prop)Convex Constrained Problem</h2>
+
+<p>$f$가 convex function이고 $X$가 convex set이고, $x^* $가 $X$범위에 대해 $f$의 minimizer라면,</p>
+
+<script type="math/tex; mode=display">\begin{align}f(x^* )\le f(y), \forall y\in X \Leftrightarrow \triangledown f(x^* )^T(x-x^* )\ge 0\cdots(* 1)\end{align}</script>
+
+<p>이 성립한다.</p>
+
+<h3 id="proof-leftarrow">(Proof) $\Leftarrow$</h3>
+
+<p>$f$가 convex function이라고 했으므로,</p>
+
+<script type="math/tex; mode=display">f(x)\ge f(x^* ) + \triangledown f(x^* )^T(x-x^* )</script>
+
+<p>를 항상 만족한다. 따라서 $\triangledown f(x^* )^T(x-x^* )\ge 0$이면 $f(x)\ge f(x^* )$이므로 증명은 끝난다.</p>
+
+<h3 id="proof-rightarrow">(Proof) $\Rightarrow$</h3>
+
+<p>대우명제를 이용한다. $\triangledown f(x^* )^T(x-x^* )\lt 0$이라고 하자. 그러면</p>
+
+<script type="math/tex; mode=display">\triangledown f(x^* )^T(x-x^* )=\lim_{t\rightarrow 0+}\frac{f(x^* +t(x-x^* ))-f(x^* )}{t(x-x^* )}(x-x^* )\lt 0</script>
+
+<p>이 성립하므로,</p>
+
+<script type="math/tex; mode=display">f(x^* +t(x-x^* ))-f(x^* )\lt 0</script>
+
+<p>이 성립하게 된다. 이는 $f(x^* )\le f(y), \forall y\in X$에 부합하지 않으므로, 증명은 끝난다.</p>
+
+<h2 id="prop-properties-of-projection">(Prop) Properties of Projection</h2>
+
+<p>$X$가 closed 이고 convex라고 하고, $x\in X, y\in \mathbb{R}^d$라고 하자. 그러면</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}&(x-\Pi_X(y))^T(y-\Pi_X(y))\le 0\cdots(* 2)\\
+&\|x-\Pi_X(y)\|^2+\|y-\Pi_X(y)\|^2\le\|x-y\|^2\cdots(* 3)\end{align} %]]></script>
+
+<p>가 항상 성립한다.</p>
+
+<h3 id="proof--2">(Proof) $(* 2)$</h3>
+
+<p>$\Pi_X(y)$는 <script type="math/tex">d(x)=\|x-y\|^2</script>의 minimizer이므로, $(* 1)$의 $\Rightarrow$를 이용하면</p>
+
+<script type="math/tex; mode=display">\triangledown d(\Pi_X(y))^T(x-\Pi_X(y))\ge 0</script>
+
+<p>이 항상 성립한다. <script type="math/tex">d(x) = \|x-y\|^2=(x-y)^T(x-y)</script>이므로, <script type="math/tex">\triangledown d(x) = 2(x-y)</script>이다. 따라서</p>
+
+<script type="math/tex; mode=display">(\Pi_X(y)-y)^T(x-\Pi_X(y))\ge 0</script>
+
+<p>이고, 바꿔 말하면</p>
+
+<script type="math/tex; mode=display">(x-\Pi_X(y))^T(y-\Pi_X(y))\le 0</script>
+
+<p>이다.</p>
+
+<h3 id="proof--3">(Proof) $(* 3)$</h3>
+
+<p>$v:=\Pi_X(y), w:=y-\Pi_X(y)$라고 하자. $(* 2)$에 의해</p>
+
+<script type="math/tex; mode=display">0\le 2v^Tw = \|v\|^2+\|w\|^2-\|v-w\|^2</script>
+
+<p>이므로,</p>
+
+<script type="math/tex; mode=display">\|x-\Pi_X(y)\|^2+\|y-\Pi_X(y)\|^2\le\|x-y\|^2</script>
+
+<p>가 성립한다.</p>
+
+<h2 id="projected-gradient--lipschitz-convex">Projected Gradient : Lipschitz Convex</h2>
+
+<p>$f:\mathbb{R}^d\rightarrow\mathbb{R}$가 convex function이고 미분가능하다고 하자. $X\subset\mathbb{R}^d$는 closed 이고 convex라고 하고, $x^* \in X$는 $f$에 대한 minimizer라고 하자. <script type="math/tex">\|x_0-x^* \|\le R, x_0\in X</script>이고, <script type="math/tex">\|\triangledown f(x)\|\le B, \forall x\in X</script>라고 하자 (B-Lipschitz continuous). step size $\gamma = \frac{R}{B\sqrt{T}}$라고 지정하면,</p>
+
+<script type="math/tex; mode=display">f(\bar{x})-f(x^* )\le\frac{1}{T}\sum_{t=0}^{T-1}f(x_t)-f(x^* )\le\frac{RB}{\sqrt{T}}</script>
+
+<p>의 boundary를 갖는다.</p>
+
+<p><em>Lipschitz Continuous에서는 $f(x_{t+1})\le f(x_t)$를 보장하지 못하기 때문에, $f(x_T)\le f(x_t)$라고 장담할 수가 없다. 따라서 $f(\bar{x})-f(x^ *)$를 bound시키는 것이다.</em></p>
+
+<h3 id="vanilla-analysis">Vanilla Analysis</h3>
+
+<p><script type="math/tex">y_{t+1}=x_t-\gamma\triangledown f(x_t), x_{t+1}=\Pi_X(y_{t+1})</script>이라고 하자. vanilla anaylsis를 이용하면,</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}f(x_t)-f(x^* ) & \le \triangledown f(x_t)^T(x_t-x^* )\\
+&=\frac{1}{\gamma}(x_t-y_{t+1})^T(x_t-x^* )\\
+&=\frac{1}{2\gamma}(\|x_t-y_{t+1}\|^2+\|x_t-x^* \|^2-\|y_{t+1}-x^* \|^2)\\
+&\le\frac{\gamma}{2}\|\triangledown f(x_t)\|^2+\frac{1}{2\gamma}(\|x_t-x^* \|-\|x_{t+1}-x^* \|^2)-\frac{1}{2\gamma}\|y_{t+1}-x_{t+1}\|^2
+\end{align} %]]></script>
+
+<p>(마지막 줄은 <script type="math/tex">(y_{t+1}=x_t-\gamma\triangledown f(x_t))</script>와 $(3)$을 사용했다). 이 식은 원래의 vanilla anaylsis에서 $-\frac{1}{2\gamma}|y_{t+1}-x_{t+1}|^2$만 추가된 것이다. 모든 $t$에 대해서 다 더하면,</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}\sum_{t=0}^{T-1}(f(x_t)-f(x^* ))&\le\frac{1}{2\gamma}(\|x_0-x^* \|^2-\|x_T-x^* \|^2)+\sum_{t=0}^{T-1}\frac{\gamma}{2}\|\triangledown f(x_t)\|^2-\sum_{t=0}^{T-1}\frac{1}{2\gamma}\|y_{t+1}-x_{t+1}\|^2 \\
+&\le \frac{1}{2\gamma}(\|x_0-x^* \|^2-\|x_T-x^* \|^2)+\sum_{t=0}^{T-1}\frac{\gamma}{2}\|\triangledown f(x_t)\|^2\end{align} %]]></script>
+
+<p>를 얻게 되는데, 이는 결국 vanilla anaylsis와 같은 결론이다.</p>
+
+<p><script type="math/tex">\bar{x}=\frac{x_0+\cdots+x_{T-1}}{T}</script> 라고 하면,</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}f(\bar{x})-f(x^* )&\le\frac{1}{T}\sum_{t=0}^{T-1}(f(x_t)-f(x^* ))\text{(Jensen's inequality)}\\
+&\le\frac{1}{2\gamma T}R^2+\frac{1}{T}\sum_{t=0}^{T-1}\frac{\gamma}{2}\|\triangledown f(x_t)\|^2\\
+&\le\frac{RB}{2\sqrt{T}}+\frac{RB}{2\sqrt{T}}(\gamma = \frac{R}{B\sqrt{T}})\\
+&\le\frac{RB}{\sqrt{T}}\end{align} %]]></script>
+
+<h2 id="projected-gradient--beta-smooth-functions">Projected Gradient : $\beta$-smooth functions</h2>
+
+<h3 id="recall-beta-smooth">(Recall) $\beta$-smooth</h3>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}f(x_t)-f(x_{t+1})&\ge\triangledown f(x_t-x_{t+1})-\frac{\beta}{2}\|x_t-x_{t+1}\|^2\\
+&=\gamma\|\triangledown f(x_t)\|^2-\frac{\gamma^2\beta}{2}\|\triangledown f(x_t)\|^2\end{align} %]]></script>
+
+<p>unconstrained 에서와는 다르게, constrained에서는</p>
+
+<script type="math/tex; mode=display">\gamma\triangledown f(x_t)\neq x_t-x_{t+1}</script>
+
+<p>이다. 대신 $\gamma = \frac{1}{\beta}$를 대입하면</p>
+
+<script type="math/tex; mode=display">f(x_{t+1})\le f(x_t)-\frac{1}{2\beta}\|\triangledown f(x_t)\|^2 + \frac{\beta}{2}\|y_{t+1}-x_{t+1}\|^2\cdots(* 4)</script>
+
+<p>를 얻을 수 있다. 주의할 점은, <script type="math/tex">\frac{\beta}{2}\|y_{t+1}-x_{t+1}\|^2</script>때문에 monotone decrese (<script type="math/tex">f(x_{t+1}\le f(x_t))</script>)를 확신할 수 없으므로 이를 먼저 증명해야 한다.</p>
+
+<h3 id="proof-fx_t1le-fx_t">(Proof) <script type="math/tex">f(x_{t+1})\le f(x_t)</script></h3>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}f(x_{t+1})&\le f(x_t)+\triangledown f(x_t)^T(x_{t+1}-x_t)+\frac{\beta}{2}\|x_{t+1}-x_t\|^2 (\beta\text{-smooth})\\
+&=f(x_t)-\beta(y_{t+1}-x_t)^T(x_{t+1}-x_t)+\frac{\beta}{2}\|x_{t+1}-x_t\|^2(y_{t+1}-x_t=\frac{1}{\beta}\triangledown f(x_t))\\
+&=f(x_t)-\frac{\beta}{2}(\|y_{t+1}-x_t\|^2+\|x_{t+1}-x_t\|^2-\|y_{t+1}-x_{t+1}\|^2)+\frac{\beta}{2}\|x_{t+1}-x_t\|^2\\
+&=f(x_t)-\frac{\beta}{2}\|y_{t+1}-x_t\|^2+\frac{\beta}{2}\|y_{t+1}-x_{t+1}\|^2\end{align} %]]></script>
+
+<p>$(* 3)$에 의해</p>
+
+<script type="math/tex; mode=display">\|x_t-x_{t+1}\|^2+\|y_{t+1}-x_{t+1}\|^2\le\|x_t-y_{t+1}\|^2</script>
+
+<p>이므로</p>
+
+<script type="math/tex; mode=display">-\frac{\beta}{2}\|y_{t+1}-x_t\|^2+\frac{\beta}{2}\|y_{t+1}-x_{t+1}\|^2\le 0</script>
+
+<p>이 된다. 따라서</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}f(x_{t+1})-f(x_t)&\le-\frac{\beta}{2}\|y_{t+1}-x_t\|^2+\frac{\beta}{2}\|y_{t+1}-x_{t+1}\|^2\\&\le 0\end{align} %]]></script>
+
+<p>이므로, $f(x_{t+1})\le f(x_t)$를 얻을 수 있다.</p>
+
+<h3 id="vanilla-analysis-1">Vanilla Analysis</h3>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}\sum_{t=0}^{T-1}(f(x_t)-f(x^* ))&\le\frac{\beta}{2}(\|x_0-x^* \|^2-\|x_T-x^* \|^2)+\sum_{t=0}^{T-1}\left(\frac{1}{2\beta}\|\triangledown f(x_t)\|^2-\frac{\beta}{2}\|y_{t+1}-x_{t+1}\|^2\right)\\
+&\le\frac{\beta}{2}\|x_0-x^* \|^2+\sum_{t=0}^{T-1}(f(x_t)-f(x_{t+1}))((* 4)\text{에 의해})\end{align} %]]></script>
+
+<p>우변의 마지막 항을 좌변으로 넘기면</p>
+
+<script type="math/tex; mode=display">\sum_{t=1}^T(f(x_t)-f(x^* ))\le\frac{\beta}{2}\|x_0-x^* \|^2</script>
+
+<p>를 얻게 되고,</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}f(x_T)-f(x^* )&\le\frac{1}{T}\sum_{t=1}^T(f(x_t)-f(x^* ))(f(x_T)\le f(x_t),\forall t\lt T)\\
+&\le\frac{\beta}{2T}\|x_0-x^* \|^2\end{align} %]]></script>
+
+<p>로 bound된다.</p>
+
+</article>
+
+
+
+
+
+<section class="rss">
+  <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+</section>
+
+<!-- <section class="share">
+  <span>Share: </span>
+  
+    
+    
+    
+    
+    
+    
+    
+    
+  
+</section> -->
+
+
+
+
+<section class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'true';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+
+</div>
+</div>
+
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h3 class="footer-heading">YeonjeeJung's Blog</h3>
+
+    <div class="site-navigation">
+
+      <p><strong>Site Map</strong></p>
+      <ul class="pages">
+
+        <li class="nav-link"><a href="/about">About</a>
+        <li class="nav-link"><a href="/category/note">Note</a>
+        <li class="nav-link"><a href="/category/thesis">Thesis</a>
+        <li class="nav-link"><a href="/category/lecture">Lecture</a>
+
+      </ul>
+    </div>
+
+    <div class="site-contact">
+
+      <p><strong>Contact</strong></p>
+      <ul class="social-media-list">
+        <li>
+          <a href="mailto:gotnwlsl@gmail.com">
+            <i class="fa fa-envelope-o"></i>
+            <span class="username">gotnwlsl@gmail.com</span>
+          </a>
+        </li>
+
+        
+          
+          <li>
+            <a href="https://github.com/YeonjeeJung" title="Fork me on GitHub">
+              <i class="fa fa-github"></i>
+              <span class="username">YeonjeeJung</span>
+            </a>
+          </li>
+          
+        
+
+      </ul>
+    </div>
+
+    <div class="site-signature">
+      <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+      <p class="text"></p>
+    </div>
+
+  </div>
+
+</footer>
+
+<!-- Scripts -->
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/js/lightbox.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  // Default syntax highlighting
+  hljs.initHighlightingOnLoad();
+
+  // Header
+  var menuToggle = $('#js-mobile-menu').unbind();
+  $('#js-navigation-menu').removeClass("show");
+  menuToggle.on('click', function(e) {
+    e.preventDefault();
+    $('#js-navigation-menu').slideToggle(function(){
+      if($('#js-navigation-menu').is(':hidden')) {
+        $('#js-navigation-menu').removeAttr('style');
+      }
+    });
+  });
+});
+
+</script>
+
+
+
+
+
+
+  </body>
+
+</html>
