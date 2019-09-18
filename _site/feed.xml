@@ -5,9 +5,71 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 18 Sep 2019 22:06:44 +0900</pubDate>
-    <lastBuildDate>Wed, 18 Sep 2019 22:06:44 +0900</lastBuildDate>
+    <pubDate>Wed, 18 Sep 2019 23:12:59 +0900</pubDate>
+    <lastBuildDate>Wed, 18 Sep 2019 23:12:59 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>Optimization Lecture 6</title>
+        <description>&lt;h1 id=&quot;projected-gradient-descent&quot;&gt;Projected Gradient Descent&lt;/h1&gt;
+
+&lt;h2 id=&quot;projected-gradient--alpha-strongly-convex--beta-smooth&quot;&gt;Projected Gradient : $\alpha$-strongly convex &amp;amp; $\beta$-smooth&lt;/h2&gt;
+
+&lt;h3 id=&quot;recall-unconstrained-vanilla-analysis&quot;&gt;(Recall) Unconstrained Vanilla Analysis&lt;/h3&gt;
+
+&lt;p&gt;vanilla analysis에서는&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}\|x_{t+1}-x^* \|^2&amp;\le\frac{2}{\beta}(f(x^* )-f(x_t))+\frac{1}{\beta}\|\triangledown f(x_t)\|^2+(1-\frac{\alpha}{beta})\|x_t-x^* \|^2\\
+&amp;\le(1-\frac{\alpha}{\beta})\|x_t-x^* \|^2\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;을 얻을 수 있었다. 이 때 마지막 부등식은&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(x^* )-f(x_t)\le f(x_{t+1})-f(x_t)\le-\frac{1}{2\beta}\|\triangledown f(x_t)\|^2\cdots(* 1)&lt;/script&gt;
+
+&lt;p&gt;라는 성질에 의해&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{2}{\beta}(f(x^* )-f(x_t))\le -\frac{1}{\beta^2}\|\triangledown f(x_t)\|^2&lt;/script&gt;
+
+&lt;p&gt;를 얻어서 성립한 것이다.&lt;/p&gt;
+
+&lt;h3 id=&quot;constrained-vanilla-analyasis&quot;&gt;Constrained Vanilla Analyasis&lt;/h3&gt;
+
+&lt;p&gt;constrained에서는 $(* 1)$가 아닌&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(x^* )-f(x_t)\le f(x_{t+1})- f(x_t)\le-\frac{1}{2\beta}\|\triangledown f(x_t)\|^2+\frac{\beta}{2}\|y_{t+1}-x_{t+1}\|^2\cdots(* 2)&lt;/script&gt;
+
+&lt;p&gt;가 성립한다. 따라서,&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}\|x_{t+1}-x^* \|^2&amp;\le\frac{2}{\beta}(f(x^* )-f(x_t))+\frac{1}{\beta^2}\|\triangledown f(x_t)\|^2-\|y_{t+1}-x_{t+1}\|^2+(1-\frac{\alpha}{\beta})\|x_t-x^* \|^2\\
+&amp;\le(1-\frac{\alpha}{\beta})\|x_t-x^* \|^2(\text{by }(* 2))\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;가 성립하므로,&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}\|x_T-x^* \|^2&amp;\le(1-\frac{\alpha}{\beta})^T\|x_0-x^* \|^2\\
+\|x_T-x^* \|&amp;\le(1-\frac{\alpha}{\beta})^{\frac{T}{2}}\|x_0-x^* \|\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;이다. 따라서&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}f(x_T)-f(x^* )&amp;\le\triangledown f(x^* )^T(x_T-x^* )+\frac{\beta}{2}\|x_T-x^* \|^2\\
+&amp;\le\|\triangledown f(x^* )\|\|x_T-x^* \|+\frac{\beta}{2}\|x_T-x^* \|^2\\
+&amp;\le\|\triangledown f(x^* )\|(1-\frac{\alpha}{\beta})^{\frac{T}{2}}\|x_0-x^* \|+\frac{\beta}{2}(1-\frac{\alpha}{\beta})^T\|x_0-x^* \|^2\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;결론적으로, Projected Gradient Descent를 사용하면 Unconstrained에서와 거의 비슷하게 수렴하고 bound하게 된다. 하지만 Projection에 많은 계산량이 사용되기 때문에 이 방법은 거의 쓰지 않는다.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 18 Sep 2019 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/lecture/optimization/2019/09/18/OptLecture6.html</link>
+        <guid isPermaLink="true">http://localhost:4000/lecture/optimization/2019/09/18/OptLecture6.html</guid>
+        
+        
+        <category>Lecture</category>
+        
+        <category>Optimization</category>
+        
+      </item>
     
       <item>
         <title>Optimization Lecture 5</title>
@@ -1001,91 +1063,6 @@ d) Example-based Explanation&lt;/p&gt;
         
         
         <category>Note</category>
-        
-      </item>
-    
-      <item>
-        <title>Peeking Inside the Black-Box ; A Survey on Explainable Artificial Intelligence (XAI) - 1</title>
-        <description>&lt;h1 id=&quot;abstract&quot;&gt;Abstract&lt;/h1&gt;
-
-&lt;p&gt;4차 산업혁명의 여명으로, 우리의 일상에서 더 알고리즘적인 사회에 다가가갈 수 있게 하는 인공지능이 빠르게 적용되고 있다. 그러나, 전례 없는 발전에도, AI시스템의 가장 큰 문제점은 투명성이 없다는 것이다. 당연히 이 시스템의 블랙박스인 특성이 강력한 예측을 하게 해주지만, 직접적으로는 설명될 수 없다. 이 문제는 XAI에 대한 논쟁을 야기했다. 이 연구분야는 AI시스템의 믿음과 투명성을 향상시킬 것이라는 희망을 갖고 있다. AI가 계속해서 이어나가려면 XAI는 필수요소이다. 이 서베이는 관심있는 연구자들과 연습자들이 초기 단계이지만 빠르게 성장하는 XAI의 주요 양상들을 배울 수 있도록 하는 입구가 될 것이다. 주제, 논쟁 트렌드, 주 연구 궤적을 문헌들을 통해서 현존하는 접근법을 리뷰할 것이다.&lt;/p&gt;
-
-&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
-
-&lt;h3 id=&quot;context&quot;&gt;Context&lt;/h3&gt;
-
-&lt;p&gt;현재 인공지능은 덜 중요한 일에는 매우 많이 쓰이고 있지만, 매우 중요한 일에는 설명이 되지 않기 때문에 쓰이지 않고 있다. 이것이 XAI가 중요한 이유이다. XAI는 더 투명한 AI를 만들기 위한 발걸음이다. XAI는 좋은 성능은 잃지 않으면서도 설명 가능한 모델을 만들기 위한 연구이다.&lt;/p&gt;
-
-&lt;h3 id=&quot;xais-landscape-dynamic&quot;&gt;XAI’s Landscape Dynamic&lt;/h3&gt;
-
-&lt;p&gt;최근 많은 컨퍼런스에서 XAI를 비중있게 다루었는데, 그 중 눈에 띠는 연구 그룹은 FAT와 DARPA이다. FAT(Fairness, Accountability, Transparency) 는 많은 참가자와 논문을 포함했다. DARPA는 2017년에 XAI프로그램을 설립했고, 2021년까지 11개의 프로젝트를 진행한다. DARPA는 미 국방부의 지원을 받지만, 다양한 학문 기관에서 온 연구자들과 함께 다양한 팀을 꾸린다.&lt;/p&gt;
-
-&lt;h3 id=&quot;contribution-and-organization&quot;&gt;Contribution and Organization&lt;/h3&gt;
-
-&lt;p&gt;이 논문은 XAI의 기반을 확실히 해 놓아야 다음 연구로 진전이 될 수 있을 것을 주장한다.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;XAI가 왜 필요한지&lt;/li&gt;
-  &lt;li&gt;XAI 접근법 오버뷰&lt;/li&gt;
-  &lt;li&gt;미래 연구 분야&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;를 이 논문이 알려준다.&lt;/p&gt;
-
-&lt;h1 id=&quot;background&quot;&gt;Background&lt;/h1&gt;
-
-&lt;h3 id=&quot;understanding-xai--a-contextual-definition&quot;&gt;Understanding XAI : A Contextual Definition&lt;/h3&gt;
-
-&lt;p&gt;XAI의 필요성은 1970년대부터 있어왔다. 그러나 AI에 대한 관심이 줄어들었는데, 그 이후 AI의 방향이 모델 구현하는 쪽으로 변하면서 예측 능력에 가려 덜 중요하다고 생각되었다. 2004년에 XAI라는 용어를 처음 썼다. AI가 발전하자, 그에 따라 XAI라는 용어도 다시 급부상했다.&lt;/p&gt;
-
-&lt;p&gt;하지만 XAI에 대한 정확한 정의는 없다. 기관에 따라 다른 정의를 갖고 있다. DARPA에 따르면, “정확도를 유지하면서 설명 가능한 모델을 만드는 것, 유저에게 설명할 수 있어야 하며, 그로 인해 AI를 제어할 수 있어야 한다.” 이다.&lt;/p&gt;
-
-&lt;p&gt;사실 과학 문헌에서는 explainable보다는 interpretable이 더 많이 쓰이지만, 퍼블릭에서는 반대이므로 XAI라는 이름이 붙었다.&lt;/p&gt;
-
-&lt;h3 id=&quot;using-xai-the-need-and-the-application-opportunities&quot;&gt;USING XAI: THE NEED AND THE APPLICATION OPPORTUNITIES&lt;/h3&gt;
-
-&lt;p&gt;XAI가 필요한 4가지 이유&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;결과가 옳다고 주장하기 위해&lt;/li&gt;
-  &lt;li&gt;결과를 조절하기 위해&lt;/li&gt;
-  &lt;li&gt;결과를 개선하기 위해&lt;/li&gt;
-  &lt;li&gt;새로운 것을 발견하기 위해&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;그러나 구글 연구원 노빅은 사람도 자신의 선택을 설명하는 것을 잘 못한다고 했다. 설명력은 매우 중요하지만, 필수적이지는 않다. 설명을 잘 하는 모델이 정확도는 더 떨어질 수도 있기 때문이다. 게다가 비싸다. 그래서 특정 상황일 때만 XAI를 쓰는 것이 적절하다. AI 알고리즘의 복잡도로부터 발생되는 불투명도의 정도가 높을 때 (알고리즘이 복잡해서 우리가 못알아들을 때), 그리고 응용 분야의 에러 저항력이 낮을 때 (조금이라도 틀리면 치명적일 때) 사용해야 한다.&lt;/p&gt;
-
-&lt;p&gt;XAI는 꼭 필요하지만, 아직 기술적으로 발전되지 않았다. 기존 설명 가능한 rule-based 모델이 있었지만 이를 DNN에 적용하기는 어렵다.&lt;/p&gt;
-
-&lt;p&gt;80년도에 개발된 전문가 시스템은 설명가능하지만 성능이 별로였다. 그 뒤에 제안된 DNN은 엄청난 성능을 자랑하지만 복잡도가 높아 설명이 어렵다.&lt;/p&gt;
-
-&lt;p&gt;다만, 모든 모델들이 같은 레벨의 불투명도를 가지는 것은 아니다. 보통은 정확도와 설명가능도의 trade off를 가지며, 대체로 설명가능도가 높으면 정확도가 낮다.&lt;/p&gt;
-
-&lt;p&gt;XAI의 기초가 되는 분야는 Data Science, AI/ML, Human Science (사람은 어떻게 설명하나?), HCI(사람이 기계를 이해하고 믿으려면 어떻게 해야하나?) 이다.&lt;/p&gt;
-
-&lt;h1 id=&quot;review&quot;&gt;Review&lt;/h1&gt;
-
-&lt;h3 id=&quot;related-surveys&quot;&gt;Related Surveys&lt;/h3&gt;
-
-&lt;p&gt;XAI에 대한 연구는 늘어나고 있지만, 총정리 서베이와 종류를 구별한 서베이는 별로 없다. 이 논문은 이전 연구들과는 다르게 여러 다른 관점에서 XAI 연구 성과에 대한 오버뷰를 제시할 것이다. 전체론과 투명성에 집중할 것이다.&lt;/p&gt;
-
-&lt;p&gt;이후에는 4개의 주축으로 나누어 설명할 것인데, 다음과 같다.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;axis 1 : XAI Methods Taxonomy - Explainability Strategies&lt;/li&gt;
-  &lt;li&gt;axis 2 : XAI Measurement - Evaluating Explanations&lt;/li&gt;
-  &lt;li&gt;axis 3 : XAI Perception - Human in the Loop&lt;/li&gt;
-  &lt;li&gt;axis 4 : XAI Antithesis - Explain or Predict&lt;/li&gt;
-&lt;/ol&gt;
-</description>
-        <pubDate>Sun, 11 Aug 2019 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/thesis/2019/08/11/XAI1.html</link>
-        <guid isPermaLink="true">http://localhost:4000/thesis/2019/08/11/XAI1.html</guid>
-        
-        <category>XAI</category>
-        
-        
-        <category>Thesis</category>
         
       </item>
     
