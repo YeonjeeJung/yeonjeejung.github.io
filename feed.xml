@@ -5,8 +5,8 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 18 Sep 2019 21:58:14 +0900</pubDate>
-    <lastBuildDate>Wed, 18 Sep 2019 21:58:14 +0900</lastBuildDate>
+    <pubDate>Wed, 18 Sep 2019 22:06:44 +0900</pubDate>
+    <lastBuildDate>Wed, 18 Sep 2019 22:06:44 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -360,10 +360,9 @@
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;f(x)-f(y)\le\triangledown f(x)^T(x-y)-\frac{\alpha}{2}\|x-y\|^2, \forall x,y&lt;/script&gt;
 
-&lt;p&gt;를 만족할 때의 $\alpha$를 앞에 붙여 $\alpha$-strong convex라고 한다. 만약 $f$가 미분불가능하면 subgradient로 $\alpha$-strongly convexity를 정할 수 있다.&lt;/p&gt;
+&lt;p&gt;를 만족할 때의 $\alpha$를 앞에 붙여 $\alpha$-strong convex라고 한다. 만약 $f$가 미분불가능하면 subgradient로 $\alpha$-strongly convexity를 정할 수 있다. 다르게는&lt;/p&gt;
 
-&lt;p&gt;다르게는
-&lt;script type=&quot;math/tex&quot;&gt;f(y)\ge f(x)+\triangledown f(x)^T(y-x)+\frac{\alpha}{2}\|x-y\|^2&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(y)\ge f(x)+\triangledown f(x)^T(y-x)+\frac{\alpha}{2}\|x-y\|^2&lt;/script&gt;
 
 &lt;p&gt;로 쓸 수 있다.&lt;/p&gt;
 
@@ -409,7 +408,8 @@
 
 &lt;h2 id=&quot;hessian-smooth-strong-convexity&quot;&gt;Hessian, Smooth, Strong convexity&lt;/h2&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;f \text{ 가 }\alpha\text{-strongly convex 이고 } \beta\text{-smooth 이다} \Leftrightarrow \alpha I \le \triangledown^2f(x)\le\beta I&lt;/script&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+f :\alpha\text{-strongly convex &amp; } \beta\text{-smooth } \Leftrightarrow \alpha I \le \triangledown^2f(x)\le\beta I %]]&gt;&lt;/script&gt;
 
 &lt;p&gt;를 항상 만족하는데, 행렬 $A, B$에 대하여 $A\le B$는 $B-A$가 positive semidefinite임을 뜻한다. 또한, 이는 $\triangledown^2 f(x)$의 eigenvalue들이 $\alpha$보다 크고 $\beta$보다 작음을 뜻한다.&lt;/p&gt;
 
@@ -425,9 +425,7 @@
 
 &lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;f(y)-f(x)\ge\triangledown f(y)^T(y-x)-\frac{\beta}{2}\|x-y\|^2&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;f(x)-f(y)\ge\triangledown f(x)^T(x-y)-\frac{\beta}{2}\|x-y\|^2&lt;/script&gt;&lt;/p&gt;
 
-&lt;p&gt;가 항상 성립한다.&lt;/p&gt;
-
-&lt;p&gt;$\alpha$에 대한 두 식을 합치면&lt;/p&gt;
+&lt;p&gt;가 항상 성립한다. $\alpha$에 대한 두 식을 합치면&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;0\le(\triangledown f(x)-\triangledown f(y))^T(x-y)-\alpha\|x-y\|^2\cdots(1)&lt;/script&gt;
 
@@ -435,9 +433,7 @@
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;0\ge(\triangledown f(x)-\triangledown f(y))^T(x-y)-\beta\|x-y\|^2\cdots(2)&lt;/script&gt;
 
-&lt;p&gt;를 얻게 된다.&lt;/p&gt;
-
-&lt;p&gt;$x=y+ht$룰 대입하면 ($h$는 벡터, $t$는 스칼라)&lt;/p&gt;
+&lt;p&gt;를 얻게 된다. $x=y+ht$룰 대입하면 ($h$는 벡터, $t$는 스칼라)&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;(\triangledown f(x)-\triangledown f(y))^T(x-y) = \frac{\triangledown f(y+ht)-\triangledown f(y)}{t}ht^2&lt;/script&gt;
 
@@ -445,9 +441,7 @@
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\lim_{t\rightarrow 0}{\frac{\triangledown f(y+ht)-\triangledown f(y)}{t}}ht^2=h^T\triangledown^2f(y)ht^2&lt;/script&gt;
 
-&lt;p&gt;을 얻을 수 있다.&lt;/p&gt;
-
-&lt;p&gt;이를 $(1)$과 $(2)$에 대입하면&lt;/p&gt;
+&lt;p&gt;을 얻을 수 있다. 이를 $(1)$과 $(2)$에 대입하면&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\alpha t^2\|h\|^2\le h^T\triangledown^2f(y)t^2h\le \beta t^2\|h\|^2&lt;/script&gt;
 
@@ -484,15 +478,11 @@
 &lt;h2 id=&quot;vanila-analysis&quot;&gt;Vanila Analysis&lt;/h2&gt;
 &lt;p&gt;만약 $f$가 strongly convex도 아니고, smooth하지도 않지만 $L$-Lipschitz continuous하다고 했을 때, $f(x)-f(x^* )$를 gradient descent를 이용해 어떻게 bound하는지에 대해 알아보자. 여기서는 &lt;script type=&quot;math/tex&quot;&gt;2a^Tb = \|a\|^2+\|b\|^2-\|a-b\|^2 \cdots(* )&lt;/script&gt;임을 이용할 것이다.&lt;/p&gt;
 
-&lt;p&gt;$f(x_t)-f(x^* )$&lt;/p&gt;
-
-&lt;p&gt;$\le\triangledown f(x_t)^T(x_t-x^* )$&lt;/p&gt;
-
-&lt;p&gt;$=\frac{1}{\gamma}(x_t-x_{t+1})^T(x_t-x^* )$ ($x_{t+1} = x_t-\gamma\triangledown f(x_t)$, gradient descent)&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;=\frac{1}{2\gamma}(\|x_t-x_{t+1}\|^2+\|x_t-x^* \|^2-\|x_{t+1}-x^* \|^2)&lt;/script&gt; (위 $(* )$에 의해)&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;=\frac{\gamma}{2}\|\triangledown f(x_t)\|^2+\frac{1}{2\gamma}(\|x_t-x^* \| -\|x_{t+1}-x^* \|^2)&lt;/script&gt; 이다.&lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}f(x_t)-f(x^* )&amp;\le\triangledown f(x_t)^T(x_t-x^* )\\
+&amp;=\frac{1}{\gamma}(x_t-x_{t+1})^T(x_t-x^* )(x_{t+1} = x_t-\gamma\triangledown f(x_t)\\
+&amp;=\frac{1}{2\gamma}(\|x_t-x_{t+1}\|^2+\|x_t-x^* \|^2-\|x_{t+1}-x^* \|^2)(\text{by }(* ))\\
+&amp;=\frac{\gamma}{2}\|\triangledown f(x_t)\|^2+\frac{1}{2\gamma}(\|x_t-x^* \| -\|x_{t+1}-x^* \|^2)\end{align} %]]&gt;&lt;/script&gt;
 
 &lt;p&gt;이들을 모든 $t$에 대해 다 더하면,&lt;/p&gt;
 
@@ -500,13 +490,10 @@
 
 &lt;p&gt;가 된다. $f$가 Lipschitz continuous라고 했으므로 항상 &lt;script type=&quot;math/tex&quot;&gt;\|\triangledown f(x_t)\|^2 \le L^2&lt;/script&gt;이다. &lt;script type=&quot;math/tex&quot;&gt;\bar{x} = \frac{x_0+\cdots+x_{T-1}}{T}&lt;/script&gt;라고 하면, &lt;script type=&quot;math/tex&quot;&gt;f(\bar{x})\le\frac{1}{T}\sum_{t=0}^{T-1}f(x_t)&lt;/script&gt; 임이 성립하고,&lt;/p&gt;
 
-&lt;p&gt;$f(\bar{x})-f(x^* )$&lt;/p&gt;
-
-&lt;p&gt;$\le\frac{1}{T}\sum_{t=0}^{T-1}\left(f(x_t)-f(x^* )\right)$&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;\le \frac{1}{2\gamma T}\|x_0-x^* \|^2 + \frac{\gamma}{2}L^2&lt;/script&gt; (Lipschitz continuous에 의해)&lt;/p&gt;
-
-&lt;p&gt;$=\frac{1}{2\gamma T}R^2 + \frac{\gamma}{2}L^2$ ($R = x_0-x^* $라고 하자)&lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}f(\bar{x})-f(x^* )&amp;\le\frac{1}{T}\sum_{t=0}^{T-1}\left(f(x_t)-f(x^* )\right)\\
+&amp;\le \frac{1}{2\gamma T}\|x_0-x^* \|^2 + \frac{\gamma}{2}L^2 (\text{Lipschitz continuous})\\
+&amp;=\frac{1}{2\gamma T}R^2 + \frac{\gamma}{2}L^2 (\text{Let }R = x_0-x^* ) \end{align} %]]&gt;&lt;/script&gt;
 
 &lt;p&gt;가 된다. 따라서 여기에 적합한 learning rate 를 rough하게 계산해보면 $\gamma = \frac{R}{L\sqrt{T}}$가 적합하다. (마지막 식을 미분해서 0 되는 $\gamma$ 찾음)&lt;/p&gt;
 
