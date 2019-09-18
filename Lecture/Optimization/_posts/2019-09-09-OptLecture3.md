@@ -30,9 +30,8 @@ $$f(x_t)-f(x^* )\le\epsilon$$
 
 $$f(x)-f(y)\le\triangledown f(x)^T(x-y)-\frac{\alpha}{2}\|x-y\|^2, \forall x,y$$
 
-를 만족할 때의 $\alpha$를 앞에 붙여 $\alpha$-strong convex라고 한다. 만약 $f$가 미분불가능하면 subgradient로 $\alpha$-strongly convexity를 정할 수 있다.
+를 만족할 때의 $\alpha$를 앞에 붙여 $\alpha$-strong convex라고 한다. 만약 $f$가 미분불가능하면 subgradient로 $\alpha$-strongly convexity를 정할 수 있다. 다르게는
 
-다르게는
 $$f(y)\ge f(x)+\triangledown f(x)^T(y-x)+\frac{\alpha}{2}\|x-y\|^2$$
 
 로 쓸 수 있다.
@@ -79,7 +78,7 @@ $$x^TAx\ge 0 , \forall x\in \mathbb{R}^d$$
 
 ## Hessian, Smooth, Strong convexity
 
-$$f \text{ 가 }\alpha\text{-strongly convex 이고 } \beta\text{-smooth 이다} \Leftrightarrow \alpha I \le \triangledown^2f(x)\le\beta I$$
+$$f :\alpha\text{-strongly convex & } \beta\text{-smooth } \Leftrightarrow \alpha I \le \triangledown^2f(x)\le\beta I$$
 
 를 항상 만족하는데, 행렬 $A, B$에 대하여 $A\le B$는 $B-A$가 positive semidefinite임을 뜻한다. 또한, 이는 $\triangledown^2 f(x)$의 eigenvalue들이 $\alpha$보다 크고 $\beta$보다 작음을 뜻한다.
 
@@ -95,9 +94,7 @@ $$f(y)-f(x)\le\triangledown f(y)^T(y-x)-\frac{\alpha}{2}\|x-y\|^2$$, $$f(x)-f(y)
 
 $$f(y)-f(x)\ge\triangledown f(y)^T(y-x)-\frac{\beta}{2}\|x-y\|^2$$, $$f(x)-f(y)\ge\triangledown f(x)^T(x-y)-\frac{\beta}{2}\|x-y\|^2$$
 
-가 항상 성립한다.
-
-$\alpha$에 대한 두 식을 합치면
+가 항상 성립한다. $\alpha$에 대한 두 식을 합치면
 
 $$0\le(\triangledown f(x)-\triangledown f(y))^T(x-y)-\alpha\|x-y\|^2\cdots(1)$$
 
@@ -105,9 +102,7 @@ $$0\le(\triangledown f(x)-\triangledown f(y))^T(x-y)-\alpha\|x-y\|^2\cdots(1)$$
 
 $$0\ge(\triangledown f(x)-\triangledown f(y))^T(x-y)-\beta\|x-y\|^2\cdots(2)$$
 
-를 얻게 된다.
-
-$x=y+ht$룰 대입하면 ($h$는 벡터, $t$는 스칼라)
+를 얻게 된다. $x=y+ht$룰 대입하면 ($h$는 벡터, $t$는 스칼라)
 
 $$(\triangledown f(x)-\triangledown f(y))^T(x-y) = \frac{\triangledown f(y+ht)-\triangledown f(y)}{t}ht^2$$
 
@@ -115,9 +110,7 @@ $$(\triangledown f(x)-\triangledown f(y))^T(x-y) = \frac{\triangledown f(y+ht)-\
 
 $$\lim_{t\rightarrow 0}{\frac{\triangledown f(y+ht)-\triangledown f(y)}{t}}ht^2=h^T\triangledown^2f(y)ht^2$$
 
-을 얻을 수 있다.
-
-이를 $(1)$과 $(2)$에 대입하면
+을 얻을 수 있다. 이를 $(1)$과 $(2)$에 대입하면
 
 $$\alpha t^2\|h\|^2\le h^T\triangledown^2f(y)t^2h\le \beta t^2\|h\|^2$$
 
@@ -154,15 +147,10 @@ $$\frac{1}{2}(y-x)T\triangledown f(c)^T(y-x)\le\frac{1}{2}k\|y-x\|^2$$
 ## Vanila Analysis
 만약 $f$가 strongly convex도 아니고, smooth하지도 않지만 $L$-Lipschitz continuous하다고 했을 때, $f(x)-f(x^* )$를 gradient descent를 이용해 어떻게 bound하는지에 대해 알아보자. 여기서는 $$2a^Tb = \|a\|^2+\|b\|^2-\|a-b\|^2 \cdots(* )$$임을 이용할 것이다.
 
-$f(x_t)-f(x^* )$
-
-$\le\triangledown f(x_t)^T(x_t-x^* )$
-
-$=\frac{1}{\gamma}(x_t-x_{t+1})^T(x_t-x^* )$ ($x_{t+1} = x_t-\gamma\triangledown f(x_t)$, gradient descent)
-
-$$=\frac{1}{2\gamma}(\|x_t-x_{t+1}\|^2+\|x_t-x^* \|^2-\|x_{t+1}-x^* \|^2)$$ (위 $(* )$에 의해)
-
-$$=\frac{\gamma}{2}\|\triangledown f(x_t)\|^2+\frac{1}{2\gamma}(\|x_t-x^* \| -\|x_{t+1}-x^* \|^2)$$ 이다.
+$$\begin{align}f(x_t)-f(x^* )&\le\triangledown f(x_t)^T(x_t-x^* )\\
+&=\frac{1}{\gamma}(x_t-x_{t+1})^T(x_t-x^* )(x_{t+1} = x_t-\gamma\triangledown f(x_t)\\
+&=\frac{1}{2\gamma}(\|x_t-x_{t+1}\|^2+\|x_t-x^* \|^2-\|x_{t+1}-x^* \|^2)(\text{by }(* ))\\
+&=\frac{\gamma}{2}\|\triangledown f(x_t)\|^2+\frac{1}{2\gamma}(\|x_t-x^* \| -\|x_{t+1}-x^* \|^2)\end{align}$$
 
 이들을 모든 $t$에 대해 다 더하면,
 
@@ -170,14 +158,9 @@ $$\sum_{t=0}^{T-1}\left(f(x_t)-f(x^* )\right)\le\frac{1}{2\gamma}(\|x_0-x^* \|^2
 
 가 된다. $f$가 Lipschitz continuous라고 했으므로 항상 $$\|\triangledown f(x_t)\|^2 \le L^2$$이다. $$\bar{x} = \frac{x_0+\cdots+x_{T-1}}{T}$$라고 하면, $$f(\bar{x})\le\frac{1}{T}\sum_{t=0}^{T-1}f(x_t)$$ 임이 성립하고,
 
-
-$f(\bar{x})-f(x^* )$
-
-$\le\frac{1}{T}\sum_{t=0}^{T-1}\left(f(x_t)-f(x^* )\right)$
-
-$$\le \frac{1}{2\gamma T}\|x_0-x^* \|^2 + \frac{\gamma}{2}L^2$$ (Lipschitz continuous에 의해)
-
-$=\frac{1}{2\gamma T}R^2 + \frac{\gamma}{2}L^2$ ($R = x_0-x^* $라고 하자)
+$$\begin{align}f(\bar{x})-f(x^* )&\le\frac{1}{T}\sum_{t=0}^{T-1}\left(f(x_t)-f(x^* )\right)\\
+&\le \frac{1}{2\gamma T}\|x_0-x^* \|^2 + \frac{\gamma}{2}L^2 (\text{Lipschitz continuous})\\
+&=\frac{1}{2\gamma T}R^2 + \frac{\gamma}{2}L^2 (\text{Let }R = x_0-x^* ) \end{align}$$
 
 가 된다. 따라서 여기에 적합한 learning rate 를 rough하게 계산해보면 $\gamma = \frac{R}{L\sqrt{T}}$가 적합하다. (마지막 식을 미분해서 0 되는 $\gamma$ 찾음)
 
