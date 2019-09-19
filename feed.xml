@@ -5,8 +5,8 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 18 Sep 2019 23:12:59 +0900</pubDate>
-    <lastBuildDate>Wed, 18 Sep 2019 23:12:59 +0900</lastBuildDate>
+    <pubDate>Thu, 19 Sep 2019 14:13:25 +0900</pubDate>
+    <lastBuildDate>Thu, 19 Sep 2019 14:13:25 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -430,11 +430,11 @@
 
 &lt;h2 id=&quot;smooth&quot;&gt;Smooth&lt;/h2&gt;
 &lt;h3 id=&quot;beta-smooth&quot;&gt;$\beta$-Smooth&lt;/h3&gt;
-&lt;p&gt;$\triangledown f$가 $\beta$-Lipschitz이고&lt;/p&gt;
+&lt;p&gt;$\triangledown f$가 $\beta$-Lipschitz라고 하면&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\|\triangledown f(x)-\triangledown f(y)\|\le\beta\|x-y\|&lt;/script&gt;
 
-&lt;p&gt;를 만족할 때의 $\beta$를 앞에 붙여 $\beta$-smooth라고 한다.&lt;/p&gt;
+&lt;p&gt;를 항상 만족하는데, 이때의 $\beta$를 앞에 붙여 $f$ 를 $\beta$-smooth라고 한다.&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;f(x)-f(y) \ge \triangledown f(x)^T(x-y)-\frac{\beta}{2}\|x-y\|^2, \forall x,y&lt;/script&gt;
 
