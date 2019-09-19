@@ -38,11 +38,11 @@ $$f(y)\ge f(x)+\triangledown f(x)^T(y-x)+\frac{\alpha}{2}\|x-y\|^2$$
 
 ## Smooth
 ### $\beta$-Smooth
-$\triangledown f$가 $\beta$-Lipschitz이고
+$\triangledown f$가 $\beta$-Lipschitz라고 하면
 
 $$\|\triangledown f(x)-\triangledown f(y)\|\le\beta\|x-y\|$$
 
-를 만족할 때의 $\beta$를 앞에 붙여 $\beta$-smooth라고 한다.
+를 항상 만족하는데, 이때의 $\beta$를 앞에 붙여 $f$ 를 $\beta$-smooth라고 한다.
 
 $$f(x)-f(y) \ge \triangledown f(x)^T(x-y)-\frac{\beta}{2}\|x-y\|^2, \forall x,y$$
 
