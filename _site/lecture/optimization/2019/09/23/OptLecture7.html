@@ -242,7 +242,7 @@ MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
 &=\arg\min_y\{\frac{1}{2\gamma}\|y-(x_t-\gamma\triangledown g(x_t))\|^2+h(y)\}
 \end{align} %]]></script>
 
-<p>이다. 여기서 <script type="math/tex">\text{prox}_{h, \gamma}(z) = \arg\min_y\{\frac{1}{2\gamma}\|y-z\|^2+h(y)\}</script>라고 정의하면,</p>
+<p>이다. 중간에 뜬금없이 추가되거나 삭제된 항은 $y$와 관계없는 항이기 때문에 추가가 가능하다. 여기서 <script type="math/tex">\text{prox}_{h, \gamma}(z) = \arg\min_y\{\frac{1}{2\gamma}\|y-z\|^2+h(y)\}</script>라고 정의하면,</p>
 
 <script type="math/tex; mode=display">x_{t+1} = \text{prox}_{h, \gamma}(x_t-\gamma\triangledown g(x_t))</script>
 
@@ -254,6 +254,42 @@ MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
 
 <p>라고 하면, $x_{t+1}= x_t-\gamma G_{h, \gamma}(x)$라고 할 수 있다. 이 식으로 그냥 gradient descent와 projected gradient descent도 포함시킬 수 있는데, 만약 $h(x)=0$이면 그냥 gradient descent이고, <script type="math/tex">% <![CDATA[
 h(x)=\begin{cases}0 & \text{if }x\in X \\ \infty & \text{otherwise}\end{cases} %]]></script> 라고 정의한다면 projected gradient descent이다.</p>
+
+<h3 id="convergence-analysis-beta-smooth">Convergence Analysis ($\beta$-smooth)</h3>
+
+<p>$\beta$-smooth function이므로 $\gamma=\frac{1}{\beta}$ 라고 하자. $G(x)=G_{h, \gamma}(x)$라고 하자.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}g(x-\gamma G(x))&\le g(x) - \gamma\triangledown g(x)^TG(x)+\frac{\gamma^2\beta}{2}\|G(x)\|^2 \text{ (by }\beta\text{-smooth)}\\
+&\le g(x)-\frac{1}{\beta}\triangledown g(x)^TG(x)+\frac{1}{2\beta}\|G(x)\|^2 \text{ (by }\gamma=\frac{1}{\beta}\text{)}\\
+f(x-\frac{1}{\beta}G(x))&\le g(x)-\frac{1}{\beta}\triangledown g(x)^TG(x)+\frac{1}{2\beta}\|G(x)\|^2 + h(x-\frac{1}{\beta}G(x))\\
+&\le g(z)+\triangledown g(x)^T(x-z)-\frac{1}{\beta}\triangledown g(x)^TG(x)+\frac{1}{2\beta}\|G(x)\|^2 + h(z)+(G(x)-\triangledown g(x))^T(x-z-\frac{1}{\beta}G(x))\text{ (by Convexity)}\\
+& \le g(z)+h(z)+G(x)^T(x-z)-\frac{1}{2\beta}\|G(x)\|^2 \text{ (by }G(x)-\triangledown g(x)=\triangledown h(x-\frac{1}{\beta}G(x)\text{)})\end{align} %]]></script>
+
+<p>$x=x_t, z=x^* $를 대입하면,</p>
+
+<script type="math/tex; mode=display">f(x_t-\frac{1}{\beta}G(x_t))\le g(x^* )+h(x^* )+G(x_t)^T(x_t-x^* )-\frac{1}{2\beta}\|G(x_t)\|^2</script>
+
+<p>이고, $f(x_t-\frac{1}{\beta}G(x))=f(x_{t+1})$, $g(x^* )+h(x^* )=f(x^* )$이므로</p>
+
+<script type="math/tex; mode=display">f(x_{t+1})-f(x^* )\le G(x_t)^T(x_t-x^* )-\frac{1}{2\beta}\|G(x_t)\|^2</script>
+
+<p>이 된다.</p>
+
+<h3 id="proof-gx-triangledown-gxtriangledown-hx-gamma-gx">(Proof) <script type="math/tex">G(x)-\triangledown g(x)=\triangledown h(x-\gamma G(x))</script></h3>
+
+<p>위에서 그냥 넘어간 이 명제를 증명해보자.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}G(x) &= \frac{1}{\gamma}(x-\text{prox}_{h, \gamma}(x-\gamma\triangledown g(x)))\\
+&=\frac{1}{\gamma}(x-\arg\min_y\{\frac{1}{2\gamma}\|y-(x-\gamma\triangledown g(x))\|^2 + h(y)\})\\
+\Rightarrow x-\gamma G(x)&=\arg\min_y\{\frac{1}{2\gamma}\|y-(x-\gamma\triangledown g(x))\|^2 + h(y)\}\end{align} %]]></script>
+
+<p>$\arg\min$이므로 마지막 식의 우항을 미분해서 좌항을 넣으면 $0$이 되어야 한다.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}&\Rightarrow \frac{1}{\gamma}(x-\gamma G(x)-x+\gamma \triangledown g(x))+\triangledown h(x-\gamma G(x))=0\\
+&\Rightarrow G(x)-\triangledown g(x) = \triangledown h(x-\gamma G(x))\end{align} %]]></script>
 
 </article>
 
