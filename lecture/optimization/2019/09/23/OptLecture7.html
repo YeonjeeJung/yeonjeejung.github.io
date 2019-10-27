@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>YeonjeeJung's Blog</title>
+  <title>Optimization Lecture 7</title>
   <meta name="description" content="">
   
   <meta name="author" content="YeonjeeJung">
@@ -44,7 +44,7 @@
   
   <!-- Twitter: card tags -->
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="YeonjeeJung's Blog">
+  <meta name="twitter:title" content="Optimization Lecture 7">
   <meta name="twitter:description" content="">
   <meta name="twitter:image" content="http://localhost:4000/assets/logo.png">
   <meta name="twitter:url" content="http://localhost:4000">
@@ -54,9 +54,34 @@
 
   <!-- Site styles -->
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://localhost:4000/page2/">
+  <link rel="canonical" href="http://localhost:4000/lecture/optimization/2019/09/23/OptLecture7.html">
   <link rel="alternate" type="application/rss+xml" title="YeonjeeJung's Blog" href="http://localhost:4000/feed.xml" />
 </head>
+
+  
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$'] ],
+    processEscapes: true,
+  }
+});
+MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
 
   
   <body>
@@ -88,175 +113,87 @@
 
 
     <div class="page-content">
-        <div class="home">
+        <div class="post">
 
-<div class="site-header-container has-cover" style="background-image: url(/assets/header_image.png);">
-  <div class="scrim has-cover">
-    <header class="site-header">
-      <h1 class="title">YeonjeeJung's Blog</h1>
-      <p class="subtitle">딥러닝 걸음마 떼기</p>
+<div class="post-header-container " >
+  <div class="scrim ">
+    <header class="post-header">
+      <h1 class="title">Optimization Lecture 7</h1>
+      <p class="info">by <strong>Yeonjee Jung</strong></p>
     </header>
   </div>
 </div>
 
 <div class="wrapper">
-<ul class="post-list">
-  
-  <li>
-    <h2>
-      <a class="post-link" href="/lecture/optimization/2019/09/25/OptLecture8.html">Optlecture8</a>
-    </h2>
-    <section class="post-excerpt" itemprop="description">
-      <p>
-</p>
-    </section>
-    <section class="post-meta">
-      <div class="post-date">September 25, 2019</div>
-      <div class="post-categories">
-      in 
-        
-        <a href="/category/lecture">Lecture</a>, 
-        
-      
-        
-        <a href="/category/optimization">Optimization</a>
-        
-      
-      </div>
-    </section>
-  </li>
-  
-  <hr>
-  
-  
-  <li>
-    <h2>
-      <a class="post-link" href="/lecture/optimization/2019/09/23/OptLecture7.html">Optimization Lecture 7</a>
-    </h2>
-    <section class="post-excerpt" itemprop="description">
-      <p>
-</p>
-    </section>
-    <section class="post-meta">
-      <div class="post-date">September 23, 2019</div>
-      <div class="post-categories">
-      in 
-        
-        <a href="/category/lecture">Lecture</a>, 
-        
-      
-        
-        <a href="/category/optimization">Optimization</a>
-        
-      
-      </div>
-    </section>
-  </li>
-  
-  <hr>
-  
-  
-  <li>
-    <h2>
-      <a class="post-link" href="/lecture/optimization/2019/09/18/OptLecture6.html">Optimization Lecture 6</a>
-    </h2>
-    <section class="post-excerpt" itemprop="description">
-      <p>Projected Gradient Descent Projected Gradient : $\alpha$-strongly convex &amp; $\beta$-smooth (Recall) Unconstrained Vanilla Analysis vanilla analysis에서는 을 얻을 수 있었다. 이 때 마지막 부등식은 라는 성질에 의해 를 얻어서 성립한 것이다. Constrained Vanilla Analyasis constrained에서는 $(* 1)$가 아닌 가 성립한다. 따라서, 가 성립하므로, 이다. 따라서 결론적으로, Projected Gradient Descent를 사용하면...</p>
-    </section>
-    <section class="post-meta">
-      <div class="post-date">September 18, 2019</div>
-      <div class="post-categories">
-      in 
-        
-        <a href="/category/lecture">Lecture</a>, 
-        
-      
-        
-        <a href="/category/optimization">Optimization</a>
-        
-      
-      </div>
-    </section>
-  </li>
-  
-  <hr>
-  
-  
-  <li>
-    <h2>
-      <a class="post-link" href="/lecture/optimization/2019/09/16/OptLecture5.html">Optimization Lecture 5</a>
-    </h2>
-    <section class="post-excerpt" itemprop="description">
-      <p>Projected Gradient Descent Constrained Optimization Constrained Problem은 $f(x)$를 최소화하는 $x$를 찾는 문제인데, $x$의 범위 $X$가 주어져 있다는 점에서 이전과 다르다. 이 문제를 해결하는 방법에는 두 가지가 있는데, Projected Gradient Descent를 이용하는 방법과 unconstrained problem으로 바꿔서 해결하는 방법이 있다. 이번 단원은 첫번째 방법에 대한 내용이다. Projected Gradient Descent Project 는 ,...</p>
-    </section>
-    <section class="post-meta">
-      <div class="post-date">September 16, 2019</div>
-      <div class="post-categories">
-      in 
-        
-        <a href="/category/lecture">Lecture</a>, 
-        
-      
-        
-        <a href="/category/optimization">Optimization</a>
-        
-      
-      </div>
-    </section>
-  </li>
-  
-  <hr>
-  
-  
-  <li>
-    <h2>
-      <a class="post-link" href="/lecture/optimization/2019/09/11/OptLecture4.html">Optimization Lecture 4</a>
-    </h2>
-    <section class="post-excerpt" itemprop="description">
-      <p>Convex Optimization $\beta$-smooth functions : $\frac{1}{t}$ learning Rate $f$가 $\beta$-smooth하다고 하면 이다. 이 식에서의 극점은 $\gamma = \frac{1}{\beta}$일 때이므로 이를 대입하면 를 얻게 된다. 이 때 $t=0$부터 $t=T-1$까지 다 대입한 후 다 더하면 을 얻게 된다. 이전 단원의 Vanilla Analysis 중간에서 얻은 식에 $\gamma=\frac{1}{\beta}$를 대입하면 을 얻는데, $(4)$을 이용하면 이라고...</p>
-    </section>
-    <section class="post-meta">
-      <div class="post-date">September 11, 2019</div>
-      <div class="post-categories">
-      in 
-        
-        <a href="/category/lecture">Lecture</a>, 
-        
-      
-        
-        <a href="/category/optimization">Optimization</a>
-        
-      
-      </div>
-    </section>
-  </li>
-  
-  
-</ul>
 
-<nav class="pagination" role="navigation">
-	<p>
+ <span class="page-divider">
+  <span class="one"></span>
+  <span class="two"></span>
+</span>
+ 
+
+<section class="post-meta">
+  <div class="post-date">September 23, 2019</div>
+  <div class="post-categories">
+  in 
     
-			
-			<a class="newer-posts" href="/">
-        <span class="fa-stack fa-lg">
-          <i class="fa fa-square fa-stack-2x"></i>
-          <i class="fa fa-angle-double-left fa-stack-1x fa-inverse"></i>
-        </span>
-      </a>
-			
-		
-		<span class="page-number">Page 2 of 6</span>
-		
-		<a class="newer-posts" href="/page3">
-      <span class="fa-stack fa-lg">
-        <i class="fa fa-square fa-stack-2x"></i>
-        <i class="fa fa-angle-double-right fa-stack-1x fa-inverse"></i>
-      </span>
-    </a>
-		
-	</p>
-</nav>
+    <a href="/category/lecture">Lecture</a>, 
+    
+  
+    
+    <a href="/category/optimization">Optimization</a>
+    
+  
+  </div>
+</section>
+
+<article class="post-content">
+  
+
+</article>
+
+
+
+
+
+<section class="rss">
+  <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+</section>
+
+<!-- <section class="share">
+  <span>Share: </span>
+  
+    
+    
+    
+    
+    
+    
+    
+    
+  
+</section> -->
+
+
+
+
+<section class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'true';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
 
 </div>
 </div>
