@@ -57,10 +57,6 @@
 <lastmod>2019-08-11T00:00:00+09:00</lastmod>
 </url>
 <url>
-<loc>http://localhost:4000/note/2019/08/12/WHYXAI.html</loc>
-<lastmod>2019-08-12T00:00:00+09:00</lastmod>
-</url>
-<url>
 <loc>http://localhost:4000/thesis/2019/08/17/XAI2.html</loc>
 <lastmod>2019-08-17T00:00:00+09:00</lastmod>
 </url>
@@ -78,10 +74,6 @@
 </url>
 <url>
 <loc>http://localhost:4000/lecture/optimization/2019/09/09/OptLecture3.html</loc>
-<lastmod>2019-09-09T00:00:00+09:00</lastmod>
-</url>
-<url>
-<loc>http://localhost:4000/lecture/robot/2019/09/09/RobLecture3.html</loc>
 <lastmod>2019-09-09T00:00:00+09:00</lastmod>
 </url>
 <url>
@@ -131,13 +123,7 @@
 <loc>http://localhost:4000/category/computervision/</loc>
 </url>
 <url>
-<loc>http://localhost:4000/category/note/</loc>
-</url>
-<url>
 <loc>http://localhost:4000/category/optimization/</loc>
-</url>
-<url>
-<loc>http://localhost:4000/category/robot/</loc>
 </url>
 <url>
 <loc>http://localhost:4000/page2/</loc>
