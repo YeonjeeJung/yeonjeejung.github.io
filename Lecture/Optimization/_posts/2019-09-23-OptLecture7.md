@@ -1,6 +1,6 @@
 ---
 layout: post
-title: PR Lecture 8 - Graphical Models
+title: Optimization Lecture 7
 author: Yeonjee Jung
 use_math: true
 ---
