@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Optimization</title>
-  <meta name="description" content="">
+  <title>Optimization Lecture 9</title>
+  <meta name="description" content="Subgradient &amp; Mirror Descent">
   
   <meta name="author" content="YeonjeeJung">
   <meta name="copyright" content="&copy; YeonjeeJung 2019">
@@ -44,8 +44,8 @@
   
   <!-- Twitter: card tags -->
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Optimization">
-  <meta name="twitter:description" content="">
+  <meta name="twitter:title" content="Optimization Lecture 9">
+  <meta name="twitter:description" content="Subgradient &amp; Mirror Descent">
   <meta name="twitter:image" content="http://localhost:4000/assets/logo.png">
   <meta name="twitter:url" content="http://localhost:4000">
   
@@ -54,9 +54,34 @@
 
   <!-- Site styles -->
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://localhost:4000/category/optimization/">
+  <link rel="canonical" href="http://localhost:4000/lecture/optimization/2019/09/30/OptLecture9.html">
   <link rel="alternate" type="application/rss+xml" title="YeonjeeJung's Blog" href="http://localhost:4000/feed.xml" />
 </head>
+
+  
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$'] ],
+    processEscapes: true,
+  }
+});
+MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
 
   
   <body>
@@ -88,48 +113,124 @@
 
 
     <div class="page-content">
-        <div class="wrapper">
-<div class="page">
+        <div class="post">
 
-  <header class="post-header">
-    <h1 class="post-title">Optimization</h1>
-  </header>
+<div class="post-header-container " >
+  <div class="scrim ">
+    <header class="post-header">
+      <h1 class="title">Optimization Lecture 9</h1>
+      <p class="info">by <strong>Yeonjee Jung</strong></p>
+    </header>
+  </div>
+</div>
 
-  <span class="page-divider">
+<div class="wrapper">
+
+ <span class="page-divider">
   <span class="one"></span>
   <span class="two"></span>
 </span>
+ 
+
+<section class="post-meta">
+  <div class="post-date">September 30, 2019</div>
+  <div class="post-categories">
+  in 
+    
+    <a href="/category/lecture">Lecture</a>, 
+    
+  
+    
+    <a href="/category/optimization">Optimization</a>
+    
+  
+  </div>
+</section>
+
+<article class="post-content">
+  <h1 id="subgradient--mirror-descent">Subgradient &amp; Mirror Descent</h1>
+
+<h2 id="subgradient">Subgradient</h2>
+
+<p>만약 함수 $f(x)$가 미분불가능하다면, 우리는 임의의 gradient를 정해야 한다. subgradient를 정의할 수 있는데,</p>
+
+<script type="math/tex; mode=display">f(y) \ge f(x) + g^T(y-x), \forall y\in X</script>
+
+<p>인 모든 $g$를 subgradient라고 한다. $\partial f(x)$가 subgradient의 집합을 의미한다. 원래함수 $f(x)$가 convex라면 subgradient에서 gradient descent를 써서 같은 결과를 낼 수 있다. subgradient는 저 조건만 충족하면 되기 때문에 한 점에서 여러 개의 subgradient가 발생할 수 있다.</p>
+
+<h3 id="subgradient-descent--l-lipschitz-continuous">Subgradient Descent : L-Lipschitz continuous</h3>
+
+<p>여태까지 우리가 $\gamma = \frac{1}{\beta}$를 쓸 수 있었던 것은 $\beta$-smooth를 가정했기 때문인데, 실제 미분값 대신 subgradient를 사용해야 하는 함수라면 smooth한 함수가 아닐 가능성이 크다. 따라서 모든 subgradient에서는 Lipschitz continuous를 가정한다.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}f(x_t) -f(x^* ) &\le g_t^T(x_t-x^* )\\
+&=\frac{1}{\gamma}(x_t-x_{t+1})^T(x_t-x^* )\\
+&= \frac{1}{2\gamma}(\|x_t-x_{t+1}\|^2+\|x_t-x^* \|^2-\|x_{t+1}-x^* \|^2)\\
+&\le \|g_t\|^2+\frac{1}{2\gamma}(\|x_t-x^* \|^2-\|x_{t+1}-x^* \|^2)\end{align} %]]></script>
+
+<p>라고 할 수 있는데, 모든 $t$에 대하여 다 더하면</p>
+
+<script type="math/tex; mode=display">\sum_{t=0}^{T-1}(f(x_t)-f(x^* ))\le\frac{1}{2\gamma}(\|x_0-x^* \|^2-\|x_T-x^* \|^2)+\sum_{t=0}^{T-1}\frac{\gamma}{2}\|g_t\|^2</script>
+
+<p>이라고 할 수 있다. 다시 말하면,</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}f(\bar{x})-f(x^* ) &\le \frac{1}{T}\sum_{t=0}^{T-1}(f(x_t)-f(x^* ))\\
+&\le \frac{1}{T}\{\frac{1}{2\gamma}(\|x_0-x^* \|^2-\|x_T-x^* \|^2)+\sum_{t=0}^{T-1}\frac{\gamma}{2}\|g_t\|^2\}\\
+&\le \frac{1}{T}(\frac{1}{2\gamma}\|x_0-x^* \|^2+\sum_{t=0}^{T-1}\frac{\gamma}{2}\|g_t\|^2) \\
+&\le(\frac{1}{2\gamma}R^2+\frac{\gamma}{2}B^2T)\\
+&= \frac{1}{T}(\frac{B\sqrt{T}}{2R}R^2+\frac{R}{2R\sqrt{T}}B^2T)\\
+&\le \frac{BR}{\sqrt{T}}\end{align} %]]></script>
+
+<p>라고 할 수 있다.</p>
+
+</article>
 
 
-  <article class="post-content">
-    <ul class="posts-list">
-      
-      <li><strong><a class="post-link" href="/lecture/optimization/2019/10/01/OptLecture10.html">Optimization Lecture 10</a></strong><span class="post-date"> - October 1, 2019</span></li>
-      
-      <li><strong><a class="post-link" href="/lecture/optimization/2019/09/30/OptLecture9.html">Optimization Lecture 9</a></strong><span class="post-date"> - September 30, 2019</span></li>
-      
-      <li><strong><a class="post-link" href="/lecture/optimization/2019/09/25/OptLecture8.html">Optimization Lecture 8</a></strong><span class="post-date"> - September 25, 2019</span></li>
-      
-      <li><strong><a class="post-link" href="/lecture/optimization/2019/09/23/OptLecture7.html">Optimization Lecture 7</a></strong><span class="post-date"> - September 23, 2019</span></li>
-      
-      <li><strong><a class="post-link" href="/lecture/optimization/2019/09/18/OptLecture6.html">Optimization Lecture 6</a></strong><span class="post-date"> - September 18, 2019</span></li>
-      
-      <li><strong><a class="post-link" href="/lecture/optimization/2019/09/16/OptLecture5.html">Optimization Lecture 5</a></strong><span class="post-date"> - September 16, 2019</span></li>
-      
-      <li><strong><a class="post-link" href="/lecture/optimization/2019/09/11/OptLecture4.html">Optimization Lecture 4</a></strong><span class="post-date"> - September 11, 2019</span></li>
-      
-      <li><strong><a class="post-link" href="/lecture/optimization/2019/09/09/OptLecture3.html">Optimization Lecture 3</a></strong><span class="post-date"> - September 9, 2019</span></li>
-      
-      <li><strong><a class="post-link" href="/lecture/optimization/2019/09/04/OptLecture2.html">Optimization Lecture 2</a></strong><span class="post-date"> - September 4, 2019</span></li>
-      
-      <li><strong><a class="post-link" href="/lecture/optimization/2019/09/02/OptLecture1.html">Optimization Lecture 1</a></strong><span class="post-date"> - September 2, 2019</span></li>
-      
-    </ul>
-  </article>
+
+
+
+<section class="rss">
+  <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+</section>
+
+<!-- <section class="share">
+  <span>Share: </span>
+  
+    
+    
+    
+    
+    
+    
+    
+    
+  
+</section> -->
+
+
+
+
+<section class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'true';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
 
 </div>
 </div>
-<br>
 
     </div>
 

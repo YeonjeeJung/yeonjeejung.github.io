@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Optimization Lecture 7</title>
-  <meta name="description" content="Barrier Method &amp; Proximal Gradient">
+  <meta name="description" content="Barrier Method">
   
   <meta name="author" content="YeonjeeJung">
   <meta name="copyright" content="&copy; YeonjeeJung 2019">
@@ -45,7 +45,7 @@
   <!-- Twitter: card tags -->
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Optimization Lecture 7">
-  <meta name="twitter:description" content="Barrier Method &amp; Proximal Gradient">
+  <meta name="twitter:description" content="Barrier Method">
   <meta name="twitter:image" content="http://localhost:4000/assets/logo.png">
   <meta name="twitter:url" content="http://localhost:4000">
   
@@ -148,9 +148,7 @@ MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
 </section>
 
 <article class="post-content">
-  <h1 id="barrier-method--proximal-gradient">Barrier Method &amp; Proximal Gradient</h1>
-
-<h2 id="barrier-method">Barrier Method</h2>
+  <h1 id="barrier-method">Barrier Method</h1>
 
 <h3 id="inequality-constrained-problems">Inequality Constrained Problems</h3>
 
@@ -215,81 +213,6 @@ MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
 </ol>
 
 <p>$f(x)$나 constrained set이 convex가 아니면 진짜 해와 우리가 구한 해가 차이가 나게 되는데, 이것을 Lagrange Gap이라고 한다.</p>
-
-<h2 id="proximal-gradient">Proximal Gradient</h2>
-
-<h3 id="proximal-gradient-descent">Proximal Gradient Descent</h3>
-
-<p>일반적으로 우리는 $f(x)$가 미분가능한 함수라고 생각하고 문제를 풀었지만, 사실 그렇지 않은 경우가 더 많다. 이런 경우를 잘 해결하기 위해 $f(x)$를 $g(x)$와 $h(x)$로 쪼갤 수 있다.</p>
-
-<script type="math/tex; mode=display">f(x) = g(x) + h(x)</script>
-
-<p>여기서 $g(x)$는 미분가능한 nice function이고, $h(x)$는 미분불가능할 수도 있지만 해석하기 쉬운 additional function 이다. $g(x)$와 $h(x)$는 둘다 convex이다.</p>
-
-<p>사실 gradient descent 방법의 함수 다음 $x$를 구하는 방법의 식은 다음과 같다.</p>
-
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}x_{t+1} &= x_t - \gamma\triangledown f(x)\\
-&= \arg\min_y\{f(x_t)+\triangledown f(x_t)^T(y-x_t)+\frac{1}{2\gamma}\|y-x_t\|^2\}\end{align} %]]></script>
-
-<p>테일러 전개를 이용한 것인데, 마지막 항은 $\triangledown^2f(x)=\frac{1}{\gamma}I$로 대체한 것이다. <em>왜 이렇게 대체를 할 수 있는지는 모르겠다</em> 다시 써보면,</p>
-
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}x_{t+1}&=\arg\min_y\{g(y)+h(y)\}\\
-&=\arg\min_y\{g(x_t) + \triangledown g(x_t)^T(y-x_t)+\frac{1}{2\gamma}\|y-x_t\|^2 + h(y)\}\\
-&=\arg\min_y\{\triangledown g(x_t)^T(y-x_t)+\frac{1}{2\gamma}\|y-x_t\|^2 \frac{\gamma}{2}\|\triangledown g(x_t)\|^2+ h(y)\}\\
-&=\arg\min_y\{\frac{1}{2\gamma}(\|y-x_t\|^2 + 2\gamma\triangledown g(x_t)^T(y-x_t)+\gamma^2\|\triangledown g(x_t)\|^2)+h(y)\}\\
-&=\arg\min_y\{\frac{1}{2\gamma}\|y-(x_t-\gamma\triangledown g(x_t))\|^2+h(y)\}
-\end{align} %]]></script>
-
-<p>이다. 중간에 뜬금없이 추가되거나 삭제된 항은 $y$와 관계없는 항이기 때문에 추가가 가능하다. 여기서 <script type="math/tex">\text{prox}_{h, \gamma}(z) = \arg\min_y\{\frac{1}{2\gamma}\|y-z\|^2+h(y)\}</script>라고 정의하면,</p>
-
-<script type="math/tex; mode=display">x_{t+1} = \text{prox}_{h, \gamma}(x_t-\gamma\triangledown g(x_t))</script>
-
-<p>라고 쓸 수 있다. 항상 이 방법이 좋은 것은 아니며, $f(x)$를 어떤 $g(x)$와 $h(x)$로 나누는지에 따라 효과가 달라진다.</p>
-
-<h3 id="generalized-gradient">Generalized Gradient</h3>
-
-<script type="math/tex; mode=display">G_{h, \gamma}(x) = \frac{1}{\gamma}(x-\text{prox}_{h, \gamma}(x-\gamma\triangledown g(x)))</script>
-
-<p>라고 하면, $x_{t+1}= x_t-\gamma G_{h, \gamma}(x)$라고 할 수 있다. 이 식으로 그냥 gradient descent와 projected gradient descent도 포함시킬 수 있는데, 만약 $h(x)=0$이면 그냥 gradient descent이고, <script type="math/tex">% <![CDATA[
-h(x)=\begin{cases}0 & \text{if }x\in X \\ \infty & \text{otherwise}\end{cases} %]]></script> 라고 정의한다면 projected gradient descent이다.</p>
-
-<h3 id="convergence-analysis-beta-smooth">Convergence Analysis ($\beta$-smooth)</h3>
-
-<p>$\beta$-smooth function이므로 $\gamma=\frac{1}{\beta}$ 라고 하자. $G(x)=G_{h, \gamma}(x)$라고 하자.</p>
-
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}g(x-\gamma G(x))&\le g(x) - \gamma\triangledown g(x)^TG(x)+\frac{\gamma^2\beta}{2}\|G(x)\|^2 \text{ (by }\beta\text{-smooth)}\\
-&\le g(x)-\frac{1}{\beta}\triangledown g(x)^TG(x)+\frac{1}{2\beta}\|G(x)\|^2 \text{ (by }\gamma=\frac{1}{\beta}\text{)}\\
-f(x-\frac{1}{\beta}G(x))&\le g(x)-\frac{1}{\beta}\triangledown g(x)^TG(x)+\frac{1}{2\beta}\|G(x)\|^2 + h(x-\frac{1}{\beta}G(x))\\
-&\le g(z)+\triangledown g(x)^T(x-z)-\frac{1}{\beta}\triangledown g(x)^TG(x)+\frac{1}{2\beta}\|G(x)\|^2 + h(z)+(G(x)-\triangledown g(x))^T(x-z-\frac{1}{\beta}G(x))\text{ (by Convexity)}\\
-& \le g(z)+h(z)+G(x)^T(x-z)-\frac{1}{2\beta}\|G(x)\|^2 \text{ (by }G(x)-\triangledown g(x)=\triangledown h(x-\frac{1}{\beta}G(x)\text{)})\end{align} %]]></script>
-
-<p>$x=x_t, z=x^* $를 대입하면,</p>
-
-<script type="math/tex; mode=display">f(x_t-\frac{1}{\beta}G(x_t))\le g(x^* )+h(x^* )+G(x_t)^T(x_t-x^* )-\frac{1}{2\beta}\|G(x_t)\|^2</script>
-
-<p>이고, $f(x_t-\frac{1}{\beta}G(x))=f(x_{t+1})$, $g(x^* )+h(x^* )=f(x^* )$이므로</p>
-
-<script type="math/tex; mode=display">f(x_{t+1})-f(x^* )\le G(x_t)^T(x_t-x^* )-\frac{1}{2\beta}\|G(x_t)\|^2</script>
-
-<p>이 된다.</p>
-
-<h3 id="proof-gx-triangledown-gxtriangledown-hx-gamma-gx">(Proof) <script type="math/tex">G(x)-\triangledown g(x)=\triangledown h(x-\gamma G(x))</script></h3>
-
-<p>위에서 그냥 넘어간 이 명제를 증명해보자.</p>
-
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}G(x) &= \frac{1}{\gamma}(x-\text{prox}_{h, \gamma}(x-\gamma\triangledown g(x)))\\
-&=\frac{1}{\gamma}(x-\arg\min_y\{\frac{1}{2\gamma}\|y-(x-\gamma\triangledown g(x))\|^2 + h(y)\})\\
-\Rightarrow x-\gamma G(x)&=\arg\min_y\{\frac{1}{2\gamma}\|y-(x-\gamma\triangledown g(x))\|^2 + h(y)\}\end{align} %]]></script>
-
-<p>$\arg\min$이므로 마지막 식의 우항을 미분해서 좌항을 넣으면 $0$이 되어야 한다.</p>
-
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}&\Rightarrow \frac{1}{\gamma}(x-\gamma G(x)-x+\gamma \triangledown g(x))+\triangledown h(x-\gamma G(x))=0\\
-&\Rightarrow G(x)-\triangledown g(x) = \triangledown h(x-\gamma G(x))\end{align} %]]></script>
 
 </article>
 
