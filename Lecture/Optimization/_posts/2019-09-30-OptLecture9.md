@@ -5,9 +5,7 @@ author: Yeonjee Jung
 use_math: true
 ---
 
-# Subgradient & Mirror Descent
-
-## Subgradient
+# Subgradient
 
 만약 함수 $f(x)$가 미분불가능하다면, 우리는 임의의 gradient를 정해야 한다. subgradient를 정의할 수 있는데,
 
