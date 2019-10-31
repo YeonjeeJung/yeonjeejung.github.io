@@ -5,9 +5,147 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 29 Oct 2019 23:05:50 +0900</pubDate>
-    <lastBuildDate>Tue, 29 Oct 2019 23:05:50 +0900</lastBuildDate>
+    <pubDate>Thu, 31 Oct 2019 14:22:42 +0900</pubDate>
+    <lastBuildDate>Thu, 31 Oct 2019 14:22:42 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>ADAM - A Method for Stochastic Optimization</title>
+        <description>&lt;hr /&gt;
+
+&lt;h2 id=&quot;abstract&quot;&gt;[Abstract]&lt;/h2&gt;
+
+&lt;p&gt;이 논문에서는 저차를 이용한 예측에 기반한 확률적 목적함수의 1차 기울기 기반의 최적화 알고리즘인 Adam을 소개한다. 이 방법은 구현하기에 직접적이고, 계산량이 효과적이고, 메모리가 적게 필요하고, 기울기를 diagonal rescaling하는데 변함이 없고, 큰 데이터나 파라미터에 적용하는 데에 적합하다. 이 방법은 또한 매우 노이즈가 많거나 기울기가 sparse한 등의 변화하는 목적이나 문제에 적합하다. 조정 변수는 직관적으로 해석될 수 있으며 약간의 전형적인 튜닝만을 필요로 한다. Adam을 만드는 데에 영감을 준 관련된 알고리즘과의 연결고리도 소개된다. 또한 알고리즘의 이론적인 수렴 성질도 분석했고, 알려진 최고의 알고리즘들과 비교하여 수렴도에 대한 regret bound도 제공한다. 실험 결과는 아담이 다른 최적화 방법들과 비교해도 잘 작동한다는 것을 보여준다. 마지막으로, AdaMax에 대해서도 논의할 것이다.&lt;/p&gt;
+
+&lt;h2 id=&quot;1-introduction&quot;&gt;[1] Introduction&lt;/h2&gt;
+
+&lt;p&gt;1차 기반 최적화는 널리 쓰였는데, 계산량에서 효율적이다. SGD도 많이 쓰이는데, 이때 목적함수는 data subsampling 말고 또다른 노이즈 소스(dropout같은)가 있을 수 있다. 따라서 noisy할 경우에 대해 더 효과적인 알고리즘이 필요하다. 이 논문은 고차원 파라미터 공간에서의 SGD 최적화와 1차 최적화 방법에 중점을 둔다.&lt;/p&gt;
+
+&lt;p&gt;Adam은 1차 방법인데, 적은 메모리를 사용하여 효율적인 확률론적 최적화를 한다. 이 방법은 각각의 파라미터에 대해 gradient의 첫번째와 두번째 moment의 추정치를 이용하여 최적의 learning rate를 계산한다. 또한 AdaGrad(sparse gradient에 효과적)와 RMSProp(on-line, non-stationary에 효과적)의 장점을 합친 방법이다.&lt;/p&gt;
+
+&lt;p&gt;Adam의 장점은 엄청난 수의 파라미터 업데이트가 기울기를 rescaling해도 변화가 없다는 것, step size가 제한되는 것, 불변 목적함수가 필수가 아닌 것, sparse한 기울기에서도 잘 작동하는 것, 그리고 step size annealing을 자동으로 하는 것이다.&lt;/p&gt;
+
+&lt;h2 id=&quot;2-algorithm&quot;&gt;[2] Algorithm&lt;/h2&gt;
+
+&lt;p&gt;$\alpha$ : step size&lt;br /&gt;
+$\beta_1, \beta_2$ : moment 예측의 지수 decay rate&lt;br /&gt;
+$f(\theta)$ : 목적 함수&lt;br /&gt;
+$\theta_0$ : 초기 파라미터&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}\text{while }&amp;\theta_t\text{ not converged, do}\\
+&amp;t\leftarrow t+1\\
+&amp;g_t\leftarrow\triangledown_\theta f_t(\theta_{t-1})\\
+&amp;m_t\leftarrow\beta_1\cdot m_{t-1}+(1-\beta_1)\cdot g_t\\
+&amp;v_t\leftarrow\beta_2\cdot v_{t-1}+(1-\beta_2)\cdot g_2^t\\
+&amp;\hat{m_t}\leftarrow\frac{m_t}{1-\beta_1^t}\\
+&amp;\hat{v_t}\leftarrow\frac{v_t}{1-\beta_2^t}\\
+&amp;\theta_t\leftarrow\theta_{t-1}-\alpha\cdot\frac{\hat{m_t}}{\sqrt{\hat{v_t}}+\epsilon}\\
+\text{end while}
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;알고리즘은 기울기와 기울기의 제곱의 지수평균을 업데이트하고, hyper-parameter $\beta_1, \beta_2$는 이 이동 평균의 지수적인 decay rate을 조절한다. 이 두 움직임의 평균은 기울기의 1차와 2차 모멘트로부터 예측된다. 0으로 초기화 되기 때문에 초기 시점에나 $\beta_1, \beta_2$가 작을 때 0으로 bias되는 경우가 생기는데, 뒤에서 상쇄가 가능하다. 위 알고리즘 1의 뒤쪽에 약간의 순서 변경을 하면 표현의 명확성이 떨어지지만, 효율성을 더 확보할 수 있다.&lt;/p&gt;
+
+&lt;h3 id=&quot;21-adams-update-rule&quot;&gt;[2.1] Adam’s update rule&lt;/h3&gt;
+&lt;p&gt;Adam의 특징 중 하나는 업데이트할 때 stepsize를 신중하게 선택해야 한다는 점이다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\triangle t=\alpha \cdot \frac{\hat{m}_t}{\sqrt{\hat{v}_t}}&lt;/script&gt;
+
+&lt;p&gt;이게 effective한 step 이다. 이 stepsize는 $(1-\beta_1)\gt\sqrt{1-\beta_2}$일 경우($|\triangle_t|\le\alpha\cdot\frac{(1-\beta_1)}{\sqrt{1-\beta_2}}$)와 이 경우가 아닐 경우($|\triangle_t|\le\alpha$)에 대해 두 개의 upper bound가 있다. 첫번째 경우는 현재 timestep 제외하고 대부분 gradient가 0일 경우 같은 매우 sparse한 경우이고, 두번째 경우는 덜 sparse한 경우인데, 효과적인 step size가 줄어든다.&lt;/p&gt;
+
+&lt;p&gt;일반적인 경우는 후자인데, 결국 effective stepsize는 $\alpha$에 의해 bound된다. 현재 기울기 예측이 충분한 정보를 주지 않더라도 trust region을 구축하기 위한 것이라고 이해될 수 있다. 따라서 $\alpha$의 적절한 크기를 아는 것이 상대적으로 쉽다. (보통 머신러닝 모델에서 우리는 적절한 파라미터 값을 대략적으로 알고 있다.)&lt;/p&gt;
+
+&lt;p&gt;약간 과장하면, $\frac{\hat{m}_t}{\sqrt{\hat{v}_t}}$ 를 signal-to-noise ratio(SNR)이라고 할 수 있다. SNR이 더 작으면 $\triangle_t$는 0에 더 가까워진다. SNR이 작다는 말은 $\hat{m_t}$가 진짜 기울기 방향으로 가고 있다는 데에 더 큰 불확실성을 갖는다는 말, 즉 현재 optima에 거의 다 왔으므로 어디로 갈지 모르는 상황이 되어 effective stepsize가 더 작아진다. 따라서 자동 annealing의 형태를 띤다. 또한 $\triangle_t$는 gradient의 scale이 변해도 변하지 않는다(분수이므로 scale된것이 사라진다).&lt;/p&gt;
+
+&lt;h2 id=&quot;3-initialization-bias-correction&quot;&gt;[3] Initialization Bias Correction&lt;/h2&gt;
+
+&lt;p&gt;우리는 제곱된 기울기의 지수 평균과 decay rate $\beta_2$를 이용하여 f의 2차 moment를 알아내려고 한다. 먼저 지수 이동 평균을 0으로 초기화한다. 위 알고리즘의 식에 대입하면, 다음 지수 이동 평균을 구할 때 이전의 gradient가 $\beta_2$의 지수만큼 기여하게 된다. $\mathbb{E}[v_t]$와 $\mathbb{E}[g_t^2]$와의 관계성을 알면 그 차이를 없앨 수 있다. 알고리즘의&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;v_t = (1-\beta_2)\sum_{i=1}^t\beta_2^{t-i}\cdot g_i^2&lt;/script&gt;
+
+&lt;p&gt;식에 평균을 취하면&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbb{E}[v_t] = \mathbb{E}[g^2_t]·(1−\beta_t^2) +\zeta&lt;/script&gt;
+
+&lt;p&gt;이 식을 얻을 수 있다. 만약 $g_t$가 변하지 않는 값이면 $\zeta=0$이 되는데, 만약 $g_t$가 변하더라도 아주 이전의 gradient에는 작은 계수가 붙기 때문에, $\zeta$는 아주 작은 숫자가 된다. $1-\beta_2^t$는 running average를 0으로 초기화하면서 생긴 텀인데, 초기 bias를 없애주기 위해 알고리즘 1에서는 bias correction을 위해 이 식으로 나눠준다.&lt;/p&gt;
+
+&lt;p&gt;gradient가 sparse할 경우에는, 믿을만한 2차 모멘트의 예측을 위해서는 작은 $\beta_2$를 선택하여 많은 기울기를 평균해야 한다. 그러나 작은 $\beta_2$를 선택하면 초기 bias의 correction이 없게 되므로(bias correction은 $1-\beta_2$로 나누는 것이므로, 작은 $\beta_2$를 선택할 경우 나누는 항이 1이 되어 bias correction이 줄어든다) sparse하지 않을 경우보다 초기 step이 더 커지게 된다. (앞의 [2.1] stepsize의 bound 식을 보면 이 경우의 bound가 더 크다)&lt;/p&gt;
+
+&lt;h2 id=&quot;4-convergence-analysis&quot;&gt;[4] Convergence Analysis&lt;/h2&gt;
+
+&lt;p&gt;각 시간 t에 대해, 우리의 목적은 $\theta_t$를 예측하고 그 예측을 unknown cost function $f_t$에 대해 평가하는 것이다. sequence가 이전에 알려져있지 않기 때문에 regret이라는 것을 사용해서 평가한다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;R(T) = \sum_{t=1}^T[f_t(\theta_t)-f_t(\theta^* )]&lt;/script&gt;
+
+&lt;p&gt;이게 regret 식이다. Adam은 $O(\sqrt{T})$의 regret bound 갖고 있다. 이 결과는 현존하는 online learning중 최고이다.&lt;/p&gt;
+
+&lt;h3 id=&quot;thm41&quot;&gt;[Thm4.1]&lt;/h3&gt;
+
+&lt;p&gt;Thm 1은 $\alpha_t$가 $t^{-1/2}$로 decay하고, $\beta_1$이 $\lambda^t$ 로($\lambda$는 $1$에 엄청나게 가까운 수)로 decay할 때 성립한다. Thm1은 데이터가 sparse하고 제한된 기울기를 갖고 있을 때, $\sum$ 항이 그 상한보다 훨씬 작다는 것을 의미한다(특정한 함수와 데이터 특징에 대해). 이 결과에 기댓값($\mathbb{E}$)을 적용하면 Adam에도 적용될 수 있다. Adaptive method는 non-adaptive 모델보다 더 좋은 convergence를 갖는다. $\beta_1$의 decay가 중요한 역할을 하는데, 이전에 있었던 모멘텀 계수를 줄이는 것이 수렴을 향상시킨다는 연구결과와도 들어맞는다.&lt;/p&gt;
+
+&lt;h3 id=&quot;cor42&quot;&gt;[Cor4.2]&lt;/h3&gt;
+
+&lt;p&gt;Thm4.1의 따름정리인데, 결국은 $\frac{R(T)}{T}$ 가 0으로 수렴한다는 내용이다.&lt;/p&gt;
+
+&lt;h2 id=&quot;5--related-work&quot;&gt;[5]  Related Work&lt;/h2&gt;
+
+&lt;p&gt;Adam에 직접적으로 영향을 준 연구는 RMSProp과 AdaGrad이다. vSGD, AdaDelta, natural Newton Method같은 stochastic 방법들은 1차 미분 정보에서 곡률을 예측하여 stepsize를 정한다. SFO는 mini-batch 기반의 quasi-newton 방법인데, Adam과 달리 선형적인 메모리가 필요해 GPU에서는 사용할 수 없다. NGD와 같이 Adam은 데이터의 구조에 적응하는 preconditioner를 도입했다(Adam에서의 $\hat{v_t}$는 Fisher information matrix의 근사이다). 그러나 Adam의 preconditioner는 AdaGrad에서와 비슷한데, 그냥 NGD보다 더 적응이 느리다.&lt;/p&gt;
+
+&lt;h3 id=&quot;기본지식&quot;&gt;[기본지식]&lt;/h3&gt;
+
+&lt;p&gt;newton’s method : GD랑 비슷하지만 $x_n+1 = x_n - \frac{f’}{f’’}$ 으로 업데이트 하는 방법&lt;br /&gt;
+quasi-newton method : newton’s method와 비슷하지만 계산량이 훨씬 적다.$f’’$ 대신 $f’‘$을 근사한 행렬을 사용한다.&lt;/p&gt;
+
+&lt;h3 id=&quot;rmsprop&quot;&gt;[RMSProp]&lt;/h3&gt;
+
+&lt;p&gt;모멘텀을 이용한 RMSProp에서는 rescale된 gradient에 momentum을 사용하여 파라미터 업데이트를 하는데, Adam은 현재 기울기의 1차, 2차 momentum의 평균을 이용하여 바로 예측한다(rescale이 없음). 또한 RMSProp은 bias-correction 항이 없다. 이러면 너무 큰 stepsize나 발산으로 이어질 수 있다.&lt;/p&gt;
+
+&lt;h3 id=&quot;adagrad&quot;&gt;[AdaGrad]&lt;/h3&gt;
+
+&lt;p&gt;sparse한 gradient에 잘 작동하는 알고리즘이다. Adam에서 $\alpha$와 $\beta$를 적절하게 설정하면 AdaGrad와 똑같다. bias-correction 항이 없으면 비슷하지 않게 된다. 과거의 기울기의 변화량(momentum)을 참고하여 update하는 것이 특징이다.&lt;/p&gt;
+
+&lt;h2 id=&quot;6-experiments&quot;&gt;[6] Experiments&lt;/h2&gt;
+
+&lt;p&gt;큰 모델과 데이터셋을 사용하므로써, Adam이 현실에서도 효과적이라는 것을 증명한다. hyper-parameter의 경우는, dense grid로 찾고, 가장 좋은 결과를 내는 hyper-parameter를 비교에 사용한다.&lt;/p&gt;
+
+&lt;h3 id=&quot;61-experiment--logistic-regression&quot;&gt;[6.1] Experiment : Logistic Regression&lt;/h3&gt;
+
+&lt;p&gt;L2 정규화된 multi-class logistic regression을 MNIST를 이용하여 평가했다. logistic regression은 convex한 목적함수를 갖고 있다. Adam은 모멘텀을 사용한 SGD와 비슷하게 수렴했고 Adagrad보다는 빨랐다.&lt;/p&gt;
+
+&lt;p&gt;AdaGrad는 feature와 gradient가 sparse할 때 유리하다. Adam이 $\frac{1}{\sqrt{t}}$의 stepsize를 사용한다면 이론적으로 AdaGrad의 성능과 같다. 이 부분에 대해서는 IMDB 영화 리뷰 데이터셋을 이용해 sparse feature 문제를 시험했다. 결과는 이론과 같았다.&lt;/p&gt;
+
+&lt;h3 id=&quot;62-experiment--multi-layer-neural-networks&quot;&gt;[6.2] Experiment : Multi-Layer Neural Networks&lt;/h3&gt;
+
+&lt;p&gt;여기서 non-convex한 함수에 대한 분석은 이루어지지 않았지만, 경험적으로 Adam이 이런 상황에서도 좋은 성능을 낸다는 것을 알았다. 우선 기본 deterministic cross-entropy 목적함수와 L2 weight decay를 사용하여 여러 다른 optimizer들을 연구했다. SFO 방법은 최근에 제안된 minibatch 기반의 quasi-Newton 방법인데,  multi-layer NN에서 좋은 성능을 보여준다. 그런데 Adam의 iteration이 덜 필요했고, 절대적인 시간도 빨랐다. (곡선 정보를 update하는 데에 SFO는 시간이 더 필요하고, linear memory가 필요하다.) 또한 dropout을 사용한 다른 확률론적 방법들과의 비교에서도 Adam이 월등한 성적을 보여주었다.&lt;/p&gt;
+
+&lt;h3 id=&quot;63-experiment--convolutional-neural-networks&quot;&gt;[6.3] Experiment : Convolutional Neural Networks&lt;/h3&gt;
+
+&lt;p&gt;CNN에서도 Adam이 효율적으로 작동할 수 있다. 처음에는 Adam과 AdaGrad가 빠른데, 나중에는 SGD와 Adam이 잘 수렴한다. 이 이유는 2차 moment 예측 $\hat{v_t}$가 몇 epoch뒤에는 사라지고 $\epsilon$이 성능을 좌우하기 때문이다. fully connected NN과 비교할 때, CNN에서는 2차 moment 예측은 cost function의 지형을 근사하는 데에 실패한 것이다. CNN에서는 1차 moment를 통해 minibatch의 분산을 줄이는 것이 더 중요하다. Adam은 SGD보다 약간 더 좋은데, 또한 SGD처럼 수동으로 learning rate를 조절해야 하는 것이 아니라 자동으로 서로 다른 layer들에 대한 learning rate를 조절해준다.&lt;/p&gt;
+
+&lt;h3 id=&quot;64-experiment--bias-correction-term&quot;&gt;[6.4] Experiment : Bias-Correction Term&lt;/h3&gt;
+
+&lt;p&gt;bias term은 Adam에서 매우 중요하며 bias correction term을 없애는 것은 momentum을 사용한 RMSProp과 같은 결과를 보여준다. 이 논문에서는 $\beta_1$과 $\beta_2$, $\alpha$를 다양하게 바꾸며 실험했다. $\beta_2$가 1에 가까우면 sparse한 gradient에 견고성이 더 요구되므로 더 큰 초기 bias가 생긴다. 따라서 이 논문에서는 느린 decay같은 상황에서 bias correction term이 중요하다고 예상했고, 실험 결과에서는 $\beta_2$가 1에 가깝고 bias term이 있는 것이 가장 성능이 좋았다(예상한 것이 맞았다). 결과적으로, Adam은 RMSProp보다 같거나 더 좋다.&lt;/p&gt;
+
+&lt;h2 id=&quot;7-extensions-안읽었음&quot;&gt;[7] Extensions &lt;em&gt;안읽었음&lt;/em&gt;&lt;/h2&gt;
+
+&lt;h2 id=&quot;8-conclusion&quot;&gt;[8] Conclusion&lt;/h2&gt;
+
+&lt;p&gt;이 논문에서는 간단하고 계산효율적인 기울기 기반의 확률 목적 함수 최적화 알고리즘을 소개하였다. 이 방법은 큰 데이터셋과 고차 파라미터 공간을 위한 것이다. Adam은 두 유명한 최적화 방법인 AdaGrad 와 RMSProp의 장점을 결합하여 만들어졌는데, AdaGrad의 sparse한 기울기에 대한 장점과 RMSProp의 변동 목적함수에 대한 장점이다. 이 방법은 구현이 직관적이고 적은 메모리를 사용한다. 실험은 convex 문제에서의 수렴도 해석을 증명해주었다. 종합하면, Adam은 딥러닝에서의 다양한 non-convex 최적화 문제에서 강건하고 잘 맞는다.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;다음에 읽어볼 논문 : &lt;a href=&quot;http://www.jmlr.org/papers/volume12/duchi11a/duchi11a.pdf&quot;&gt;AdaGrad&lt;/a&gt;, RMSProp&lt;/p&gt;
+</description>
+        <pubDate>Wed, 30 Oct 2019 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/thesis/2019/10/30/ADAM.html</link>
+        <guid isPermaLink="true">http://localhost:4000/thesis/2019/10/30/ADAM.html</guid>
+        
+        <category>Optimization</category>
+        
+        
+        <category>Thesis</category>
+        
+      </item>
     
       <item>
         <title>SGDR - Stochastic Gradient Descent with warm Restarts</title>
@@ -977,239 +1115,6 @@ f :\alpha\text{-strongly convex &amp; } \beta\text{-smooth } \Leftrightarrow \al
         <pubDate>Mon, 09 Sep 2019 00:00:00 +0900</pubDate>
         <link>http://localhost:4000/lecture/optimization/2019/09/09/OptLecture3.html</link>
         <guid isPermaLink="true">http://localhost:4000/lecture/optimization/2019/09/09/OptLecture3.html</guid>
-        
-        
-        <category>Lecture</category>
-        
-        <category>Optimization</category>
-        
-      </item>
-    
-      <item>
-        <title>Optimization Lecture 2</title>
-        <description>&lt;h1 id=&quot;convex-optimization&quot;&gt;Convex Optimization&lt;/h1&gt;
-
-&lt;h2 id=&quot;convex-optimization-1&quot;&gt;Convex Optimization&lt;/h2&gt;
-
-&lt;p&gt;Convex Optimization이란 $x^* = \text{min}_{x \in C} f(x)$를 찾는 문제이다. 이 때 $f$는 convex function이고, $C$는 convex set이다. 수렴도도 중요하지만, 얼마나 빨리 수렴하는지도 수렴 알고리즘의 선택에서 중요한 요소이다.&lt;/p&gt;
-
-&lt;h3 id=&quot;convergence-rate&quot;&gt;Convergence Rate&lt;/h3&gt;
-
-&lt;p&gt;convergence rate은 $f(x^* )$가 optimal value일 때,&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{f(x_t)-f(x^* )}{g(t)} \le c&lt;/script&gt;
-
-&lt;p&gt;에서의 $g(t)$이다. 이 때 $x_t$는 $x$가 $t$번 업데이트 된 값이고, $c$는 상수이다. 주로&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;$g(t) = \frac{1}{t}$&lt;/li&gt;
-  &lt;li&gt;$g(t) = \frac{1}{\sqrt{t}}$&lt;/li&gt;
-  &lt;li&gt;$g(t) = e^{-t}$&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;가 쓰이는데, $g(t) = e^{-t}$가 가장 수렴속도가 빠르다.&lt;/p&gt;
-
-&lt;p&gt;$f(x_t)-f(x^* ) \le \epsilon$으로 만들 때,&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;$g(t) = \frac{1}{t}$일 때는 $\frac{1}{\epsilon}$번의 step이 필요하고,&lt;/li&gt;
-  &lt;li&gt;$g(t) = \frac{1}{\sqrt{t}}$일 때는 $\frac{1}{\epsilon^2}$번의 step,&lt;/li&gt;
-  &lt;li&gt;$g(t) = e^{-t}$일 때는 $\ln{\frac{1}{\epsilon}}$번의 step이 필요하며, 가장 빠르다.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;convex-functions&quot;&gt;Convex Functions&lt;/h2&gt;
-
-&lt;p&gt;Convex Function의 예시에는 다음과 같은 함수들이 있다.&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;Linear Functions : $f(x) = a^Tx$&lt;/li&gt;
-  &lt;li&gt;Affine Functions : $f(x) = a^Tx + b$&lt;/li&gt;
-  &lt;li&gt;Exponential Functions : $f(x) = e^{\alpha x}$&lt;/li&gt;
-  &lt;li&gt;Norms&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;norms&quot;&gt;Norms&lt;/h3&gt;
-
-&lt;p&gt;주어진 벡터공간 $V$에서의 norm은 0보다 크거나 같은 scalar function $p$이다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;p : V \rightarrow [0, +\infty)&lt;/script&gt;
-
-&lt;p&gt;norm은 다음과 같은 특징을 가진다.&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;$p(x) + p(x) \ge p(x+y), \forall x, y\in V$&lt;/li&gt;
-  &lt;li&gt;$p(ax) = | a|p(x)$&lt;/li&gt;
-  &lt;li&gt;$p(x) = 0 \Leftrightarrow x=0$&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;p-norm&quot;&gt;p-norm&lt;/h3&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\|x\|_ p = \left(\sum_{i=1}^d |x_i|^p\right)^{\frac{1}{p}}&lt;/script&gt;
-
-&lt;p&gt;주로 쓰이는 $p$값은 $1, 2, \infty$이다.&lt;/p&gt;
-
-&lt;h3 id=&quot;example-of-norms&quot;&gt;Example of Norms&lt;/h3&gt;
-&lt;p&gt;young’s inequality : $ab\le\frac{a^p}{p}+\frac{b^q}{q}, \forall p, q \ge 1, \frac{1}{p}+\frac{1}{q}=1$&lt;br /&gt;
-Hoelder inequality : $|\sum_{i=1}^n u_i\cdot v_i| \le \left(\sum_{i=1}^n|u_i|^p\right)^{\frac{1}{p}}\left(\sum_{i=1}^n|v_i|^q\right)^{\frac{1}{q}}$&lt;br /&gt;
-Minkowski inequality : $\left(\sum_{i=1}^n|x_i+y_i|^p\right)^{\frac{1}{p}}\le\left(\sum_{i=1}^n|x_i|^p\right)^{\frac{1}{p}}+\left(\sum_{i=1}^n|y_i|^p\right)^{\frac{1}{p}}$&lt;/p&gt;
-
-&lt;p&gt;Hoelder’s inequality를 증명하는 데에 young’s inequality를 사용하고, Minkowski inequality를 증명하는 데에 Hoelder’s inequality를 사용한다.&lt;/p&gt;
-
-&lt;h3 id=&quot;proof-youngs-inequality&quot;&gt;(Proof) Young’s inequality&lt;/h3&gt;
-
-&lt;h3 id=&quot;proof-hoelders-inequality&quot;&gt;(Proof) Hoelder’s inequality&lt;/h3&gt;
-
-&lt;h3 id=&quot;proof-minkowski-inequality&quot;&gt;(Proof) Minkowski inequality&lt;/h3&gt;
-
-&lt;h2 id=&quot;proof-every-norm-is-convex&quot;&gt;(Proof) Every norm is Convex&lt;/h2&gt;
-&lt;p&gt;(Recall) triangle inequality : $p(x) + p(y) \ge p(x+y), \forall x, y \in V$&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}\alpha p(x) + (1-\alpha)p(y) &amp;
-= p(\alpha x) + p((1-\alpha)y) \\
-&amp; \ge p(\alpha x + (1-\alpha)y)\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;h2 id=&quot;lemma-jensens-inequality&quot;&gt;(Lemma) Jensen’s inequality&lt;/h2&gt;
-
-&lt;p&gt;$f$가 convex이고, $x_1, x_2, \cdots, x_m \in \text{dom}(f)$이고, &lt;script type=&quot;math/tex&quot;&gt;\lambda_1, \lambda_2, \cdots, \lambda_m \in \mathbb{R}_+&lt;/script&gt; s.t. $\sum_{i=1}^m \lambda_i = 1$일 때,&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;f\left(\sum_{i=1}^m \lambda_ix_i\right) \le \sum_{i=1}^m \lambda_i f(x_i)&lt;/script&gt;
-
-&lt;p&gt;$x$가 random variable이라면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(E(x)) \le E[f(x)]&lt;/script&gt;
-
-&lt;p&gt;이 부등식은 $\lambda_1 + \lambda_2 =1$이고 $\lambda_1, \lambda_2 \ge 0$일 때&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\lambda_1f(x_1) +\lambda_2f(x_2) \ge f(\lambda_1x_1+\lambda_2x_2)&lt;/script&gt;
-
-&lt;p&gt;라는 convex의 정의를 이용해, 수학적 귀납법으로 증명할 수 있다.&lt;/p&gt;
-
-&lt;h3 id=&quot;proof&quot;&gt;(Proof)&lt;/h3&gt;
-&lt;p&gt;m일 때 성립한다고 가정한다. 그러면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}f(\sum_{i=1}^{m+1}\lambda_ix_i)
-&amp; =f(\sum_{i=1}^m\lambda_ix_i + \lambda_{m+1}x_{m+1})\\
-&amp; =f((1-\lambda_{m+1})\sum_{i=1}^m\frac{\lambda_i}{1-\lambda_{m+1}}x_i+\lambda_{m+1}x_{m+1})\\
-&amp; \le(1-\lambda_{m+1})f(\sum_{i=1}^m\frac{\lambda_i}{1-\lambda_{m+1}}x_i)+\lambda_{m+1}f(x_{m+1})\\
-&amp; \le(1-\lambda_{m+1})\sum_{i=1}^m\frac{\lambda_i}{1-\lambda_{m+1}}f(x_i)+\lambda_{m+1}f(x_{m+1})\\
-&amp; =\sum_{i=1}^{m+1}\lambda_if(x_i)\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;따라서,&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;f\left(\sum_{i=1}^{m+1}\lambda_ix_i\right)\le\sum_{i=1}^{m+1}\lambda_if(x_i)&lt;/script&gt;
-
-&lt;p&gt;가 성립한다.&lt;/p&gt;
-
-&lt;h2 id=&quot;differentiable-functions&quot;&gt;Differentiable Functions&lt;/h2&gt;
-
-&lt;h3 id=&quot;differentiable&quot;&gt;Differentiable&lt;/h3&gt;
-&lt;p&gt;$f$가 continuous한 일차미분식을 갖는다면, $f$는 differentiable하다. 이 특징은 매우 중요한데, 대부분의 최적화 iteration은 gradient값을 사용하기 때문이다.&lt;/p&gt;
-
-&lt;h3 id=&quot;tangent-hyperplane&quot;&gt;Tangent Hyperplane&lt;/h3&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;g(x) = f(x_0) + \triangledown f(x_0)^T(x-x_0)&lt;/script&gt;
-
-&lt;p&gt;이 tangent hyperplane이다. 이 직선은 $(x, f(x)$를 지나고 $\triangledown f(x_0)$의 기울기를 갖는다.&lt;/p&gt;
-
-&lt;h2 id=&quot;first-order-characterization-of-convexity&quot;&gt;First-order Characterization of Convexity&lt;/h2&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\triangledown f(x) = \left(\frac{\partial f(x)}{\partial x_1}, \cdots, \frac{\partial f(x)}{\partial x_d}\right)^T&lt;/script&gt;
-
-&lt;p&gt;가 first-order derivative이다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;f : \text{ convex function} \Leftrightarrow f(y) \ge f(x) + \triangledown f(x)^T (y-x), \forall x, y \in \text{dom}(f)&lt;/script&gt;
-
-&lt;h3 id=&quot;proof-leftarrow&quot;&gt;(Proof) $\Leftarrow$&lt;/h3&gt;
-
-&lt;p&gt;$z = \theta x + (1-\theta) y, \theta\in [0, 1]$ 라고 하자.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}&amp; (f(x) \ge f(z) + \triangledown f(z)^T(x-z)) \times\theta \\
-&amp; (f(y) \ge f(z) + \triangledown f(z)^T(y-z))\times(1-\theta)\\
-&amp; \Rightarrow \theta f(x) + (1-\theta)f(y)\ge f(z) + \triangledown f(z)^T(\theta x+(1-\theta)y-z)\\
-&amp; \therefore\theta f(x)+(1-\theta)f(y)\ge f(\theta x+(1-\theta)y)\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;h3 id=&quot;proof-rightarrow&quot;&gt;(Proof) $\Rightarrow$&lt;/h3&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}&amp;(1-t)f(x) + tf(y)\ge f(x+(y-x)t)\\
-&amp; \Rightarrow f(y)\ge f(x) + \frac{f(x+(y-x)t)-f(x)}{t}\\
-&amp; \text{ as } t\rightarrow 0, f(y)\ge f(x)+\triangledown f(x)^T(y-x)\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;h2 id=&quot;nondifferentiable-functions&quot;&gt;Nondifferentiable Functions&lt;/h2&gt;
-&lt;p&gt;$f(x) = |x|$같은 함수의 경우, $x=0$부근에서 많은 접점이 있지만 정확한 극한값은 없다. 이 때 그냥 하나를 마음대로 정할 수 있는데, 이것이 subgradient이다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(y)\ge f(x) + g_x^T(y-x)&lt;/script&gt;
-
-&lt;p&gt;에서 $g_x$가 subgradient. 위에서 예를 든 $f(x) = |x|$의 경우, $g\in[-1,1]$은 모두 subgradient가 될 수 있다.&lt;/p&gt;
-
-&lt;h2 id=&quot;second-order-characterization-of-convexity&quot;&gt;Second-order Characterization of Convexity&lt;/h2&gt;
-
-&lt;p&gt;일변수함수에 대해서는 이차미분식이 그냥 하나의 식이지만, 다변수함수에서는 이차미분식이 Hessian이다. Hessian은&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\triangledown^2f(x) = \left(\begin{matrix}
-  \frac{\partial^2f}{\partial x_1 \partial x_1} &amp; \frac{\partial^2f}{\partial x_1 \partial x_2} &amp; \cdots &amp; \frac{\partial^2f}{\partial x_1 \partial x_d} \\
-  \frac{\partial^2f}{\partial x_2 \partial x_1} &amp; \frac{\partial^2f}{\partial x_2 \partial x_2} &amp; \cdots &amp; \frac{\partial^2f}{\partial x_2 \partial x_d} \\
-  \vdots &amp; \vdots &amp; \cdots &amp; \vdots \\
-  \frac{\partial^2f}{\partial x_d \partial x_1} &amp; \frac{\partial^2f}{\partial x_d \partial x_2} &amp; \cdots &amp; \frac{\partial^2f}{\partial x_d \partial x_d}
-  \end{matrix}\right) %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;으로 정의된다.&lt;/p&gt;
-
-&lt;h3 id=&quot;def-positive-definite&quot;&gt;(Def) Positive Definite&lt;/h3&gt;
-&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;A\in \mathbb{R}^{d\times d}&lt;/script&gt;가 symmetric하고 $x^TAx \gt 0, \forall x\in\mathbb{R}^d$일 때 $f$는 positive definite이다.&lt;/p&gt;
-
-&lt;h3 id=&quot;proof-f---convex-function-leftrightarrow-triangledown2fx-is-positive-semidefinite&quot;&gt;(Proof) $f : $ convex function $\Leftrightarrow \triangledown^2f(x)$ is positive semidefinite&lt;/h3&gt;
-&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
-\begin{align}&amp; g(t) = f(x+(y-x)t)\text{ 는 } t\text{에 대한 convex function이다}\\
-&amp; \Leftrightarrow g'(t) = \triangledown f(x+(y-x)t)(y-x)\\
-&amp; \Leftrightarrow g''(t) = (y-x)^T\triangledown^2f(x+(y-x)t)(y-x)\end{align} %]]&gt;&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;$g(t)$가 convex function이므로, &lt;script type=&quot;math/tex&quot;&gt;g''(t) \ge 0, \forall t, \forall x, y&lt;/script&gt;를 만족한다. 따라서 $t=0$일 때도 만족하는데, 이를 대입해보면 다음과 같다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;g''(t)\mid_ {t=0} = (y-x)^T\triangledown^2f(x)(y-x) \ge 0, \forall x, y&lt;/script&gt;
-
-&lt;p&gt;이는 positive semidefinite의 정의이므로, 둘은 동치이다.&lt;/p&gt;
-
-&lt;h2 id=&quot;local-minima-critical-point&quot;&gt;Local Minima, Critical Point&lt;/h2&gt;
-&lt;h3 id=&quot;def-local-minima&quot;&gt;(Def) Local Minima&lt;/h3&gt;
-&lt;p&gt;$\epsilon \gt0$에 대해, $f(x)\le f(y), \forall y \text{ s.t. }|y-x|\le\epsilon$을 만족하면 $x$는 local minima이다.&lt;/p&gt;
-
-&lt;h3 id=&quot;def-critical-point&quot;&gt;(Def) Critical Point&lt;/h3&gt;
-&lt;p&gt;$\triangledown f(x)=0$을 만족하면 $x$는 critical point이다. 만약 $f$가 convex라면, critical point는 global minima이다. critical point는 최적화에서는 bad point인데, tangent line이 기울기가 0이기 때문에 gradient가 존재하지 않아 local minima를 빠져나가기가 어렵다.&lt;/p&gt;
-
-&lt;h2 id=&quot;constrained-minimization&quot;&gt;Constrained Minimization&lt;/h2&gt;
-&lt;p&gt;$f$가 convex function이고, $X$가 convex set이면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(x^* )\le f(y), \forall y\in X \Leftrightarrow \triangledown f(x^* )^T(x-x^* ) \ge 0, \forall x\in X&lt;/script&gt;
-
-&lt;h3 id=&quot;proofrightarrow&quot;&gt;(Proof)$\Rightarrow$&lt;/h3&gt;
-&lt;p&gt;Let $f(x^* )\le f(y), \forall y \in X$&lt;br /&gt;
-Since $f$ is convex,&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}&amp;tf(x^* )+(1-t)f(y) \ge f(y+(x^* -y)t)\\
-&amp;\Rightarrow f(x^* ) \ge \frac{f(y+(x^* -y)t)-f(y)}{t} + f(y)\\
-&amp;\Rightarrow f(x^* )\ge (x^* -y)\triangledown f(y)+f(y) (\text{ as }t\rightarrow0)\\
-&amp;\Rightarrow (y-x^* )\triangledown f(y)\ge f(y)-f(x^* ) \ge 0\\
-&amp;\therefore (y-x^* )\triangledown f(y) \ge 0, \forall y\in X\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;h3 id=&quot;proof-leftarrow-1&quot;&gt;(Proof) $\Leftarrow$&lt;/h3&gt;
-&lt;p&gt;Let $\triangledown f(x^* )^T(y-x^* )\ge 0, \forall y\in X$&lt;br /&gt;
-$f$가 convex이기 때문에, $f(y)\ge f(x^* )+\triangledown f(x^* )^T(y-x^* )$이다.&lt;br /&gt;
-$\Rightarrow f(y)-f(x^* )\ge\triangledown f(x^* )^T(y-x^* )\ge 0$&lt;br /&gt;
-$\therefore f(y)\ge f(x^* ), \forall y\in X$&lt;/p&gt;
-
-&lt;h2 id=&quot;thm-tayler&quot;&gt;(Thm) Tayler&lt;/h2&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}f(x) &amp;= f(0) + f'(0)x + \frac{1}{2}f^{\prime\prime}(0)x^2+\cdots\\
-f(b) &amp;= f(a) + f'(a)(b-a) + \frac{1}{2}f^{\prime\prime}(c)(b-a)^2, c\in[a, b]\\
-&amp; = f(a) + \triangledown f(a)^T(b-a) + \frac{1}{2}(b-a)^T\triangledown^2f(c)(b-a), c\in[a, a+\theta(b-a)], \theta\in[0, 1]\end{align}\\
- \therefore f(b) \ge f(a)+\triangledown f(a)^T(b-a) %]]&gt;&lt;/script&gt;
-</description>
-        <pubDate>Wed, 04 Sep 2019 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/lecture/optimization/2019/09/04/OptLecture2.html</link>
-        <guid isPermaLink="true">http://localhost:4000/lecture/optimization/2019/09/04/OptLecture2.html</guid>
         
         
         <category>Lecture</category>
