@@ -5,9 +5,196 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 31 Oct 2019 14:22:42 +0900</pubDate>
-    <lastBuildDate>Thu, 31 Oct 2019 14:22:42 +0900</lastBuildDate>
+    <pubDate>Sun, 03 Nov 2019 15:16:20 +0900</pubDate>
+    <lastBuildDate>Sun, 03 Nov 2019 15:16:20 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>SGD - General Analysis and Improved Rates</title>
+        <description>&lt;h2 id=&quot;abstract&quot;&gt;[Abstract]&lt;/h2&gt;
+
+&lt;p&gt;이 논문에서는 임의 샘플링에 대한 SGD의 수렴을 설명하는 이론을 제안한다. 이 이론은 SGD의 여러 종류의 수렴을 설명하는데, 각각은 mini-batch를 형성하는 데에 특정한 확률 분포에 연관되어 있다. 이런 분석을 한 것은 처음이며, 분석에 사용된 SGD는 대부분 이전에 논문에서는 명시적으로 고려되지 않았던 것들이다. 이 분석은 최근에 소개된 expcted smoothness에 의존하며, stochastic gradient들의 bound에는 의존하지 않는다. replacement sampling과 independent sampling 등과 같은 여러 다른 minibatch 전략에 대해 연구하므로써, 우리는 stepsize를 mini-batch의 크기에 대한 하나의 함수로써 표현해냈다. 이렇게 하면 전체 복잡도를 최소화하는 mini-batch의 크기를 정할 수 있으며, 최소로 evaluate된 stochastic gradient의 분산이 커지면 최적의 mini-batch 크기도 증가한다는 것을 명시적으로 보여주었다. 분산이 0이면 최적의 mini-batch 크기는 $1$이다. 더해서, 상수였던 stepsize를 언제 감소시켜야 하는지를 결정하는 stepsize-switching 규칙을 증명한다.&lt;/p&gt;
+
+&lt;h2 id=&quot;1-introduction&quot;&gt;[1] Introduction&lt;/h2&gt;
+
+&lt;p&gt;우선 이런 최적화 문제를 풀려고 한다. (이것은 감독학습 문제의 일반적인 형태이다)&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;x^* = \arg\min_{x\in \mathbb{R}^d}\left[f(x) =\frac{1}{n}\sum_{i=1}^n f_i(x)\right]&lt;/script&gt;
+
+&lt;p&gt;모든 $f_i : \mathbb{R}^d\rightarrow\mathbb{R}$은 smooth이다. 그리고 $f$는 global minimizer $x^* $를 가지며, $\mu$-strongly quasi-convex이다. 따라서&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+f(x^* )\ge f(x) +\left&lt;\triangledown f(x),x^* −x\right&gt;+\frac{\mu}{2}\|x^* −x\|^2 %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;를 만족한다.&lt;/p&gt;
+
+&lt;h3 id=&quot;11-background-and-contributions&quot;&gt;[1.1] Background and contributions&lt;/h3&gt;
+
+&lt;h4 id=&quot;linear-convergence-of-sgd&quot;&gt;Linear convergence of SGD&lt;/h4&gt;
+
+&lt;p&gt;2011년에는 strongly convex한 $f$를 특정 noise level까지 수렴하게 하는 비점근 분석의 연구가 있었다. 2016년에는 condition number에 대한 2차 의존성을 없애서 위 결과를 개선하고, importance sampling을 고려했다. 위 연구의 결과는 이후에 mini-batch 다양성에 대한 연구로 확장되었다. 이 논문에서는 위 결과를 대부분의 샘플링에 대해 적용할 수 있도록 했다. 분산 감소 방법의 관점에서 expected smoothness assumption을 도입했는데, 이 assumption은 SGD에서 사용하는 $f$와 $\mathcal{D}$의 연관 특징으로, 이 논문에서 일반적인 복잡도 결과(Thm 3.1)를 증명할 수 있게 해주었다. strong convexity 없이(사실은 quasi-convexity를 가정하였다) 선형 수렴도를 얻을 수 있었다. 또한, 함수 $f_i$들은 convex가 아니어도 된다.&lt;/p&gt;
+
+&lt;h4 id=&quot;gradient-noise-assumptions&quot;&gt;Gradient noise assumptions&lt;/h4&gt;
+
+&lt;p&gt;이전의 많은 SGD의 선형 수렴에 관한 연구들은 확률론적 gradient의 분산이 bound됨을 가정하고 증명했다. 이후에는 점점 가정을 약하게 하는 방향으로 가고 있다. 이 논문에서는 직접적으로 gradient의 bound는 가정하지 않고, 더 약한 가정인 expected smoothness assumption을 사용한다.&lt;/p&gt;
+
+&lt;h4 id=&quot;optimal-mini-batch-size&quot;&gt;Optimal mini-batch size&lt;/h4&gt;
+
+&lt;p&gt;이전의 연구 결과로 큰 mini-batch 크기를 사용하는 것이 넓은 범위의 non-convex문제를 푸는 것에 효과적이라는 것이 밝혀졌는데, 저자는 최적의 stepsize가 mini-batch 크기에 따라 선형적으로 늘어난다고 추측했다. 이 논문에서는 이 추측이 최적의 mini-batch 크기까지 커질 때에만 적용되며, mini-batch 크기에 따른 최적의 stepsize의 정확한 공식이 있음을 증명하고 그 공식을 제공한다.&lt;/p&gt;
+
+&lt;h4 id=&quot;learning-schedules&quot;&gt;Learning schedules&lt;/h4&gt;
+
+&lt;p&gt;이전 연구에서는 해 주위에서 SGD의 수렴을 감지하는 방법이 제안되었다. 이 논문에서는 stepsize를 언제 줄여야 하는지 알려주는 식을 제공한다. 또한, 샘플링 방법에 따라, 그리고 mini-batch 크기에 따라 stepsize와 반복 복잡도가 어떻게 증가하고 감소하는지 보여준다.&lt;/p&gt;
+
+&lt;h4 id=&quot;over-parameterized-models&quot;&gt;Over-parameterized models&lt;/h4&gt;
+
+&lt;p&gt;이전 연구에서 데이터보다 파라미터 수가 많을 때의 SGD의 수렴 속도를 분석한 연구가 있었다. 이 논문에서는 over-parametrized model의 경우 최적의 mini-batch 크기가 $1$임을 보여준다.&lt;/p&gt;
+
+&lt;h3 id=&quot;12-stochastic-reformulation&quot;&gt;[1.2] Stochastic reformulation&lt;/h3&gt;
+
+&lt;p&gt;sampling vector를 이용해서 각 함수와 gradient의 weight를 다르게 만든다. 평균을 취하면 결국 원래의 함수 또는 gradient와 같게 된다. 이 방법은 이전에도 분산을 줄이는 목적으로 사용되었다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;x^{k+1}=x^k-\gamma^k\triangledown f_{c^k}(x^k)&lt;/script&gt;
+
+&lt;p&gt;를 이용해서 gradient descent를 할 수 있다. 이 논문에서는 여러 다른 분포 $\mathcal{D}$에 대한 위 gradient descent의 수렴을 분석할 것이다. 또한 수렴을 얻기 위해 SGD를 변형한다.&lt;/p&gt;
+
+&lt;h2 id=&quot;2-expected-smoothness-and-gradient-noise&quot;&gt;[2] Expected Smoothness and Gradient Noise&lt;/h2&gt;
+
+&lt;h3 id=&quot;21-expected-smoothness&quot;&gt;[2.1] Expected smoothness&lt;/h3&gt;
+
+&lt;p&gt;expected smoothness는 $\mathcal{D}$ 분포의 특성과 $f$의 smoothness 특성을 결합한 것이다.&lt;/p&gt;
+
+&lt;h4 id=&quot;assumption-21-expected-smoothness&quot;&gt;Assumption 2.1 (Expected Smoothness)&lt;/h4&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbb{E}_\mathcal{D}[\|\triangledown f_v(x)-\triangledown f_v(x^* )\|^2]\le 2\mathcal{L}(f(x)-f(x^* )), \forall x\in\mathbb{R}^d&lt;/script&gt;
+
+&lt;p&gt;인 $\mathcal{L}=\mathcal{L}(f, \mathcal{D})\gt0$이 존재할 때, $f$가 분포 $\mathcal{D}$에 대해 $\mathcal{L}$-smooth in expectation이라고 한다. 간단히, $(f, \mathcal{D})\sim ES(\mathcal{L})$이라고 표현한다. 이것이 expected smoothness의 정의이다. 이 expected smoothness는 $f_i$나 $f$가 convex가 아니어도 성립할 수 있다.&lt;/p&gt;
+
+&lt;h3 id=&quot;22-gradient-noise&quot;&gt;[2.2] Gradient noise&lt;/h3&gt;
+
+&lt;p&gt;이 논문에서 쓰이는 중요 가정 중 두번째는 gradient noise의 유한성이다. 이 가정은 매우 약한 가정이고, $f$보다는 $\mathcal{D}$에 관한 가정이다.&lt;/p&gt;
+
+&lt;h3 id=&quot;23-key-lemma-and-connection-to-the-weak-growth-condition&quot;&gt;[2.3] Key lemma and connection to the weak growth condition&lt;/h3&gt;
+
+&lt;p&gt;보통 SGD의 수렴을 증명할 때는&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbb{E}\|\triangledown f_v(x)\|^2\le c&lt;/script&gt;
+
+&lt;p&gt;라는 가정이 들어가는데, $f$가 strongly convex일 때는 보통 성립하지 않는다. 이 논문에서는 이 가정 대신에 확률론적 gradient의 기댓값을 bound하기 위해 expected smoothness를 사용한다.&lt;/p&gt;
+
+&lt;h4 id=&quot;lem-24&quot;&gt;[Lem 2.4]&lt;/h4&gt;
+
+&lt;p&gt;만약 $(f, \mathcal{D})\sim ES(\mathcal{L})$이면,&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbb{E}_\mathcal{D}[\|\triangledown f_v(x)\|^2]\le 4\mathcal{L}(f(x)-f(x^* ))+2\sigma^2&lt;/script&gt;
+
+&lt;p&gt;이다.&lt;/p&gt;
+
+&lt;p&gt;$\sigma=0$인 zero-noise setting에서는 이 식이 weak growth condition이라고 알려져 있다. 이전에도 비슷한 가정이 있었는데, 이 논문에서 제시된 bound가 더 강력하다.&lt;/p&gt;
+
+&lt;h2 id=&quot;3-convergence-analysis&quot;&gt;[3] Convergence Analysis&lt;/h2&gt;
+
+&lt;h3 id=&quot;31-main-rules&quot;&gt;[3.1] Main rules&lt;/h3&gt;
+
+&lt;h4 id=&quot;thm-31&quot;&gt;[Thm 3.1]&lt;/h4&gt;
+
+&lt;p&gt;$f$가 $\mu$-quasi-strongly convex이고 $(f, \mathcal{D})\sim ES(\mathcal{L})$이라고 하자. 모든 $k$에 대하여 $\gamma^k=\gamma\in(0, \frac{1}{2\mathcal{L}}]$을 고른다. 그러면 SGD는 다음을 만족한다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbb{E}\|x^k-x^* \|^2\le(1-\gamma\mu)^k\|x^0-x^* \|^2+\frac{2\gamma\sigma^2}{\mu}&lt;/script&gt;
+
+&lt;p&gt;따라서 모든 $\epsilon \gt 0$에 대해 $\gamma=\min{\frac{1}{2\mathcal{L}}, \frac{\epsilon\mu}{4\sigma^2}}$와 &lt;script type=&quot;math/tex&quot;&gt;k\ge\max\{\frac{2\mathcal{L}}{\mu}, \frac{4\sigma^2}{\epsilon\mu^2}\}\log\left(\frac{2\|x^0-x^* \|^2}{\epsilon}\right)&lt;/script&gt;을 고르면,&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbb{E}\|x^k-x^* \|^2\le\epsilon&lt;/script&gt;
+
+&lt;p&gt;을 만족한다.&lt;/p&gt;
+
+&lt;p&gt;이 Thm이 말하는 바는 SGD가 gradient noise $\sigma^2$과 stepsize $\gamma$에 의존하는 $\frac{2\gamma\sigma^2}{\mu}$까지 선형적으로 수렴한다는 것이다. 더 작은 stepsize를 사용하면 더 수렴할 수 있지만, 수렴도가 떨어진다. $\mathcal{D}$를 조절할 수 있으므로, $\sigma^2$와 $\mathcal{L}$도 조절이 가능하다. stepsize 를 계속 감소시키면 위 항을 더 작게 만들 수도 있다.&lt;/p&gt;
+
+&lt;h4 id=&quot;thm-32&quot;&gt;[Thm 3.2]&lt;/h4&gt;
+
+&lt;p&gt;$f$가 $\mu$-quasi-strongly convex이고 $(f, \mathcal{D})\sim ES(\mathcal{L})$이라고 하자. $\mathcal{K}=\frac{\mathcal{L}}{\mu}$라고 하고,&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\gamma^k=\begin{cases}\frac{1}{2\mathcal{L}} &amp; \text{for }k\le 4\lceil\mathcal{K}\rceil\\ \frac{2k+1}{(k+1)^2\mu} &amp; \text{for }k\gt 4\lceil\mathcal{\mathcal{K}}\rceil\end{cases} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;라고 하자. 만약 $k\ge 4\lceil\mathcal{K}\rceil$이면 다음을 만족하며 수렴한다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbb{E}\|x^k-x^* \|^2\le\frac{\sigma^2}{\mu^2}\frac{8}{k}+\frac{16\lceil{\mathcal{K}\rceil^2}}{e^2k^2}\|x^0-x^* \|^2&lt;/script&gt;
+
+&lt;h3 id=&quot;32-choosing-mathcald&quot;&gt;[3.2] Choosing $\mathcal{D}$&lt;/h3&gt;
+
+&lt;p&gt;위 gradient descent가 효과적이려면, sampling vector $v$가 sparse 해야 한다.&lt;em&gt;왜?&lt;/em&gt; 이 논문에서는 proper sampling 만을 고려한다. sampling $S$가 proper 하다는 말은 모든 $i$에 대해, $i$가 $S$안에 존재할 확률 $p_i$, 즉 $i \in C$인 모든 $C$의 확률을 다 더한 것이 양수라는 말이다. ($\mathbb{P}[i\in S] = \sum_{C:i\in C}p_C \ge 0, \forall i$) 이 proper sampling은 sampling $S$에 의존하는 sampling vector를 특수화 한, 이 논문에서는 특수한 케이스이다. proper sampling의 정의를 기반으로 Independent sampling, Partition sampling, Single element sampling, $\tau$-nice sampling을 정의할 수 있다.&lt;/p&gt;
+
+&lt;h3 id=&quot;33-bounding-mathcall-and-sigma2&quot;&gt;[3.3] Bounding $\mathcal{L}$ and $\sigma^2$&lt;/h3&gt;
+
+&lt;p&gt;$f$가 convex이고 smooth하다고 가정하면 expected smoothness $\mathcal{L}$과 $\sigma^2$에 대한 closed form expression을 계산할 수 있다. 그리고 sampling을 이용해 $\mathcal{L}$과 $\sigma^2$에 대한 bound를 할 수 있는데, sampling의 종류에 따라 이 bound가 달라진다.&lt;/p&gt;
+
+&lt;h2 id=&quot;4-optimal-mini-batch-size&quot;&gt;[4] Optimal Mini-Batch Size&lt;/h2&gt;
+&lt;p&gt;위에서 나온 결과에 $|S|=n$인 경우를 대입해 보면 우리가 원래 알고 있던 full-batch gradient descent결과와 같다. 따라서 full-batch gradient descent는 SGD의 특별한 케이스라고 볼 수 있다.&lt;/p&gt;
+
+&lt;h3 id=&quot;nontation&quot;&gt;[Nontation]&lt;/h3&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;L_i=\lambda_{\max}(M_i)&lt;/script&gt;&lt;br /&gt;
+&lt;script type=&quot;math/tex&quot;&gt;L_{\max}=\max_{i\in[n]}L_i&lt;/script&gt;&lt;br /&gt;
+&lt;script type=&quot;math/tex&quot;&gt;\bar{h} = \frac{1}{n}\sum_{i\in[n]}\|h_i\|^2&lt;/script&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;41-nonzero-gradient-noise&quot;&gt;[4.1] Nonzero gradient noise&lt;/h3&gt;
+&lt;p&gt;mini-batch 크기에 따라 복잡도가 어떻게 변하는지 알기 위해 $|S|=\tau$인 independent sampling과 $\tau$-nice sampling의 경우를 생각해보자.&lt;/p&gt;
+
+&lt;p&gt;Independent sampling의 경우에는 bound된 결과를 Thm 3.1에 넣으면 최소 몇 번의 반복을 해야 하는지 알 수 있는데, 이것은 현재 나온 것 중 최적이다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;k\ge\frac{2}{\mu}\max\{L+\max_{i\in[n]}\frac{1-p_i}{np_i}L_i, \frac{2}{\mu\epsilon}\frac{1-p_i}{np_i}\bar{h}\}&lt;/script&gt;
+
+&lt;p&gt;또한 최적의 step size $\gamma$도 알 수 있게 되고, $\tau$가 커질수록 stepsize는 줄어든다는 것을 알 수 있다. 따라서 전체 반복 수를 최소화하는 mini-batch 크기($\tau$)를 선택할 수 있고, 계산으로 이를 구할 수 있다. $\tau$-nice sampling에서도 independent sampling과 같은 방법으로 최적의 mini-batch 크기를 구할 수 있다.&lt;/p&gt;
+
+&lt;h3 id=&quot;42-zero-gradient-noise&quot;&gt;[4.2] Zero gradient noise&lt;/h3&gt;
+
+&lt;p&gt;$\sigma=0$인 경우를 생각해 보자. Thm 3.1에 따르면 SGD의 반복 복잡도는 매우 간단해진다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;k\ge\frac{2L}{\mu}&lt;/script&gt;
+
+&lt;p&gt;이 경우에 $f$는 weak growth condition을 만족하게 되고, 이전의 연구 결과와 직접적으로 비교할 수 있게 된다. $\tau$가 $n$까지 커질수록 복잡도가 개선되지만, 전체 복잡도는 $\tau$가 곱해지기 때문에 이것으로는 충분하지 않아서 $\tau=1$이 최적의 mini-batch 크기가 된다.&lt;em&gt;이부분이 잘 이해가 안됨..저걸로는 충분하지 않아서 batch-size를 1로 한다고..?&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;5-importance-sampling&quot;&gt;[5] Importance Sampling&lt;/h2&gt;
+
+&lt;p&gt;이 논문에서는 single element sampling과 independent sampling에 대한 importance sampling을 각각 제안한다.&lt;/p&gt;
+
+&lt;h3 id=&quot;51-single-element-sampling&quot;&gt;[5.1] Single element sampling&lt;/h3&gt;
+
+&lt;p&gt;$\mathcal{L}$에 대한 bound와 $\sigma^2$을 Thm 3.1에 대입하면 최소 반복 수를 얻을 수 있는데, $p_i$에 대해 이 최소 반복 수를 최소화하는 문제는 매우 어렵기 때문에 이 논문에서는 &lt;script type=&quot;math/tex&quot;&gt;\mathcal{L}_{\max}&lt;/script&gt; 와 $\sigma^2$ 을 줄이는 것에 집중한다. single element sampling에 대해서는 이전 연구에 있었던 partially biased sampling을 떠올릴 수 있다. &lt;script type=&quot;math/tex&quot;&gt;\mathcal{L}_{\max}&lt;/script&gt;를 최소화시키는 $p_i$는 $p_i^\mathcal{L}=\frac{L_i}{\sum_{j\in [n]} L_j}$인데, 이 확률을 적용하면 이전 연구에 있었던 partially biased sampling과 똑같아진다. uniform sampling과 비교해보면 $L_{\max}=n\bar{L}$인 극한의 상황에서는 partially biased sampling이 절반의 복잡도를 가질 수 있다. &lt;em&gt;왜 갑자기 uniform sampling이랑 비교하지?&lt;/em&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;52-minibatches&quot;&gt;[5.2] Minibatches&lt;/h3&gt;
+&lt;p&gt;이 논문에서는 mini-batch SGD를 위한 importance sampling을 최초로 제안한다. 이에 대한 결과는&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;k\ge\max\{(1-\frac{2}{\tau})\frac{2\bar{L}}{\alpha\mu}, (\frac{2}{\tau}-\frac{1}{n})\frac{8\bar{h}}{\epsilon\mu^2}\}&lt;/script&gt;
+
+&lt;p&gt;인데, $L_{\max}$에 대한 의존성을 없앴을 뿐 아니라, $\tau$가 커지면 복잡도가 더 줄어든다.&lt;/p&gt;
+
+&lt;h2 id=&quot;6-experiments&quot;&gt;[6] Experiments&lt;/h2&gt;
+
+&lt;h3 id=&quot;61-constant-vs-decreasing-step-size&quot;&gt;[6.1] Constant vs. decreasing step size&lt;/h3&gt;
+&lt;p&gt;이 실험에서는 ridge regression과 logistic regression 문제에 집중했는데, 여기서는 목적 함수가 strongly convex이다. Thm 3.2에서 예상했듯이, 특정 시점에 step size를 줄이면 성능이 더 좋다는 것을 보여준다.&lt;/p&gt;
+
+&lt;h3 id=&quot;62-minibatches&quot;&gt;[6.2] Minibatches&lt;/h3&gt;
+&lt;p&gt;이 실험에서는 [3.2]에 소개된 여러 다른 분포의 $\mathcal{D}$(single element sampling, $\tau$ independent sampling, $\tau$-nice sampling)를 선택하여 SGD의 수렴도를 비교하였는데, $\tau^* $를 이용한 방법이 가장 좋은 결과를 보였다. &lt;em&gt;여기 비교했다는건 6갠데 그래프에는 왜 5개만 있음?&lt;/em&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;63-sum-of-non-convex-functions&quot;&gt;[6.3] Sum-of-non-convex functions&lt;/h3&gt;
+&lt;p&gt;이 실험에서는 PCA 문제에 집중했는데, 여기서는 $f$는 strongly convex지만 $f_i$는 그렇지 않다. non-convex한 $f_i$에서도 위와 마찬가지로, stepsize를 줄였을 때 더 좋은 성능을 보였고 $\tau^* $가 가장 좋은 성능을 보였다.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;아직 잘 모르겠는 개념 : $\mu$-strongly quasi-convx, condition number, uniform sampling&lt;/p&gt;
+</description>
+        <pubDate>Sat, 02 Nov 2019 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/thesis/2019/11/02/SGDGENANAL.html</link>
+        <guid isPermaLink="true">http://localhost:4000/thesis/2019/11/02/SGDGENANAL.html</guid>
+        
+        <category>Optimization</category>
+        
+        
+        <category>Thesis</category>
+        
+      </item>
     
       <item>
         <title>ADAM - A Method for Stochastic Optimization</title>
@@ -34,13 +221,13 @@ $\theta_0$ : 초기 파라미터&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{align}\text{while }&amp;\theta_t\text{ not converged, do}\\
-&amp;t\leftarrow t+1\\
-&amp;g_t\leftarrow\triangledown_\theta f_t(\theta_{t-1})\\
-&amp;m_t\leftarrow\beta_1\cdot m_{t-1}+(1-\beta_1)\cdot g_t\\
-&amp;v_t\leftarrow\beta_2\cdot v_{t-1}+(1-\beta_2)\cdot g_2^t\\
-&amp;\hat{m_t}\leftarrow\frac{m_t}{1-\beta_1^t}\\
-&amp;\hat{v_t}\leftarrow\frac{v_t}{1-\beta_2^t}\\
-&amp;\theta_t\leftarrow\theta_{t-1}-\alpha\cdot\frac{\hat{m_t}}{\sqrt{\hat{v_t}}+\epsilon}\\
+&amp; t\leftarrow t+1\\
+&amp; g_t\leftarrow\triangledown_\theta f_t(\theta_{t-1})\\
+&amp; m_t\leftarrow\beta_1\cdot m_{t-1}+(1-\beta_1)\cdot g_t\\
+&amp; v_t\leftarrow\beta_2\cdot v_{t-1}+(1-\beta_2)\cdot g_2^t\\
+&amp; \hat{m_t}\leftarrow\frac{m_t}{1-\beta_1^t}\\
+&amp; \hat{v_t}\leftarrow\frac{v_t}{1-\beta_2^t}\\
+&amp; \theta_t\leftarrow\theta_{t-1}-\alpha\cdot\frac{\hat{m_t}}{\sqrt{\hat{v_t}}+\epsilon}\\
 \text{end while}
 \end{align} %]]&gt;&lt;/script&gt;
 
@@ -926,195 +1113,6 @@ f(x-\frac{1}{\beta}G(x))&amp;\le g(x)-\frac{1}{\beta}\triangledown g(x)^TG(x)+\f
         <pubDate>Wed, 11 Sep 2019 00:00:00 +0900</pubDate>
         <link>http://localhost:4000/lecture/optimization/2019/09/11/OptLecture4.html</link>
         <guid isPermaLink="true">http://localhost:4000/lecture/optimization/2019/09/11/OptLecture4.html</guid>
-        
-        
-        <category>Lecture</category>
-        
-        <category>Optimization</category>
-        
-      </item>
-    
-      <item>
-        <title>Optimization Lecture 3</title>
-        <description>&lt;h1 id=&quot;convex-optimization&quot;&gt;Convex Optimization&lt;/h1&gt;
-&lt;h2 id=&quot;gradient-descent&quot;&gt;Gradient Descent&lt;/h2&gt;
-&lt;h3 id=&quot;gradient-descent-algorithm&quot;&gt;Gradient Descent Algorithm&lt;/h3&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;x_t \leftarrow x_t - \gamma\triangledown f(x_t)&lt;/script&gt;
-
-&lt;p&gt;이거나, $\gamma$를 $t$의 함수로 표현하여&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;x_t \leftarrow x_t - \gamma_t\triangledown f(x_t)&lt;/script&gt;
-
-&lt;p&gt;로 업데이트 하여 최적점을 찾아가는 방법을 gradient descent 알고리즘이라고 한다. 이 때 $\gamma_t$는 $\frac{1}{t}$, $\frac{1}{\sqrt{t}}$, $\frac{1}{\log{t}}$, $\cos{\theta t}$가 주로 쓰인다.&lt;/p&gt;
-
-&lt;h3 id=&quot;convergence-rate&quot;&gt;Convergence Rate&lt;/h3&gt;
-
-&lt;p&gt;Convergence rate은&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(x_t)-f(x^* )\le\epsilon&lt;/script&gt;
-
-&lt;p&gt;을 만족하는 $t$를 찾기까지의 시행 수를 Big O 표기법으로 나타내는 것이다.&lt;/p&gt;
-
-&lt;h2 id=&quot;strong-convex&quot;&gt;Strong Convex&lt;/h2&gt;
-&lt;h3 id=&quot;alpha-strong-convex&quot;&gt;$\alpha$-Strong Convex&lt;/h3&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(x)-f(y)\le\triangledown f(x)^T(x-y)-\frac{\alpha}{2}\|x-y\|^2, \forall x,y&lt;/script&gt;
-
-&lt;p&gt;를 만족할 때의 $\alpha$를 앞에 붙여 $\alpha$-strong convex라고 한다. 만약 $f$가 미분불가능하면 subgradient로 $\alpha$-strongly convexity를 정할 수 있다. 다르게는&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(y)\ge f(x)+\triangledown f(x)^T(y-x)+\frac{\alpha}{2}\|x-y\|^2&lt;/script&gt;
-
-&lt;p&gt;로 쓸 수 있다.&lt;/p&gt;
-
-&lt;h2 id=&quot;smooth&quot;&gt;Smooth&lt;/h2&gt;
-&lt;h3 id=&quot;beta-smooth&quot;&gt;$\beta$-Smooth&lt;/h3&gt;
-&lt;p&gt;$\triangledown f$가 $\beta$-Lipschitz라고 하면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\|\triangledown f(x)-\triangledown f(y)\|\le\beta\|x-y\|&lt;/script&gt;
-
-&lt;p&gt;를 항상 만족하는데, 이때의 $\beta$를 앞에 붙여 $f$ 를 $\beta$-smooth라고 한다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(x)-f(y) \ge \triangledown f(x)^T(x-y)-\frac{\beta}{2}\|x-y\|^2, \forall x,y&lt;/script&gt;
-
-&lt;p&gt;라고도 쓸 수 있고, 또는&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(y) \le f(x)+\triangledown f(x)^T(y-x)+\frac{\beta}{2}\|x-y\|^2&lt;/script&gt;
-
-&lt;p&gt;라고도 쓸 수 있다.&lt;/p&gt;
-
-&lt;p&gt;$\beta$-smooth 함수에서 gradient descent 알고리즘을 사용해 최적값을 찾을 때에는 &lt;script type=&quot;math/tex&quot;&gt;\|\triangledown f(x)-\triangledown f(x^* )\|\le\beta \|x-x^* \|&lt;/script&gt;이고, $\triangledown f(x^* )=0$이기 때문에 learning rate가 $\gamma = \frac{1}{\beta}$인 것이 좋다. 하지만 보통의 convex optimization에서는 $\beta$를 모르기 때문에 learning rate를 정하는 것이 어렵다.&lt;/p&gt;
-
-&lt;p&gt;어떤 함수가 $\alpha$-strong이고 $\beta$-smooth이면 항상 $\alpha \le \beta$가 성립한다. 또한, convex optimization에서 $\alpha = \beta$일 때 가장 쉽게 해를 찾을 수 있다. 항상 $0 \le \frac{\alpha}{\beta} \le 1$ 이므로, $\frac{\alpha}{\beta}$가 1에 가까울수록 해를 찾기가 쉽다.&lt;/p&gt;
-
-&lt;h2 id=&quot;second-order-characterization-of-convexity&quot;&gt;Second-order Characterization of convexity&lt;/h2&gt;
-
-&lt;p&gt;$f$가 두 번 미분가능하면 $\forall x\in\mathbf{dom}{(f)}$에서 항상 $\triangledown^2f(x)$가 존재한다. 그리고&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;f \text{ is convex }\Leftrightarrow \triangledown^2 f(x) \text{ is positive semidefinite }\forall x\in\mathbf{dom}{(f)}&lt;/script&gt;
-
-&lt;p&gt;가 항상 성립한다.&lt;/p&gt;
-
-&lt;h3 id=&quot;def-positive-definite&quot;&gt;(Def) Positive Definite&lt;/h3&gt;
-
-&lt;p&gt;$A\in\mathbb{R}^{d\times d}$는&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;x^TAx \gt 0, \forall x\in \mathbb{R}^d&lt;/script&gt;
-
-&lt;p&gt;를 만족할 때 positive definite라고 한다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;x^TAx\ge 0 , \forall x\in \mathbb{R}^d&lt;/script&gt;
-
-&lt;p&gt;를 만족하면 positive semidefinite이라고 한다.&lt;/p&gt;
-
-&lt;h2 id=&quot;hessian-smooth-strong-convexity&quot;&gt;Hessian, Smooth, Strong convexity&lt;/h2&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-f :\alpha\text{-strongly convex &amp; } \beta\text{-smooth } \Leftrightarrow \alpha I \le \triangledown^2f(x)\le\beta I %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;를 항상 만족하는데, 행렬 $A, B$에 대하여 $A\le B$는 $B-A$가 positive semidefinite임을 뜻한다. 또한, 이는 $\triangledown^2 f(x)$의 eigenvalue들이 $\alpha$보다 크고 $\beta$보다 작음을 뜻한다.&lt;/p&gt;
-
-&lt;p&gt;hessian은 이러한 성질 때문에 step size를 정하기에 매우 중요한데, 이를 second-order method라고 한다. 하지만 계산량이 많고 저장할 숫자도 많으므로 딥러닝에서는 first-order method만 사용한다.&lt;/p&gt;
-
-&lt;h3 id=&quot;proof-rightarrow&quot;&gt;(Proof) $\Rightarrow$&lt;/h3&gt;
-
-&lt;p&gt;우선 $\alpha$-strongly convex이기 때문에&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;f(y)-f(x)\le\triangledown f(y)^T(y-x)-\frac{\alpha}{2}\|x-y\|^2&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;f(x)-f(y)\le\triangledown f(x)^T(x-y)-\frac{\alpha}{2}\|x-y\|^2&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;가 항상 성립한다. 마찬가지로 $\beta$-smooth이기 때문에&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;f(y)-f(x)\ge\triangledown f(y)^T(y-x)-\frac{\beta}{2}\|x-y\|^2&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;f(x)-f(y)\ge\triangledown f(x)^T(x-y)-\frac{\beta}{2}\|x-y\|^2&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;가 항상 성립한다. $\alpha$에 대한 두 식을 합치면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;0\le(\triangledown f(x)-\triangledown f(y))^T(x-y)-\alpha\|x-y\|^2\cdots(1)&lt;/script&gt;
-
-&lt;p&gt;를 얻게 되고, 마찬가지로 $\beta$에 대한 식을 합치면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;0\ge(\triangledown f(x)-\triangledown f(y))^T(x-y)-\beta\|x-y\|^2\cdots(2)&lt;/script&gt;
-
-&lt;p&gt;를 얻게 된다. $x=y+ht$룰 대입하면 ($h$는 벡터, $t$는 스칼라)&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;(\triangledown f(x)-\triangledown f(y))^T(x-y) = \frac{\triangledown f(y+ht)-\triangledown f(y)}{t}ht^2&lt;/script&gt;
-
-&lt;p&gt;를 얻을 수 있는데, 여기에 극한을 취하면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\lim_{t\rightarrow 0}{\frac{\triangledown f(y+ht)-\triangledown f(y)}{t}}ht^2=h^T\triangledown^2f(y)ht^2&lt;/script&gt;
-
-&lt;p&gt;을 얻을 수 있다. 이를 $(1)$과 $(2)$에 대입하면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\alpha t^2\|h\|^2\le h^T\triangledown^2f(y)t^2h\le \beta t^2\|h\|^2&lt;/script&gt;
-
-&lt;p&gt;를 얻게 되고,&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;h^T\alpha h\le h^T\triangledown^2 f(y)h\le h^T\beta h, \forall h&lt;/script&gt;
-
-&lt;p&gt;를 얻을 수 있다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;0\le h^T(\triangledown^2 f(y)-\alpha)h, 0\le h^T(\beta-\triangledown^2 f(y))h , \forall h&lt;/script&gt;
-
-&lt;p&gt;이므로,&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\alpha I \le \triangledown^2 f(y)\le \beta I&lt;/script&gt;
-
-&lt;p&gt;와 동치이다.&lt;/p&gt;
-
-&lt;h3 id=&quot;proof-leftarrow&quot;&gt;(Proof) $\Leftarrow$&lt;/h3&gt;
-
-&lt;p&gt;Taylor Thm을 이용하면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(y) = f(x) + \triangledown f(x)^T(y-x) + \frac{1}{2}(y-x)^T\triangledown^2f(c)(y-x), c=x+(y-x)t, \forall t\in[0, 1]&lt;/script&gt;
-
-&lt;p&gt;라고 할 수 있는데, 이 때&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{1}{2}(y-x)T\triangledown f(c)^T(y-x)\ge\frac{1}{2}k\|y-x\|^2&lt;/script&gt;
-
-&lt;p&gt;를 만족하는 $k$를 $\alpha$라고 하고,&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{1}{2}(y-x)T\triangledown f(c)^T(y-x)\le\frac{1}{2}k\|y-x\|^2&lt;/script&gt;
-
-&lt;p&gt;를 만족하는 $k$를 $\beta$라고 하면 $f$는 $\alpha$-strongly convex이고 $\beta$-smooth이다.&lt;/p&gt;
-
-&lt;h2 id=&quot;vanila-analysis&quot;&gt;Vanila Analysis&lt;/h2&gt;
-&lt;p&gt;만약 $f$가 strongly convex도 아니고, smooth하지도 않지만 $L$-Lipschitz continuous하다고 했을 때, $f(x)-f(x^* )$를 gradient descent를 이용해 어떻게 bound하는지에 대해 알아보자. 여기서는 &lt;script type=&quot;math/tex&quot;&gt;2a^Tb = \|a\|^2+\|b\|^2-\|a-b\|^2 \cdots(* )&lt;/script&gt;임을 이용할 것이다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}f(x_t)-f(x^* )&amp;\le\triangledown f(x_t)^T(x_t-x^* )\\
-&amp;=\frac{1}{\gamma}(x_t-x_{t+1})^T(x_t-x^* )(x_{t+1} = x_t-\gamma\triangledown f(x_t)\\
-&amp;=\frac{1}{2\gamma}(\|x_t-x_{t+1}\|^2+\|x_t-x^* \|^2-\|x_{t+1}-x^* \|^2)(\text{by }(* ))\\
-&amp;=\frac{\gamma}{2}\|\triangledown f(x_t)\|^2+\frac{1}{2\gamma}(\|x_t-x^* \| -\|x_{t+1}-x^* \|^2)\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;이들을 모든 $t$에 대해 다 더하면,&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\sum_{t=0}^{T-1}\left(f(x_t)-f(x^* )\right)\le\frac{1}{2\gamma}(\|x_0-x^* \|^2-\|x_T-x^* \|^2) + \sum_{t=0}^{T-1}\frac{\gamma}{2}\|\triangledown f(x_t)\|^2&lt;/script&gt;
-
-&lt;p&gt;가 된다. $f$가 Lipschitz continuous라고 했으므로 항상 &lt;script type=&quot;math/tex&quot;&gt;\|\triangledown f(x_t)\|^2 \le L^2&lt;/script&gt;이다. &lt;script type=&quot;math/tex&quot;&gt;\bar{x} = \frac{x_0+\cdots+x_{T-1}}{T}&lt;/script&gt;라고 하면, &lt;script type=&quot;math/tex&quot;&gt;f(\bar{x})\le\frac{1}{T}\sum_{t=0}^{T-1}f(x_t)&lt;/script&gt; 임이 성립하고,&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}f(\bar{x})-f(x^* )&amp;\le\frac{1}{T}\sum_{t=0}^{T-1}\left(f(x_t)-f(x^* )\right)\\
-&amp;\le \frac{1}{2\gamma T}\|x_0-x^* \|^2 + \frac{\gamma}{2}L^2 (\text{Lipschitz continuous})\\
-&amp;=\frac{1}{2\gamma T}R^2 + \frac{\gamma}{2}L^2 (\text{Let }R = x_0-x^* ) \end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;가 된다. 따라서 여기에 적합한 learning rate 를 rough하게 계산해보면 $\gamma = \frac{R}{L\sqrt{T}}$가 적합하다. (마지막 식을 미분해서 0 되는 $\gamma$ 찾음)&lt;/p&gt;
-
-&lt;p&gt;이를 대입해 보면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(\bar{x})-f(x^* )\le\frac{RL}{\sqrt{T}}&lt;/script&gt;
-
-&lt;p&gt;가 성립한다.&lt;/p&gt;
-
-&lt;h3 id=&quot;l-lipschitz-continuous&quot;&gt;$L$-Lipschitz Continuous&lt;/h3&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\|f(x)-f(y)\| \le L\|x-y\|, \forall x,y&lt;/script&gt;
-
-&lt;p&gt;를 만족할 때 $L$-Lipschitz continuous라고 하고, $f$가 미분가능하면 &lt;script type=&quot;math/tex&quot;&gt;\|\triangledown f(x)\|\le L&lt;/script&gt;을 만족할 때 Lipschitz continuous라고 한다.&lt;/p&gt;
-
-&lt;p&gt;이 때 $\gamma = \frac{1}{L}$로 잡으면 diverge는 방지할 수 있지만 fast converge는 보장하지 못한다.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 09 Sep 2019 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/lecture/optimization/2019/09/09/OptLecture3.html</link>
-        <guid isPermaLink="true">http://localhost:4000/lecture/optimization/2019/09/09/OptLecture3.html</guid>
         
         
         <category>Lecture</category>
