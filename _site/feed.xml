@@ -5,9 +5,123 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 03 Nov 2019 15:16:20 +0900</pubDate>
-    <lastBuildDate>Sun, 03 Nov 2019 15:16:20 +0900</lastBuildDate>
+    <pubDate>Mon, 04 Nov 2019 22:45:55 +0900</pubDate>
+    <lastBuildDate>Mon, 04 Nov 2019 22:45:55 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>Scaling SGD Batch Size to 32K for ImageNet Training</title>
+        <description>&lt;h2 id=&quot;abastract&quot;&gt;[Abastract]&lt;/h2&gt;
+
+&lt;p&gt;큰 네트워크의 학습 속도를 높이는 자연스러운 방법은 여러개의 GPU를 사용하는 것이다. 확률 기반 방법을 더 많은 프로세서로 확장하려면 각 GPU의 컴퓨팅 파워를 최대로 사용하기 위해 batch size를 늘려야 한다. 그러나 batch size를 계속해서 올리면서 네트워크의 정확도를 유지하는 것은 불가능하다. 현재 sota방법은 batch size에 반비례하게 LR을 늘리고, 초기 최적화의 어려움을 극복하기 위해 LR에 ‘warm-up’이라는 방법을 사용한다.&lt;/p&gt;
+
+&lt;p&gt;LR을 학습 중에 조절하므로써 ImagNet 학습에 큰 batch size를 효과적으로 사용할 수 있다. 그러나 ImageNet-1k 학습을 위해서는 현재 AlexNet이나 ResNet은 batch size를 크게 늘릴 수 없다. 이유는 큰 LR을 사용할 수 없기 때문이다. 큰 batch size를 일반적인 네트워크나 데이터에 대해 사용 가능하게 하기 위해, 이 논문에서는 Layer-wise Adaptive Rate Scaling (LARS)를 제안한다. LARS에서는 weight의 norm과 gradient의 norm을 기반으로 층마다 다른 LR을 사용한다. LARS를 사용하면 ResNet50과 AlexNet에 대해서 큰 batch size를 사용할 수 있다. 큰 batch size는 시스템의 컴퓨팅 파워를 최대로 사용할 수 있다. 이것은 속도의 향상으로 이어진다.&lt;/p&gt;
+
+&lt;h2 id=&quot;1-introduction&quot;&gt;[1] Introduction&lt;/h2&gt;
+
+&lt;p&gt;깊은 네트워크의 확장과 속도 향상은 딥러닝의 응용에서 매우 중요하다. 속도 향상을 위해서는 더 많은 프로세서로 확장시켜야 한다. 그러기 위해서는 batch size를 더 크게 해야 한다.  그러나 이전 연구에 따르면 batch size를 늘이는 것은 test accuracy에서 좋지 않은 결과가 나온다. 학습 중에 LR을 조절하면 큰 batch size에서도 좋은 결과를 유지할 수 있다. 하지만 현재까지의 연구들은 1024 이상의 크기의 batch size에서는 사용할 수 없다. 이 논문의 저자들은 batch normallization을 사용해 큰 batch size에서도 좋은 성능을 얻었지만 여전히 정확도를 잃었다. &lt;em&gt;어디에서 잃었다는건지 모르겠음… 이전에 작은 batch size로 했을 때랑 결과가 똑같은데..?&lt;/em&gt; 이를 더 개선하기 위해 LARS를 제안하는데, weight의 norm &lt;script type=&quot;math/tex&quot;&gt;\|w\|&lt;/script&gt;과 gradient의 norm &lt;script type=&quot;math/tex&quot;&gt;\triangledown w\|&lt;/script&gt;에 따라 층마다 다른 LR을 사용한다. 만약 같은 LR을 쓴다면 &lt;script type=&quot;math/tex&quot;&gt;\frac{\|w\|}{\|\triangledown w\|}&lt;/script&gt;이 큰 층은 수렴해도 작은 층은 발산할 수도 있다. LARS를 사용하면 더 큰 batch size를 사용해도 같은 정확도를 얻을 수 있다. 또한, GPU의 컴퓨팅 파워를 최대로 사용할 수 있기 때문에 속도 향상 또한 가능하다.&lt;/p&gt;
+
+&lt;h2 id=&quot;2-background-and-related-work&quot;&gt;[2] Background and Related Work&lt;/h2&gt;
+
+&lt;h3 id=&quot;21-data-parallelism-mini-batch-sgd&quot;&gt;[2.1] Data-Parallelism Mini-Batch SGD&lt;/h3&gt;
+
+&lt;p&gt;보통의 mini-batch SGD는 update 식을&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;w_{t+1}=w_t-\frac{\eta}{b}\sum_{b\in B_t}\triangledown l(x, y, w)&lt;/script&gt;
+
+&lt;p&gt;라고 쓰는데, 복잡하므로 이 논문에서는&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;w_{t+1}=w_t-\eta\triangledown w_t&lt;/script&gt;
+
+&lt;p&gt;라고 쓴다.&lt;/p&gt;
+
+&lt;h3 id=&quot;22-large-batch-training-difficulty&quot;&gt;[2.2] Large-Batch Training Difficulty&lt;/h3&gt;
+
+&lt;p&gt;GPU를 사용하면 여러 개의 프로세서를 동시에 돌릴 수 있지만, 이를 최대로 사용하기 위해서는 batch size가 커야 하는데, 특정 크기보다 크게 되면 테스트 정확도가 학습 정확도보다 현저하게 낮다. 이전 연구에서는 큰 batch size에 대해 학습 loss가 작아도 test loss는 그것보다 훨씬 크고, 반면 작은 batch size에 대해서는 train loss와 test loss가 비슷하다고 결론지었다. 다른 연구에서는 더 오래 학습하는 것이 일반화에 더 도움이 된다고 했는데, 반면 또다른 연구에서는 LR을 잘 조절하는 것이 정확도를 유지하는데 더 도움이 된다고 했다.&lt;/p&gt;
+
+&lt;h3 id=&quot;23-learning-rate-lr&quot;&gt;[2.3] Learning Rate (LR)&lt;/h3&gt;
+
+&lt;p&gt;batch size를 크게 하면 기본 LR도 그에 따라 올려야 하는데, 그러면서 정확도는 내려가지 않아야 한다. 기존 연구에서는 sqrt scaling rule과 linear scaling rule이 있었다. 또한 warmup scheme도 많이 사용되고 있는데, 처음에 작은 LR을 설정해 놓고 몇 epoch가 지나면 점점 크게 하는 방법이다. 이것이 gradual warmup scheme이고, constant warmup scheme은 초기 몇 번의 epoch에서 constant한 LR을 사용하는 방법이다. &lt;em&gt;그뒤에 어떻게 한다는 건지 안나와있네…왜 이게 warmup이지&lt;/em&gt; constant warmup은 object detection이나 segmentation에 효과적이고, gradual warmup은 ResNet-50을 학습시키는 데에 좋다. batch size에 관계없이 LR에 상한이 있다는 또다른 연구도 있는데, 이 논문의 실험 결과는 위 논문의 결과와 같다.&lt;/p&gt;
+
+&lt;h2 id=&quot;3-imagenet-1k-training&quot;&gt;[3] ImageNet-1k Training&lt;/h2&gt;
+
+&lt;h3 id=&quot;31-reproduce-and-extend-facebooks-result&quot;&gt;[3.1] Reproduce and Extend Facebook’s result&lt;/h3&gt;
+
+&lt;p&gt;이 논문에서의 첫 단계는 Facebook에서 한 연구의 결과를 따라하는 것이었는데, 그 연구에서는 multistep LR과 warmup, linear scaling LR을 사용했다. 이 연구에서도 그 연구와 비슷하게 warmup과 linear scaling을 사용했는데, Facebook의 연구와 다른 점은&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;LR을 더 높였다.&lt;/li&gt;
+  &lt;li&gt;multistep rule 대신 poly rule &lt;em&gt;설명이 없네&lt;/em&gt; 을 사용하였다.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;32-train-imagenet-by-alexnet&quot;&gt;[3.2] Train ImageNet by AlexNet&lt;/h3&gt;
+
+&lt;h4 id=&quot;321-linear-scaling-and-warmup-schemes-for-lr&quot;&gt;[3.2.1] Linear Scaling and Warmup schemes for LR&lt;/h4&gt;
+
+&lt;p&gt;이 논문에서의 baseline은 Batch-512 AlexNet이고, 100 epoch동안 0.58의 정확도를 얻는 것이다. poly rule을 사용했고, base LR은 0.01이며 poly power는 2이다. 목표는 Batch-4096, Batch-8192이고 정확도 0.58을 100 epoch 안에 얻는 것이다.&lt;/p&gt;
+
+&lt;p&gt;첫번째로 Batch-4096 AlexNet을 사용했고 linear scaling을 사용했으며 baseLR을 0.08로 사용했으나, Batch-4096은 0.01의 LR에도 수렴하지 않았다. 이후에는 같은 모델에 linear scaling과 warmup을 사용하였다. 하이퍼파라미터 튜닝을 거쳐 나온 가장 좋은 결과는 0.531에 그쳤다. 또한 Batch-8192의 정확도는 그것보다도 낮았다. 따라서 linear scaling과 warmup은 큰 batch size의 AlexNet을 학습시키는데 충분하지 않다는 것을 알았다.&lt;/p&gt;
+
+&lt;h4 id=&quot;322-batch-normalization-for-large-batch-training&quot;&gt;[3.2.2] Batch Normalization for Large-Batch Training&lt;/h4&gt;
+
+&lt;p&gt;여러 방법을 사용해본 결과, Batch Normalization만 성능을 개선시킨다는 것을 관찰했다. BN을 적용하고 0.01부터 결과가 발산할 때까지 LR을 늘렸는데, Batch-4096은 0.3에서 멈추었고, Batch-8192는 0.41에서 멈추었다. 그러나 이렇게 해도 Batch-512의 정확도에 도달하기 위해서는 정확도가 부족했다. momentum과 weight decay 파라미터를 조정해 보았으나 개선은 없었다.&lt;/p&gt;
+
+&lt;p&gt;이후에는 성능이 개선되지 않는 문제가 일반화 문제 때문이 아님을 관찰하였다. 이유는 최적화 어려움 때문이었다.&lt;/p&gt;
+
+&lt;h4 id=&quot;323-layer-wise-adaptive-rate-scaling-lars-for-large-batch-training&quot;&gt;[3.2.3] Layer-wise Adaptive Rate Scaling (LARS) for Large-Batch Training&lt;/h4&gt;
+
+&lt;p&gt;따라서 새로운 LR updating rule을 디자인했다. 실험 결과에서 층마다 다른 LR이 필요함을 느꼈는데, 그 이유는 &lt;script type=&quot;math/tex&quot;&gt;\|w\|_ 2&lt;/script&gt;와 &lt;script type=&quot;math/tex&quot;&gt;\|\triangledown w\|_ 2&lt;/script&gt;의 비율이 층마다 매우 다르기 때문이었다. 이전에 이런 문제를 해결하기 위한 ResNet50을 위한 해결법 연구가 있었는데, AlexNet에는 효과가 없었다.&lt;/p&gt;
+
+&lt;p&gt;이 논문에서 제안한 LARS의 업데이트 룰은 다음과 같다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\eta=l\times\gamma\times\frac{\|w\|_ 2}{\|\triangledown w\|_ 2}&lt;/script&gt;
+
+&lt;p&gt;여기서 $l$은 scaling factor ($0.001$)이고, $\gamma$는 input LR ($1$~$50$)이다. $\mu$를 momentum이라고 하고 $\beta$를 weight decay 라고 하고 LARS 알고리즘을 살펴보면&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;각 층마다 local LR을 구한다. &lt;script type=&quot;math/tex&quot;&gt;\alpha = l\times\frac{\|w\|_ 2}{\|\triangledown w\|_ 2+\beta\|\triangledown w\|_ 2}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;각 층마다 true LR을 구한다. &lt;script type=&quot;math/tex&quot;&gt;\eta = \gamma\times\alpha&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;gradient를 업데이트 한다. &lt;script type=&quot;math/tex&quot;&gt;\triangledown w=\triangledown w+\beta w&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;가속 항 $a$를 &lt;script type=&quot;math/tex&quot;&gt;a=\mu a+\eta\triangledown w&lt;/script&gt; 를 이용해 업데이트 한다.&lt;/li&gt;
+  &lt;li&gt;weight를 업데이트 한다. $w=w-a$&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;이다. LARS를 적용해서 baseline과 같은 결과를 얻을 수 있었다. 그 뒤에는 BN을 빼고 기본 AlexNet 모델을 사용했는데, Batch-4096에는 13 epoch, Batch-8192에는 8 epoch의 warmup range를 사용하였다. 큰 batch size를 사용해서 작은 batch size에서의 결과와 비슷한 결과를 얻으려면 BN만으로는 부족하고 LARS까지 사용해야 한다는 것을 알았다. 결과에서 보면 LARS만 사용한 결과도 둘 다를 사용한 결과보다 조금 더 낮다.&lt;/p&gt;
+
+&lt;h2 id=&quot;4-experimental-results&quot;&gt;[4] Experimental Results&lt;/h2&gt;
+
+&lt;h3 id=&quot;42-implementation-details&quot;&gt;[4.2] Implementation Details&lt;/h3&gt;
+
+&lt;p&gt;8192정도의 Batch size를 한번에 저장할 수 있는 GPU가 없었기 때문에 하나의 Batch를 32개로 나누어 순차적으로 gradient를 계산했다. GPU의 메모리가 Batch 여러 개를 넣기에 충분한 경우에는 multi solver를 넣어 속도를 향상시켰다.&lt;/p&gt;
+
+&lt;h3 id=&quot;43-state-of-the-art-results-for-resnet50-training&quot;&gt;[4.3] State-of-the-art Results for ResNet50 training&lt;/h3&gt;
+
+&lt;p&gt;이 논문의 결과는 data augmentation을 하지 않았기 때문에 sota 결과보다는 정확도가 낮다. data augmentation을 추가하면 sota 결과가 나온다. 이 논문에서는 32768의 batch size를 사용했다.&lt;/p&gt;
+
+&lt;h3 id=&quot;44-benefits-of-using-large-batch&quot;&gt;[4.4] Benefits of Using Large Batch&lt;/h3&gt;
+
+&lt;p&gt;큰 batch size를 사용할 수 있게 되고 baseline과 같은 결과를 얻게 되자, 이 논문에서는 속도 비교에 중점을 두었다. AlexNet-BN의 batch size가 512에서 4096으로 커지자, 4개의 GPU에서는 속도가 비슷했지만, 8개의 GPU에서는 속도가 3배 빨라졌다.&lt;/p&gt;
+
+&lt;h2 id=&quot;5-conclusion&quot;&gt;[5] Conclusion&lt;/h2&gt;
+
+&lt;p&gt;최적화 어려움이 큰 batch size에 대해 학습을 어렵게 만들었다. linear scaling이나 warmup같은 방법들은 AlexNet등의 복잡한 모델에는 충분하지 않다. BN같은 모델 구조를 변형하는 방법들도 사용할 수 있겠지만 충분하지 않으므로, 이 논문에서 제안하는 LARS를 사용하면 충분히 baseline 정확도를 얻을 수 있다. LARS는 층마다 weight와 weight의 gradient의 norm에 따라 다른 LR을 사용하는데, 매우 높은 효율성을 보여준다. ImageNet을 학습시키는 AlexNet에서 Batch size를 128에서 8192로 키워도 정확도 손실이 없다. 또한 ResNet50에서는 batch size를 32768까지 키울 수 있었다.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;수학적인 증명은 별로 없는 논문이었다. 실험적인 결과로만 가설을 세우고 쓴 논문..&lt;/p&gt;
+
+&lt;p&gt;설명이 더 필요한 개념 : LR scheduler에서의 poly rule, constant warmup&lt;/p&gt;
+</description>
+        <pubDate>Sun, 03 Nov 2019 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/thesis/2019/11/03/SCALEBATCHSIZE.html</link>
+        <guid isPermaLink="true">http://localhost:4000/thesis/2019/11/03/SCALEBATCHSIZE.html</guid>
+        
+        <category>Optimization</category>
+        
+        
+        <category>Thesis</category>
+        
+      </item>
     
       <item>
         <title>SGD - General Analysis and Improved Rates</title>
@@ -998,121 +1112,6 @@ f(x-\frac{1}{\beta}G(x))&amp;\le g(x)-\frac{1}{\beta}\triangledown g(x)^TG(x)+\f
         <pubDate>Mon, 16 Sep 2019 00:00:00 +0900</pubDate>
         <link>http://localhost:4000/lecture/optimization/2019/09/16/OptLecture5.html</link>
         <guid isPermaLink="true">http://localhost:4000/lecture/optimization/2019/09/16/OptLecture5.html</guid>
-        
-        
-        <category>Lecture</category>
-        
-        <category>Optimization</category>
-        
-      </item>
-    
-      <item>
-        <title>Optimization Lecture 4</title>
-        <description>&lt;h1 id=&quot;convex-optimization&quot;&gt;Convex Optimization&lt;/h1&gt;
-
-&lt;h2 id=&quot;beta-smooth-functions--frac1t-learning-rate&quot;&gt;$\beta$-smooth functions : $\frac{1}{t}$ learning Rate&lt;/h2&gt;
-
-&lt;p&gt;$f$가 $\beta$-smooth하다고 하면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}f(x_t)-f(x_{t+1}) &amp; \ge \triangledown f(x_t)^T(x_t-x_{t+1})-\frac{\beta}{2}\|x_t-x_{t+1}\|^2\\
- &amp; =\gamma\|\triangledown f(x_t)\|^2-\frac{\gamma^2\beta}{2}\|\triangledown f(x_t)\|^2 (x_{t+1}-x_t=-\gamma\triangledown f(x_t), \text{gradient descent})\\
- &amp; =(\gamma-\frac{\gamma^2\beta}{2})\|\triangledown f(x_t)\|^2\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;이다. 이 식에서의 극점은 $\gamma = \frac{1}{\beta}$일 때이므로 이를 대입하면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{align}f(x_t)-f(x_{t+1})\ge \frac{1}{2\beta}\|\triangledown f(x_t)\|^2\end{align}&lt;/script&gt;
-
-&lt;p&gt;를 얻게 된다. 이 때 $t=0$부터 $t=T-1$까지 다 대입한 후 다 더하면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}f(x_0)-f(x_T) &amp; \ge \sum_{t=0}^{T-1}\frac{1}{2\beta}\|\triangledown f(x_t)\|^2\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;을 얻게 된다. 이전 단원의 Vanilla Analysis 중간에서 얻은 식에 $\gamma=\frac{1}{\beta}$를 대입하면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\sum_{t=0}^{T-1}{(f(x_t)-f(x^* ))}\le\frac{\beta}{2}\|x_0-x^* \|^2+\sum_{t=0}^{T-1}\frac{1}{2\beta}\|\triangledown f(x_t)\|^2&lt;/script&gt;
-
-&lt;p&gt;을 얻는데, $(4)$을 이용하면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\sum_{t=0}^{T-1}{(f(x_t)-f(x^* ))}\le\frac{\beta}{2}\|x_0-x^* \|^2+\sum_{t=0}^{T-1}\frac{1}{2\beta}\|\triangledown f(x_t)\|^2 \le \frac{\beta}{2}\|x_0-x^* \|^2+ f(x_0)-f(x_T)&lt;/script&gt;
-
-&lt;p&gt;이라고 할 수 있고, 맨 우측 두 항을 좌변으로 넘기면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\sum_{t=1}^T(f(x_t)-f(x^* ))\le\frac{\beta}{2}\|x_0-x^* \|^2&lt;/script&gt;
-
-&lt;p&gt;를 얻는다. $f(x_T)\le f(x_t), 0\le \forall t\le T$이므로, 최종적으로&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(x_T)-f(x^* )\le\frac{1}{T}\sum_{t=1}^T(f(x_t)-f(x^* ))\le\frac{\beta}{2T}\|x_0-x^* \|^2&lt;/script&gt;
-
-&lt;p&gt;를 얻는다.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;upper bound와 convergence speed에 관한 설명 추가&lt;/em&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;def-linear-convergence&quot;&gt;(Def) Linear Convergence&lt;/h3&gt;
-
-&lt;p&gt;만약&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\lim_{t\rightarrow\infty}{\frac{f(x_{t+1})-f(x^* )}{f(x_t)-f(x^* )}}=c&lt;/script&gt;
-
-&lt;p&gt;를 만족하는 $c\in(0, 1)$가 존재한다면 $f$는 선형적으로 수렴한다고 말할 수 있다. 만약 $\frac{f(x_{t+1})-f(x^* )}{f(x_t)-f(x^* )}\le c, \forall t, \forall c\in (0, 1)$라면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{align}f(x_t)-f(x^* )\le c^t(f(x_0)-f(x^* ))\end{align}&lt;/script&gt;
-
-&lt;p&gt;가 항상 성립한다.&lt;/p&gt;
-
-&lt;h2 id=&quot;alpha-strongly-convex-and-beta-smooth-function&quot;&gt;$\alpha$-strongly convex and $\beta$-smooth function&lt;/h2&gt;
-
-&lt;p&gt;Vanilla Analysis의 중간 과정에서&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\triangledown f(x_t)^T(x_t-x^* )=\frac{\gamma}{2}\|\triangledown f(x_t)\|^2+\frac{1}{\gamma}(\|x_t-x^* \|^2-\|x_{t+1}-x^* \|^2)&lt;/script&gt;
-
-&lt;p&gt;의 식을 얻을 수 있었다. 그리고 $f$가 $\alpha$-strongly convex라고 하면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\triangledown f(x_t)^T(x_t-x^* )\ge f(x_t)-f(x^* )+\frac{\alpha}{2}\|x_t-x^* \|^2&lt;/script&gt;
-
-&lt;p&gt;를 만족한다. 둘을 합치고 변형하면,&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align} f(x_t)-f(x^* )+\frac{\alpha}{2}\|x_t-x^* \|^2&amp;\le\frac{\gamma}{2}\|\triangledown f(x_t)\|^2+\frac{1}{2\gamma}(\|x_t-x^* \|^2-\|x_{t+1}-x^* \|^2)\\
- -\frac{1}{2\gamma}(\|x_t-x^* \|^2-\|x_{t+1}-x^* \|^2)+\frac{\alpha}{2}\|x_t-x^* \|^2 &amp;\le f(x^* )-f(x_t )+ \frac{\gamma}{2}\|\triangledown f(x_t)\|^2\\
- -\|x_t-x^* \|^2+\|x_{t+1}-x^* \|^2+\alpha\gamma\|x_t-x^* \|^2 &amp;\le 2\gamma(f(x^* )-f(x_t ))+ \gamma^2\|\triangledown f(x_t)\|^2\\
-\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;을 얻을 수 있다. 이 때 $\gamma = \frac{1}{\beta}$를 대입하면 우변은&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}2\gamma(f(x^* )-f(x_t ))+ \gamma^2\|\triangledown f(x_t)\|^2&amp;=\frac{2}{\beta}(f(x^* )-f(x_t))+\frac{1}{\beta^2}\|f(x_t)\|^2\\
-&amp;\le\frac{2}{\beta}(f(x_{t+1})-f(x_t))+\frac{1}{\beta^2}\|\triangledown f(x_t)\|^2\\
-&amp;\le-\frac{1}{\beta^2}\|\triangledown f(x_t)\|^2+\frac{1}{\beta^2}\|\triangledown f(x_t)\|^2\\
-&amp;=0\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;($(11)\rightarrow(12)$은 $(4)$ 때문이다.) $(8)$을 정리하면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\|x_{t+1}-x^* \|^2\le \left(1-\frac{\alpha}{\beta}\right)\|x_t-x^* \|^2&lt;/script&gt;
-
-&lt;p&gt;이라고 할 수 있고, $(6)$에 의해&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\|x_T-x^* \|^2\le\left(1-\frac{\alpha}{\beta}\right)^T\|x_0-x^* \|^2&lt;/script&gt;
-
-&lt;p&gt;가 성립한다.&lt;/p&gt;
-
-&lt;h2 id=&quot;convergence&quot;&gt;Convergence&lt;/h2&gt;
-
-&lt;p&gt;$f$가 $\beta$-smooth라면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}f(x_T)-f(x^* )&amp;\le\triangledown f(x^* )^T(x_T-x^* )+\frac{\beta}{2}\|x_T-x^* \|^2\\
-&amp;=\frac{\beta}{2}\|x_T-x^* \|^2\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;이므로,&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(x_T)-f(x^* )\le\frac{\beta}{2}\|x_T-x^* \|^2\le\frac{\beta}{2}\left(1-\frac{\alpha}{\beta}\right)^T\|x_0-x^* \|^2&lt;/script&gt;
-
-&lt;p&gt;가 성립한다. 이 때 $\frac{\alpha}{\beta}$를 condition number라고 하는데, 이 값이 $1$이면, 즉 $\alpha = \beta$이면 한 번의 이터레이션으로 최적값을 찾을 수 있다.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 11 Sep 2019 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/lecture/optimization/2019/09/11/OptLecture4.html</link>
-        <guid isPermaLink="true">http://localhost:4000/lecture/optimization/2019/09/11/OptLecture4.html</guid>
         
         
         <category>Lecture</category>
