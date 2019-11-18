@@ -5,8 +5,8 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 17 Nov 2019 15:44:40 +0900</pubDate>
-    <lastBuildDate>Sun, 17 Nov 2019 15:44:40 +0900</lastBuildDate>
+    <pubDate>Mon, 18 Nov 2019 21:54:59 +0900</pubDate>
+    <lastBuildDate>Mon, 18 Nov 2019 21:54:59 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -51,7 +51,7 @@
 
 &lt;h2 id=&quot;4-the-row-and-column-line-scanning-for-road-region-refinement&quot;&gt;[4] The Row and Column Line Scanning for Road Region Refinement&lt;/h2&gt;
 
-&lt;p&gt;더 정확게 도로를 검출하기 위해 line scanning을 사용한다. 이 방법은 도로 구역으로 검출된 영역에서만 수행하는데, 도로 영역에서만 reference point를 선택하고, 장애물의 영향을 줄이기 위해서이다.&lt;/p&gt;
+&lt;p&gt;더 정확하게 도로를 검출하기 위해 line scanning을 사용한다. 이 방법은 도로 구역으로 검출된 영역에서만 수행하는데, 도로 영역에서만 reference point를 선택하고, 장애물의 영향을 줄이기 위해서이다.&lt;/p&gt;
 
 &lt;h3 id=&quot;a-the-height-difference&quot;&gt;[A] The Height Difference&lt;/h3&gt;
 
