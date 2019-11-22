@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>YeonjeeJung's Blog</title>
+  <title>SAGA - A Fast Incremental Gradient Method With Support for Non-Strongly Convex Composite Objectives</title>
   <meta name="description" content="">
   
   <meta name="author" content="YeonjeeJung">
@@ -44,7 +44,7 @@
   
   <!-- Twitter: card tags -->
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="YeonjeeJung's Blog">
+  <meta name="twitter:title" content="SAGA - A Fast Incremental Gradient Method With Support for Non-Strongly Convex Composite Objectives">
   <meta name="twitter:description" content="">
   <meta name="twitter:image" content="http://localhost:4000/assets/logo.png">
   <meta name="twitter:url" content="http://localhost:4000">
@@ -54,9 +54,34 @@
 
   <!-- Site styles -->
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://localhost:4000/page7/">
+  <link rel="canonical" href="http://localhost:4000/thesis/2019/11/23/SAGA.html">
   <link rel="alternate" type="application/rss+xml" title="YeonjeeJung's Blog" href="http://localhost:4000/feed.xml" />
 </head>
+
+  
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$'] ],
+    processEscapes: true,
+  }
+});
+MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
 
   
   <body>
@@ -88,107 +113,87 @@
 
 
     <div class="page-content">
-        <div class="home">
+        <div class="post">
 
-<div class="site-header-container has-cover" style="background-image: url(/assets/header_image.png);">
-  <div class="scrim has-cover">
-    <header class="site-header">
-      <h1 class="title">YeonjeeJung's Blog</h1>
-      <p class="subtitle">딥러닝 걸음마 떼기</p>
+<div class="post-header-container " >
+  <div class="scrim ">
+    <header class="post-header">
+      <h1 class="title">SAGA - A Fast Incremental Gradient Method With Support for Non-Strongly Convex Composite Objectives</h1>
+      <p class="info">by <strong>Yeonjee Jung</strong></p>
     </header>
   </div>
 </div>
 
 <div class="wrapper">
-<ul class="post-list">
-  
-  <li>
-    <h2>
-      <a class="post-link" href="/thesis/2019/07/01/VSR.html">Deep Video Super-Resolution Network Using Dynamic Upsampling Filters Without Explicit Motion Compensation</a>
-    </h2>
-    <section class="post-excerpt" itemprop="description">
-      <p>이 논문은 Video Super-Resolution을 위한 end-to-end 구조를 제안하는 논문이다. Video Super Resolution (VSR) VSR을 하는 직접적인 방법은 single-image super-resolution(SISR)을 프레임마다 하는 것인데, SISR은 프레임간의 관계를 고려하지 않기 때문에, 깜빡거리는 결과가 나올 수 있다. 기존의 VSR은 여러 low-resolution(LR) 프레임들을 인풋으로 받고, 연속된 LR 프레임들의 움직임을 고려하여 high-resolution(HR) 프레임들을 내놓는다. 딥러닝 기반의...</p>
-    </section>
-    <section class="post-meta">
-      <div class="post-date">July 1, 2019</div>
-      <div class="post-categories">
-      in 
-        
-        <a href="/category/thesis">Thesis</a>
-        
-      
-      </div>
-    </section>
-  </li>
-  
-  <hr>
-  
-  
-  <li>
-    <h2>
-      <a class="post-link" href="/thesis/2019/06/30/COF.html">Weakly-Supervised Semantic Segmentation by Iteratively Mining Common Object Features</a>
-    </h2>
-    <section class="post-excerpt" itemprop="description">
-      <p>이 논문은 이미지에서 tag만 주어진 상황에서 그 tag의 대상을 segmentation하는 반복적 방법을 제안한 논문이다. Fully-Supervised Semantic Segmentation Fully-Supervised Semantic Segmentation에는 region-based, pixel-based의 두가지 방법이 있다. Region-based : 이미지를 set of region으로 가져와서 label을 예측하기 위해 특징을 추출한다. Pixel-based : 이미지 전체를 input으로 가져와서 pixel-wise label을 예측한다. 보통은 pixel-based가 더 강력하지만,...</p>
-    </section>
-    <section class="post-meta">
-      <div class="post-date">June 30, 2019</div>
-      <div class="post-categories">
-      in 
-        
-        <a href="/category/thesis">Thesis</a>
-        
-      
-      </div>
-    </section>
-  </li>
-  
-  <hr>
-  
-  
-  <li>
-    <h2>
-      <a class="post-link" href="/thesis/2019/06/29/ZSL.html">Zero-shot Learning on Semantic Class Prototype Graph</a>
-    </h2>
-    <section class="post-excerpt" itemprop="description">
-      <p>이 논문은 Zero-Shot Learning(ZSL)에서의 새로운 distance metric을 제안하는 논문이다. Zero-Shot Learning(ZSL) ZSL에서는 seen class와 unseen class, 그리고 image feature가 semantic embedding space에 사영된다. 새로운 input은 seen class중 한 class에 해당하고, 어떤 image feature를 가지고 있다고 하자. 그 사영된 공간에서 seen class와 image feature가 결합된 벡터가 unseen class와 가까우면, unseen class에...</p>
-    </section>
-    <section class="post-meta">
-      <div class="post-date">June 29, 2019</div>
-      <div class="post-categories">
-      in 
-        
-        <a href="/category/thesis">Thesis</a>
-        
-      
-      </div>
-    </section>
-  </li>
-  
-  
-</ul>
 
-<nav class="pagination" role="navigation">
-	<p>
+ <span class="page-divider">
+  <span class="one"></span>
+  <span class="two"></span>
+</span>
+ 
+
+<section class="post-meta">
+  <div class="post-date">November 23, 2019</div>
+  <div class="post-categories">
+  in 
     
-			
-			<a class="newer-posts" href="/page6">
-				<span class="fa-stack fa-lg">
-					<i class="fa fa-square fa-stack-2x"></i>
-					<i class="fa fa-angle-double-left fa-stack-1x fa-inverse"></i>
-				</span>
-			</a>
-			
-		
-		<span class="page-number">Page 7 of 7</span>
-		
-		<span class="fa-stack fa-lg">
-      <i class="fa fa-square fa-stack-2x"></i>
-      <i class="fa fa-angle-double-right fa-stack-1x fa-inverse"></i>
-    </span>
-		
-	</p>
-</nav>
+    <a href="/category/thesis">Thesis</a>
+    
+  
+  </div>
+</section>
+
+<article class="post-content">
+  
+
+</article>
+
+
+
+<section class="tags">
+  <strong>Tags:</strong> <a href="/tag/optimization">Optimization</a>
+</section>
+
+
+
+<section class="rss">
+  <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+</section>
+
+<!-- <section class="share">
+  <span>Share: </span>
+  
+    
+    
+    
+    
+    
+    
+    
+    
+  
+</section> -->
+
+
+
+
+<section class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'true';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
 
 </div>
 </div>
