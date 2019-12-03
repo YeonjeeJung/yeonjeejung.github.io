@@ -141,6 +141,10 @@
 <lastmod>2019-11-28T00:00:00+09:00</lastmod>
 </url>
 <url>
+<loc>http://localhost:4000/thesis/2019/12/01/HEUR.html</loc>
+<lastmod>2019-12-01T00:00:00+09:00</lastmod>
+</url>
+<url>
 <loc>http://localhost:4000/about</loc>
 </url>
 <url>
@@ -193,5 +197,8 @@
 </url>
 <url>
 <loc>http://localhost:4000/page7/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/page8/</loc>
 </url>
 </urlset>
