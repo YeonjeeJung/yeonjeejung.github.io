@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>A Closer Look at Deep Learning Heuristics - Learning Rate Restarts, Warmup and Distillation</title>
+  <meta name="description" content="[Abstract]">
+  
+  <meta name="author" content="YeonjeeJung">
+  <meta name="copyright" content="&copy; YeonjeeJung 2019">
+  
+
+  <!-- External libraries -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/monokai-sublime.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css">
+
+  <!-- Favicon and other icons (made with http://www.favicon-generator.org/) -->
+  <link rel="shortcut icon" href="/assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" sizes="57x57" href="/assets/icons/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/assets/icons/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/assets/icons/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/assets/icons/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/assets/icons/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/assets/icons/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/assets/icons/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/assets/icons/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/assets/icons/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+  <link rel="manifest" href="/assets/icons/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/assets/icons/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  
+
+  
+  <!-- Twitter: card tags -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="A Closer Look at Deep Learning Heuristics - Learning Rate Restarts, Warmup and Distillation">
+  <meta name="twitter:description" content="[Abstract]">
+  <meta name="twitter:image" content="http://localhost:4000/assets/logo.png">
+  <meta name="twitter:url" content="http://localhost:4000">
+  
+
+  
+
+  <!-- Site styles -->
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/thesis/2019/12/01/HEUR.html">
+  <link rel="alternate" type="application/rss+xml" title="YeonjeeJung's Blog" href="http://localhost:4000/feed.xml" />
+</head>
+
+  
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$'] ],
+    processEscapes: true,
+  }
+});
+MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+  
+  <body>
+
+    <header class="navigation" role="banner">
+  <div class="navigation-wrapper">
+    <a href="/" class="logo">
+      
+      <img src="/assets/logo.png" alt="YeonjeeJung's Blog">
+      
+    </a>
+    <a href="javascript:void(0)" class="navigation-menu-button" id="js-mobile-menu">
+      <i class="fa fa-bars"></i>
+    </a>
+    <nav role="navigation">
+      <ul id="js-navigation-menu" class="navigation-menu show">
+        <li class="nav-link"><a href="/about">About</a>
+        <li class="nav-link"><a href="/category/thesis">Thesis</a>
+        <li class="nav-link"><a href="/category/lecture">Lecture</a>
+          <ul>
+            <a href="/category/computervision">CV</a>
+            <a href="/category/optimization">Optimization</a>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+    <div class="page-content">
+        <div class="post">
+
+<div class="post-header-container " >
+  <div class="scrim ">
+    <header class="post-header">
+      <h1 class="title">A Closer Look at Deep Learning Heuristics - Learning Rate Restarts, Warmup and Distillation</h1>
+      <p class="info">by <strong>Yeonjee Jung</strong></p>
+    </header>
+  </div>
+</div>
+
+<div class="wrapper">
+
+ <span class="page-divider">
+  <span class="one"></span>
+  <span class="two"></span>
+</span>
+ 
+
+<section class="post-meta">
+  <div class="post-date">December 1, 2019</div>
+  <div class="post-categories">
+  in 
+    
+    <a href="/category/thesis">Thesis</a>
+    
+  
+  </div>
+</section>
+
+<article class="post-content">
+  <h2 id="abstract">[Abstract]</h2>
+
+<p>현재의 딥러닝 모델들은 heuristic들로부터 좋은 결과를 냈다. 현재 이 경험적인 방법들은 linear interpolation이나 차원 감소를 통한 시각화들로 분석되는데, 이들은 각자의 단점을 가지고 있다. 이 논문에서는 mode connectivity, Canonical correlation analysis(CCA)를 가지고 knowledge distillation과 cosine restart, warmup을 재분석한다. 분석으로 얻은 결과는 다음과 같다.</p>
+
+<ol>
+  <li>cosine annealing이 잘 작동되는 이유로 설명된 것들이 실험적으로 아님을 보였다.</li>
+  <li>warmup은 깊은 층의 가중치 변화를 하지 않게 만들며, 그냥 그 가중치들을 고정시켜도 warmup과 같은 효과를 얻는다.</li>
+  <li>knowledge distillation에서 teacher가 공유한 latent knowledge는 더 깊은 층으로 분배된다.</li>
+</ol>
+
+<h2 id="1-introduction">[1] Introduction</h2>
+
+<p>knowledge distillation은 teacher model을 먼저 학습하고, 더 작은 데이터셋을 가지고 student model을 학습하는데, loss function을 사용하는 것이 아니고 teacher를 따라하는 방식으로 학습한다.</p>
+
+<p>Mode connectivity(MC)를 이용하면 네트워크의 local minima들을 piecewise-linear curve로 연결할 수 있는데, 이는 서로 다른 방법으로 얻은 local minima와 특성들이 연결되어 있음을 알 수 있다.</p>
+
+<p>CCA를 전처리 단계에서 사용하여 네트워크의 활성화를 분석할 수 있다는 연구도 있었다.</p>
+
+<h2 id="2-empirical-tools">[2] Empirical Tools</h2>
+
+<h3 id="21-mode-connectivity">[2.1] Mode Connectivity</h3>
+
+<p>local minima들을 연결하면, 그들을 연결한 사이에도 비교적 작은 loss의 점들이 있다.</p>
+
+<h4 id="211-resilience-of-mode-connectivity">[2.1.1] Resilience of Mode Connectivity</h4>
+
+<p>보통은 서로 다른 훈련 방법(batch size가 다르거나, optimizer가 다르거나, 초기화가 다르거나, 정규화 텀이 다르거나)을 사용하면 서로 다른 점으로 수렴한다고 알고 있다. 이 논문에서는 기준 mode $G$를포함해, 서로 다른 훈련 방법을 사용하여 ${A, B, C, D, E, F, G}$의 mode를 얻었다. 그리고 mode connectivity 알고리즘을 사용하여 $A$부터 $F$까지를 $G$와 짝지어 각각의 curve를 만들어 내었다. 그리고 그 curve의 점마다의 validation accuracy를 봤는데, 마지막 epoch에서는 다들 비슷한 정확도를 보였다. 따라서 결국 각 minima를 잇는 선들도 정확도가 비슷하다.</p>
+
+<h3 id="22-cca-for-measuring-representational-similarity">[2.2] CCA for Measuring Representational Similarity</h3>
+
+<p>CCA는 다변량 통계에서의 두 RV 집합간의 관계를 연구하는 전통적인 툴이다. 이전 연구에서는 CCA를 SVD나 DFT와 함께 이용해서 두 layer를 비교하는 방법이 제안되었다. 각 layer의 activation에서 나오는 값을 행렬로 만들고, 그들과 SVD를 이용해 layer간의 correlation을 계산한다. convolution layer인 경우에는 DFT를 사용한다. 이 방법은 서로 다른 네트워크를 비교할 뿐만 아니라 한 네트워크가 훈련 중 어떻게 변화하는지를 보고싶을 때 사용하기도 한다.</p>
+
+<h2 id="3-stochastic-gradient-descent-with-restarts-sgdr">[3] Stochastic Gradient Descent with Restarts (SGDR)</h2>
+
+<p>cosine annealing이 잘 되는 이유는 잘 모르는데, multi-modal 함수에서는 restart가 다른 지역을 더 탐색할 수 있게 해준다는 것이 하나의 설명이다. 실험 결과로는, restart가 일어나기 직전 minima들을 line segment로 연결한 점들은 두 점보다 높은 loss를 보였지만, learning rate를 줄인 minima들은 line segment로 연결해도 loss가 증가하지 않았다. 결과를 보니, 사실 SGDR이 local minima를 탈출하게 해준다는 결과는 보이지 않았다. 그리고 training loss와 validation loss가 달라서, train loss 입장에서는 loss가 높아져도, validation loss의 입장에서는 낮아져서 일반화가 잘 될 때도 있다.</p>
+
+<h2 id="4-warmup-learning-rate-scheme">[4] Warmup Learning rate Scheme</h2>
+
+<p>이론적으로, SGD의 learning dynamics는 batch size와 learning rate의 비율에 의존한다. warmup은 학습 불안정성을 야기하지 않고 큰 learning rate를 사용할 수 있는 방법으로 제안되었다. 이 논문에서 연구하고자 한 것은 “어떻게 learning rate warmup이 서로 다른 layer에 영향을 미칠까?”이다. 이것을 연구하기 위해 CCA를 사용하였고, 세 가지의 scheme을 사용한 네트워크들의 차이점과 유사점을 조사하였다. LB+warmup과 SB에서 유사점이 나타났는데, 이것은 큰 batch size와 큰 learning rate을 사용할 때, warmup이 불안정한 큰 변화를 없애준다는 것을 시사한다. 이것을 더 알아보기 위해 warmup을 사용하지 않고 대신 처음 20 epoch동안 fully connected layer들을 고정시켜 봤는데, 또한 유사도가 높았고 validation 정확도가 warmup을 사용한 것보다 더 높았다.</p>
+
+<h2 id="5-knowledge-distillation">[5] Knowledge Distillation</h2>
+
+<p>knowledge distillation 또한 CCA를 사용하여 연구하였다. 이전에는 dark knowledge의 전이가, 최근에는 중요도의 해석이 knowledge distillation을 잘 되게 한다고 설명되어 왔다. 이 논문에서는 knowledge transfer가 네트워크의 특정 부분에 국한되는지, student and teacher 모델의 layer사이의 유사도와 student가 이 질문에 대한 해답을 줄 수 있는지에 대해 조사하였다. student model을 학습하고, 같은 구조를 가진 모델을 hard label을 가지고 학습하였다. 그리고 그들의 layer간의 유사도를 teacher model과 비교하였다. 결과는, 깊은 층에 비해 얕은 층에 대해서는 base model과 teacher간의 유사도와 student와 teacher간의 유사도가 비슷했다. 따라서 깊은 층에 대해서만 knowledge transfer가 일어난다고 할 수 있다. <em>얕은 층에서도 knowledge transfer가 일어나지만, 그게 알아내기 쉬운 knowledge라서 transfer가 되지 않은 것처럼 보이는 것은 아닐까?</em></p>
+
+<h2 id="6-discussion-and-conclusion">[6] Discussion and Conclusion</h2>
+
+<p>이 연구는 learning heuristic을 설명했고, 또한 우연히 새로운 heuristic을 발견하였다.</p>
+
+<hr />
+
+<p>처음부터 끝까지 실험, 실험, 실험…. 논문은 이렇게 쓰는거구나</p>
+
+</article>
+
+
+
+<section class="tags">
+  <strong>Tags:</strong> <a href="/tag/optimization">Optimization</a>
+</section>
+
+
+
+<section class="rss">
+  <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+</section>
+
+<!-- <section class="share">
+  <span>Share: </span>
+  
+    
+    
+    
+    
+    
+    
+    
+    
+  
+</section> -->
+
+
+
+
+<section class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'true';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+
+</div>
+</div>
+
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h3 class="footer-heading">YeonjeeJung's Blog</h3>
+
+    <div class="site-navigation">
+
+      <p><strong>Site Map</strong></p>
+      <ul class="pages">
+
+        <li class="nav-link"><a href="/about">About</a>
+        <li class="nav-link"><a href="/category/note">Note</a>
+        <li class="nav-link"><a href="/category/thesis">Thesis</a>
+        <li class="nav-link"><a href="/category/lecture">Lecture</a>
+
+      </ul>
+    </div>
+
+    <div class="site-contact">
+
+      <p><strong>Contact</strong></p>
+      <ul class="social-media-list">
+        <li>
+          <a href="mailto:gotnwlsl@gmail.com">
+            <i class="fa fa-envelope-o"></i>
+            <span class="username">gotnwlsl@gmail.com</span>
+          </a>
+        </li>
+
+        
+          
+          <li>
+            <a href="https://github.com/YeonjeeJung" title="Fork me on GitHub">
+              <i class="fa fa-github"></i>
+              <span class="username">YeonjeeJung</span>
+            </a>
+          </li>
+          
+        
+
+      </ul>
+    </div>
+
+    <div class="site-signature">
+      <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+      <p class="text"></p>
+    </div>
+
+  </div>
+
+</footer>
+
+<!-- Scripts -->
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/js/lightbox.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  // Default syntax highlighting
+  hljs.initHighlightingOnLoad();
+
+  // Header
+  var menuToggle = $('#js-mobile-menu').unbind();
+  $('#js-navigation-menu').removeClass("show");
+  menuToggle.on('click', function(e) {
+    e.preventDefault();
+    $('#js-navigation-menu').slideToggle(function(){
+      if($('#js-navigation-menu').is(':hidden')) {
+        $('#js-navigation-menu').removeAttr('style');
+      }
+    });
+  });
+});
+
+</script>
+
+
+
+
+
+
+  </body>
+
+</html>

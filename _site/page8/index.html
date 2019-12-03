@@ -54,7 +54,7 @@
 
   <!-- Site styles -->
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://localhost:4000/page2/">
+  <link rel="canonical" href="http://localhost:4000/page8/">
   <link rel="alternate" type="application/rss+xml" title="YeonjeeJung's Blog" href="http://localhost:4000/feed.xml" />
 </head>
 
@@ -104,101 +104,13 @@
   
   <li>
     <h2>
-      <a class="post-link" href="/thesis/2019/11/13/HID.html">Histograms of the Normalized Inverse Depth andLine Scanning for Urban Road Detection</a>
+      <a class="post-link" href="/thesis/2019/06/29/ZSL.html">Zero-shot Learning on Semantic Class Prototype Graph</a>
     </h2>
     <section class="post-excerpt" itemprop="description">
-      <p>[Abstract] 이 논문에서는 3D LiDAR와 하나의 카메라의 기하 정보를 조합해 자동차 앞에 있는 도시의 도로 검출하는 방법을 제안한다. 이 방법의 장점은 3D LiDAR의 정확성과 도로의 연속성이다. 처음에는 LiDAR 데이터의 효과적인 표현과 2D 역 depth map을 얻는다. (3D LiDAR 포인트를 카메라 이미지 평면에 사영) 새로운 표현 방법을 이용하면 도로의 중간 표현을...</p>
+      <p>이 논문은 Zero-Shot Learning(ZSL)에서의 새로운 distance metric을 제안하는 논문이다. Zero-Shot Learning(ZSL) ZSL에서는 seen class와 unseen class, 그리고 image feature가 semantic embedding space에 사영된다. 새로운 input은 seen class중 한 class에 해당하고, 어떤 image feature를 가지고 있다고 하자. 그 사영된 공간에서 seen class와 image feature가 결합된 벡터가 unseen class와 가까우면, unseen class에...</p>
     </section>
     <section class="post-meta">
-      <div class="post-date">November 13, 2019</div>
-      <div class="post-categories">
-      in 
-        
-        <a href="/category/thesis">Thesis</a>
-        
-      
-      </div>
-    </section>
-  </li>
-  
-  <hr>
-  
-  
-  <li>
-    <h2>
-      <a class="post-link" href="/thesis/2019/11/03/SCALEBATCHSIZE.html">Scaling SGD Batch Size to 32K for ImageNet Training</a>
-    </h2>
-    <section class="post-excerpt" itemprop="description">
-      <p>[Abastract] 큰 네트워크의 학습 속도를 높이는 자연스러운 방법은 여러개의 GPU를 사용하는 것이다. 확률 기반 방법을 더 많은 프로세서로 확장하려면 각 GPU의 컴퓨팅 파워를 최대로 사용하기 위해 batch size를 늘려야 한다. 그러나 batch size를 계속해서 올리면서 네트워크의 정확도를 유지하는 것은 불가능하다. 현재 sota방법은 batch size에 반비례하게 LR을 늘리고, 초기 최적화의 어려움을...</p>
-    </section>
-    <section class="post-meta">
-      <div class="post-date">November 3, 2019</div>
-      <div class="post-categories">
-      in 
-        
-        <a href="/category/thesis">Thesis</a>
-        
-      
-      </div>
-    </section>
-  </li>
-  
-  <hr>
-  
-  
-  <li>
-    <h2>
-      <a class="post-link" href="/thesis/2019/11/02/SGDGENANAL.html">SGD - General Analysis and Improved Rates</a>
-    </h2>
-    <section class="post-excerpt" itemprop="description">
-      <p>[Abstract] 이 논문에서는 임의 샘플링에 대한 SGD의 수렴을 설명하는 이론을 제안한다. 이 이론은 SGD의 여러 종류의 수렴을 설명하는데, 각각은 mini-batch를 형성하는 데에 특정한 확률 분포에 연관되어 있다. 이런 분석을 한 것은 처음이며, 분석에 사용된 SGD는 대부분 이전에 논문에서는 명시적으로 고려되지 않았던 것들이다. 이 분석은 최근에 소개된 expcted smoothness에 의존하며, stochastic...</p>
-    </section>
-    <section class="post-meta">
-      <div class="post-date">November 2, 2019</div>
-      <div class="post-categories">
-      in 
-        
-        <a href="/category/thesis">Thesis</a>
-        
-      
-      </div>
-    </section>
-  </li>
-  
-  <hr>
-  
-  
-  <li>
-    <h2>
-      <a class="post-link" href="/thesis/2019/10/30/ADAM.html">ADAM - A Method for Stochastic Optimization</a>
-    </h2>
-    <section class="post-excerpt" itemprop="description">
-      <p>[Abstract] 이 논문에서는 저차를 이용한 예측에 기반한 확률적 목적함수의 1차 기울기 기반의 최적화 알고리즘인 Adam을 소개한다. 이 방법은 구현하기에 직접적이고, 계산량이 효과적이고, 메모리가 적게 필요하고, 기울기를 diagonal rescaling하는데 변함이 없고, 큰 데이터나 파라미터에 적용하는 데에 적합하다. 이 방법은 또한 매우 노이즈가 많거나 기울기가 sparse한 등의 변화하는 목적이나 문제에 적합하다. 조정...</p>
-    </section>
-    <section class="post-meta">
-      <div class="post-date">October 30, 2019</div>
-      <div class="post-categories">
-      in 
-        
-        <a href="/category/thesis">Thesis</a>
-        
-      
-      </div>
-    </section>
-  </li>
-  
-  <hr>
-  
-  
-  <li>
-    <h2>
-      <a class="post-link" href="/thesis/2019/10/27/SGDR.html">SGDR - Stochastic Gradient Descent with warm Restarts</a>
-    </h2>
-    <section class="post-excerpt" itemprop="description">
-      <p>[Abstract] 재시작 방법은 gradient-free 최적화에서 멀티모달 함수에 적용할 때 자주 쓰인다. 부분적 재시작 또한 gradient기반 최적화에서 ill-conditioned 함수에서 수렴도를 개선하기 위해 자주 쓰이는 추세이다. 이 논문에서는 SGD를 위한 간단한 재시작 테크닉을 소개하는데, 딥네트워크를 학습시킬 때 항상(anytime) 결과를 향상시킬 수 있다. [1] Introduction GD를 쓸때 hessian을 쓰면 더 좋은데 계산량이 많다....</p>
-    </section>
-    <section class="post-meta">
-      <div class="post-date">October 27, 2019</div>
+      <div class="post-date">June 29, 2019</div>
       <div class="post-categories">
       in 
         
@@ -216,22 +128,20 @@
 	<p>
     
 			
-			<a class="newer-posts" href="/">
-        <span class="fa-stack fa-lg">
-          <i class="fa fa-square fa-stack-2x"></i>
-          <i class="fa fa-angle-double-left fa-stack-1x fa-inverse"></i>
-        </span>
-      </a>
+			<a class="newer-posts" href="/page7">
+				<span class="fa-stack fa-lg">
+					<i class="fa fa-square fa-stack-2x"></i>
+					<i class="fa fa-angle-double-left fa-stack-1x fa-inverse"></i>
+				</span>
+			</a>
 			
 		
-		<span class="page-number">Page 2 of 8</span>
+		<span class="page-number">Page 8 of 8</span>
 		
-		<a class="newer-posts" href="/page3">
-      <span class="fa-stack fa-lg">
-        <i class="fa fa-square fa-stack-2x"></i>
-        <i class="fa fa-angle-double-right fa-stack-1x fa-inverse"></i>
-      </span>
-    </a>
+		<span class="fa-stack fa-lg">
+      <i class="fa fa-square fa-stack-2x"></i>
+      <i class="fa fa-angle-double-right fa-stack-1x fa-inverse"></i>
+    </span>
 		
 	</p>
 </nav>

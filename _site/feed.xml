@@ -5,9 +5,74 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 01 Dec 2019 11:20:11 +0900</pubDate>
-    <lastBuildDate>Sun, 01 Dec 2019 11:20:11 +0900</lastBuildDate>
+    <pubDate>Tue, 03 Dec 2019 22:59:53 +0900</pubDate>
+    <lastBuildDate>Tue, 03 Dec 2019 22:59:53 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>A Closer Look at Deep Learning Heuristics - Learning Rate Restarts, Warmup and Distillation</title>
+        <description>&lt;h2 id=&quot;abstract&quot;&gt;[Abstract]&lt;/h2&gt;
+
+&lt;p&gt;현재의 딥러닝 모델들은 heuristic들로부터 좋은 결과를 냈다. 현재 이 경험적인 방법들은 linear interpolation이나 차원 감소를 통한 시각화들로 분석되는데, 이들은 각자의 단점을 가지고 있다. 이 논문에서는 mode connectivity, Canonical correlation analysis(CCA)를 가지고 knowledge distillation과 cosine restart, warmup을 재분석한다. 분석으로 얻은 결과는 다음과 같다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;cosine annealing이 잘 작동되는 이유로 설명된 것들이 실험적으로 아님을 보였다.&lt;/li&gt;
+  &lt;li&gt;warmup은 깊은 층의 가중치 변화를 하지 않게 만들며, 그냥 그 가중치들을 고정시켜도 warmup과 같은 효과를 얻는다.&lt;/li&gt;
+  &lt;li&gt;knowledge distillation에서 teacher가 공유한 latent knowledge는 더 깊은 층으로 분배된다.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;1-introduction&quot;&gt;[1] Introduction&lt;/h2&gt;
+
+&lt;p&gt;knowledge distillation은 teacher model을 먼저 학습하고, 더 작은 데이터셋을 가지고 student model을 학습하는데, loss function을 사용하는 것이 아니고 teacher를 따라하는 방식으로 학습한다.&lt;/p&gt;
+
+&lt;p&gt;Mode connectivity(MC)를 이용하면 네트워크의 local minima들을 piecewise-linear curve로 연결할 수 있는데, 이는 서로 다른 방법으로 얻은 local minima와 특성들이 연결되어 있음을 알 수 있다.&lt;/p&gt;
+
+&lt;p&gt;CCA를 전처리 단계에서 사용하여 네트워크의 활성화를 분석할 수 있다는 연구도 있었다.&lt;/p&gt;
+
+&lt;h2 id=&quot;2-empirical-tools&quot;&gt;[2] Empirical Tools&lt;/h2&gt;
+
+&lt;h3 id=&quot;21-mode-connectivity&quot;&gt;[2.1] Mode Connectivity&lt;/h3&gt;
+
+&lt;p&gt;local minima들을 연결하면, 그들을 연결한 사이에도 비교적 작은 loss의 점들이 있다.&lt;/p&gt;
+
+&lt;h4 id=&quot;211-resilience-of-mode-connectivity&quot;&gt;[2.1.1] Resilience of Mode Connectivity&lt;/h4&gt;
+
+&lt;p&gt;보통은 서로 다른 훈련 방법(batch size가 다르거나, optimizer가 다르거나, 초기화가 다르거나, 정규화 텀이 다르거나)을 사용하면 서로 다른 점으로 수렴한다고 알고 있다. 이 논문에서는 기준 mode $G$를포함해, 서로 다른 훈련 방법을 사용하여 ${A, B, C, D, E, F, G}$의 mode를 얻었다. 그리고 mode connectivity 알고리즘을 사용하여 $A$부터 $F$까지를 $G$와 짝지어 각각의 curve를 만들어 내었다. 그리고 그 curve의 점마다의 validation accuracy를 봤는데, 마지막 epoch에서는 다들 비슷한 정확도를 보였다. 따라서 결국 각 minima를 잇는 선들도 정확도가 비슷하다.&lt;/p&gt;
+
+&lt;h3 id=&quot;22-cca-for-measuring-representational-similarity&quot;&gt;[2.2] CCA for Measuring Representational Similarity&lt;/h3&gt;
+
+&lt;p&gt;CCA는 다변량 통계에서의 두 RV 집합간의 관계를 연구하는 전통적인 툴이다. 이전 연구에서는 CCA를 SVD나 DFT와 함께 이용해서 두 layer를 비교하는 방법이 제안되었다. 각 layer의 activation에서 나오는 값을 행렬로 만들고, 그들과 SVD를 이용해 layer간의 correlation을 계산한다. convolution layer인 경우에는 DFT를 사용한다. 이 방법은 서로 다른 네트워크를 비교할 뿐만 아니라 한 네트워크가 훈련 중 어떻게 변화하는지를 보고싶을 때 사용하기도 한다.&lt;/p&gt;
+
+&lt;h2 id=&quot;3-stochastic-gradient-descent-with-restarts-sgdr&quot;&gt;[3] Stochastic Gradient Descent with Restarts (SGDR)&lt;/h2&gt;
+
+&lt;p&gt;cosine annealing이 잘 되는 이유는 잘 모르는데, multi-modal 함수에서는 restart가 다른 지역을 더 탐색할 수 있게 해준다는 것이 하나의 설명이다. 실험 결과로는, restart가 일어나기 직전 minima들을 line segment로 연결한 점들은 두 점보다 높은 loss를 보였지만, learning rate를 줄인 minima들은 line segment로 연결해도 loss가 증가하지 않았다. 결과를 보니, 사실 SGDR이 local minima를 탈출하게 해준다는 결과는 보이지 않았다. 그리고 training loss와 validation loss가 달라서, train loss 입장에서는 loss가 높아져도, validation loss의 입장에서는 낮아져서 일반화가 잘 될 때도 있다.&lt;/p&gt;
+
+&lt;h2 id=&quot;4-warmup-learning-rate-scheme&quot;&gt;[4] Warmup Learning rate Scheme&lt;/h2&gt;
+
+&lt;p&gt;이론적으로, SGD의 learning dynamics는 batch size와 learning rate의 비율에 의존한다. warmup은 학습 불안정성을 야기하지 않고 큰 learning rate를 사용할 수 있는 방법으로 제안되었다. 이 논문에서 연구하고자 한 것은 “어떻게 learning rate warmup이 서로 다른 layer에 영향을 미칠까?”이다. 이것을 연구하기 위해 CCA를 사용하였고, 세 가지의 scheme을 사용한 네트워크들의 차이점과 유사점을 조사하였다. LB+warmup과 SB에서 유사점이 나타났는데, 이것은 큰 batch size와 큰 learning rate을 사용할 때, warmup이 불안정한 큰 변화를 없애준다는 것을 시사한다. 이것을 더 알아보기 위해 warmup을 사용하지 않고 대신 처음 20 epoch동안 fully connected layer들을 고정시켜 봤는데, 또한 유사도가 높았고 validation 정확도가 warmup을 사용한 것보다 더 높았다.&lt;/p&gt;
+
+&lt;h2 id=&quot;5-knowledge-distillation&quot;&gt;[5] Knowledge Distillation&lt;/h2&gt;
+
+&lt;p&gt;knowledge distillation 또한 CCA를 사용하여 연구하였다. 이전에는 dark knowledge의 전이가, 최근에는 중요도의 해석이 knowledge distillation을 잘 되게 한다고 설명되어 왔다. 이 논문에서는 knowledge transfer가 네트워크의 특정 부분에 국한되는지, student and teacher 모델의 layer사이의 유사도와 student가 이 질문에 대한 해답을 줄 수 있는지에 대해 조사하였다. student model을 학습하고, 같은 구조를 가진 모델을 hard label을 가지고 학습하였다. 그리고 그들의 layer간의 유사도를 teacher model과 비교하였다. 결과는, 깊은 층에 비해 얕은 층에 대해서는 base model과 teacher간의 유사도와 student와 teacher간의 유사도가 비슷했다. 따라서 깊은 층에 대해서만 knowledge transfer가 일어난다고 할 수 있다. &lt;em&gt;얕은 층에서도 knowledge transfer가 일어나지만, 그게 알아내기 쉬운 knowledge라서 transfer가 되지 않은 것처럼 보이는 것은 아닐까?&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;6-discussion-and-conclusion&quot;&gt;[6] Discussion and Conclusion&lt;/h2&gt;
+
+&lt;p&gt;이 연구는 learning heuristic을 설명했고, 또한 우연히 새로운 heuristic을 발견하였다.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;처음부터 끝까지 실험, 실험, 실험…. 논문은 이렇게 쓰는거구나&lt;/p&gt;
+</description>
+        <pubDate>Sun, 01 Dec 2019 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/thesis/2019/12/01/HEUR.html</link>
+        <guid isPermaLink="true">http://localhost:4000/thesis/2019/12/01/HEUR.html</guid>
+        
+        <category>Optimization</category>
+        
+        
+        <category>Thesis</category>
+        
+      </item>
     
       <item>
         <title>Don't Decay the Learning Rate, Increase the Batch Size</title>
@@ -929,144 +994,6 @@ quasi-newton method : newton’s method와 비슷하지만 계산량이 훨씬 �
         
         
         <category>Thesis</category>
-        
-      </item>
-    
-      <item>
-        <title>Optimization Lecture 10</title>
-        <description>&lt;h1 id=&quot;mirror-descent&quot;&gt;Mirror Descent&lt;/h1&gt;
-
-&lt;p&gt;지금까지의 모든 결과들(특히 Lipschitz에 관해서)은 유클리드 공간에서 정의되었다. 그런데 Lipschitz는 norm에 따라서 크기가 달라지는데, 다른 norm에 관해서는 어떤 convergence speed를 가지게 될까 하는 궁금증이 생기게 된다.&lt;/p&gt;
-
-&lt;h3 id=&quot;dual-space&quot;&gt;Dual Space&lt;/h3&gt;
-
-&lt;p&gt;이 궁금증을 해결하기 위해, 먼저 Dual space를 정의한다. 모든 벡터공간 $V$는 $V$에서 정의된 모든 선형 함수에 대해서 항상 dual space $V^* $를 갖는다. 모든 Tangent Line ($y=f(x^* )+f’(x^* )(x-x^* )$)는 항상 선형이기 때문에, 모든 gradient에 대해서는 항상 dual space를 갖는다.&lt;/p&gt;
-
-&lt;h3 id=&quot;dual-norm&quot;&gt;Dual Norm&lt;/h3&gt;
-
-&lt;p&gt;$\mathbb{R}^n$에서 정의된 모든 norm &lt;script type=&quot;math/tex&quot;&gt;\|\cdot \|&lt;/script&gt;에 대해 dual space에서의 norm 또한 항상 존재하는데, dual norm &lt;script type=&quot;math/tex&quot;&gt;\|\cdot\|_ *&lt;/script&gt;은 다음과 같이 정의한다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\|g\|_ * =\sup_{x\in\mathbb{R}^n:\|x\|\le 1}g^T x&lt;/script&gt;
-
-&lt;p&gt;말이 어려운데, $p$-norm에 대해 생각해 보면 다음과 같은 관계가 있다고 한다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{1}{p}+\frac{1}{q} = 1&lt;/script&gt;
-
-&lt;p&gt;즉, 원래 공간에서 $p$-norm을 사용하였다면 dual space에서는 $q$-norm을 사용하면 된다. 이러한 새로운 dual의 정의에서, Lipschitz는 다음과 같이 쓸 수 있다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\|g\|_ * \le L, \forall x \in X, \forall g \in \partial f(x)&lt;/script&gt;
-
-&lt;h3 id=&quot;bregman-divergence&quot;&gt;Bregman Divergence&lt;/h3&gt;
-
-&lt;p&gt;Dual space에서의 convergence를 해석하기 위해 Bregman divergence라는 것을 정의한다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;D_f(x,y)=f(x)-f(y)-\triangledown f(y)^T(x-y)&lt;/script&gt;
-
-&lt;p&gt;사실 첫 항을 제외한 항은 Tangent Line을 의미하는 식이다. 결국 Bregman divergence는 한 점에서의 접선에 대해 같은 $y$값에서 원래 함수와 Tangent Line의 차이를 의미한다. Bregman divergence에 관한 특성으로는 다음과 같은 것이 있다.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;$(\triangledown f(x)-\triangledown f(y)^T(x-z)=D_f(x,y)+D_f(z, x)-D_f(z, y)$&lt;/li&gt;
-  &lt;li&gt;$\lambda$-strongly convex인 함수 $h$에 대하여 &lt;script type=&quot;math/tex&quot;&gt;D_f(x, y)\ge \frac{\lambda}{2}\|x-y\|^2\ge 0&lt;/script&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;mirror-map&quot;&gt;Mirror Map&lt;/h3&gt;
-
-&lt;p&gt;우선 $D\in\mathbb{R}^n$은 $X\subset\bar{D}$인 open set이라고 하자. Mirror Map $\Phi$는 $D$에서 $\mathbb{R}^n$으로의 mapping function인데, 다음과 같은 조건이 있다.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;$\Phi$는 convex하고 미분가능한 함수이다.&lt;/li&gt;
-  &lt;li&gt;$\Phi$의 gradient는 어떤 숫자든 가능하다.&lt;/li&gt;
-  &lt;li&gt;$\Phi$의 gradient는 $D$의 가장자리에서 발산한다.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;이렇게 놓고 보면, 이전에 우리가 썼던 gradient descent 식 $x_{t+1}=x_t-\gamma\triangledown f(x_t)$가 좀 이상해 보이기 시작한다. $x_t$는 원래 공간인데, $\triangledown f(x_t)$는 dual space에서 정의되는 것이기 때문이다. 사실 이전에는 유클리드 norm을 기준으로 진행했기 때문에 dual space의 norm도 유클리드 norm이 되어서 상관이 없었다. 그렇지만 이제는 다르므로 gradient descent를 새롭게 정의할 필요가 있다.&lt;/p&gt;
-
-&lt;h3 id=&quot;mirror-descent-1&quot;&gt;Mirror Descent&lt;/h3&gt;
-
-&lt;p&gt;다음은 Dual space 공간에서의 gradient descent 알고리즘이다. Mirror Descent라고도 한다.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;$x_t$를 mirror map $\triangledown \Phi (x_t)$에 매핑시킨다. 이후는 모두 dual space이다.&lt;/li&gt;
-  &lt;li&gt;$\triangledown \Phi (x_t)-\gamma \triangledown f(x_t)$&lt;/li&gt;
-  &lt;li&gt;$\triangledown\Phi(y_{t+1})=\triangledown\Phi(x_t)-\gamma\triangledown f(x_t)$를 만족하는 $y_{t+1}$를 찾는다.&lt;/li&gt;
-  &lt;li&gt;다시 원래 공간으로 가져오는데, constrained set $X$ 안에 $x_{t+1}$이 있어야 하기 때문에 projection을 한다. &lt;script type=&quot;math/tex&quot;&gt;x_{t+1}=\Pi_X^\Phi(y_{t+1})=\arg\min_{x\in X}D_\Phi(x, y_{t+1})&lt;/script&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Mirror Descent는 proximal gradient와도 연결된다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}x_{t+1}&amp;=\arg\min_{x\in X}D_\Phi(x, y_{t+1})\\
-&amp;=\arg\min_{x\in X}\{\Phi(x)-\triangledown \Phi(y_{t+1})^Tx-\Phi(y_{t+1})+\triangledown\Phi(y_{t+1})^Ty_{t+1}\}\\
-&amp;=\arg\min_{x\in X}\{\Phi(x)-\triangledown\Phi(y_{t+1})^Tx\}\\
-&amp;=\arg\min_{x\in X}\{\Phi(x)-(\triangledown\Phi(x_t)-\gamma\triangledown f(x_t))^Tx\}\\
-&amp;=\arg\min_{x\in X}\{\gamma\triangledown f(x_t)^Tx+\Phi(x)-\Phi(x_t)-\triangledown\Phi(x_t)^T(x-x_t)\}\\
-&amp;=\arg\min_{x\in X}\{\gamma\triangledown f(x_t)^Tx+D_\Phi(x, x_t)\}\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;중간에 $y$만에 관한 항들은 $\arg\min$이므로 마음대로 넣어도 상관 없고, 마찬가지로 $x_t$만에 관한 항은 마음대로 넣어도 상관없다.&lt;/p&gt;
-
-&lt;h3 id=&quot;mirror-descent--l-lipschitz-continuous&quot;&gt;Mirror Descent : L-Lipschitz continuous&lt;/h3&gt;
-
-&lt;p&gt;우선 함수에 대해서, $\Phi$는 $\rho$-strongly convex이고, $f$는 convex이고 L-Lipschitz이다. 그리고 &lt;script type=&quot;math/tex&quot;&gt;R^2=\sup_{x\in X}\{\Phi(x)-\Phi(x_1)\}&lt;/script&gt;이다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}f(x_t)-f(x^* ) &amp; \le g_t^T(x_t-x^* )\\
-&amp;= \frac{1}{\gamma}(\triangledown\Phi(x_t)-\triangledown\Phi(y_{t+1}))^T(x_t-x^* )\\
-&amp;=\frac{1}{\gamma}(D_\Phi(x^* , x_t)+D_\Phi(x_t, y_{t+1})-D_\Phi(x^* , y_{t+1}))\\
-&amp;\le\frac{1}{\gamma}(D_\Phi(x^* , x_t)+D_\Phi(x_t, y_{t+1})-D_\Phi(x^* , x_{t+1})-D_\Phi(x_{t+1}, y_{t+1}))\text{ (by } \triangledown\Phi(x^* , y_{t+1})\ge D_\Phi(x^* , x_{t+1})+D_\Phi(x_{t+1}, y_{t+1})\text{)}\\
-&amp;= \frac{1}{\gamma}(D_\Phi(x^* , x_t)-D_\Phi(x^* , x_{t+1}))+\frac{1}{\gamma}(D_\Phi(x_t, y_{t+1})-D_\Phi(x_{t+1}, y_{t+1}))\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;모든 $T$에 대해서 다 더하면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\sum_{t=1}^T(f(x_t)-f(x^* ))=\frac{1}{\gamma}(D_\Phi(x^* , x_1)-D_\Phi(x^* , x_{T+1}))+\frac{1}{\gamma}\sum_{t=1}^T(D_\Phi(x_t, y_{t+1})-D_\Phi(x_{t+1}, y_{t+1}))&lt;/script&gt;
-
-&lt;p&gt;인데, 마지막 $\sum$항만 bound할 수 있다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}D_\Phi(x_t, y_{t+1})-D_\Phi(x_{t+1}, y_{t+1})&amp;=\Phi(x_t)-\Phi(x_{t+1})-\triangledown\Phi(y_{t+1})^T(x_t-x_{t+1})\\
-&amp;\le(\triangledown\Phi(x_t)-\triangledown\Phi(y_{t+1}))^T(x_t-x_{t+1})-\frac{\rho}{2}\|x_t-x_{t+1}\|^2\text{ (by }\rho\text{-strongly convex)}\\
-&amp;=\gamma g_t^T(x_t-x_{t+1})-\frac{\rho}{2}\|x_t-x_{t+1}\|^2\\
-&amp;\le \gamma L\|x_t-x_{t+1}\|-\frac{\rho}{2}\|x_t-x_{t+1}\|^2\text{ (by L-Lipschitz)}\\
-&amp;\le\frac{\gamma^2L^2}{2\rho}\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;마지막 항은, 그 전 식이 &lt;script type=&quot;math/tex&quot;&gt;\|x_t-x_{t+1}\|^2&lt;/script&gt;에 관한 이차식이고, 위로 볼록한 함수이기 때문에 미분해서 $0$이 되는 점이 최대점이라는 점을 이용했다. 다시 $\sum$으로 돌아가면,&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}\sum_{t=1}^T(f(x_t)-f(x^* ))&amp;\le\frac{1}{\gamma}(D_\Phi(x^* , x_1)-D_\Phi(x^* , x_{T+1}))+\frac{1}{\gamma}\cdot T\cdot\frac{\gamma^2L^2}{2\rho}\\
-&amp;=\frac{1}{\gamma}(D_\Phi(x^* , x_1)-D_\Phi(x^* , x_{T+1}))+\frac{\gamma TL^2}{2\rho}\\
-&amp;\le\frac{1}{\gamma}D_\Phi(x^* , x_1)+\frac{\gamma TL^2}{2\rho}\text{ (by Bregman Divergence property, }D_\Phi(x^* , x_{T+1})\ge 0\text{)}\\
-&amp;\le \frac{R^2}{\gamma}+\frac{\gamma TL^2}{2\rho}\text{ (아직도 왜이런지 모르겠음)}\\
-&amp;\le RL\sqrt{\frac{2T}{\rho}}\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;따라서, 다음과 같은 결론이 나온다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(\bar{x})-f(x^* )\le RL\sqrt{\frac{2}{\rho T}}&lt;/script&gt;
-
-&lt;h3 id=&quot;proof-d_phix-y_t1ge-d_phix-x_t1d_phix_t1-y_t1&quot;&gt;(Proof) &lt;script type=&quot;math/tex&quot;&gt;D_\Phi(x, y_{t+1})\ge D_\Phi(x, x_{t+1})+D_\Phi(x_{t+1}, y_{t+1})&lt;/script&gt;&lt;/h3&gt;
-
-&lt;p&gt;위 증명에서 그냥 넘어갔던 위 명제를 증명해보자.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}D_\Phi(x, x_{t+1})&amp;=D_\Phi(x)-\Phi(x_{t+1})-\triangledown\Phi(x_{t+1})^T(x-x_{t+1})\\
-D_\Phi(x_{t+1}, y_{t+1})&amp;=\Phi(x_{t+1})-\Phi(y_{t+1})-\triangledown\Phi(x_{t+1})^T(x_{t+1}-y_{t+1})\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;이다. 두 식을 더하면&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;D_\Phi(x, x_{t+1})+D_\Phi(x_{t+1}, y_{t+1})=\Phi(x)-\Phi(y_{t+1})-\triangledown\Phi(y_{t+1})^T(x-y_{t+1})-(\triangledown\Phi(x_{t+1})-\triangledown\Phi(y_{t+1}))^T(x-x_{t+1})&lt;/script&gt;
-
-&lt;p&gt;을 얻게 되는데, 마지막 항을 제외한 식은 $D_\Phi(x, y_{t+1})$이다. 마지막 항은 $-\triangledown_xD_\Phi(x_{t+1}, y_{t+1})^T(x-x_{t+1})$ 라고도 쓸 수 있는데, $x_{t+1}$은 정의에 따라 Bregman Divergence에서의 최적값이므로, 이 항은 $0$보다 무조건 작다. 따라서&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;D_\Phi(x, y_{t+1})\ge D_\Phi(x, x_{t+1})+D_\Phi(x_{t+1}, y_{t+1})&lt;/script&gt;
-
-&lt;p&gt;가 성립함을 알 수 있다.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 01 Oct 2019 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/lecture/optimization/2019/10/01/OptLecture10.html</link>
-        <guid isPermaLink="true">http://localhost:4000/lecture/optimization/2019/10/01/OptLecture10.html</guid>
-        
-        
-        <category>Lecture</category>
-        
-        <category>Optimization</category>
         
       </item>
     
