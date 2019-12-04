@@ -5,9 +5,60 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 03 Dec 2019 22:59:53 +0900</pubDate>
-    <lastBuildDate>Tue, 03 Dec 2019 22:59:53 +0900</lastBuildDate>
+    <pubDate>Thu, 05 Dec 2019 00:00:17 +0900</pubDate>
+    <lastBuildDate>Thu, 05 Dec 2019 00:00:17 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>QSGD - Communication-Efficient SGD via Gradient Quantization and Encoding</title>
+        <description>&lt;h2 id=&quot;abstract&quot;&gt;[Abstract]&lt;/h2&gt;
+
+&lt;p&gt;SGD는 병렬처리를 할 수 있어 좋지만, 통신에 cost가 많이 들어간다. 이에 대응하기 위해 양자화된 gradient만 통신하는 방법이 제안되었는데, 이는 항상 수렴하지는 않는다. 이 논문에서 제안된 QSGD는 수렴을 보장하고 좋은 성능을 가진다. 이 방법을 이용하면 통신 대역과 수렴 시간에 대한 trade-off를 마음대로 할 수 있다. 각 노드들은 반복 당 몇 비트를 보낼지 조절할 수 있는데, 그러면 분산과의 trade-off가 있다. 이 방법은 딥러닝 학습에서의 시간을 줄여준다.&lt;/p&gt;
+
+&lt;h2 id=&quot;1-introduction&quot;&gt;[1] Introduction&lt;/h2&gt;
+
+&lt;p&gt;SGD에서의 gradient를 보내는 작업은 상당한 bottleneck이 되는데, 이를 줄이기 위한 precision을 줄이는 방법과 gradient의 부호만 보내는 방법이 있었는데, 이들은 특정 조건에서만 수렴했다.&lt;/p&gt;
+
+&lt;h2 id=&quot;3-quantized-stochastic-gradient-descent-qsgd&quot;&gt;[3] Quantized Stochastic Gradient Descent (QSGD)&lt;/h2&gt;
+
+&lt;h3 id=&quot;31-generalized-stochastic-quantization-and-coding&quot;&gt;[3.1] Generalized Stochastic Quantization and Coding&lt;/h3&gt;
+
+&lt;h4 id=&quot;stochastic-quantization&quot;&gt;Stochastic Quantization&lt;/h4&gt;
+
+&lt;p&gt;양자화 함수는 $Q_s(v)$로 나타내며, $s$는 $0$부터 $1$까지를 $s$개로 나눌 것이라는 파라미터이다. 모든 벡터 $v$에 대하여 $Q_s(v)$는 unbiasedness, variance bound, sparsity가 증명되었다.&lt;/p&gt;
+
+&lt;h4 id=&quot;efficient-coding-of-gradients&quot;&gt;Efficient Coding of Gradients&lt;/h4&gt;
+
+&lt;p&gt;$Q_s(v)$는 튜플 &lt;script type=&quot;math/tex&quot;&gt;(\|v\|_ 2, \sigma, \zeta)&lt;/script&gt;로 표현될 수 있다. 그리고 Elias coding을 사용하는데, $k$를 elias coding한다고 하면 우선 $k$를 이진수로 표현하고, length를 그 뒤에 붙인다. 그리고 바로 앞에 있는 것을 반복적으로 encoding하는데, 매우 효율적이다. 양자화 레벨 $s$로 양자화된 &lt;script type=&quot;math/tex&quot;&gt;(\|v\|_ 2, \sigma, \zeta)&lt;/script&gt;를 하나의 string $S$로 encoding한다면, 처음 32비트로 &lt;script type=&quot;math/tex&quot;&gt;\|v\|_ 2&lt;/script&gt;를 encode하고, $\sigma_i$, $\text{Elias}(\zeta_i)$를 반복적으로 붙인다. 이렇게 하면 $Q_s(\tilde{g}(x))$를 encoding하는 데에 필요한 비트수는 &lt;script type=&quot;math/tex&quot;&gt;(3+(\frac{3}{2}+o(1))\log(\frac{2(s^2+n)}{s(s+\sqrt{n})}))s(s+\sqrt{n})+32&lt;/script&gt;를 넘지 않는다. dense한 gradient에 대해서는 $s=\sqrt(n)$으로 encoding하는데, 이 때 필요한 비트수는 최대 $2.8n+32$이다.&lt;/p&gt;
+
+&lt;h3 id=&quot;32-qsgd-guarantees&quot;&gt;[3.2] QSGD Guarantees&lt;/h3&gt;
+
+&lt;p&gt;QSGD를 $K$개의 프로세서에서 실행한다고 하면, 한 회당 $2.8n+32$번의 통신만을 사용한다. 이것은 매우 효율적이고, non-convex SGD에도 사용할 수 있다.&lt;/p&gt;
+
+&lt;h3 id=&quot;33-quantized-variance-reduced-sgd&quot;&gt;[3.3] Quantized Variance-Reduced SGD&lt;/h3&gt;
+
+&lt;p&gt;SVRG를 업데이트할 때 QSGD를 사용해도 같은 수렴 한계를 얻을 수 있다. 적절한 수를 선택하면, 각 epoch당 $O(\kappa(\frac{\log 1}{\epsilon}+n))$의 통신만 사용하면 된다.&lt;/p&gt;
+
+&lt;h2 id=&quot;5-experiments&quot;&gt;[5] Experiments&lt;/h2&gt;
+
+&lt;h4 id=&quot;communication-vs-computation&quot;&gt;Communication vs. Computation&lt;/h4&gt;
+
+&lt;p&gt;먼저, 네트워크들을 communication-intensive(AlexNet, VGG, LSTM)과 computation-intensive(Inception, ResNet)로 나누었는데, 두 부류 다 통신을 줄이자 시간에서의 이득이 보였다.&lt;/p&gt;
+
+&lt;h4 id=&quot;accuracy&quot;&gt;Accuracy&lt;/h4&gt;
+
+&lt;p&gt;4bit나 8bit QSGD는 충분히 높은 정확도를 보인다. 최근 발표된 논문에 따르면 gradient에 noise를 추가하는 것이 도움이 되는데, 이 논문의 방법도 zero-mean noise의 일종일 수 있다. 그러나 엄청나게 비트수를 줄이는 것은 정확도에 해가 될 수 있다. 한가지 이슈는, 특정 layer는 양자화에 특히 민감할 수 있다는 것이다. convolution layer의 비트수를 많이 줄이면(2bit QSGD) 정확도 손실을 가져온다.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 03 Dec 2019 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/thesis/2019/12/03/QSGD.html</link>
+        <guid isPermaLink="true">http://localhost:4000/thesis/2019/12/03/QSGD.html</guid>
+        
+        <category>Optimization</category>
+        
+        
+        <category>Thesis</category>
+        
+      </item>
     
       <item>
         <title>A Closer Look at Deep Learning Heuristics - Learning Rate Restarts, Warmup and Distillation</title>
@@ -925,70 +976,6 @@ quasi-newton method : newton’s method와 비슷하지만 계산량이 훨씬 �
         <pubDate>Wed, 30 Oct 2019 00:00:00 +0900</pubDate>
         <link>http://localhost:4000/thesis/2019/10/30/ADAM.html</link>
         <guid isPermaLink="true">http://localhost:4000/thesis/2019/10/30/ADAM.html</guid>
-        
-        <category>Optimization</category>
-        
-        
-        <category>Thesis</category>
-        
-      </item>
-    
-      <item>
-        <title>SGDR - Stochastic Gradient Descent with warm Restarts</title>
-        <description>&lt;hr /&gt;
-
-&lt;h2 id=&quot;abstract&quot;&gt;[Abstract]&lt;/h2&gt;
-&lt;p&gt;재시작 방법은 gradient-free 최적화에서 멀티모달 함수에 적용할 때 자주 쓰인다. 부분적 재시작 또한 gradient기반 최적화에서 ill-conditioned 함수에서 수렴도를 개선하기 위해 자주 쓰이는 추세이다. 이 논문에서는 SGD를 위한 간단한 재시작 테크닉을 소개하는데, 딥네트워크를 학습시킬 때 항상(anytime) 결과를 향상시킬 수 있다.&lt;/p&gt;
-
-&lt;h2 id=&quot;1-introduction&quot;&gt;[1] Introduction&lt;/h2&gt;
-&lt;p&gt;GD를 쓸때 hessian을 쓰면 더 좋은데 계산량이 많다. AdaDelta와 Adam은 hessian을 잘 줄여서 사용한 좋은 예이다. 그런데 sota 결과는 사실 특별한 방법을 쓴게 아니라 SGD에 momentum만 추가한 것이었다.&lt;/p&gt;
-
-&lt;p&gt;보통의 learning rate schedule은 정해진 상수를 일정 간격의 상수로 나누는 것이었는데, 이 논문에서 제안하는 새로운 learning rate schedule은 주기적으로 SGD를 재시작하는 방법이다. 실험 결과에 의하면 재시작 방법은 원래 쓰이던 방법보다 2배에서 4배정도 적은 epoch만으로 비슷한 결과를 낼 수 있다.&lt;/p&gt;
-
-&lt;h2 id=&quot;2-related-work&quot;&gt;[2] Related Work&lt;/h2&gt;
-&lt;p&gt;gradient-free optimization에서는 많은 local optima를 찾는 것이 목적이다. niching 방법 기반 방법들은 local optimizer를 전체 space에 다 적용시킬 수 있는데, 차원의 저주 때문에 확장시킬 수는 없다. 최근에는 다양한 재시작 매커니즘들을 사용하는데, 한 방법에서는 많은 후보를 쓰면 더 글로벌한 검색이 가능한데, 각 재시작 처음엔 적은 후보를 쓰고 각 재시작 후에는 키우는 방법을 사용하는 것이 일반적이다.&lt;/p&gt;
-
-&lt;p&gt;gradient-based optimization에서는 gradient-free 에서보다 $n$배의 속도 향상이 있다. 이때 재시작 방법은 multimodality를 해결하기 위함보다는 수렴도를 개선하기 위해 사용된다.&lt;/p&gt;
-
-&lt;h2 id=&quot;3-sgdr&quot;&gt;[3] SGDR&lt;/h2&gt;
-&lt;p&gt;현존하는 재시작 방법은 SGD에도 적용될 수 있다. 데이터의 덩어리에 따라 loss value와 기울기가 다양할 수 있어서, 기울기나 loss의 평균을 내는 등의 노이즈의 제거가 필요하다.&lt;/p&gt;
-
-&lt;p&gt;이 논문에서는 지정된 epoch까지 도달하면 다시 재시작을 하는 가장 간단한 재시작 방법을 사용한다. 그리고 제안된 cosine annealing이라고도 불리는 learning rate schedule은 다음과 같다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\eta_t=\eta_{min}^i+\frac{1}{2}(\eta_{max}^i−\eta_{min}^i)(1 + \cos(\frac{T_{cur}}{T_i}\pi))&lt;/script&gt;
-
-&lt;p&gt;여기서 $\eta_t$는 learning rate, $\eta_{min}^i$와 $\eta_{max}^i$는 learning rate의 범위, $T_{cur}$는 현재 epoch, $T_i$는 지정된 epoch(이만큼 지나면 재시작)이다.&lt;/p&gt;
-
-&lt;p&gt;재시작은 learning rate ($\eta_t$)을 증가시키므로써 수행되고, $x_t$는 초기 해로 사용된다. learning rate는 $\eta_{max}^i$부터 $\eta_{min}^i$까지 줄어들고, 정해진 epoch를 돌면 다시 처음부터 시작한다. $T_{mult}$라는 변수를 이용하여 재시작마다 줄어드는 간격을 점점 넓힐 수도 있다.&lt;/p&gt;
-
-&lt;p&gt;처음 재시작 전에는 $x_t$를 초기 해로 사용하지만, 그 다음에는 이전의 최소 learning rate로부터 얻어진 $x$를 초기 해로 사용한다. (이 점이 중요한 부분임)
-&lt;em&gt;그런데 계속 저렇게 사용하는거? 아님 재시작마다 저렇게 사용하는거?&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;4-experimental-results&quot;&gt;[4] Experimental Results&lt;/h2&gt;
-&lt;h3 id=&quot;42-single-model-result&quot;&gt;[4.2] Single-Model Result&lt;/h3&gt;
-&lt;p&gt;$T_0=200$의 결과가 가장 좋은데, 가장 마지막 몇 epoch에서 좋아진다. $T_{mult}=2$는 재시작 후 주기를 2배로 늘려주는데, 이렇게 하는 이유는 좋은 테스트 에러에 가장 빨리 도달하기 위함이다. SGDR이 좋은 성능에 빠르게 도달할 수 있기 때문에, 더 큰 신경망을 학습시킬 수 있다. 따라서 WRN을 2배 넓게 만들어서 학습시켰다.&lt;/p&gt;
-
-&lt;p&gt;SGDR 자체 실험에서는 SGDR과 기본 스케줄을 비교했는데, 120 epoch까지는 더 빨리 training loss가 줄었다. 이 이후에 기본 스케줄은 overfit되었다. 결론적으로, SGDR은 overfit이 잘 되지 않는다.&lt;/p&gt;
-
-&lt;h3 id=&quot;43-ensemble-results&quot;&gt;[4.3] Ensemble Results&lt;/h3&gt;
-&lt;p&gt;SGDR은 WRN논문의 follow-up study에서 영감을 얻었다.  여기서는 재시작 전마다 snapshot을 찍고 그것으로 앙상블 모델을 만든다. 결과로는, 3번 돌려서 앙상블하는 것보다 한번 돌려서 3번 스냅샷 찍어서 앙상블하는게 낫다. SGDR에서 찍은 스냅샷은 앙상블을 할 때의 유용한 다양성을 제공해 준다. 이 결과는 WRN보다 더 좋은 모델에서 더 좋은 결과를 낼 것이다.&lt;/p&gt;
-
-&lt;h3 id=&quot;45-preliminary-experiments-on-a-downsampled-imagenet-dataset&quot;&gt;[4.5] Preliminary Experiments on a Downsampled ImageNet Dataset&lt;/h3&gt;
-&lt;p&gt;다운샘플된 이미지넷 데이터는 원래보다 더 어렵고 이미지의 대부분을 대상이 차지하는 CIFAR-10보다도 더 어렵다.&lt;/p&gt;
-
-&lt;h2 id=&quot;5-discussion&quot;&gt;[5] Discussion&lt;/h2&gt;
-&lt;p&gt;이 learnin rate schedule은 재시작 없이도 충분히 경쟁적이고, 단 두 개의 파라미터(초기 lr, epoch 수)만을 필요로 한다. 재시작 방법의 목적은 ‘항상(anytime)’ 좋은 성능을 내기 위함이다. 매 재시작마다 $\eta_{max}$와 $\eta_{min}$을 줄이는 방법도 가능하다. SGDR 중 얻어진 중간 모델은 앙상블에 사용될 수 있고, cost도 들지 않는다는 점을 이용했다.&lt;/p&gt;
-
-&lt;h2 id=&quot;6-conclusion&quot;&gt;[6] Conclusion&lt;/h2&gt;
-&lt;p&gt;WRN에서는 더 넓은 모델을 사용하고 스냅샷을 앙상블에 사용해 sota 결과를 만들어냈고, EEG에서는 더 재시작을 많이 하고 더 스냅샷을 많이 찍으면 더 좋은 결과를 낸다는 것을 알았다. Downsampled ImageNet 데이터에서는 SGDR이 scan을 통해 lr을 선택하는 문제를 줄여준다는 것을 알았다. 다음 연구는 AdaDelta나 Adam에 적용하는 것이 될 것이다.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;다음에 읽어볼 논문 : &lt;a href=&quot;https://arxiv.org/abs/1704.00109&quot;&gt;Snapshot&lt;/a&gt;, &lt;a href=&quot;https://arxiv.org/abs/1605.07146&quot;&gt;WRN&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Sun, 27 Oct 2019 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/thesis/2019/10/27/SGDR.html</link>
-        <guid isPermaLink="true">http://localhost:4000/thesis/2019/10/27/SGDR.html</guid>
         
         <category>Optimization</category>
         
