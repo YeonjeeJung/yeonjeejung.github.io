@@ -5,9 +5,106 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 26 Dec 2019 16:33:41 +0900</pubDate>
-    <lastBuildDate>Thu, 26 Dec 2019 16:33:41 +0900</lastBuildDate>
+    <pubDate>Mon, 06 Jan 2020 14:28:37 +0900</pubDate>
+    <lastBuildDate>Mon, 06 Jan 2020 14:28:37 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>On the Variance of the Adaptive Learning Rate and Beyond</title>
+        <description>&lt;h2 id=&quot;abstract&quot;&gt;[Abstract]&lt;/h2&gt;
+
+&lt;p&gt;learning rate warmup은 학습을 안정화시키고, 수렴을 가속화하고 adaptive SGD의 일반화를 개선하는 데에 좋다. 이 논문에서는 그 매커니즘을 자세히 알아본다. adaptive lr은 초기 단계에 분산이 큰데, warmup이 분산 감소에 효과적이라는 이론을 제안하고 이를 검증한다. 또한 이 논문에서는 RAdam을 제시한다.&lt;/p&gt;
+
+&lt;h2 id=&quot;1-introduction&quot;&gt;[1] Introduction&lt;/h2&gt;
+
+&lt;p&gt;최근 adaptive lr이 빠른 수렴도때문에 많이 쓰이는데, 나쁜 local optima에 빠지지 않게 하고 학습을 안정화시키기 위해 warmup을 사용한다. 하지만 이 warmup에 대한 이론적인 토대는 충분하지 않기 때문에, 이를 스케줄링하는데 많은 노력이 들어간다.&lt;/p&gt;
+
+&lt;p&gt;이 논문에서는 warmup을 이론적, 실험적으로 해석한다. 정확하게는, adaptive learning이 제한된 training sample로 학습되기 때문에 초기에 큰 분산을 가지게 된다는 것을 보여주려 한다. 따라서 초기에 작은 lr을 이용해 warmup을 하면 더 작은 분산을 갖게되며 학습이 잘 된다는 것을 보여준다. 더해서, Adam의 변형인 RAdam을 제안하는데, 이는 Adam에서 adaptive lr의 분산 항을 수정한 것이다.&lt;/p&gt;
+
+&lt;h2 id=&quot;2-preliminaries-and-motivations&quot;&gt;[2] Preliminaries and Motivations&lt;/h2&gt;
+
+&lt;h3 id=&quot;generic-adaptive-methods&quot;&gt;Generic adaptive methods&lt;/h3&gt;
+
+&lt;p&gt;모든 알고리즘은 $\phi$와 $\psi$의 선택에 따라 달라진다.&lt;/p&gt;
+
+&lt;h3 id=&quot;learning-rate-warmup&quot;&gt;Learning rate warmup&lt;/h3&gt;
+
+&lt;p&gt;warmup이 왜 잘되는지 알기 위해 gradient의 절댓값을 log scale로 그려보았는데, warmup이 없을 때에는 큰 gradient가 많았지만 있는 경우에는 작은 gradient가 많았다. 이 말은 처음 몇 단계에서는 나쁜 local optima에 빠진다는 것을 의미한다.&lt;/p&gt;
+
+&lt;h2 id=&quot;3-variance-of-adaptive-rate&quot;&gt;[3] Variance of Adaptive Rate&lt;/h2&gt;
+
+&lt;p&gt;“학습 초기에는 샘플이 별로 없어서 adaptive learning rate의 분산이 커져서 나쁜 local optima로 향한다” 가 이논문이 주장하는 가설이다.&lt;/p&gt;
+
+&lt;h3 id=&quot;31-warmup-as-variance-reduction&quot;&gt;[3.1] Warmup as Variance Reduction&lt;/h3&gt;
+
+&lt;p&gt;Adam-2k와 Adam-eps라는 Adam의 변형들이 실험에 사용되었는데, 이 논문에서는 실험을 위해 IWSLT’14 German to English 데이터셋을 사용했다. Adam-2k에서는 초기 2k 반복동안에 adaptive learning rate $\psi$만 업데이트되고 momentum $\phi$와 파라미터 $\theta$는 고정시켰는데, 이 방법은 vanilla Adam의 수렴 문제를 해결했고 초기 단계에서의 샘플의 부족이 gradient의 분포를 왜곡시킨다는 점을 알 수 있다. &lt;em&gt;이게 왜 샘플의 개수 때문이지..?&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;또한, 이 논문에서는 adaptive learning rate의 분산을 작게 만듦으로써 이 수렴 문제를 해결할 수 있다는 점도 증명했다. Adam-eps에서는 adaptive lr의 분산을 작게 하기 위해 $\hat{\psi}(.)$에서의 $\epsilon$을 크게 설정했다. 이것은 또한 vanilla Adam의 수렴 문제를 해결했지만, 결과가 좀 나빴다. 이 논문에서는 $\epsilon$을 크게 설정하는 것이 bias를 야기해서 최적화 과정을 느리게 만들기 때문이라고 추측한다.&lt;/p&gt;
+
+&lt;h3 id=&quot;32-analysis-of-adaptive-learning-rate-variance&quot;&gt;[3.2] Analysis of Adaptive Learning Rate Variance&lt;/h3&gt;
+
+&lt;p&gt;[Thm1] 만약 $\psi^2(.)$이 $\text{Scaled-inv-}\chi^2(\rho, \frac{1}{\sigma^2})$을 따른다면, $\rho$가 증가하면 $\text{Var}(\psi(.))$은 감소한다. 이 이론은 초기 단계의 샘플 부족으로 안해 $\text{Var}(\psi(.))$가 커진다는 것을 보여준다. &lt;em&gt;이것도..왜 샘플의 개수 때문이지?&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;4-rectified-adaptive-learning-rate&quot;&gt;[4] Rectified Adaptive Learning Rate&lt;/h2&gt;
+
+&lt;h3 id=&quot;41-estimate-of-rho&quot;&gt;[4.1] Estimate of $\rho$&lt;/h3&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p(\frac{(1-\beta_2)\sum_{i=1}^t\beta_2^{t-i}g_i^2}{1-\beta_2^t})\approx p(\frac{\sum_{i=1}^{f(t, \beta_2)}g_{t+1-i}}{f(t,\beta_2)})&lt;/script&gt;
+
+&lt;p&gt;로 주로 근사된다. $f(t, \beta_2)$는 SMA의 length인데, 이는 SMA와 EMA가 같은 무게중심을 갖게 해야 한다. 따라서 $f(t,\beta_2)=\frac{2}{1-\beta_2}-1-\frac{2t\beta_2^t}{1-\beta_2^t}$가 되어야 한다.&lt;/p&gt;
+
+&lt;p&gt;또한 우리는 $f(t,\beta_2)$로 $\rho$를 근사할 수 있으므로 $f(t,\beta_2)=\rho_t$라고 쓸 것이고, $\frac{2}{1-\beta_2}-1=\rho_{\infty}$라고 쓸 것이다.&lt;/p&gt;
+
+&lt;h3 id=&quot;42-variance-estimation-and-rectification&quot;&gt;[4.2] Variance Estimation and Rectification&lt;/h3&gt;
+
+&lt;p&gt;adaptive learning rate $\psi(.)$가 일관되는 분산을 가지게 하기 위해 이 논문에서는 rectification을 이용했다.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\text{Var}[r_t\psi(g_1, \cdots, g_t)]=C_{\text{Var}}&lt;/script&gt;
+
+&lt;p&gt;이때 $r_t=\sqrt{\frac{C_{\text{Var}}}{\text{Var}[\psi(g_1, \cdots, g_t)]}}$이고 $C_{\text{Var}}=\text{Var}[\psi(.)]|_  {\rho_t=\rho_{\infty}}$이다.&lt;/p&gt;
+
+&lt;p&gt;$\text{Var}[\psi(.)]$는 수치적으로 stable하지 않으므로 rectified term을 1차 근사로 계산한다. 결론적으로 구한 $r_t$는&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;r_t=\sqrt{\frac{(\rho_t-4)(\rho_t-2)}{(\rho_\infty-4)(\rho_\infty-2)}}&lt;/script&gt;
+
+&lt;p&gt;이다. 이것을 적용한 변형된 Adam을 RAdam이라고 한다.&lt;/p&gt;
+
+&lt;h3 id=&quot;43-in-comparison-with-warmup&quot;&gt;[4.3] In Comparison with Warmup&lt;/h3&gt;
+
+&lt;p&gt;$r_t$는 warmup과 비슷한 효과를 내며, warmup이 분산을 감소시키는 방식으로 작동된다는 것을 알았다. RAdam은 분산이 커질 때 adaptive lr을 비활성화시켜서 초기 불안정성을 막고, 하이퍼파라미터도 필요하지 않다.&lt;/p&gt;
+
+&lt;h2 id=&quot;5-experiments&quot;&gt;[5] Experiments&lt;/h2&gt;
+
+&lt;h3 id=&quot;51-comparing-to-vanilla-adam&quot;&gt;[5.1] Comparing to Vanilla Adam&lt;/h3&gt;
+
+&lt;p&gt;adaptive learning rate은 초기에 큰 분산을 가지고 있다. 이를 보완하기 위해 이 논문에서는 RAdam을 만들었는데, 이는 Adam보다 결과가 좋을 뿐만 아니라 learning rate에도 민감하지 않다. (라는데 learning rate에 민감하지 않은지는 그래프를 봐도 뚜렷하게 나타나지는 않는다.)&lt;/p&gt;
+
+&lt;p&gt;이 논문에서는 One billion word dataset (Language Modeling), CIFAR10, ImageNet (Image Classification)에 실험을 했는데, 이때의 결과로는 초기 분산 감소가 빠르고 정확도도 더 높은 결과를 가져오는데 좋은 역할을 했음을 알 수 있다. SGD와도 비교했는데, test accuracy는 SGD보다 좋지 않지만 train accuracy는 SGD보다 더 좋았다. (그런데 이말은 곧 overfitting이 더 된다는 말인 것 같다.)&lt;/p&gt;
+
+&lt;p&gt;또, RAdam, vanilla Adam, Adam with warmup을 여러 범위의 lr로 비교한 결과, RAdam이 가장 민감하지 않았다고 하는데, 이 부분은 그래프에서 그리 뚜렷한 차이가 보이지는 않는다.&lt;/p&gt;
+
+&lt;h3 id=&quot;52-comparing-to-heuristic-warmup&quot;&gt;[5.2] Comparing to Heuristic Warmup&lt;/h3&gt;
+
+&lt;p&gt;IWSLT 데이터셋에 실험해본 결과, RAdam은 Adam에 warmup을 사용한 것과 비슷한 양상을 보인다. 또한 RAdam은 더 적은 하이퍼파라미터 튜닝을 요한다. 이 결과 또한 RAdam이 분산이 큰 상황을 없애기 때문이라는 주장에 보탬이 된다.&lt;/p&gt;
+
+&lt;h3 id=&quot;53-simulated-verification&quot;&gt;[5.3] Simulated Verification&lt;/h3&gt;
+
+&lt;p&gt;실험으로 1차 근사한 rectification term도 잘 근사되었다는 것을 확인했고, 그 결과 rectification 된 $\psi(.)$의 분산이 일정하다는 점도 확인했다.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;이 논문에서는 optimizer로 Adam을 사용한다.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 27 Dec 2019 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/thesis/2019/12/27/Adaptivelr.html</link>
+        <guid isPermaLink="true">http://localhost:4000/thesis/2019/12/27/Adaptivelr.html</guid>
+        
+        <category>Optimization</category>
+        
+        
+        <category>Thesis</category>
+        
+      </item>
     
       <item>
         <title>Deep Residual Learning for Image Recognition</title>
@@ -59,7 +156,8 @@
 
 &lt;hr /&gt;
 
-&lt;p&gt;10-crop test : 이미지의 각 코너와 center crop을 하고, flip된 이미지도 마찬가지로 처리하면 10개이다.&lt;/p&gt;
+&lt;p&gt;10-crop test : 이미지의 각 코너와 center crop을 하고, flip된 이미지도 마찬가지로 처리하면 10개이다.&lt;br /&gt;
+Pytorch에 ResNet이 구현되어 있는데, 이는 ImageNet을 위한 구조이고, CIFAR-10을 위한 구조는 다르다.&lt;/p&gt;
 </description>
         <pubDate>Mon, 23 Dec 2019 00:00:00 +0900</pubDate>
         <link>http://localhost:4000/thesis/2019/12/23/ResNet.html</link>
@@ -714,193 +812,6 @@ T^k=T(x^k, \{\phi_i^k\}_{i=1}^n)=\frac{1}{n}\sum_if_i(\phi_i^k)-f(x^* )-\frac{1}
         <pubDate>Sun, 03 Nov 2019 00:00:00 +0900</pubDate>
         <link>http://localhost:4000/thesis/2019/11/03/SCALEBATCHSIZE.html</link>
         <guid isPermaLink="true">http://localhost:4000/thesis/2019/11/03/SCALEBATCHSIZE.html</guid>
-        
-        <category>Optimization</category>
-        
-        
-        <category>Thesis</category>
-        
-      </item>
-    
-      <item>
-        <title>SGD - General Analysis and Improved Rates</title>
-        <description>&lt;h2 id=&quot;abstract&quot;&gt;[Abstract]&lt;/h2&gt;
-
-&lt;p&gt;이 논문에서는 임의 샘플링에 대한 SGD의 수렴을 설명하는 이론을 제안한다. 이 이론은 SGD의 여러 종류의 수렴을 설명하는데, 각각은 mini-batch를 형성하는 데에 특정한 확률 분포에 연관되어 있다. 이런 분석을 한 것은 처음이며, 분석에 사용된 SGD는 대부분 이전에 논문에서는 명시적으로 고려되지 않았던 것들이다. 이 분석은 최근에 소개된 expcted smoothness에 의존하며, stochastic gradient들의 bound에는 의존하지 않는다. replacement sampling과 independent sampling 등과 같은 여러 다른 minibatch 전략에 대해 연구하므로써, 우리는 stepsize를 mini-batch의 크기에 대한 하나의 함수로써 표현해냈다. 이렇게 하면 전체 복잡도를 최소화하는 mini-batch의 크기를 정할 수 있으며, 최소로 evaluate된 stochastic gradient의 분산이 커지면 최적의 mini-batch 크기도 증가한다는 것을 명시적으로 보여주었다. 분산이 0이면 최적의 mini-batch 크기는 $1$이다. 더해서, 상수였던 stepsize를 언제 감소시켜야 하는지를 결정하는 stepsize-switching 규칙을 증명한다.&lt;/p&gt;
-
-&lt;h2 id=&quot;1-introduction&quot;&gt;[1] Introduction&lt;/h2&gt;
-
-&lt;p&gt;우선 이런 최적화 문제를 풀려고 한다. (이것은 감독학습 문제의 일반적인 형태이다)&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;x^* = \arg\min_{x\in \mathbb{R}^d}\left[f(x) =\frac{1}{n}\sum_{i=1}^n f_i(x)\right]&lt;/script&gt;
-
-&lt;p&gt;모든 $f_i : \mathbb{R}^d\rightarrow\mathbb{R}$은 smooth이다. 그리고 $f$는 global minimizer $x^* $를 가지며, $\mu$-strongly quasi-convex이다. 따라서&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-f(x^* )\ge f(x) +\left&lt;\triangledown f(x),x^* −x\right&gt;+\frac{\mu}{2}\|x^* −x\|^2 %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;를 만족한다.&lt;/p&gt;
-
-&lt;h3 id=&quot;11-background-and-contributions&quot;&gt;[1.1] Background and contributions&lt;/h3&gt;
-
-&lt;h4 id=&quot;linear-convergence-of-sgd&quot;&gt;Linear convergence of SGD&lt;/h4&gt;
-
-&lt;p&gt;2011년에는 strongly convex한 $f$를 특정 noise level까지 수렴하게 하는 비점근 분석의 연구가 있었다. 2016년에는 condition number에 대한 2차 의존성을 없애서 위 결과를 개선하고, importance sampling을 고려했다. 위 연구의 결과는 이후에 mini-batch 다양성에 대한 연구로 확장되었다. 이 논문에서는 위 결과를 대부분의 샘플링에 대해 적용할 수 있도록 했다. 분산 감소 방법의 관점에서 expected smoothness assumption을 도입했는데, 이 assumption은 SGD에서 사용하는 $f$와 $\mathcal{D}$의 연관 특징으로, 이 논문에서 일반적인 복잡도 결과(Thm 3.1)를 증명할 수 있게 해주었다. strong convexity 없이(사실은 quasi-convexity를 가정하였다) 선형 수렴도를 얻을 수 있었다. 또한, 함수 $f_i$들은 convex가 아니어도 된다.&lt;/p&gt;
-
-&lt;h4 id=&quot;gradient-noise-assumptions&quot;&gt;Gradient noise assumptions&lt;/h4&gt;
-
-&lt;p&gt;이전의 많은 SGD의 선형 수렴에 관한 연구들은 확률론적 gradient의 분산이 bound됨을 가정하고 증명했다. 이후에는 점점 가정을 약하게 하는 방향으로 가고 있다. 이 논문에서는 직접적으로 gradient의 bound는 가정하지 않고, 더 약한 가정인 expected smoothness assumption을 사용한다.&lt;/p&gt;
-
-&lt;h4 id=&quot;optimal-mini-batch-size&quot;&gt;Optimal mini-batch size&lt;/h4&gt;
-
-&lt;p&gt;이전의 연구 결과로 큰 mini-batch 크기를 사용하는 것이 넓은 범위의 non-convex문제를 푸는 것에 효과적이라는 것이 밝혀졌는데, 저자는 최적의 stepsize가 mini-batch 크기에 따라 선형적으로 늘어난다고 추측했다. 이 논문에서는 이 추측이 최적의 mini-batch 크기까지 커질 때에만 적용되며, mini-batch 크기에 따른 최적의 stepsize의 정확한 공식이 있음을 증명하고 그 공식을 제공한다.&lt;/p&gt;
-
-&lt;h4 id=&quot;learning-schedules&quot;&gt;Learning schedules&lt;/h4&gt;
-
-&lt;p&gt;이전 연구에서는 해 주위에서 SGD의 수렴을 감지하는 방법이 제안되었다. 이 논문에서는 stepsize를 언제 줄여야 하는지 알려주는 식을 제공한다. 또한, 샘플링 방법에 따라, 그리고 mini-batch 크기에 따라 stepsize와 반복 복잡도가 어떻게 증가하고 감소하는지 보여준다.&lt;/p&gt;
-
-&lt;h4 id=&quot;over-parameterized-models&quot;&gt;Over-parameterized models&lt;/h4&gt;
-
-&lt;p&gt;이전 연구에서 데이터보다 파라미터 수가 많을 때의 SGD의 수렴 속도를 분석한 연구가 있었다. 이 논문에서는 over-parametrized model의 경우 최적의 mini-batch 크기가 $1$임을 보여준다.&lt;/p&gt;
-
-&lt;h3 id=&quot;12-stochastic-reformulation&quot;&gt;[1.2] Stochastic reformulation&lt;/h3&gt;
-
-&lt;p&gt;sampling vector를 이용해서 각 함수와 gradient의 weight를 다르게 만든다. 평균을 취하면 결국 원래의 함수 또는 gradient와 같게 된다. 이 방법은 이전에도 분산을 줄이는 목적으로 사용되었다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;x^{k+1}=x^k-\gamma^k\triangledown f_{c^k}(x^k)&lt;/script&gt;
-
-&lt;p&gt;를 이용해서 gradient descent를 할 수 있다. 이 논문에서는 여러 다른 분포 $\mathcal{D}$에 대한 위 gradient descent의 수렴을 분석할 것이다. 또한 수렴을 얻기 위해 SGD를 변형한다.&lt;/p&gt;
-
-&lt;h2 id=&quot;2-expected-smoothness-and-gradient-noise&quot;&gt;[2] Expected Smoothness and Gradient Noise&lt;/h2&gt;
-
-&lt;h3 id=&quot;21-expected-smoothness&quot;&gt;[2.1] Expected smoothness&lt;/h3&gt;
-
-&lt;p&gt;expected smoothness는 $\mathcal{D}$ 분포의 특성과 $f$의 smoothness 특성을 결합한 것이다.&lt;/p&gt;
-
-&lt;h4 id=&quot;assumption-21-expected-smoothness&quot;&gt;Assumption 2.1 (Expected Smoothness)&lt;/h4&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbb{E}_\mathcal{D}[\|\triangledown f_v(x)-\triangledown f_v(x^* )\|^2]\le 2\mathcal{L}(f(x)-f(x^* )), \forall x\in\mathbb{R}^d&lt;/script&gt;
-
-&lt;p&gt;인 $\mathcal{L}=\mathcal{L}(f, \mathcal{D})\gt0$이 존재할 때, $f$가 분포 $\mathcal{D}$에 대해 $\mathcal{L}$-smooth in expectation이라고 한다. 간단히, $(f, \mathcal{D})\sim ES(\mathcal{L})$이라고 표현한다. 이것이 expected smoothness의 정의이다. 이 expected smoothness는 $f_i$나 $f$가 convex가 아니어도 성립할 수 있다.&lt;/p&gt;
-
-&lt;h3 id=&quot;22-gradient-noise&quot;&gt;[2.2] Gradient noise&lt;/h3&gt;
-
-&lt;p&gt;이 논문에서 쓰이는 중요 가정 중 두번째는 gradient noise의 유한성이다. 이 가정은 매우 약한 가정이고, $f$보다는 $\mathcal{D}$에 관한 가정이다.&lt;/p&gt;
-
-&lt;h3 id=&quot;23-key-lemma-and-connection-to-the-weak-growth-condition&quot;&gt;[2.3] Key lemma and connection to the weak growth condition&lt;/h3&gt;
-
-&lt;p&gt;보통 SGD의 수렴을 증명할 때는&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbb{E}\|\triangledown f_v(x)\|^2\le c&lt;/script&gt;
-
-&lt;p&gt;라는 가정이 들어가는데, $f$가 strongly convex일 때는 보통 성립하지 않는다. 이 논문에서는 이 가정 대신에 확률론적 gradient의 기댓값을 bound하기 위해 expected smoothness를 사용한다.&lt;/p&gt;
-
-&lt;h4 id=&quot;lem-24&quot;&gt;[Lem 2.4]&lt;/h4&gt;
-
-&lt;p&gt;만약 $(f, \mathcal{D})\sim ES(\mathcal{L})$이면,&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbb{E}_\mathcal{D}[\|\triangledown f_v(x)\|^2]\le 4\mathcal{L}(f(x)-f(x^* ))+2\sigma^2&lt;/script&gt;
-
-&lt;p&gt;이다.&lt;/p&gt;
-
-&lt;p&gt;$\sigma=0$인 zero-noise setting에서는 이 식이 weak growth condition이라고 알려져 있다. 이전에도 비슷한 가정이 있었는데, 이 논문에서 제시된 bound가 더 강력하다.&lt;/p&gt;
-
-&lt;h2 id=&quot;3-convergence-analysis&quot;&gt;[3] Convergence Analysis&lt;/h2&gt;
-
-&lt;h3 id=&quot;31-main-rules&quot;&gt;[3.1] Main rules&lt;/h3&gt;
-
-&lt;h4 id=&quot;thm-31&quot;&gt;[Thm 3.1]&lt;/h4&gt;
-
-&lt;p&gt;$f$가 $\mu$-quasi-strongly convex이고 $(f, \mathcal{D})\sim ES(\mathcal{L})$이라고 하자. 모든 $k$에 대하여 $\gamma^k=\gamma\in(0, \frac{1}{2\mathcal{L}}]$을 고른다. 그러면 SGD는 다음을 만족한다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbb{E}\|x^k-x^* \|^2\le(1-\gamma\mu)^k\|x^0-x^* \|^2+\frac{2\gamma\sigma^2}{\mu}&lt;/script&gt;
-
-&lt;p&gt;따라서 모든 $\epsilon \gt 0$에 대해 $\gamma=\min{\frac{1}{2\mathcal{L}}, \frac{\epsilon\mu}{4\sigma^2}}$와 &lt;script type=&quot;math/tex&quot;&gt;k\ge\max\{\frac{2\mathcal{L}}{\mu}, \frac{4\sigma^2}{\epsilon\mu^2}\}\log\left(\frac{2\|x^0-x^* \|^2}{\epsilon}\right)&lt;/script&gt;을 고르면,&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbb{E}\|x^k-x^* \|^2\le\epsilon&lt;/script&gt;
-
-&lt;p&gt;을 만족한다.&lt;/p&gt;
-
-&lt;p&gt;이 Thm이 말하는 바는 SGD가 gradient noise $\sigma^2$과 stepsize $\gamma$에 의존하는 $\frac{2\gamma\sigma^2}{\mu}$까지 선형적으로 수렴한다는 것이다. 더 작은 stepsize를 사용하면 더 수렴할 수 있지만, 수렴도가 떨어진다. $\mathcal{D}$를 조절할 수 있으므로, $\sigma^2$와 $\mathcal{L}$도 조절이 가능하다. stepsize 를 계속 감소시키면 위 항을 더 작게 만들 수도 있다.&lt;/p&gt;
-
-&lt;h4 id=&quot;thm-32&quot;&gt;[Thm 3.2]&lt;/h4&gt;
-
-&lt;p&gt;$f$가 $\mu$-quasi-strongly convex이고 $(f, \mathcal{D})\sim ES(\mathcal{L})$이라고 하자. $\mathcal{K}=\frac{\mathcal{L}}{\mu}$라고 하고,&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\gamma^k=\begin{cases}\frac{1}{2\mathcal{L}} &amp; \text{for }k\le 4\lceil\mathcal{K}\rceil\\ \frac{2k+1}{(k+1)^2\mu} &amp; \text{for }k\gt 4\lceil\mathcal{\mathcal{K}}\rceil\end{cases} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;라고 하자. 만약 $k\ge 4\lceil\mathcal{K}\rceil$이면 다음을 만족하며 수렴한다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbb{E}\|x^k-x^* \|^2\le\frac{\sigma^2}{\mu^2}\frac{8}{k}+\frac{16\lceil{\mathcal{K}\rceil^2}}{e^2k^2}\|x^0-x^* \|^2&lt;/script&gt;
-
-&lt;h3 id=&quot;32-choosing-mathcald&quot;&gt;[3.2] Choosing $\mathcal{D}$&lt;/h3&gt;
-
-&lt;p&gt;위 gradient descent가 효과적이려면, sampling vector $v$가 sparse 해야 한다.&lt;em&gt;왜?&lt;/em&gt; 이 논문에서는 proper sampling 만을 고려한다. sampling $S$가 proper 하다는 말은 모든 $i$에 대해, $i$가 $S$안에 존재할 확률 $p_i$, 즉 $i \in C$인 모든 $C$의 확률을 다 더한 것이 양수라는 말이다. ($\mathbb{P}[i\in S] = \sum_{C:i\in C}p_C \ge 0, \forall i$) 이 proper sampling은 sampling $S$에 의존하는 sampling vector를 특수화 한, 이 논문에서는 특수한 케이스이다. proper sampling의 정의를 기반으로 Independent sampling, Partition sampling, Single element sampling, $\tau$-nice sampling을 정의할 수 있다.&lt;/p&gt;
-
-&lt;h3 id=&quot;33-bounding-mathcall-and-sigma2&quot;&gt;[3.3] Bounding $\mathcal{L}$ and $\sigma^2$&lt;/h3&gt;
-
-&lt;p&gt;$f$가 convex이고 smooth하다고 가정하면 expected smoothness $\mathcal{L}$과 $\sigma^2$에 대한 closed form expression을 계산할 수 있다. 그리고 sampling을 이용해 $\mathcal{L}$과 $\sigma^2$에 대한 bound를 할 수 있는데, sampling의 종류에 따라 이 bound가 달라진다.&lt;/p&gt;
-
-&lt;h2 id=&quot;4-optimal-mini-batch-size&quot;&gt;[4] Optimal Mini-Batch Size&lt;/h2&gt;
-&lt;p&gt;위에서 나온 결과에 $|S|=n$인 경우를 대입해 보면 우리가 원래 알고 있던 full-batch gradient descent결과와 같다. 따라서 full-batch gradient descent는 SGD의 특별한 케이스라고 볼 수 있다.&lt;/p&gt;
-
-&lt;h3 id=&quot;nontation&quot;&gt;[Nontation]&lt;/h3&gt;
-
-&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;L_i=\lambda_{\max}(M_i)&lt;/script&gt;&lt;br /&gt;
-&lt;script type=&quot;math/tex&quot;&gt;L_{\max}=\max_{i\in[n]}L_i&lt;/script&gt;&lt;br /&gt;
-&lt;script type=&quot;math/tex&quot;&gt;\bar{h} = \frac{1}{n}\sum_{i\in[n]}\|h_i\|^2&lt;/script&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;41-nonzero-gradient-noise&quot;&gt;[4.1] Nonzero gradient noise&lt;/h3&gt;
-&lt;p&gt;mini-batch 크기에 따라 복잡도가 어떻게 변하는지 알기 위해 $|S|=\tau$인 independent sampling과 $\tau$-nice sampling의 경우를 생각해보자.&lt;/p&gt;
-
-&lt;p&gt;Independent sampling의 경우에는 bound된 결과를 Thm 3.1에 넣으면 최소 몇 번의 반복을 해야 하는지 알 수 있는데, 이것은 현재 나온 것 중 최적이다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;k\ge\frac{2}{\mu}\max\{L+\max_{i\in[n]}\frac{1-p_i}{np_i}L_i, \frac{2}{\mu\epsilon}\frac{1-p_i}{np_i}\bar{h}\}&lt;/script&gt;
-
-&lt;p&gt;또한 최적의 step size $\gamma$도 알 수 있게 되고, $\tau$가 커질수록 stepsize는 줄어든다는 것을 알 수 있다. 따라서 전체 반복 수를 최소화하는 mini-batch 크기($\tau$)를 선택할 수 있고, 계산으로 이를 구할 수 있다. $\tau$-nice sampling에서도 independent sampling과 같은 방법으로 최적의 mini-batch 크기를 구할 수 있다.&lt;/p&gt;
-
-&lt;h3 id=&quot;42-zero-gradient-noise&quot;&gt;[4.2] Zero gradient noise&lt;/h3&gt;
-
-&lt;p&gt;$\sigma=0$인 경우를 생각해 보자. Thm 3.1에 따르면 SGD의 반복 복잡도는 매우 간단해진다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;k\ge\frac{2L}{\mu}&lt;/script&gt;
-
-&lt;p&gt;이 경우에 $f$는 weak growth condition을 만족하게 되고, 이전의 연구 결과와 직접적으로 비교할 수 있게 된다. $\tau$가 $n$까지 커질수록 복잡도가 개선되지만, 전체 복잡도는 $\tau$가 곱해지기 때문에 이것으로는 충분하지 않아서 $\tau=1$이 최적의 mini-batch 크기가 된다.&lt;em&gt;이부분이 잘 이해가 안됨..저걸로는 충분하지 않아서 batch-size를 1로 한다고..?&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;5-importance-sampling&quot;&gt;[5] Importance Sampling&lt;/h2&gt;
-
-&lt;p&gt;이 논문에서는 single element sampling과 independent sampling에 대한 importance sampling을 각각 제안한다.&lt;/p&gt;
-
-&lt;h3 id=&quot;51-single-element-sampling&quot;&gt;[5.1] Single element sampling&lt;/h3&gt;
-
-&lt;p&gt;$\mathcal{L}$에 대한 bound와 $\sigma^2$을 Thm 3.1에 대입하면 최소 반복 수를 얻을 수 있는데, $p_i$에 대해 이 최소 반복 수를 최소화하는 문제는 매우 어렵기 때문에 이 논문에서는 &lt;script type=&quot;math/tex&quot;&gt;\mathcal{L}_{\max}&lt;/script&gt; 와 $\sigma^2$ 을 줄이는 것에 집중한다. single element sampling에 대해서는 이전 연구에 있었던 partially biased sampling을 떠올릴 수 있다. &lt;script type=&quot;math/tex&quot;&gt;\mathcal{L}_{\max}&lt;/script&gt;를 최소화시키는 $p_i$는 $p_i^\mathcal{L}=\frac{L_i}{\sum_{j\in [n]} L_j}$인데, 이 확률을 적용하면 이전 연구에 있었던 partially biased sampling과 똑같아진다. uniform sampling과 비교해보면 $L_{\max}=n\bar{L}$인 극한의 상황에서는 partially biased sampling이 절반의 복잡도를 가질 수 있다. &lt;em&gt;왜 갑자기 uniform sampling이랑 비교하지?&lt;/em&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;52-minibatches&quot;&gt;[5.2] Minibatches&lt;/h3&gt;
-&lt;p&gt;이 논문에서는 mini-batch SGD를 위한 importance sampling을 최초로 제안한다. 이에 대한 결과는&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;k\ge\max\{(1-\frac{2}{\tau})\frac{2\bar{L}}{\alpha\mu}, (\frac{2}{\tau}-\frac{1}{n})\frac{8\bar{h}}{\epsilon\mu^2}\}&lt;/script&gt;
-
-&lt;p&gt;인데, $L_{\max}$에 대한 의존성을 없앴을 뿐 아니라, $\tau$가 커지면 복잡도가 더 줄어든다.&lt;/p&gt;
-
-&lt;h2 id=&quot;6-experiments&quot;&gt;[6] Experiments&lt;/h2&gt;
-
-&lt;h3 id=&quot;61-constant-vs-decreasing-step-size&quot;&gt;[6.1] Constant vs. decreasing step size&lt;/h3&gt;
-&lt;p&gt;이 실험에서는 ridge regression과 logistic regression 문제에 집중했는데, 여기서는 목적 함수가 strongly convex이다. Thm 3.2에서 예상했듯이, 특정 시점에 step size를 줄이면 성능이 더 좋다는 것을 보여준다.&lt;/p&gt;
-
-&lt;h3 id=&quot;62-minibatches&quot;&gt;[6.2] Minibatches&lt;/h3&gt;
-&lt;p&gt;이 실험에서는 [3.2]에 소개된 여러 다른 분포의 $\mathcal{D}$(single element sampling, $\tau$ independent sampling, $\tau$-nice sampling)를 선택하여 SGD의 수렴도를 비교하였는데, $\tau^* $를 이용한 방법이 가장 좋은 결과를 보였다. &lt;em&gt;여기 비교했다는건 6갠데 그래프에는 왜 5개만 있음?&lt;/em&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;63-sum-of-non-convex-functions&quot;&gt;[6.3] Sum-of-non-convex functions&lt;/h3&gt;
-&lt;p&gt;이 실험에서는 PCA 문제에 집중했는데, 여기서는 $f$는 strongly convex지만 $f_i$는 그렇지 않다. non-convex한 $f_i$에서도 위와 마찬가지로, stepsize를 줄였을 때 더 좋은 성능을 보였고 $\tau^* $가 가장 좋은 성능을 보였다.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;아직 잘 모르겠는 개념 : $\mu$-strongly quasi-convx, condition number, uniform sampling&lt;/p&gt;
-</description>
-        <pubDate>Sat, 02 Nov 2019 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/thesis/2019/11/02/SGDGENANAL.html</link>
-        <guid isPermaLink="true">http://localhost:4000/thesis/2019/11/02/SGDGENANAL.html</guid>
         
         <category>Optimization</category>
         
