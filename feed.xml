@@ -5,9 +5,76 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 06 Jan 2020 14:28:37 +0900</pubDate>
-    <lastBuildDate>Mon, 06 Jan 2020 14:28:37 +0900</lastBuildDate>
+    <pubDate>Thu, 09 Jan 2020 14:14:40 +0900</pubDate>
+    <lastBuildDate>Thu, 09 Jan 2020 14:14:40 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>Visualizing the Loss Landscape of Neural Nets</title>
+        <description>&lt;h2 id=&quot;abstract&quot;&gt;[Abstract]&lt;/h2&gt;
+
+&lt;p&gt;이 논문에서는 왜 특정 네트워크 구조가 학습이 잘되고 일반화가 잘되는지를 알기 위해, loss function의 구조와 지형을 시각화해보고자 한다.&lt;/p&gt;
+
+&lt;h2 id=&quot;1-introduction&quot;&gt;[1] Introduction&lt;/h2&gt;
+
+&lt;p&gt;이 논문에서 알아보고자 하는 것은&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;loss function의 특징&lt;/li&gt;
+  &lt;li&gt;네트워크 구조가 loss지형에 미치는 영향&lt;/li&gt;
+  &lt;li&gt;non-convex 구조가 학습에 미치는 영향&lt;/li&gt;
+  &lt;li&gt;loss function의 지형이 일반화 특성에 미치는 영향&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;이다. 그리고 이들은 filter normalization이라는 방법을 사용했다.&lt;/p&gt;
+
+&lt;h2 id=&quot;2-theoretical-background&quot;&gt;[2] Theoretical Background&lt;/h2&gt;
+
+&lt;p&gt;연구자들은 sharpness나 flatness가 일반화 능력에 관련있다고 했다. 그래서 flatness를 최소값 근처의 면적, hessian의 eigenvalue 또는 sharpness를 local entropy를 이용해서 나타내기도 했으나, &lt;a href=&quot;https://arxiv.org/abs/1706.08947&quot;&gt;다른 연구&lt;/a&gt;에서는 일반화 능력은 이런 flatness의 측정값과는 관련이 없다고도 했다.&lt;/p&gt;
+
+&lt;h2 id=&quot;3-the-basics-of-loss-function-visualization&quot;&gt;[3] The Basics of Loss Function Visualization&lt;/h2&gt;
+
+&lt;p&gt;loss function을 시각화하는 데에는 1차원 방법과 2차원 방법이 있다. 1차원 방법은 두 점을 찍어서 그 두 점을 잇는 점들의 loss 값을 그래프로 그리는 방법인데, non-convexity를 시각화하기 어렵고, batch normalization이나 invariance symmetry(또는 scale invariance)를 고려하지 않는다. 2차원 방법은 한 점과 특정 두 방향을 정해서 그 길을 따라가며 2차원으로 그래프를 그리는 방법인데, 계산량이 많아서 resolution이 낮아 역시 non-convexity를 시각화하기 어렵다.&lt;/p&gt;
+
+&lt;h2 id=&quot;4-proposed-visualization--filter-wise-normalization&quot;&gt;[4] Proposed Visualization : Filter-Wise Normalization&lt;/h2&gt;
+
+&lt;p&gt;network weight에는 scale invariance라는 속성이 있는데, 이는 weight에 특정 수를 곱하거나 나누어도 전체 네트워크의 행동이 변하지 않는다는 것이다. 이런 특성 때문에 weight값이 한 unit이 바뀌어도, 원래의 scale이 컸으면 영향이 거의 없고, 원래의 scale이 작았으면 엄청난 영향이 된다. 따라서 여러 다른 minimizer나 다른 네트워크를 비교할 수 없게 된다. 이런 문제를 해결하기 위해 이 논문에서는 filter-wise normalization을 제안하는데, 위의 2차원 방법을 사용하되 두 방향을 고른 뒤 &lt;script type=&quot;math/tex&quot;&gt;d_{i,j}\leftarrow \frac{d_{i,j}}{\|d_{i,j}\|}\|\theta_{i,j}\|&lt;/script&gt;로 normalize하는 방법이다. 이렇게 하면 본래의 거리 scale을 유지할 수 있다.&lt;/p&gt;
+
+&lt;h2 id=&quot;5-the-sharp-vs-flat-dilemma&quot;&gt;[5] The Sharp vs. Flat Dilemma&lt;/h2&gt;
+
+&lt;p&gt;1차원 방법으로 small batch의 minimizer $\theta^s$와 large batch의 minimizer $\theta^l$을 그려본 결과, $\theta^s$가 더 flat했고, 실제로 small batch를 사용하면 일반화가 더 잘된다. 하지만 weight decay를 적용하였더니 $\theta^l$이 더 flat했다. 사실 $\theta^s$의 weight들이 크기가 더 크다. 따라서 scale variance때문에 더 flat해보이기만 한 것이다. 마찬가지로 weight decay에서는 shrinkage 효과때문에 $\theta^s$의 weight 크기가 작아졌고, 따라서 $\theta^l$이 더 flat해보인 것이다. 따라서 sharpness와 일반화는 관련이 없다고 결론지을 수 있다.&lt;/p&gt;
+
+&lt;p&gt;이 실험을 filter-wise normalization을 이용해서 다시 해봤는데, 비교해본 결과 weight decay를 사용한 것과 사용하지 않은 것에서 둘다 $\theta^s$이 더 flat했다. 따라서, 사실은 일반화는 sharpness와 관련이 있었지만, 여태까지의 시각화가 잘못된 것임을 알 수 있다.&lt;/p&gt;
+
+&lt;h2 id=&quot;6-what-makes-neural-networks-trainable-insights-on-the-nonconvexity-structure-of-loss-surfaces&quot;&gt;[6] What Makes Neural Networks Trainable? Insights on the (Non)Convexity Structure of Loss Surfaces&lt;/h2&gt;
+
+&lt;p&gt;ResNet과, ResNet과 같은 구조인데 skip connection이 없는 네트워크를 filter-wise normalization을 이용해 비교해본 결과 관찰된 특성이 몇가지 있다.&lt;/p&gt;
+
+&lt;h3 id=&quot;1-네트워크-깊이의-효과&quot;&gt;1. 네트워크 깊이의 효과&lt;/h3&gt;
+
+&lt;p&gt;ResNet-20 with no skip connection은 convex한 모습을 띠는데, 이는 VGG-19와 비슷한 구조로, 원래 학습이 잘되는 구조이다. 그런데 ResNet-56와 ResNet-110 with no skip connection은 복잡하고 non-convex한 모양을 띤다. 반대로 그냥 ResNet-56과 ResNet-110은 여전히 convex한 모양을 띤다. 이것으로, 얕은 네트워크에서는 skip connection의 효용이 두드러지지 않지만, 깊은 네트워크에서는 매우 중요한 역할을 한다고 볼 수 있다.&lt;/p&gt;
+
+&lt;h3 id=&quot;2-wide-model-vs-thin-model&quot;&gt;2. Wide model vs. Thin model&lt;/h3&gt;
+
+&lt;p&gt;WRN의 k를 늘려가며 실험했는데, 더 wide한 네트워크가 더 flat했다. skip connection이 없는 모델에서도 더 넓은 모델이 더 flat한 지형을 갖는다. 또한, 더 wide한 모델의 테스트 정확도가 높았으므로, flatness와 일반화의 관계를 다시한번 확인할 수 있다.&lt;/p&gt;
+
+&lt;h3 id=&quot;3-네트워크-초기화&quot;&gt;3. 네트워크 초기화&lt;/h3&gt;
+
+&lt;p&gt;convex에 가까운 ResNet 네트워크나 VGG 네트워크의 경우, 랜덤하게 초기화해도 잘 최적화될 가능성이 높지만, 깊은 ResNet with no skip connection 네트워크의 경우 랜덤 초기화는 gradient가 전혀 정보를 주지 않는 곳에 있을 확률이 높아 학습하기 어렵다.&lt;/p&gt;
+
+&lt;h3 id=&quot;4-convexity&quot;&gt;4. Convexity&lt;/h3&gt;
+
+&lt;p&gt;우리가 본 컨투어는 차원을 엄청나게 낮춘 것이기 때문에, non-convex처럼 보이면 실제 차원에서도 non-convex하지만, convex처럼 보인다고 해서 실제 차원에서 convex인 것은 아니고 양의 curvature들이 우세하다는 정도로만 보아야 한다. 이것을 보이기 위해 이전에 그린 그래프를 따라 &lt;script type=&quot;math/tex&quot;&gt;\|\frac{\lambda_{min}}{\lambda_{max}}\|&lt;/script&gt;를 그려보았는데, convex같아보이는 그래프에서는 이 값들이 작았고, 아닌 그래프에서는 non-convex로 보이는 부분들에 이 값이 크게 나타났다.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 07 Jan 2020 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/thesis/2020/01/07/Visual.html</link>
+        <guid isPermaLink="true">http://localhost:4000/thesis/2020/01/07/Visual.html</guid>
+        
+        <category>Optimization</category>
+        
+        
+        <category>Thesis</category>
+        
+      </item>
     
       <item>
         <title>On the Variance of the Adaptive Learning Rate and Beyond</title>
@@ -700,120 +767,6 @@ T^k=T(x^k, \{\phi_i^k\}_{i=1}^n)=\frac{1}{n}\sum_if_i(\phi_i^k)-f(x^* )-\frac{1}
         <guid isPermaLink="true">http://localhost:4000/thesis/2019/11/13/HID.html</guid>
         
         <category>RobotNavigation</category>
-        
-        
-        <category>Thesis</category>
-        
-      </item>
-    
-      <item>
-        <title>Scaling SGD Batch Size to 32K for ImageNet Training</title>
-        <description>&lt;h2 id=&quot;abastract&quot;&gt;[Abastract]&lt;/h2&gt;
-
-&lt;p&gt;큰 네트워크의 학습 속도를 높이는 자연스러운 방법은 여러개의 GPU를 사용하는 것이다. 확률 기반 방법을 더 많은 프로세서로 확장하려면 각 GPU의 컴퓨팅 파워를 최대로 사용하기 위해 batch size를 늘려야 한다. 그러나 batch size를 계속해서 올리면서 네트워크의 정확도를 유지하는 것은 불가능하다. 현재 sota방법은 batch size에 반비례하게 LR을 늘리고, 초기 최적화의 어려움을 극복하기 위해 LR에 ‘warm-up’이라는 방법을 사용한다.&lt;/p&gt;
-
-&lt;p&gt;LR을 학습 중에 조절하므로써 ImagNet 학습에 큰 batch size를 효과적으로 사용할 수 있다. 그러나 ImageNet-1k 학습을 위해서는 현재 AlexNet이나 ResNet은 batch size를 크게 늘릴 수 없다. 이유는 큰 LR을 사용할 수 없기 때문이다. 큰 batch size를 일반적인 네트워크나 데이터에 대해 사용 가능하게 하기 위해, 이 논문에서는 Layer-wise Adaptive Rate Scaling (LARS)를 제안한다. LARS에서는 weight의 norm과 gradient의 norm을 기반으로 층마다 다른 LR을 사용한다. LARS를 사용하면 ResNet50과 AlexNet에 대해서 큰 batch size를 사용할 수 있다. 큰 batch size는 시스템의 컴퓨팅 파워를 최대로 사용할 수 있다. 이것은 속도의 향상으로 이어진다.&lt;/p&gt;
-
-&lt;h2 id=&quot;1-introduction&quot;&gt;[1] Introduction&lt;/h2&gt;
-
-&lt;p&gt;깊은 네트워크의 확장과 속도 향상은 딥러닝의 응용에서 매우 중요하다. 속도 향상을 위해서는 더 많은 프로세서로 확장시켜야 한다. 그러기 위해서는 batch size를 더 크게 해야 한다.  그러나 이전 연구에 따르면 batch size를 늘이는 것은 test accuracy에서 좋지 않은 결과가 나온다. 학습 중에 LR을 조절하면 큰 batch size에서도 좋은 결과를 유지할 수 있다. 하지만 현재까지의 연구들은 1024 이상의 크기의 batch size에서는 사용할 수 없다. 이 논문의 저자들은 batch normallization을 사용해 큰 batch size에서도 좋은 성능을 얻었지만 여전히 정확도를 잃었다. &lt;em&gt;어디에서 잃었다는건지 모르겠음… 이전에 작은 batch size로 했을 때랑 결과가 똑같은데..?&lt;/em&gt; 이를 더 개선하기 위해 LARS를 제안하는데, weight의 norm &lt;script type=&quot;math/tex&quot;&gt;\|w\|&lt;/script&gt;과 gradient의 norm &lt;script type=&quot;math/tex&quot;&gt;\triangledown w\|&lt;/script&gt;에 따라 층마다 다른 LR을 사용한다. 만약 같은 LR을 쓴다면 &lt;script type=&quot;math/tex&quot;&gt;\frac{\|w\|}{\|\triangledown w\|}&lt;/script&gt;이 큰 층은 수렴해도 작은 층은 발산할 수도 있다. LARS를 사용하면 더 큰 batch size를 사용해도 같은 정확도를 얻을 수 있다. 또한, GPU의 컴퓨팅 파워를 최대로 사용할 수 있기 때문에 속도 향상 또한 가능하다.&lt;/p&gt;
-
-&lt;h2 id=&quot;2-background-and-related-work&quot;&gt;[2] Background and Related Work&lt;/h2&gt;
-
-&lt;h3 id=&quot;21-data-parallelism-mini-batch-sgd&quot;&gt;[2.1] Data-Parallelism Mini-Batch SGD&lt;/h3&gt;
-
-&lt;p&gt;보통의 mini-batch SGD는 update 식을&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;w_{t+1}=w_t-\frac{\eta}{b}\sum_{b\in B_t}\triangledown l(x, y, w)&lt;/script&gt;
-
-&lt;p&gt;라고 쓰는데, 복잡하므로 이 논문에서는&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;w_{t+1}=w_t-\eta\triangledown w_t&lt;/script&gt;
-
-&lt;p&gt;라고 쓴다.&lt;/p&gt;
-
-&lt;h3 id=&quot;22-large-batch-training-difficulty&quot;&gt;[2.2] Large-Batch Training Difficulty&lt;/h3&gt;
-
-&lt;p&gt;GPU를 사용하면 여러 개의 프로세서를 동시에 돌릴 수 있지만, 이를 최대로 사용하기 위해서는 batch size가 커야 하는데, 특정 크기보다 크게 되면 테스트 정확도가 학습 정확도보다 현저하게 낮다. 이전 연구에서는 큰 batch size에 대해 학습 loss가 작아도 test loss는 그것보다 훨씬 크고, 반면 작은 batch size에 대해서는 train loss와 test loss가 비슷하다고 결론지었다. 다른 연구에서는 더 오래 학습하는 것이 일반화에 더 도움이 된다고 했는데, 반면 또다른 연구에서는 LR을 잘 조절하는 것이 정확도를 유지하는데 더 도움이 된다고 했다.&lt;/p&gt;
-
-&lt;h3 id=&quot;23-learning-rate-lr&quot;&gt;[2.3] Learning Rate (LR)&lt;/h3&gt;
-
-&lt;p&gt;batch size를 크게 하면 기본 LR도 그에 따라 올려야 하는데, 그러면서 정확도는 내려가지 않아야 한다. 기존 연구에서는 sqrt scaling rule과 linear scaling rule이 있었다. 또한 warmup scheme도 많이 사용되고 있는데, 처음에 작은 LR을 설정해 놓고 몇 epoch가 지나면 점점 크게 하는 방법이다. 이것이 gradual warmup scheme이고, constant warmup scheme은 초기 몇 번의 epoch에서 constant한 LR을 사용하는 방법이다. &lt;em&gt;그뒤에 어떻게 한다는 건지 안나와있네…왜 이게 warmup이지&lt;/em&gt; constant warmup은 object detection이나 segmentation에 효과적이고, gradual warmup은 ResNet-50을 학습시키는 데에 좋다. batch size에 관계없이 LR에 상한이 있다는 또다른 연구도 있는데, 이 논문의 실험 결과는 위 논문의 결과와 같다.&lt;/p&gt;
-
-&lt;h2 id=&quot;3-imagenet-1k-training&quot;&gt;[3] ImageNet-1k Training&lt;/h2&gt;
-
-&lt;h3 id=&quot;31-reproduce-and-extend-facebooks-result&quot;&gt;[3.1] Reproduce and Extend Facebook’s result&lt;/h3&gt;
-
-&lt;p&gt;이 논문에서의 첫 단계는 Facebook에서 한 연구의 결과를 따라하는 것이었는데, 그 연구에서는 multistep LR과 warmup, linear scaling LR을 사용했다. 이 연구에서도 그 연구와 비슷하게 warmup과 linear scaling을 사용했는데, Facebook의 연구와 다른 점은&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;LR을 더 높였다.&lt;/li&gt;
-  &lt;li&gt;multistep rule 대신 poly rule &lt;em&gt;설명이 없네&lt;/em&gt; 을 사용하였다.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;32-train-imagenet-by-alexnet&quot;&gt;[3.2] Train ImageNet by AlexNet&lt;/h3&gt;
-
-&lt;h4 id=&quot;321-linear-scaling-and-warmup-schemes-for-lr&quot;&gt;[3.2.1] Linear Scaling and Warmup schemes for LR&lt;/h4&gt;
-
-&lt;p&gt;이 논문에서의 baseline은 Batch-512 AlexNet이고, 100 epoch동안 0.58의 정확도를 얻는 것이다. poly rule을 사용했고, base LR은 0.01이며 poly power는 2이다. 목표는 Batch-4096, Batch-8192이고 정확도 0.58을 100 epoch 안에 얻는 것이다.&lt;/p&gt;
-
-&lt;p&gt;첫번째로 Batch-4096 AlexNet을 사용했고 linear scaling을 사용했으며 baseLR을 0.08로 사용했으나, Batch-4096은 0.01의 LR에도 수렴하지 않았다. 이후에는 같은 모델에 linear scaling과 warmup을 사용하였다. 하이퍼파라미터 튜닝을 거쳐 나온 가장 좋은 결과는 0.531에 그쳤다. 또한 Batch-8192의 정확도는 그것보다도 낮았다. 따라서 linear scaling과 warmup은 큰 batch size의 AlexNet을 학습시키는데 충분하지 않다는 것을 알았다.&lt;/p&gt;
-
-&lt;h4 id=&quot;322-batch-normalization-for-large-batch-training&quot;&gt;[3.2.2] Batch Normalization for Large-Batch Training&lt;/h4&gt;
-
-&lt;p&gt;여러 방법을 사용해본 결과, Batch Normalization만 성능을 개선시킨다는 것을 관찰했다. BN을 적용하고 0.01부터 결과가 발산할 때까지 LR을 늘렸는데, Batch-4096은 0.3에서 멈추었고, Batch-8192는 0.41에서 멈추었다. 그러나 이렇게 해도 Batch-512의 정확도에 도달하기 위해서는 정확도가 부족했다. momentum과 weight decay 파라미터를 조정해 보았으나 개선은 없었다.&lt;/p&gt;
-
-&lt;p&gt;이후에는 성능이 개선되지 않는 문제가 일반화 문제 때문이 아님을 관찰하였다. 이유는 최적화 어려움 때문이었다.&lt;/p&gt;
-
-&lt;h4 id=&quot;323-layer-wise-adaptive-rate-scaling-lars-for-large-batch-training&quot;&gt;[3.2.3] Layer-wise Adaptive Rate Scaling (LARS) for Large-Batch Training&lt;/h4&gt;
-
-&lt;p&gt;따라서 새로운 LR updating rule을 디자인했다. 실험 결과에서 층마다 다른 LR이 필요함을 느꼈는데, 그 이유는 &lt;script type=&quot;math/tex&quot;&gt;\|w\|_ 2&lt;/script&gt;와 &lt;script type=&quot;math/tex&quot;&gt;\|\triangledown w\|_ 2&lt;/script&gt;의 비율이 층마다 매우 다르기 때문이었다. 이전에 이런 문제를 해결하기 위한 ResNet50을 위한 해결법 연구가 있었는데, AlexNet에는 효과가 없었다.&lt;/p&gt;
-
-&lt;p&gt;이 논문에서 제안한 LARS의 업데이트 룰은 다음과 같다.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\eta=l\times\gamma\times\frac{\|w\|_ 2}{\|\triangledown w\|_ 2}&lt;/script&gt;
-
-&lt;p&gt;여기서 $l$은 scaling factor ($0.001$)이고, $\gamma$는 input LR ($1$~$50$)이다. $\mu$를 momentum이라고 하고 $\beta$를 weight decay 라고 하고 LARS 알고리즘을 살펴보면&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;각 층마다 local LR을 구한다. &lt;script type=&quot;math/tex&quot;&gt;\alpha = l\times\frac{\|w\|_ 2}{\|\triangledown w\|_ 2+\beta\|\triangledown w\|_ 2}&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;각 층마다 true LR을 구한다. &lt;script type=&quot;math/tex&quot;&gt;\eta = \gamma\times\alpha&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;gradient를 업데이트 한다. &lt;script type=&quot;math/tex&quot;&gt;\triangledown w=\triangledown w+\beta w&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;가속 항 $a$를 &lt;script type=&quot;math/tex&quot;&gt;a=\mu a+\eta\triangledown w&lt;/script&gt; 를 이용해 업데이트 한다.&lt;/li&gt;
-  &lt;li&gt;weight를 업데이트 한다. $w=w-a$&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;이다. LARS를 적용해서 baseline과 같은 결과를 얻을 수 있었다. 그 뒤에는 BN을 빼고 기본 AlexNet 모델을 사용했는데, Batch-4096에는 13 epoch, Batch-8192에는 8 epoch의 warmup range를 사용하였다. 큰 batch size를 사용해서 작은 batch size에서의 결과와 비슷한 결과를 얻으려면 BN만으로는 부족하고 LARS까지 사용해야 한다는 것을 알았다. 결과에서 보면 LARS만 사용한 결과도 둘 다를 사용한 결과보다 조금 더 낮다.&lt;/p&gt;
-
-&lt;h2 id=&quot;4-experimental-results&quot;&gt;[4] Experimental Results&lt;/h2&gt;
-
-&lt;h3 id=&quot;42-implementation-details&quot;&gt;[4.2] Implementation Details&lt;/h3&gt;
-
-&lt;p&gt;8192정도의 Batch size를 한번에 저장할 수 있는 GPU가 없었기 때문에 하나의 Batch를 32개로 나누어 순차적으로 gradient를 계산했다. GPU의 메모리가 Batch 여러 개를 넣기에 충분한 경우에는 multi solver를 넣어 속도를 향상시켰다.&lt;/p&gt;
-
-&lt;h3 id=&quot;43-state-of-the-art-results-for-resnet50-training&quot;&gt;[4.3] State-of-the-art Results for ResNet50 training&lt;/h3&gt;
-
-&lt;p&gt;이 논문의 결과는 data augmentation을 하지 않았기 때문에 sota 결과보다는 정확도가 낮다. data augmentation을 추가하면 sota 결과가 나온다. 이 논문에서는 32768의 batch size를 사용했다.&lt;/p&gt;
-
-&lt;h3 id=&quot;44-benefits-of-using-large-batch&quot;&gt;[4.4] Benefits of Using Large Batch&lt;/h3&gt;
-
-&lt;p&gt;큰 batch size를 사용할 수 있게 되고 baseline과 같은 결과를 얻게 되자, 이 논문에서는 속도 비교에 중점을 두었다. AlexNet-BN의 batch size가 512에서 4096으로 커지자, 4개의 GPU에서는 속도가 비슷했지만, 8개의 GPU에서는 속도가 3배 빨라졌다.&lt;/p&gt;
-
-&lt;h2 id=&quot;5-conclusion&quot;&gt;[5] Conclusion&lt;/h2&gt;
-
-&lt;p&gt;최적화 어려움이 큰 batch size에 대해 학습을 어렵게 만들었다. linear scaling이나 warmup같은 방법들은 AlexNet등의 복잡한 모델에는 충분하지 않다. BN같은 모델 구조를 변형하는 방법들도 사용할 수 있겠지만 충분하지 않으므로, 이 논문에서 제안하는 LARS를 사용하면 충분히 baseline 정확도를 얻을 수 있다. LARS는 층마다 weight와 weight의 gradient의 norm에 따라 다른 LR을 사용하는데, 매우 높은 효율성을 보여준다. ImageNet을 학습시키는 AlexNet에서 Batch size를 128에서 8192로 키워도 정확도 손실이 없다. 또한 ResNet50에서는 batch size를 32768까지 키울 수 있었다.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;수학적인 증명은 별로 없는 논문이었다. 실험적인 결과로만 가설을 세우고 쓴 논문..&lt;/p&gt;
-
-&lt;p&gt;설명이 더 필요한 개념 : LR scheduler에서의 poly rule, constant warmup&lt;/p&gt;
-</description>
-        <pubDate>Sun, 03 Nov 2019 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/thesis/2019/11/03/SCALEBATCHSIZE.html</link>
-        <guid isPermaLink="true">http://localhost:4000/thesis/2019/11/03/SCALEBATCHSIZE.html</guid>
-        
-        <category>Optimization</category>
         
         
         <category>Thesis</category>
