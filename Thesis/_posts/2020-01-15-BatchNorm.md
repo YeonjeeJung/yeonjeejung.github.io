@@ -32,7 +32,7 @@ normalization은 전체 layer의 표현력을 바꿀 수 있기 때문에, norma
 
 ### [3.1] Training and Inference with Batch-Normalized Networks
 
-training에서는 위와 같은 방법으로 파라미터를 훈련시키고, testing에서는 normalization과 $\gamma, \beta$를 한 과정으로 압축한다.
+training에서는 위와 같은 방법으로 파라미터를 훈련시키고, testing에서는 normalization과 $\gamma, \beta$를 한 과정으로 압축한다. 또한 testing에서는 batch 평균과 분산이 없으므로, train data에서의 전체 평균과 분산을 사용하는데, 메모리의 제약 때문에 moving average ($\hat{\mu}\leftarrow \alpha\hat{\mu}+(1-\alpha)\mu$)를 사용한다.
 
 ### [3.2] Batch-Normalized Convolutional Networks
 
