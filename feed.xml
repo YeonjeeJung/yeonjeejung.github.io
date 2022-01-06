@@ -5,9 +5,39 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 29 Jan 2020 11:28:54 +0900</pubDate>
-    <lastBuildDate>Wed, 29 Jan 2020 11:28:54 +0900</lastBuildDate>
+    <pubDate>Mon, 03 Jan 2022 01:07:15 +0900</pubDate>
+    <lastBuildDate>Mon, 03 Jan 2022 01:07:15 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>Optlecture12</title>
+        <description>
+</description>
+        <pubDate>Thu, 08 Oct 2020 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/lecture/optimization/2020/10/08/OptLecture12.html</link>
+        <guid isPermaLink="true">http://localhost:4000/lecture/optimization/2020/10/08/OptLecture12.html</guid>
+        
+        
+        <category>Lecture</category>
+        
+        <category>Optimization</category>
+        
+      </item>
+    
+      <item>
+        <title>Optimization Lecture 11</title>
+        <description>&lt;h1 id=&quot;nesterovs-accelerated-gradient-descent&quot;&gt;Nesterov’s accelerated gradient descent&lt;/h1&gt;
+</description>
+        <pubDate>Tue, 06 Oct 2020 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/lecture/optimization/2020/10/06/OptLecture11.html</link>
+        <guid isPermaLink="true">http://localhost:4000/lecture/optimization/2020/10/06/OptLecture11.html</guid>
+        
+        
+        <category>Lecture</category>
+        
+        <category>Optimization</category>
+        
+      </item>
     
       <item>
         <title>Visualizing Data using t-SNE</title>
@@ -705,122 +735,6 @@ Pytorch에 ResNet이 구현되어 있는데, 이는 ImageNet을 위한 구조이
         <pubDate>Mon, 23 Dec 2019 00:00:00 +0900</pubDate>
         <link>http://localhost:4000/thesis/2019/12/23/ResNet.html</link>
         <guid isPermaLink="true">http://localhost:4000/thesis/2019/12/23/ResNet.html</guid>
-        
-        <category>Optimization</category>
-        
-        
-        <category>Thesis</category>
-        
-      </item>
-    
-      <item>
-        <title>QSGD - Communication-Efficient SGD via Gradient Quantization and Encoding</title>
-        <description>&lt;h2 id=&quot;abstract&quot;&gt;[Abstract]&lt;/h2&gt;
-
-&lt;p&gt;SGD는 병렬처리를 할 수 있어 좋지만, 통신에 cost가 많이 들어간다. 이에 대응하기 위해 양자화된 gradient만 통신하는 방법이 제안되었는데, 이는 항상 수렴하지는 않는다. 이 논문에서 제안된 QSGD는 수렴을 보장하고 좋은 성능을 가진다. 이 방법을 이용하면 통신 대역과 수렴 시간에 대한 trade-off를 마음대로 할 수 있다. 각 노드들은 반복 당 몇 비트를 보낼지 조절할 수 있는데, 그러면 분산과의 trade-off가 있다. 이 방법은 딥러닝 학습에서의 시간을 줄여준다.&lt;/p&gt;
-
-&lt;h2 id=&quot;1-introduction&quot;&gt;[1] Introduction&lt;/h2&gt;
-
-&lt;p&gt;SGD에서의 gradient를 보내는 작업은 상당한 bottleneck이 되는데, 이를 줄이기 위한 precision을 줄이는 방법과 gradient의 부호만 보내는 방법이 있었는데, 이들은 특정 조건에서만 수렴했다.&lt;/p&gt;
-
-&lt;h2 id=&quot;3-quantized-stochastic-gradient-descent-qsgd&quot;&gt;[3] Quantized Stochastic Gradient Descent (QSGD)&lt;/h2&gt;
-
-&lt;h3 id=&quot;31-generalized-stochastic-quantization-and-coding&quot;&gt;[3.1] Generalized Stochastic Quantization and Coding&lt;/h3&gt;
-
-&lt;h4 id=&quot;stochastic-quantization&quot;&gt;Stochastic Quantization&lt;/h4&gt;
-
-&lt;p&gt;양자화 함수는 $Q_s(v)$로 나타내며, $s$는 $0$부터 $1$까지를 $s$개로 나눌 것이라는 파라미터이다. 모든 벡터 $v$에 대하여 $Q_s(v)$는 unbiasedness, variance bound, sparsity가 증명되었다.&lt;/p&gt;
-
-&lt;h4 id=&quot;efficient-coding-of-gradients&quot;&gt;Efficient Coding of Gradients&lt;/h4&gt;
-
-&lt;p&gt;$Q_s(v)$는 튜플 &lt;script type=&quot;math/tex&quot;&gt;(\|v\|_ 2, \sigma, \zeta)&lt;/script&gt;로 표현될 수 있다. 그리고 Elias coding을 사용하는데, $k$를 elias coding한다고 하면 우선 $k$를 이진수로 표현하고, length를 그 뒤에 붙인다. 그리고 바로 앞에 있는 것을 반복적으로 encoding하는데, 매우 효율적이다. 양자화 레벨 $s$로 양자화된 &lt;script type=&quot;math/tex&quot;&gt;(\|v\|_ 2, \sigma, \zeta)&lt;/script&gt;를 하나의 string $S$로 encoding한다면, 처음 32비트로 &lt;script type=&quot;math/tex&quot;&gt;\|v\|_ 2&lt;/script&gt;를 encode하고, $\sigma_i$, $\text{Elias}(\zeta_i)$를 반복적으로 붙인다. 이렇게 하면 $Q_s(\tilde{g}(x))$를 encoding하는 데에 필요한 비트수는 &lt;script type=&quot;math/tex&quot;&gt;(3+(\frac{3}{2}+o(1))\log(\frac{2(s^2+n)}{s(s+\sqrt{n})}))s(s+\sqrt{n})+32&lt;/script&gt;를 넘지 않는다. dense한 gradient에 대해서는 $s=\sqrt(n)$으로 encoding하는데, 이 때 필요한 비트수는 최대 $2.8n+32$이다.&lt;/p&gt;
-
-&lt;h3 id=&quot;32-qsgd-guarantees&quot;&gt;[3.2] QSGD Guarantees&lt;/h3&gt;
-
-&lt;p&gt;QSGD를 $K$개의 프로세서에서 실행한다고 하면, 한 회당 $2.8n+32$번의 통신만을 사용한다. 이것은 매우 효율적이고, non-convex SGD에도 사용할 수 있다.&lt;/p&gt;
-
-&lt;h3 id=&quot;33-quantized-variance-reduced-sgd&quot;&gt;[3.3] Quantized Variance-Reduced SGD&lt;/h3&gt;
-
-&lt;p&gt;SVRG를 업데이트할 때 QSGD를 사용해도 같은 수렴 한계를 얻을 수 있다. 적절한 수를 선택하면, 각 epoch당 $O(\kappa(\frac{\log 1}{\epsilon}+n))$의 통신만 사용하면 된다.&lt;/p&gt;
-
-&lt;h2 id=&quot;5-experiments&quot;&gt;[5] Experiments&lt;/h2&gt;
-
-&lt;h4 id=&quot;communication-vs-computation&quot;&gt;Communication vs. Computation&lt;/h4&gt;
-
-&lt;p&gt;먼저, 네트워크들을 communication-intensive(AlexNet, VGG, LSTM)과 computation-intensive(Inception, ResNet)로 나누었는데, 두 부류 다 통신을 줄이자 시간에서의 이득이 보였다.&lt;/p&gt;
-
-&lt;h4 id=&quot;accuracy&quot;&gt;Accuracy&lt;/h4&gt;
-
-&lt;p&gt;4bit나 8bit QSGD는 충분히 높은 정확도를 보인다. 최근 발표된 논문에 따르면 gradient에 noise를 추가하는 것이 도움이 되는데, 이 논문의 방법도 zero-mean noise의 일종일 수 있다. 그러나 엄청나게 비트수를 줄이는 것은 정확도에 해가 될 수 있다. 한가지 이슈는, 특정 layer는 양자화에 특히 민감할 수 있다는 것이다. convolution layer의 비트수를 많이 줄이면(2bit QSGD) 정확도 손실을 가져온다.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 03 Dec 2019 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/thesis/2019/12/03/QSGD.html</link>
-        <guid isPermaLink="true">http://localhost:4000/thesis/2019/12/03/QSGD.html</guid>
-        
-        <category>Optimization</category>
-        
-        
-        <category>Thesis</category>
-        
-      </item>
-    
-      <item>
-        <title>A Closer Look at Deep Learning Heuristics - Learning Rate Restarts, Warmup and Distillation</title>
-        <description>&lt;h2 id=&quot;abstract&quot;&gt;[Abstract]&lt;/h2&gt;
-
-&lt;p&gt;현재의 딥러닝 모델들은 heuristic들로부터 좋은 결과를 냈다. 현재 이 경험적인 방법들은 linear interpolation이나 차원 감소를 통한 시각화들로 분석되는데, 이들은 각자의 단점을 가지고 있다. 이 논문에서는 mode connectivity, Canonical correlation analysis(CCA)를 가지고 knowledge distillation과 cosine restart, warmup을 재분석한다. 분석으로 얻은 결과는 다음과 같다.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;cosine annealing이 잘 작동되는 이유로 설명된 것들이 실험적으로 아님을 보였다.&lt;/li&gt;
-  &lt;li&gt;warmup은 깊은 층의 가중치 변화를 하지 않게 만들며, 그냥 그 가중치들을 고정시켜도 warmup과 같은 효과를 얻는다.&lt;/li&gt;
-  &lt;li&gt;knowledge distillation에서 teacher가 공유한 latent knowledge는 더 깊은 층으로 분배된다.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;1-introduction&quot;&gt;[1] Introduction&lt;/h2&gt;
-
-&lt;p&gt;knowledge distillation은 teacher model을 먼저 학습하고, 더 작은 데이터셋을 가지고 student model을 학습하는데, loss function을 사용하는 것이 아니고 teacher를 따라하는 방식으로 학습한다.&lt;/p&gt;
-
-&lt;p&gt;Mode connectivity(MC)를 이용하면 네트워크의 local minima들을 piecewise-linear curve로 연결할 수 있는데, 이는 서로 다른 방법으로 얻은 local minima와 특성들이 연결되어 있음을 알 수 있다.&lt;/p&gt;
-
-&lt;p&gt;CCA를 전처리 단계에서 사용하여 네트워크의 활성화를 분석할 수 있다는 연구도 있었다.&lt;/p&gt;
-
-&lt;h2 id=&quot;2-empirical-tools&quot;&gt;[2] Empirical Tools&lt;/h2&gt;
-
-&lt;h3 id=&quot;21-mode-connectivity&quot;&gt;[2.1] Mode Connectivity&lt;/h3&gt;
-
-&lt;p&gt;local minima들을 연결하면, 그들을 연결한 사이에도 비교적 작은 loss의 점들이 있다.&lt;/p&gt;
-
-&lt;h4 id=&quot;211-resilience-of-mode-connectivity&quot;&gt;[2.1.1] Resilience of Mode Connectivity&lt;/h4&gt;
-
-&lt;p&gt;보통은 서로 다른 훈련 방법(batch size가 다르거나, optimizer가 다르거나, 초기화가 다르거나, 정규화 텀이 다르거나)을 사용하면 서로 다른 점으로 수렴한다고 알고 있다. 이 논문에서는 기준 mode $G$를포함해, 서로 다른 훈련 방법을 사용하여 ${A, B, C, D, E, F, G}$의 mode를 얻었다. 그리고 mode connectivity 알고리즘을 사용하여 $A$부터 $F$까지를 $G$와 짝지어 각각의 curve를 만들어 내었다. 그리고 그 curve의 점마다의 validation accuracy를 봤는데, 마지막 epoch에서는 다들 비슷한 정확도를 보였다. 따라서 결국 각 minima를 잇는 선들도 정확도가 비슷하다.&lt;/p&gt;
-
-&lt;h3 id=&quot;22-cca-for-measuring-representational-similarity&quot;&gt;[2.2] CCA for Measuring Representational Similarity&lt;/h3&gt;
-
-&lt;p&gt;CCA는 다변량 통계에서의 두 RV 집합간의 관계를 연구하는 전통적인 툴이다. 이전 연구에서는 CCA를 SVD나 DFT와 함께 이용해서 두 layer를 비교하는 방법이 제안되었다. 각 layer의 activation에서 나오는 값을 행렬로 만들고, 그들과 SVD를 이용해 layer간의 correlation을 계산한다. convolution layer인 경우에는 DFT를 사용한다. 이 방법은 서로 다른 네트워크를 비교할 뿐만 아니라 한 네트워크가 훈련 중 어떻게 변화하는지를 보고싶을 때 사용하기도 한다.&lt;/p&gt;
-
-&lt;h2 id=&quot;3-stochastic-gradient-descent-with-restarts-sgdr&quot;&gt;[3] Stochastic Gradient Descent with Restarts (SGDR)&lt;/h2&gt;
-
-&lt;p&gt;cosine annealing이 잘 되는 이유는 잘 모르는데, multi-modal 함수에서는 restart가 다른 지역을 더 탐색할 수 있게 해준다는 것이 하나의 설명이다. 실험 결과로는, restart가 일어나기 직전 minima들을 line segment로 연결한 점들은 두 점보다 높은 loss를 보였지만, learning rate를 줄인 minima들은 line segment로 연결해도 loss가 증가하지 않았다. 결과를 보니, 사실 SGDR이 local minima를 탈출하게 해준다는 결과는 보이지 않았다. 그리고 training loss와 validation loss가 달라서, train loss 입장에서는 loss가 높아져도, validation loss의 입장에서는 낮아져서 일반화가 잘 될 때도 있다.&lt;/p&gt;
-
-&lt;h2 id=&quot;4-warmup-learning-rate-scheme&quot;&gt;[4] Warmup Learning rate Scheme&lt;/h2&gt;
-
-&lt;p&gt;이론적으로, SGD의 learning dynamics는 batch size와 learning rate의 비율에 의존한다. warmup은 학습 불안정성을 야기하지 않고 큰 learning rate를 사용할 수 있는 방법으로 제안되었다. 이 논문에서 연구하고자 한 것은 “어떻게 learning rate warmup이 서로 다른 layer에 영향을 미칠까?”이다. 이것을 연구하기 위해 CCA를 사용하였고, 세 가지의 scheme을 사용한 네트워크들의 차이점과 유사점을 조사하였다. LB+warmup과 SB에서 유사점이 나타났는데, 이것은 큰 batch size와 큰 learning rate을 사용할 때, warmup이 불안정한 큰 변화를 없애준다는 것을 시사한다. 이것을 더 알아보기 위해 warmup을 사용하지 않고 대신 처음 20 epoch동안 fully connected layer들을 고정시켜 봤는데, 또한 유사도가 높았고 validation 정확도가 warmup을 사용한 것보다 더 높았다.&lt;/p&gt;
-
-&lt;h2 id=&quot;5-knowledge-distillation&quot;&gt;[5] Knowledge Distillation&lt;/h2&gt;
-
-&lt;p&gt;knowledge distillation 또한 CCA를 사용하여 연구하였다. 이전에는 dark knowledge의 전이가, 최근에는 중요도의 해석이 knowledge distillation을 잘 되게 한다고 설명되어 왔다. 이 논문에서는 knowledge transfer가 네트워크의 특정 부분에 국한되는지, student and teacher 모델의 layer사이의 유사도와 student가 이 질문에 대한 해답을 줄 수 있는지에 대해 조사하였다. student model을 학습하고, 같은 구조를 가진 모델을 hard label을 가지고 학습하였다. 그리고 그들의 layer간의 유사도를 teacher model과 비교하였다. 결과는, 깊은 층에 비해 얕은 층에 대해서는 base model과 teacher간의 유사도와 student와 teacher간의 유사도가 비슷했다. 따라서 깊은 층에 대해서만 knowledge transfer가 일어난다고 할 수 있다. &lt;em&gt;얕은 층에서도 knowledge transfer가 일어나지만, 그게 알아내기 쉬운 knowledge라서 transfer가 되지 않은 것처럼 보이는 것은 아닐까?&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;6-discussion-and-conclusion&quot;&gt;[6] Discussion and Conclusion&lt;/h2&gt;
-
-&lt;p&gt;이 연구는 learning heuristic을 설명했고, 또한 우연히 새로운 heuristic을 발견하였다.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;처음부터 끝까지 실험, 실험, 실험…. 논문은 이렇게 쓰는거구나&lt;/p&gt;
-</description>
-        <pubDate>Sun, 01 Dec 2019 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/thesis/2019/12/01/HEUR.html</link>
-        <guid isPermaLink="true">http://localhost:4000/thesis/2019/12/01/HEUR.html</guid>
         
         <category>Optimization</category>
         
