@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Optimization Lecture 1</title>
-  <meta name="description" content="딥러닝에서 objective function의 설계는 중요하다. 이 때 문제를 더 간단하게 만들기 위해 convex의 개념을 도입한다.">
+  <title>YeonjeeJung's Blog</title>
+  <meta name="description" content="">
   
   <meta name="author" content="YeonjeeJung">
   <meta name="copyright" content="&copy; YeonjeeJung 2022">
@@ -44,8 +44,8 @@
   
   <!-- Twitter: card tags -->
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Optimization Lecture 1">
-  <meta name="twitter:description" content="딥러닝에서 objective function의 설계는 중요하다. 이 때 문제를 더 간단하게 만들기 위해 convex의 개념을 도입한다.">
+  <meta name="twitter:title" content="YeonjeeJung's Blog">
+  <meta name="twitter:description" content="">
   <meta name="twitter:image" content="http://localhost:4000/assets/logo.png">
   <meta name="twitter:url" content="http://localhost:4000">
   
@@ -54,34 +54,9 @@
 
   <!-- Site styles -->
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://localhost:4000/lecture/optimization/2019/09/02/OptLecture1.html">
+  <link rel="canonical" href="http://localhost:4000/page10/">
   <link rel="alternate" type="application/rss+xml" title="YeonjeeJung's Blog" href="http://localhost:4000/feed.xml" />
 </head>
-
-  
-    <script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    TeX: {
-      equationNumbers: {
-        autoNumber: "AMS"
-      }
-    },
-    tex2jax: {
-    inlineMath: [ ['$', '$'] ],
-    displayMath: [ ['$$', '$$'] ],
-    processEscapes: true,
-  }
-});
-MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
-	  alert("Math Processing Error: "+message[1]);
-	});
-MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
-	  alert("Math Processing Error: "+message[1]);
-	});
-</script>
-<script type="text/javascript" async
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
 
   
   <body>
@@ -113,105 +88,85 @@ MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
 
 
     <div class="page-content">
-        <div class="post">
+        <div class="home">
 
-<div class="post-header-container " >
-  <div class="scrim ">
-    <header class="post-header">
-      <h1 class="title">Optimization Lecture 1</h1>
-      <p class="info">by <strong>Yeonjee Jung</strong></p>
+<div class="site-header-container has-cover" style="background-image: url(/assets/header_image.png);">
+  <div class="scrim has-cover">
+    <header class="site-header">
+      <h1 class="title">YeonjeeJung's Blog</h1>
+      <p class="subtitle">천천히 오래</p>
     </header>
   </div>
 </div>
 
 <div class="wrapper">
-
- <span class="page-divider">
-  <span class="one"></span>
-  <span class="two"></span>
-</span>
- 
-
-<section class="post-meta">
-  <div class="post-date">September 2, 2019</div>
-  <div class="post-categories">
-  in 
-    
-    <a href="/category/lecture">Lecture</a>, 
-    
+<ul class="post-list">
   
-    
-    <a href="/category/optimization">Optimization</a>
-    
+  <li>
+    <h2>
+      <a class="post-link" href="/thesis/2019/06/30/COF.html">Weakly-Supervised Semantic Segmentation by Iteratively Mining Common Object Features</a>
+    </h2>
+    <section class="post-excerpt" itemprop="description">
+      <p>이 논문은 이미지에서 tag만 주어진 상황에서 그 tag의 대상을 segmentation하는 반복적 방법을 제안한 논문이다. Fully-Supervised Semantic Segmentation Fully-Supervised Semantic Segmentation에는 region-based, pixel-based의 두가지 방법이 있다. Region-based : 이미지를 set of region으로 가져와서 label을 예측하기 위해 특징을 추출한다. Pixel-based : 이미지 전체를 input으로 가져와서 pixel-wise label을 예측한다. 보통은 pixel-based가 더 강력하지만,...</p>
+    </section>
+    <section class="post-meta">
+      <div class="post-date">June 30, 2019</div>
+      <div class="post-categories">
+      in 
+        
+        <a href="/category/thesis">Thesis</a>
+        
+      
+      </div>
+    </section>
+  </li>
   
-  </div>
-</section>
-
-<article class="post-content">
-  <p>딥러닝에서 objective function의 설계는 중요하다. 이 때 문제를 더 간단하게 만들기 위해 convex의 개념을 도입한다.</p>
-
-<h3 id="convex-set">Convex set</h3>
-
-<script type="math/tex; mode=display">\text{For } x \in C \text{ and } y \in C \Rightarrow (1-\alpha)x+\alpha y \in C, \forall\alpha\in[0, 1]</script>
-
-<p>convex set을 쓰면 line 전체가 constraint 안에 있기 때문에 line search를 할 때 쓴다. convex set을 가정한 방법들은 non-convex에서도 사용할 수 있다. local minima 부근에서는 convex이기 때문인데, 이 때 convex 방법들을 적용하면 global minima는 아니다.</p>
-
-<h3 id="convex-function">Convex function</h3>
-
-<script type="math/tex; mode=display">\alpha f(x_1)+(1-\alpha)f(x_2) \ge f(\alpha x_1 + (1-\alpha)x_2), \forall x_1, x_2, \forall \alpha \in [0, 1]</script>
-
-<p>convex function의 가장 큰 특징은 global minima가 하나이고, 2차 미분식(또는 해시안 함수)이 항상 양수라는 점이다. 이또한 분석이 쉽다는 장점을 가지고 있다. 사실, unimodal function도 global minima가 하나지만, 이차미분항이 양수와 음수를 왔다갔다 할 수 있기 때문에 convex function보다는 더 분석이 어렵다.</p>
-
-<p>이차미분항이 양수라는 점에서 오는 장점은, convergence behavior를 알기가 쉽다는 점이다. 보통 잘 알고 있는 gradient descent 방법의 식은 다음과 같다.</p>
-
-<script type="math/tex; mode=display">x_{t+1} \leftarrow x_t + \gamma\triangledown f(x)</script>
-
-<p>이 때 이차미분항이 양수이면, $\triangledown f(x)$의 양상을 더 쉽게 알 수 있다.</p>
-
-</article>
-
-
-
-
-
-<section class="rss">
-  <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
-</section>
-
-<!-- <section class="share">
-  <span>Share: </span>
+  <hr>
   
-    
-    
-    
-    
-    
-    
-    
-    
   
-</section> -->
+  <li>
+    <h2>
+      <a class="post-link" href="/thesis/2019/06/29/ZSL.html">Zero-shot Learning on Semantic Class Prototype Graph</a>
+    </h2>
+    <section class="post-excerpt" itemprop="description">
+      <p>이 논문은 Zero-Shot Learning(ZSL)에서의 새로운 distance metric을 제안하는 논문이다. Zero-Shot Learning(ZSL) ZSL에서는 seen class와 unseen class, 그리고 image feature가 semantic embedding space에 사영된다. 새로운 input은 seen class중 한 class에 해당하고, 어떤 image feature를 가지고 있다고 하자. 그 사영된 공간에서 seen class와 image feature가 결합된 벡터가 unseen class와 가까우면, unseen class에...</p>
+    </section>
+    <section class="post-meta">
+      <div class="post-date">June 29, 2019</div>
+      <div class="post-categories">
+      in 
+        
+        <a href="/category/thesis">Thesis</a>
+        
+      
+      </div>
+    </section>
+  </li>
+  
+  
+</ul>
 
-
-
-
-<section class="disqus">
-  <div id="disqus_thread"></div>
-  <script type="text/javascript">
-    var disqus_shortname = 'true';
-
-    /* * * DON'T EDIT BELOW THIS LINE * * */
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-  </script>
-  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-</section>
-
-
+<nav class="pagination" role="navigation">
+	<p>
+    
+			
+			<a class="newer-posts" href="/page9">
+				<span class="fa-stack fa-lg">
+					<i class="fa fa-square fa-stack-2x"></i>
+					<i class="fa fa-angle-double-left fa-stack-1x fa-inverse"></i>
+				</span>
+			</a>
+			
+		
+		<span class="page-number">Page 10 of 10</span>
+		
+		<span class="fa-stack fa-lg">
+      <i class="fa fa-square fa-stack-2x"></i>
+      <i class="fa fa-angle-double-right fa-stack-1x fa-inverse"></i>
+    </span>
+		
+	</p>
+</nav>
 
 </div>
 </div>
