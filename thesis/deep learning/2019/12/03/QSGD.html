@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>QSGD - Communication-Efficient SGD via Gradient Quantization and Encoding</title>
+  <meta name="description" content="[Abstract]">
+  
+  <meta name="author" content="YeonjeeJung">
+  <meta name="copyright" content="&copy; YeonjeeJung 2023">
+  
+
+  <!-- External libraries -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/monokai-sublime.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css">
+
+  <!-- Favicon and other icons (made with http://www.favicon-generator.org/) -->
+  <link rel="shortcut icon" href="/assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" sizes="57x57" href="/assets/icons/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/assets/icons/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/assets/icons/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/assets/icons/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/assets/icons/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/assets/icons/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/assets/icons/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/assets/icons/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/assets/icons/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+  <link rel="manifest" href="/assets/icons/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/assets/icons/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  
+
+  
+  <!-- Twitter: card tags -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="QSGD - Communication-Efficient SGD via Gradient Quantization and Encoding">
+  <meta name="twitter:description" content="[Abstract]">
+  <meta name="twitter:image" content="https://yeonjeejung.github.io/assets/logo.png">
+  <meta name="twitter:url" content="https://yeonjeejung.github.io">
+  
+
+  
+
+  <!-- Site styles -->
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="https://yeonjeejung.github.io/thesis/deep%20learning/2019/12/03/QSGD.html">
+  <link rel="alternate" type="application/rss+xml" title="YeonjeeJung's Blog" href="https://yeonjeejung.github.io/feed.xml" />
+</head>
+
+  
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$'] ],
+    processEscapes: true,
+  }
+});
+MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+  
+  <body>
+
+    <header class="navigation" role="banner">
+  <div class="navigation-wrapper">
+    <a href="/" class="logo">
+      
+      <img src="/assets/logo.png" alt="YeonjeeJung's Blog">
+      
+    </a>
+    <a href="javascript:void(0)" class="navigation-menu-button" id="js-mobile-menu">
+      <i class="fa fa-bars"></i>
+    </a>
+    <nav role="navigation">
+      <ul id="js-navigation-menu" class="navigation-menu show">
+        <li class="nav-link"><a href="/about">About</a>
+        <li class="nav-link"><a href="/category/thesis">Thesis</a>
+        <li class="nav-link"><a href="/category/lecture">Lecture</a>
+          <ul>
+            <a href="/category/computervision">CV</a>
+            <a href="/category/optimization">Optimization</a>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+    <div class="page-content">
+        <div class="post">
+
+<div class="post-header-container " >
+  <div class="scrim ">
+    <header class="post-header">
+      <h1 class="title">QSGD - Communication-Efficient SGD via Gradient Quantization and Encoding</h1>
+      <p class="info">by <strong>Yeonjee Jung</strong></p>
+    </header>
+  </div>
+</div>
+
+<div class="wrapper">
+
+ <span class="page-divider">
+  <span class="one"></span>
+  <span class="two"></span>
+</span>
+ 
+
+<section class="post-meta">
+  <div class="post-date">December 3, 2019</div>
+  <div class="post-categories">
+  in 
+    
+    <a href="/category/thesis">Thesis</a>, 
+    
+  
+    
+    <a href="/category/deep learning">Deep learning</a>
+    
+  
+  </div>
+</section>
+
+<article class="post-content">
+  <h2 id="abstract">[Abstract]</h2>
+
+<p>SGD는 병렬처리를 할 수 있어 좋지만, 통신에 cost가 많이 들어간다. 이에 대응하기 위해 양자화된 gradient만 통신하는 방법이 제안되었는데, 이는 항상 수렴하지는 않는다. 이 논문에서 제안된 QSGD는 수렴을 보장하고 좋은 성능을 가진다. 이 방법을 이용하면 통신 대역과 수렴 시간에 대한 trade-off를 마음대로 할 수 있다. 각 노드들은 반복 당 몇 비트를 보낼지 조절할 수 있는데, 그러면 분산과의 trade-off가 있다. 이 방법은 딥러닝 학습에서의 시간을 줄여준다.</p>
+
+<h2 id="1-introduction">[1] Introduction</h2>
+
+<p>SGD에서의 gradient를 보내는 작업은 상당한 bottleneck이 되는데, 이를 줄이기 위한 precision을 줄이는 방법과 gradient의 부호만 보내는 방법이 있었는데, 이들은 특정 조건에서만 수렴했다.</p>
+
+<h2 id="3-quantized-stochastic-gradient-descent-qsgd">[3] Quantized Stochastic Gradient Descent (QSGD)</h2>
+
+<h3 id="31-generalized-stochastic-quantization-and-coding">[3.1] Generalized Stochastic Quantization and Coding</h3>
+
+<h4 id="stochastic-quantization">Stochastic Quantization</h4>
+
+<p>양자화 함수는 $Q_s(v)$로 나타내며, $s$는 $0$부터 $1$까지를 $s$개로 나눌 것이라는 파라미터이다. 모든 벡터 $v$에 대하여 $Q_s(v)$는 unbiasedness, variance bound, sparsity가 증명되었다.</p>
+
+<h4 id="efficient-coding-of-gradients">Efficient Coding of Gradients</h4>
+
+<p>$Q_s(v)$는 튜플 <script type="math/tex">(\|v\|_ 2, \sigma, \zeta)</script>로 표현될 수 있다. 그리고 Elias coding을 사용하는데, $k$를 elias coding한다고 하면 우선 $k$를 이진수로 표현하고, length를 그 뒤에 붙인다. 그리고 바로 앞에 있는 것을 반복적으로 encoding하는데, 매우 효율적이다. 양자화 레벨 $s$로 양자화된 <script type="math/tex">(\|v\|_ 2, \sigma, \zeta)</script>를 하나의 string $S$로 encoding한다면, 처음 32비트로 <script type="math/tex">\|v\|_ 2</script>를 encode하고, $\sigma_i$, $\text{Elias}(\zeta_i)$를 반복적으로 붙인다. 이렇게 하면 $Q_s(\tilde{g}(x))$를 encoding하는 데에 필요한 비트수는 <script type="math/tex">(3+(\frac{3}{2}+o(1))\log(\frac{2(s^2+n)}{s(s+\sqrt{n})}))s(s+\sqrt{n})+32</script>를 넘지 않는다. dense한 gradient에 대해서는 $s=\sqrt(n)$으로 encoding하는데, 이 때 필요한 비트수는 최대 $2.8n+32$이다.</p>
+
+<h3 id="32-qsgd-guarantees">[3.2] QSGD Guarantees</h3>
+
+<p>QSGD를 $K$개의 프로세서에서 실행한다고 하면, 한 회당 $2.8n+32$번의 통신만을 사용한다. 이것은 매우 효율적이고, non-convex SGD에도 사용할 수 있다.</p>
+
+<h3 id="33-quantized-variance-reduced-sgd">[3.3] Quantized Variance-Reduced SGD</h3>
+
+<p>SVRG를 업데이트할 때 QSGD를 사용해도 같은 수렴 한계를 얻을 수 있다. 적절한 수를 선택하면, 각 epoch당 $O(\kappa(\frac{\log 1}{\epsilon}+n))$의 통신만 사용하면 된다.</p>
+
+<h2 id="5-experiments">[5] Experiments</h2>
+
+<h4 id="communication-vs-computation">Communication vs. Computation</h4>
+
+<p>먼저, 네트워크들을 communication-intensive(AlexNet, VGG, LSTM)과 computation-intensive(Inception, ResNet)로 나누었는데, 두 부류 다 통신을 줄이자 시간에서의 이득이 보였다.</p>
+
+<h4 id="accuracy">Accuracy</h4>
+
+<p>4bit나 8bit QSGD는 충분히 높은 정확도를 보인다. 최근 발표된 논문에 따르면 gradient에 noise를 추가하는 것이 도움이 되는데, 이 논문의 방법도 zero-mean noise의 일종일 수 있다. 그러나 엄청나게 비트수를 줄이는 것은 정확도에 해가 될 수 있다. 한가지 이슈는, 특정 layer는 양자화에 특히 민감할 수 있다는 것이다. convolution layer의 비트수를 많이 줄이면(2bit QSGD) 정확도 손실을 가져온다.</p>
+
+</article>
+
+
+
+<section class="tags">
+  <strong>Tags:</strong> <a href="/tag/optimization">Optimization</a>
+</section>
+
+
+
+<section class="rss">
+  <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+</section>
+
+<!-- <section class="share">
+  <span>Share: </span>
+  
+    
+    
+    
+    
+    
+    
+    
+    
+  
+</section> -->
+
+
+
+
+<section class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'true';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+
+</div>
+</div>
+
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h3 class="footer-heading">YeonjeeJung's Blog</h3>
+
+    <div class="site-navigation">
+
+      <p><strong>Site Map</strong></p>
+      <ul class="pages">
+
+        <li class="nav-link"><a href="/about">About</a>
+        <li class="nav-link"><a href="/category/thesis">Thesis</a>
+        <li class="nav-link"><a href="/category/lecture">Lecture</a>
+
+      </ul>
+    </div>
+
+    <div class="site-contact">
+
+      <p><strong>Contact</strong></p>
+      <ul class="social-media-list">
+        <li>
+          <a href="mailto:gotnwlsl@gmail.com">
+            <i class="fa fa-envelope-o"></i>
+            <span class="username">gotnwlsl@gmail.com</span>
+          </a>
+        </li>
+
+        
+          
+          <li>
+            <a href="https://github.com/YeonjeeJung" title="Fork me on GitHub">
+              <i class="fa fa-github"></i>
+              <span class="username">YeonjeeJung</span>
+            </a>
+          </li>
+          
+        
+
+      </ul>
+    </div>
+
+    <div class="site-signature">
+      <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+      <p class="text"></p>
+    </div>
+
+  </div>
+
+</footer>
+
+<!-- Scripts -->
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/js/lightbox.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  // Default syntax highlighting
+  hljs.initHighlightingOnLoad();
+
+  // Header
+  var menuToggle = $('#js-mobile-menu').unbind();
+  $('#js-navigation-menu').removeClass("show");
+  menuToggle.on('click', function(e) {
+    e.preventDefault();
+    $('#js-navigation-menu').slideToggle(function(){
+      if($('#js-navigation-menu').is(':hidden')) {
+        $('#js-navigation-menu').removeAttr('style');
+      }
+    });
+  });
+});
+
+</script>
+
+
+
+
+
+
+  </body>
+
+</html>
