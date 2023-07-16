@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Weakly-Supervised Semantic Segmentation by Iteratively Mining Common Object Features</title>
+  <meta name="description" content="이 논문은 이미지에서 tag만 주어진 상황에서 그 tag의 대상을 segmentation하는 반복적 방법을 제안한 논문이다.">
+  
+  <meta name="author" content="YeonjeeJung">
+  <meta name="copyright" content="&copy; YeonjeeJung 2023">
+  
+
+  <!-- External libraries -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/monokai-sublime.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css">
+
+  <!-- Favicon and other icons (made with http://www.favicon-generator.org/) -->
+  <link rel="shortcut icon" href="/assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" sizes="57x57" href="/assets/icons/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/assets/icons/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/assets/icons/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/assets/icons/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/assets/icons/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/assets/icons/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/assets/icons/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/assets/icons/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/assets/icons/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+  <link rel="manifest" href="/assets/icons/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/assets/icons/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  
+
+  
+  <!-- Twitter: card tags -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Weakly-Supervised Semantic Segmentation by Iteratively Mining Common Object Features">
+  <meta name="twitter:description" content="이 논문은 이미지에서 tag만 주어진 상황에서 그 tag의 대상을 segmentation하는 반복적 방법을 제안한 논문이다.">
+  <meta name="twitter:image" content="https://yeonjeejung.github.io/assets/logo.png">
+  <meta name="twitter:url" content="https://yeonjeejung.github.io">
+  
+
+  
+
+  <!-- Site styles -->
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="https://yeonjeejung.github.io/thesis/deep_learning/2019/06/30/COF.html">
+  <link rel="alternate" type="application/rss+xml" title="YeonjeeJung's Blog" href="https://yeonjeejung.github.io/feed.xml" />
+</head>
+
+  
+  <body>
+
+    <header class="navigation" role="banner">
+  <div class="navigation-wrapper">
+    <a href="/" class="logo">
+      
+      <img src="/assets/logo.png" alt="YeonjeeJung's Blog">
+      
+    </a>
+    <a href="javascript:void(0)" class="navigation-menu-button" id="js-mobile-menu">
+      <i class="fa fa-bars"></i>
+    </a>
+    <nav role="navigation">
+      <ul id="js-navigation-menu" class="navigation-menu show">
+        <li class="nav-link"><a href="/about">About</a>
+        <li class="nav-link"><a href="/category/thesis">Thesis</a>
+          <ul>
+            <a href="/category/Deep_Learning">Deep Learning</a>
+            <a href="/category/Continual_Learning">Continual Learning</a>
+            <a href="/category/Multi_modal_Learning">Multi-modal Learning</a>
+          </ul>
+        <li class="nav-link"><a href="/category/lecture">Lecture</a>
+          <ul>
+            <a href="/category/computervision">CV</a>
+            <a href="/category/optimization">Optimization</a>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+    <div class="page-content">
+        <div class="post">
+
+<div class="post-header-container " >
+  <div class="scrim ">
+    <header class="post-header">
+      <h1 class="title">Weakly-Supervised Semantic Segmentation by Iteratively Mining Common Object Features</h1>
+      <p class="info">by <strong>Yeonjee Jung</strong></p>
+    </header>
+  </div>
+</div>
+
+<div class="wrapper">
+
+ <span class="page-divider">
+  <span class="one"></span>
+  <span class="two"></span>
+</span>
+ 
+
+<section class="post-meta">
+  <div class="post-date">June 30, 2019</div>
+  <div class="post-categories">
+  in 
+    
+    <a href="/category/thesis">Thesis</a>, 
+    
+  
+    
+    <a href="/category/deep_learning">Deep_Learning</a>
+    
+  
+  </div>
+</section>
+
+<article class="post-content">
+  <hr />
+<p>이 논문은 이미지에서 tag만 주어진 상황에서 그 tag의 대상을 segmentation하는 반복적 방법을 제안한 논문이다.</p>
+
+<h2 id="fully-supervised-semantic-segmentation">Fully-Supervised Semantic Segmentation</h2>
+<p>Fully-Supervised Semantic Segmentation에는 region-based, pixel-based의 두가지 방법이 있다.</p>
+<ul>
+  <li>Region-based : 이미지를 set of region으로 가져와서 label을 예측하기 위해 특징을 추출한다.</li>
+  <li>Pixel-based : 이미지 전체를 input으로 가져와서 pixel-wise label을 예측한다.</li>
+</ul>
+
+<p>보통은 pixel-based가 더 강력하지만, 이 논문에서는 둘의 장점을 모두 가져와서 사용할 것이다. region-based가 common feature를 추출하는 데서는 유리하다는 것을 보일 것이다.</p>
+
+<h2 id="weakly-supervised-semantic-segmentation-under-image-tags-supervision">Weakly-Supervised Semantic Segmentation under Image Tags Supervision</h2>
+<p>번역하면 ‘이미지 태그가 있으면 문법적으로 세그맨테이션 해주는 약한 감독학습’ 정도가 될 수 있다. 사람과 배경이 함께 있는 이미지에서 사람만을 세그멘테이션해주는 것이라고 생각하면 된다. Fully-Supervised Semantic Segmentation이 너무 많은 양의 labeling cost를 필요로 하는데, 여기서는 tag만 labeling하면 되므로 더 적은 cost가 필요해서 사용한다. 그러나 이것은 어려운 문제인데, tag라는 high-level semantic부터 픽셀 단위라는 low-level appearance까지 연관이 있기 때문이다. 현재까지의 연구는 두 가지로 나눌 수 있다.</p>
+<h4 id="multi-instance-learning-mil-based-method">Multi-Instance Learning (MIL) based method</h4>
+<p>classification network로 바로 segmentation mask 예측하는 방법이다. 모든 픽셀들은 하나의 클래스에 들어가 있다고 가정하고, 그 클래스를 예측하는 것이 목적이다. 하지만 경계 부분에 대해서는 좋지 않은 성능을 보인다.</p>
+<h4 id="localization-based-method">Localization-based method</h4>
+<p>classification network를 초기 localization에 사용하고, 그리고 그걸 segmentation network를 감독하는데 사용한다. weak label로 initial object localization을 만드는 것이 목적이다. 그러나 정확하지 않은 weak label을 계속 사용하기 때문에 에러가 계속해서 축적되어, 이것도 경계 부분에 대해서 좋지 않은 성능을 보인다.</p>
+
+<h2 id="initial-localization">Initial Localization</h2>
+<p>반복적인 학습을 위해서는 시작이 있어야 한다. 이 논문에서는 initial localization을 얻기 위해서 classification network를 학습하고 각 object의 heatmap을 얻기 위해 ‘Classification Activation Map(CAM)’을 사용한다. 그러나 얻어진 heatmap이 매우 rough하기 때문에, 이미지를 superpixel region으로 segmentation 하고, heatmap을 평균한다. heatmap중 threshold를 넘는 부분을 initial seed로 사용한다.</p>
+
+<h2 id="mining-common-object-feature-mcof">Mining Common Object Feature (MCOF)</h2>
+<p>제안된 이 방법은 ‘하나의 동일한 대상에는 공통된 특징이 있을 것이다’라는 생각으로부터 시작되었다. 따라서 큰 train set을 가지고 학습하면, 대상에 대한 특징을 학습하여 object의 region을 넒혀갈 수 있을 것이다. 논문에서 제안하는 network는 bottom-up, top-down의 두 가지의 큰 구조로 이루어져 있다.</p>
+<h4 id="bottom-up-regionnet">Bottom-Up (RegionNet)</h4>
+<p>원래의 object localization을 object seed로 이용해서 common object feature (COF) 를 찾아낸다. 순서는 다음과 같다.</p>
+<ol>
+  <li>train image를 superpixel region으로 segmentation 한다. (graph-based segmentation method 사용)</li>
+  <li>Superpixel region과 initial seed를 가지고 region classification network를 학습한다. (mask-based Fast R-CNN 이용)</li>
+</ol>
+
+<h4 id="saliency-guided-refinement-method">Saliency-guided refinement method</h4>
+<p>이 때 찾아낸 COF는 object의 key part만 포함하고 있으므로 경계 부분이 정확하지 않다. 이를 보완하기 위해 saliency-guided refinement method를 사용한다. 이 방법은 mined object region과, Bayesian framework를 이용한 saliency map을 같이 고려한다. 높은 saliency value를  가지고 있는 region에 대해, 만약 이 대상이 mined된 object와 유사하다면, 이 region은 그 대상에 속할 확률이 높다고 판단한다. 이 방법은 맨 처음 반복에서만 사용된다.</p>
+<h4 id="top-down-pixelnet">Top-Down (PixelNet)</h4>
+<p>bottom-up에서 얻은 object region을 이용해서 segmentation network를 학습한다. 이 network를 학습한 후 input을 집어넣으면 더 정확한 object mask를 얻을 수 있다.</p>
+
+<p>이 두 과정을 계속 반복한다. 이렇게 반복적으로 수행하면, 계속해서 더 정확한 segment를 얻을 수 있다.</p>
+
+</article>
+
+
+
+<section class="tags">
+  <strong>Tags:</strong> <a href="/tag/semanticsegmentation">SemanticSegmentation</a>
+</section>
+
+
+
+<section class="rss">
+  <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+</section>
+
+<!-- <section class="share">
+  <span>Share: </span>
+  
+    
+    
+    
+    
+    
+    
+    
+    
+  
+</section> -->
+
+
+
+
+<section class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'true';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+
+</div>
+</div>
+
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h3 class="footer-heading">YeonjeeJung's Blog</h3>
+
+    <div class="site-navigation">
+
+      <p><strong>Site Map</strong></p>
+      <ul class="pages">
+
+        <li class="nav-link"><a href="/about">About</a>
+        <li class="nav-link"><a href="/category/thesis">Thesis</a>
+        <li class="nav-link"><a href="/category/lecture">Lecture</a>
+
+      </ul>
+    </div>
+
+    <div class="site-contact">
+
+      <p><strong>Contact</strong></p>
+      <ul class="social-media-list">
+        <li>
+          <a href="mailto:gotnwlsl@gmail.com">
+            <i class="fa fa-envelope-o"></i>
+            <span class="username">gotnwlsl@gmail.com</span>
+          </a>
+        </li>
+
+        
+          
+          <li>
+            <a href="https://github.com/YeonjeeJung" title="Fork me on GitHub">
+              <i class="fa fa-github"></i>
+              <span class="username">YeonjeeJung</span>
+            </a>
+          </li>
+          
+        
+
+      </ul>
+    </div>
+
+    <div class="site-signature">
+      <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+      <p class="text"></p>
+    </div>
+
+  </div>
+
+</footer>
+
+<!-- Scripts -->
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/js/lightbox.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  // Default syntax highlighting
+  hljs.initHighlightingOnLoad();
+
+  // Header
+  var menuToggle = $('#js-mobile-menu').unbind();
+  $('#js-navigation-menu').removeClass("show");
+  menuToggle.on('click', function(e) {
+    e.preventDefault();
+    $('#js-navigation-menu').slideToggle(function(){
+      if($('#js-navigation-menu').is(':hidden')) {
+        $('#js-navigation-menu').removeAttr('style');
+      }
+    });
+  });
+});
+
+</script>
+
+
+
+
+
+
+  </body>
+
+</html>
