@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Don't Decay the Learning Rate, Increase the Batch Size</title>
+  <meta name="description" content="[Abstract]">
+  
+  <meta name="author" content="YeonjeeJung">
+  <meta name="copyright" content="&copy; YeonjeeJung 2023">
+  
+
+  <!-- External libraries -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/monokai-sublime.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css">
+
+  <!-- Favicon and other icons (made with http://www.favicon-generator.org/) -->
+  <link rel="shortcut icon" href="/assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" sizes="57x57" href="/assets/icons/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/assets/icons/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/assets/icons/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/assets/icons/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/assets/icons/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/assets/icons/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/assets/icons/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/assets/icons/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/assets/icons/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+  <link rel="manifest" href="/assets/icons/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/assets/icons/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  
+
+  
+  <!-- Twitter: card tags -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Don't Decay the Learning Rate, Increase the Batch Size">
+  <meta name="twitter:description" content="[Abstract]">
+  <meta name="twitter:image" content="https://yeonjeejung.github.io/assets/logo.png">
+  <meta name="twitter:url" content="https://yeonjeejung.github.io">
+  
+
+  
+
+  <!-- Site styles -->
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="https://yeonjeejung.github.io/thesis/deep_learning/2019/11/28/INCSIZE.html">
+  <link rel="alternate" type="application/rss+xml" title="YeonjeeJung's Blog" href="https://yeonjeejung.github.io/feed.xml" />
+</head>
+
+  
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$'] ],
+    processEscapes: true,
+  }
+});
+MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+  
+  <body>
+
+    <header class="navigation" role="banner">
+  <div class="navigation-wrapper">
+    <a href="/" class="logo">
+      
+      <img src="/assets/logo.png" alt="YeonjeeJung's Blog">
+      
+    </a>
+    <a href="javascript:void(0)" class="navigation-menu-button" id="js-mobile-menu">
+      <i class="fa fa-bars"></i>
+    </a>
+    <nav role="navigation">
+      <ul id="js-navigation-menu" class="navigation-menu show">
+        <li class="nav-link"><a href="/about">About</a>
+        <li class="nav-link"><a href="/category/thesis">Thesis</a>
+          <ul>
+            <a href="/category/Deep_Learning">Deep Learning</a>
+            <a href="/category/Continual_Learning">Continual Learning</a>
+            <a href="/category/Multi_modal_Learning">Multi-modal Learning</a>
+          </ul>
+        <li class="nav-link"><a href="/category/lecture">Lecture</a>
+          <ul>
+            <a href="/category/computervision">CV</a>
+            <a href="/category/optimization">Optimization</a>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+    <div class="page-content">
+        <div class="post">
+
+<div class="post-header-container " >
+  <div class="scrim ">
+    <header class="post-header">
+      <h1 class="title">Don't Decay the Learning Rate, Increase the Batch Size</h1>
+      <p class="info">by <strong>Yeonjee Jung</strong></p>
+    </header>
+  </div>
+</div>
+
+<div class="wrapper">
+
+ <span class="page-divider">
+  <span class="one"></span>
+  <span class="two"></span>
+</span>
+ 
+
+<section class="post-meta">
+  <div class="post-date">November 28, 2019</div>
+  <div class="post-categories">
+  in 
+    
+    <a href="/category/thesis">Thesis</a>, 
+    
+  
+    
+    <a href="/category/deep_learning">Deep_Learning</a>
+    
+  
+  </div>
+</section>
+
+<article class="post-content">
+  <h2 id="abstract">[Abstract]</h2>
+
+<p>이 논문에서는 learning rate를 줄이는 것 대신 batch size를 훈련 동안 증가시키면서 원래와 비슷한 learning curve를 얻는 방법에 대해 소개한다. 이 방법은 SGD, SGD with momentum, Nesterov momentum, and Adam. 같은 epoch 수를 사용하면 같은 테스트 정확도가 나오지만, 파라미터 업데이트를 덜 하면 더 병렬화가 가능하고 학습 시간이 덜 걸린다. 따라서 learning rate $\epsilon$을 크게 하고, 그에 비례하게 batch size $B$도 늘일 수 있다. 결론적으로 momentum coefficient $m$을 늘리고 $B\propto\frac{1}{1-m}$로 batch size를 증가시킬 수 있다. 그러나 이것은 약간의 테스트 정확도 손실을 초래한다. 이 논문의 방법은 30분 안에 ImageNet을 ResNet-50을 이용해 76.1%의 검증 정확도가 나오게 학습했다.</p>
+
+<h2 id="1-introduction">[1] Introduction</h2>
+
+<h2 id="2-stochastic-gradient-descent-and-convex-optimization">[2] Stochastic Gradient Descent and Convex Optimization</h2>
+
+<p>SGD에는 noise가 들어가기 때문에 $\frac{dw}{dt}=\frac{dC}{dw}+\eta(t)$로 모델링된다. $\eta{(t)}$가 Gaussian random noise이다. noise scale $g=\epsilon(\frac{N}{B}-1)$로 정의되는데, 이는 학습동안의 noise를 제어한다. learning rate $\epsilon$을 줄이면 이 noise scale을 줄일 수 있는데, 줄이지 않고 $B$를 늘려도 같은 효과를 얻을 수 있다. 이 논문의 방법은 $B$를 $\frac{N}{10}$까지 증가시킨 이후에 $\epsilon$을 줄이는 방법을 사용한다.</p>
+
+<h2 id="3-simulated-annealing-and-the-generalization-gap">[3] Simulated Annealing and the Generalization GAP</h2>
+
+<p>simulated annealing은 처음 noise는 넓은 범위를 탐색할 수 있게 해주고, 좋은 지점에 다다르면 더 깊숙히 들어갈 수 있게 한다. 아마 이것이 SGD의 learning rate decay가 잘 되는 이유일 것이다.</p>
+
+<h2 id="4-the-effective-learning-rate-and-the-accumulation-variable">[4] The Effective Learning rate and the Accumulation Variable</h2>
+
+<p>최근 연구자들은 그냥 SGD대신 momentum을 사용한 SGD를 많이 사용한다. momentum 계수 $m$이 $0$으로 가면 noise scale이 작아진다. 한 연구에서 제안된 learning rate를 늘리고 동시에 $B\propto \frac{1}{1-m}$를 늘이는 것은 효과가 있었지만, momentum coefficient를 늘리는 것은 테스트 정확도의 손실을 가져왔다. 사실 더 큰 $m$에서 학습하려면 epoch를 더 추가해야 한다. 또한 $m$이 커지면 이전 gradient를 잊어버리는 시간이 더 늘어나는데, 이것이 noise scale이 줄어드는 데에 문제를 가져올 수 있다.</p>
+
+<h2 id="5-experiments">[5] Experiments</h2>
+
+<h3 id="51-simulated-annealing-in-a-wide-resnet">[5.1] Simulated Annealing in a Wide ResNet</h3>
+
+<p>CIFAR-10과 “16-4” wide ResNet을 사용하였다. learning rate를 줄이는 것과 batch size를 늘리는 방법이 같다는 것을 보이기 위해, learning rate을 줄이는 방법, batch size를 늘리는 방법, hybrid 방법을 비교하였다. 결과는 세 learning curve가 거의 똑같았다. 따라서 learning rate 자체가 줄어들어야 하는 대상이 아니라, noise scale이 줄어들어야 한다는 것을 알았다. 게다가, batch size를 늘리는 방법이 파라미터 업데이트를 훨씬 덜 하고 같은 정확도를 얻을 수 있었다. 또한 다른 optimizer에도 실험하였는데 같은 결과를 얻을 수 있었다.</p>
+
+<h3 id="52-increasing-the-effective-learning-rate">[5.2] Increasing the Effective Learning rate</h3>
+
+<p>이 논문의 두번째 목표는 파라미터 업데이트를 줄이는 것이다. momentum coefficient $m$을 크게 하는 방법이 파라미터 업데이트 수가 가장 적었고, 초반 learning rate를 크게 하는 방법이 그 다음으로 파라미터 업데이트 수가 적었다. <em>하지만 [4]에서 $m$을 키우면 epoch가 더 추가되어야 한다고 했는데, 그럼 시간은 더 걸리는게 아닌가?</em></p>
+
+<h3 id="53-training-imagenet-in-2500-parameter-updates">[5.3] Training ImageNet in 2500 Parameter Updates</h3>
+
+<p>이 실험은 Training ImageNet in 1 Hour에서의 세팅을 따라했지만, warm-up phase는 적용하지 않았다. 또한 ResNet 대신 더 강력한 Inception-ResNet-V2를 사용했다. 이전 논문에서 이미 learning rate를 maximum까지 높였기 때문에 이 논문에서는 파라미터 업데이트를 줄이기 위해 $m$을 크게 했다. 결과는 예상대로 더 큰 $m$을 사용할 때의 파라미터 업데이트가 더 줄었다.</p>
+
+<h3 id="54-training-imagenet-in-30-minutes">[5.4] Training ImageNet in 30 Minutes</h3>
+
+<p>후반 epoch로 갈수록 파라미터 업데이트가 적기 때문에 시간이 더 적게 걸렸다. 초반 30 epoch와 후반 60 epoch가 각각 15분 이내로 걸렸다.</p>
+
+<h2 id="7-conclusions">[7] Conclusions</h2>
+
+<p>learning rate를 줄이는 방식과 같은 효과를 batch size를 늘리면서도 낼 수 있다.</p>
+
+<hr />
+
+<p>실험을 굉장히 많이 하고 체계적으로 잘 설계해서 한 논문인듯. 이 논문의 related works 부분에 지금까지 읽었던 모든 논문들이 다 등장.. 새로운 것을 만들어 내는 것 뿐만 아니라 원래 있던 것을 개선하는 것, 더 효율적인 방향으로 가게 하는 것도 논문이 될 수 있다.</p>
+
+</article>
+
+
+
+<section class="tags">
+  <strong>Tags:</strong> <a href="/tag/optimization">Optimization</a>
+</section>
+
+
+
+<section class="rss">
+  <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+</section>
+
+<!-- <section class="share">
+  <span>Share: </span>
+  
+    
+    
+    
+    
+    
+    
+    
+    
+  
+</section> -->
+
+
+
+
+<section class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'true';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+
+</div>
+</div>
+
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h3 class="footer-heading">YeonjeeJung's Blog</h3>
+
+    <div class="site-navigation">
+
+      <p><strong>Site Map</strong></p>
+      <ul class="pages">
+
+        <li class="nav-link"><a href="/about">About</a>
+        <li class="nav-link"><a href="/category/thesis">Thesis</a>
+        <li class="nav-link"><a href="/category/lecture">Lecture</a>
+
+      </ul>
+    </div>
+
+    <div class="site-contact">
+
+      <p><strong>Contact</strong></p>
+      <ul class="social-media-list">
+        <li>
+          <a href="mailto:gotnwlsl@gmail.com">
+            <i class="fa fa-envelope-o"></i>
+            <span class="username">gotnwlsl@gmail.com</span>
+          </a>
+        </li>
+
+        
+          
+          <li>
+            <a href="https://github.com/YeonjeeJung" title="Fork me on GitHub">
+              <i class="fa fa-github"></i>
+              <span class="username">YeonjeeJung</span>
+            </a>
+          </li>
+          
+        
+
+      </ul>
+    </div>
+
+    <div class="site-signature">
+      <p class="rss-subscribe text"><strong>Subscribe <a href="/feed.xml">via RSS</a></strong></p>
+      <p class="text"></p>
+    </div>
+
+  </div>
+
+</footer>
+
+<!-- Scripts -->
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/js/lightbox.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  // Default syntax highlighting
+  hljs.initHighlightingOnLoad();
+
+  // Header
+  var menuToggle = $('#js-mobile-menu').unbind();
+  $('#js-navigation-menu').removeClass("show");
+  menuToggle.on('click', function(e) {
+    e.preventDefault();
+    $('#js-navigation-menu').slideToggle(function(){
+      if($('#js-navigation-menu').is(':hidden')) {
+        $('#js-navigation-menu').removeAttr('style');
+      }
+    });
+  });
+});
+
+</script>
+
+
+
+
+
+
+  </body>
+
+</html>

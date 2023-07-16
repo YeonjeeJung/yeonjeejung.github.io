@@ -5,8 +5,8 @@
     <description></description>
     <link>https://yeonjeejung.github.io/</link>
     <atom:link href="https://yeonjeejung.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 16 Jul 2023 16:40:44 +0900</pubDate>
-    <lastBuildDate>Sun, 16 Jul 2023 16:40:44 +0900</lastBuildDate>
+    <pubDate>Sun, 16 Jul 2023 16:54:31 +0900</pubDate>
+    <lastBuildDate>Sun, 16 Jul 2023 16:54:31 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -130,15 +130,15 @@
 &lt;/ol&gt;
 </description>
         <pubDate>Wed, 22 Jan 2020 00:00:00 +0900</pubDate>
-        <link>https://yeonjeejung.github.io/thesis/deep%20learning/2020/01/22/tSNE.html</link>
-        <guid isPermaLink="true">https://yeonjeejung.github.io/thesis/deep%20learning/2020/01/22/tSNE.html</guid>
+        <link>https://yeonjeejung.github.io/thesis/deep_learning/2020/01/22/tSNE.html</link>
+        <guid isPermaLink="true">https://yeonjeejung.github.io/thesis/deep_learning/2020/01/22/tSNE.html</guid>
         
         <category>Optimization</category>
         
         
         <category>Thesis</category>
         
-        <category>Deep learning</category>
+        <category>Deep_Learning</category>
         
       </item>
     
@@ -243,15 +243,15 @@
 &lt;p&gt;많은 장점들에도 불구하고 M3DDPG에는 단점이 있는데, 계산량을 줄이려고 MAAL에서 한 단계의 GD만을 사용하기 때문에 지역적인 worst 상황만을 고려한다.&lt;/p&gt;
 </description>
         <pubDate>Mon, 20 Jan 2020 00:00:00 +0900</pubDate>
-        <link>https://yeonjeejung.github.io/thesis/deep%20learning/2020/01/20/RobustRL.html</link>
-        <guid isPermaLink="true">https://yeonjeejung.github.io/thesis/deep%20learning/2020/01/20/RobustRL.html</guid>
+        <link>https://yeonjeejung.github.io/thesis/deep_learning/2020/01/20/RobustRL.html</link>
+        <guid isPermaLink="true">https://yeonjeejung.github.io/thesis/deep_learning/2020/01/20/RobustRL.html</guid>
         
         <category>ReinforcementLearning</category>
         
         
         <category>Thesis</category>
         
-        <category>Deep learning</category>
+        <category>Deep_Learning</category>
         
       </item>
     
@@ -322,15 +322,15 @@
 &lt;p&gt;ImageNet 경연에서 좋은 결과를 얻은 모델들은 거의다 ensemble을 사용했기 때문에 BN을 이용해서도 ensemble을 사용해봤는데, sota 결과를 갱신했다.&lt;/p&gt;
 </description>
         <pubDate>Wed, 15 Jan 2020 00:00:00 +0900</pubDate>
-        <link>https://yeonjeejung.github.io/thesis/deep%20learning/2020/01/15/BatchNorm.html</link>
-        <guid isPermaLink="true">https://yeonjeejung.github.io/thesis/deep%20learning/2020/01/15/BatchNorm.html</guid>
+        <link>https://yeonjeejung.github.io/thesis/deep_learning/2020/01/15/BatchNorm.html</link>
+        <guid isPermaLink="true">https://yeonjeejung.github.io/thesis/deep_learning/2020/01/15/BatchNorm.html</guid>
         
         <category>Optimization</category>
         
         
         <category>Thesis</category>
         
-        <category>Deep learning</category>
+        <category>Deep_Learning</category>
         
       </item>
     
@@ -391,15 +391,15 @@
 &lt;p&gt;이 실험에서는 Caffe에서 제공하는 AlexNet을 baseline으로 잡고 실험했다. CLR을 사용한 것과 사용하지 않은 것이 별로 차이가 없ㅇ었는데, 이를 통해 원래의 baseline lr이 잘 정해졌다는 것을 알 수 있다. GoogleNet에서도 마찬가지로 CLR을 사용한 것이 조금 더 성능이 좋았다.&lt;/p&gt;
 </description>
         <pubDate>Tue, 14 Jan 2020 00:00:00 +0900</pubDate>
-        <link>https://yeonjeejung.github.io/thesis/deep%20learning/2020/01/14/CyclicLR.html</link>
-        <guid isPermaLink="true">https://yeonjeejung.github.io/thesis/deep%20learning/2020/01/14/CyclicLR.html</guid>
+        <link>https://yeonjeejung.github.io/thesis/deep_learning/2020/01/14/CyclicLR.html</link>
+        <guid isPermaLink="true">https://yeonjeejung.github.io/thesis/deep_learning/2020/01/14/CyclicLR.html</guid>
         
         <category>Optimization</category>
         
         
         <category>Thesis</category>
         
-        <category>Deep learning</category>
+        <category>Deep_Learning</category>
         
       </item>
     
@@ -483,15 +483,15 @@
 &lt;p&gt;위에서 기준 노드로부터 멀어진 노드를 $F$라고 하고, 그와 연결된 다른 노드를 $C$라고 하자. $F$가 기준 노드와 멀어진 이유는 두 가지로 생각해볼 수 있는데, 하나는 $F$의 신호가 기준 노드에 연결된 다른 노드들의 신호와 매우 다른 것이고, 다른 하나는 $C$의 신호에 노이즈가 많아서 $F$에 영향을 준 것이다. 첫번째 이유는 이전의 가정에 위배되므로 사실이 아니고, 따라서 $C$와 $F$가 low-quality node의 후보가 될 수 있다.&lt;/p&gt;
 </description>
         <pubDate>Fri, 10 Jan 2020 00:00:00 +0900</pubDate>
-        <link>https://yeonjeejung.github.io/thesis/deep%20learning/2020/01/10/DataQual.html</link>
-        <guid isPermaLink="true">https://yeonjeejung.github.io/thesis/deep%20learning/2020/01/10/DataQual.html</guid>
+        <link>https://yeonjeejung.github.io/thesis/deep_learning/2020/01/10/DataQual.html</link>
+        <guid isPermaLink="true">https://yeonjeejung.github.io/thesis/deep_learning/2020/01/10/DataQual.html</guid>
         
         <category>Optimization</category>
         
         
         <category>Thesis</category>
         
-        <category>Deep learning</category>
+        <category>Deep_Learning</category>
         
       </item>
     
@@ -552,15 +552,15 @@
 &lt;p&gt;우리가 본 컨투어는 차원을 엄청나게 낮춘 것이기 때문에, non-convex처럼 보이면 실제 차원에서도 non-convex하지만, convex처럼 보인다고 해서 실제 차원에서 convex인 것은 아니고 양의 curvature들이 우세하다는 정도로만 보아야 한다. 이것을 보이기 위해 이전에 그린 그래프를 따라 &lt;script type=&quot;math/tex&quot;&gt;\|\frac{\lambda_{min}}{\lambda_{max}}\|&lt;/script&gt;를 그려보았는데, convex같아보이는 그래프에서는 이 값들이 작았고, 아닌 그래프에서는 non-convex로 보이는 부분들에 이 값이 크게 나타났다.&lt;/p&gt;
 </description>
         <pubDate>Tue, 07 Jan 2020 00:00:00 +0900</pubDate>
-        <link>https://yeonjeejung.github.io/thesis/deep%20learning/2020/01/07/Visual.html</link>
-        <guid isPermaLink="true">https://yeonjeejung.github.io/thesis/deep%20learning/2020/01/07/Visual.html</guid>
+        <link>https://yeonjeejung.github.io/thesis/deep_learning/2020/01/07/Visual.html</link>
+        <guid isPermaLink="true">https://yeonjeejung.github.io/thesis/deep_learning/2020/01/07/Visual.html</guid>
         
         <category>Optimization</category>
         
         
         <category>Thesis</category>
         
-        <category>Deep learning</category>
+        <category>Deep_Learning</category>
         
       </item>
     
@@ -651,15 +651,15 @@
 &lt;p&gt;이 논문에서는 optimizer로 Adam을 사용한다.&lt;/p&gt;
 </description>
         <pubDate>Fri, 27 Dec 2019 00:00:00 +0900</pubDate>
-        <link>https://yeonjeejung.github.io/thesis/deep%20learning/2019/12/27/Adaptivelr.html</link>
-        <guid isPermaLink="true">https://yeonjeejung.github.io/thesis/deep%20learning/2019/12/27/Adaptivelr.html</guid>
+        <link>https://yeonjeejung.github.io/thesis/deep_learning/2019/12/27/Adaptivelr.html</link>
+        <guid isPermaLink="true">https://yeonjeejung.github.io/thesis/deep_learning/2019/12/27/Adaptivelr.html</guid>
         
         <category>Optimization</category>
         
         
         <category>Thesis</category>
         
-        <category>Deep learning</category>
+        <category>Deep_Learning</category>
         
       </item>
     
@@ -717,15 +717,15 @@
 Pytorch에 ResNet이 구현되어 있는데, 이는 ImageNet을 위한 구조이고, CIFAR-10을 위한 구조는 다르다.&lt;/p&gt;
 </description>
         <pubDate>Mon, 23 Dec 2019 00:00:00 +0900</pubDate>
-        <link>https://yeonjeejung.github.io/thesis/deep%20learning/2019/12/23/ResNet.html</link>
-        <guid isPermaLink="true">https://yeonjeejung.github.io/thesis/deep%20learning/2019/12/23/ResNet.html</guid>
+        <link>https://yeonjeejung.github.io/thesis/deep_learning/2019/12/23/ResNet.html</link>
+        <guid isPermaLink="true">https://yeonjeejung.github.io/thesis/deep_learning/2019/12/23/ResNet.html</guid>
         
         <category>Optimization</category>
         
         
         <category>Thesis</category>
         
-        <category>Deep learning</category>
+        <category>Deep_Learning</category>
         
       </item>
     
@@ -770,15 +770,15 @@ Pytorch에 ResNet이 구현되어 있는데, 이는 ImageNet을 위한 구조이
 &lt;p&gt;4bit나 8bit QSGD는 충분히 높은 정확도를 보인다. 최근 발표된 논문에 따르면 gradient에 noise를 추가하는 것이 도움이 되는데, 이 논문의 방법도 zero-mean noise의 일종일 수 있다. 그러나 엄청나게 비트수를 줄이는 것은 정확도에 해가 될 수 있다. 한가지 이슈는, 특정 layer는 양자화에 특히 민감할 수 있다는 것이다. convolution layer의 비트수를 많이 줄이면(2bit QSGD) 정확도 손실을 가져온다.&lt;/p&gt;
 </description>
         <pubDate>Tue, 03 Dec 2019 00:00:00 +0900</pubDate>
-        <link>https://yeonjeejung.github.io/thesis/deep%20learning/2019/12/03/QSGD.html</link>
-        <guid isPermaLink="true">https://yeonjeejung.github.io/thesis/deep%20learning/2019/12/03/QSGD.html</guid>
+        <link>https://yeonjeejung.github.io/thesis/deep_learning/2019/12/03/QSGD.html</link>
+        <guid isPermaLink="true">https://yeonjeejung.github.io/thesis/deep_learning/2019/12/03/QSGD.html</guid>
         
         <category>Optimization</category>
         
         
         <category>Thesis</category>
         
-        <category>Deep learning</category>
+        <category>Deep_Learning</category>
         
       </item>
     
@@ -837,15 +837,15 @@ Pytorch에 ResNet이 구현되어 있는데, 이는 ImageNet을 위한 구조이
 &lt;p&gt;처음부터 끝까지 실험, 실험, 실험…. 논문은 이렇게 쓰는거구나&lt;/p&gt;
 </description>
         <pubDate>Sun, 01 Dec 2019 00:00:00 +0900</pubDate>
-        <link>https://yeonjeejung.github.io/thesis/deep%20learning/2019/12/01/HEUR.html</link>
-        <guid isPermaLink="true">https://yeonjeejung.github.io/thesis/deep%20learning/2019/12/01/HEUR.html</guid>
+        <link>https://yeonjeejung.github.io/thesis/deep_learning/2019/12/01/HEUR.html</link>
+        <guid isPermaLink="true">https://yeonjeejung.github.io/thesis/deep_learning/2019/12/01/HEUR.html</guid>
         
         <category>Optimization</category>
         
         
         <category>Thesis</category>
         
-        <category>Deep learning</category>
+        <category>Deep_Learning</category>
         
       </item>
     
